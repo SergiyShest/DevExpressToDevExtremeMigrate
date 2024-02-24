@@ -1,0 +1,178 @@
+@using DevExpress.Web
+@using DevExpress.Web.Mvc.UI
+@using Sasha.Lims.Core.Helpers
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@using Sasha.Lims.WebUI.Localization
+@using Sasha.Lims.DataAccess.Entities.Constants
+@using Sasha.Lims.WebUI.Controllers
+@using ProcessStatus = Sasha.Lims.DataAccess.Entities.Constants.ProcessStatus
+@model Sasha.Lims.Core.BusinessObjects.RunBo
+@{
+	ViewBag.Title = Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.ProcessList));
+	Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+
+@section Head {
+
+	<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Samples/SamplesGridView.css?v=" + AppVersionHelper.Version)" />
+	<script src="@Url.Content("~/Scripts/Script.js?v=" + AppVersionHelper.Version)"></script>
+	<script>var tableId=@((int)TableType.WorkflowProcess)</script>
+	<script src="@Url.Content("~/Scripts/Properties/commonGridView.js?v=" + AppVersionHelper.Version)"></script>
+	<script>
+	window.addEventListener("load", Init);
+
+		function Init() {
+			var headerText = 'Run:@Model.RunType.Name -->"@Model.Name"';
+			window.parent.postMessage("SetPopUpHeader=" + headerText, '*');//send message parent window for  close this form
+		}
+
+		function updateToolbarButtonsState() {
+			var enabled = gridView.GetFocusedRowIndex() >= 0;
+			pageToolbar.GetItemByName("btCommentSample").SetEnabled(enabled);
+			pageToolbar.GetItemByName("btAttachedFiles").SetEnabled(enabled);
+		}
+
+		function onPageToolbarItemClick(s, e) {
+			var id = GetFocusedRowId();
+
+			switch (e.item.name) {
+
+			case "Edit":
+				if (!id) return;
+				edit(id);
+				break;
+			case "btCommentSample":
+				CommentSelectedRow();
+				break;
+			case "btAttachedFiles":
+				AttachedFiles();
+				break;
+			case "btShowColumnChooser":
+					onShowChooserClick(s, e);
+					console.log("btShowColumnChooser");
+				break;
+
+			default:
+				if (!id) return;
+				var rezRegexp = e.item.name.match(/Set(.*)/);//комманда изменения статуса начиается с Set
+				if (rezRegexp) {
+					changeProcessStatus(id,rezRegexp[1]);
+				}
+			}
+		}
+
+		function onContextMenuItemClick(item, row) {
+			var id = GetFocusedRowId();
+			if (!id) return;
+			switch (row.item.name) {
+			case "Samples":
+				addSamples(id);
+				break;
+			case "Edit":
+				edit(id);
+				break;
+			default:
+				var rezRegexp = row.item.name.match(/Set(.*)/);//комманда изменения статуса начиается с Set
+				if (rezRegexp) {
+					changeProcessStatus(id, rezRegexp[1]);
+				}
+			}
+		}
+
+	    function changeProcessStatus(id, status) {
+			sendData(resDelegate, "@Url.Action("ChangeProcessStatus", "Run", new {Area = "Workflow" })?rowId=" + id + "&status=" + status);
+			//В зависимости от ответа сервера Вызывает обновление грида или показ ошибки
+			function resDelegate(error) {
+				if (error != "") {
+					alert("ChangeProcessStatus "+error);
+				} else {
+					gridView.Refresh();
+				}
+			}
+
+		}
+
+	    function onGridViewBeginCallback(s, e) {
+		}
+
+		function edit(id) {
+			ShowUrlPopup("", '@Url.Action("ProcessView", "Process",new {Area="Workflow"})?rowId=' + id );
+		}
+
+		function addSamples(id){
+			ShowUrlPopup("", '@Url.Action("SelectSamples", "SelectSamples",new {Area="Workflow"})?processId=' + id );
+		}
+
+	   function save() {
+			var form = document.getElementById('form');
+			form.submit();
+		}
+	</script>
+}
+
+		@Html.DevExpress().Menu(menuSettings =>
+   {
+	   menuSettings.Name = "pageToolbar";
+
+	   menuSettings.ItemAutoWidth = false;
+	   menuSettings.AllowSelectItem = false;
+	   menuSettings.ApplyItemStyleToTemplates = true;
+
+	   menuSettings.SettingsAdaptivity.Enabled = true;
+	   menuSettings.SettingsAdaptivity.EnableAutoHideRootItems = true;
+	   menuSettings.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+	   menuSettings.SettingsAdaptivity.CollapseRootItemsToIconsAtWindowInnerWidth = 600;
+
+	   menuSettings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+	   menuSettings.ControlStyle.SeparatorWidth = System.Web.UI.WebControls.Unit.Pixel(0);
+	   menuSettings.ControlStyle.CssClass = "page-toolbar";
+
+	   menuSettings.Styles.Item.CssClass = "item";
+	   menuSettings.Styles.Item.VerticalAlign = System.Web.UI.WebControls.VerticalAlign.Middle;
+
+	   menuSettings.Images.Item.Width = System.Web.UI.WebControls.Unit.Pixel(16);
+	   menuSettings.Images.Item.Height = System.Web.UI.WebControls.Unit.Pixel(16);
+
+	   menuSettings.Items.Add(item =>
+	   {
+		   item.Name = "Title";
+		   item.Text = ViewBag.Title;
+		   item.ClientEnabled = false;
+		   item.ItemStyle.Font.Bold = true;
+		   item.Alignment = MenuItemAlignment.Left;
+		   item.ItemStyle.CssClass = "titleMenuItemStyle";
+	   });
+
+	   menuSettings.Items.Add(item =>
+	   {
+		   item.Name = "btShowColumnChooser";
+		   item.Text = "Columns";
+		   item.Alignment = MenuItemAlignment.Right;
+		   item.AdaptivePriority = 2;
+		   item.Image.Url = "~/Content/Images/table_v2.svg";
+	   });
+
+	   Html.AddMenuFilesAndComments(menuSettings);
+
+	   SettingHelper.AddChangeStatusToolBarMenuItems(menuSettings, DataHelper.GetAvailableStatuses(TableType.WorkflowProcess));
+
+	   menuSettings.Items.Add(item =>
+	   {
+		   item.Name = "Edit";
+		   item.Text = "Edit";
+		   item.Alignment = MenuItemAlignment.Right;
+		   item.AdaptivePriority = 1;
+		   item.Image.Url = "~/Content/Images/process.svg";
+	   });
+
+	   menuSettings.ClientSideEvents.ItemClick = "onPageToolbarItemClick";
+   }).GetHtml()
+		@Html.Partial("_RunProcessGridPartial", Model)
+
+	<div style="display: block; margin:5px">
+
+		<button onclick="cancelForm()" class="dxbButton_@DataHelper.Current.UiTheme dxbButtonSys dxbTSys dx-button" style="-webkit-user-select:none;padding:6px;margin: 3px; float: right">
+			Close
+		</button>
+
+	</div>

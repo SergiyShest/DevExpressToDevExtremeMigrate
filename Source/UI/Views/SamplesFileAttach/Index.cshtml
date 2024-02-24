@@ -1,0 +1,158 @@
+@model IEnumerable<Sasha.Lims.WebUI.Models.SampleViewModel>
+@using System.Web.UI.WebControls
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+
+@{
+	ViewBag.Title = "Samples file attach journal";
+	Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+}
+
+@section Head {
+
+	@Html.DevExpress().GetStyleSheets(
+		new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+		new StyleSheet { ExtensionSuite = ExtensionSuite.Editors },
+		new StyleSheet { ExtensionSuite = ExtensionSuite.GridView },
+		new StyleSheet { ExtensionSuite = ExtensionSuite.TreeList }
+		)
+	@Html.DevExpress().GetScripts(
+		new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+		new Script { ExtensionSuite = ExtensionSuite.Editors },
+		new Script { ExtensionSuite = ExtensionSuite.GridView },
+		new Script { ExtensionSuite = ExtensionSuite.TreeList }
+		)
+
+	<script type="text/javascript" src="@Url.Content("~/Scripts/Samples/SamplesFileAttachGridview.js?v=" + AppVersionHelper.Version)"></script>
+
+	<script type="text/javascript">
+		function UpdateGridView() {
+			SamplesFileAttachGridView.UpdateEdit();
+		}
+	</script>
+}
+
+@section PageToolbar {
+	@Html.DevExpress().Menu(menuSettings =>
+	{
+		menuSettings.Name = "pageToolbar";
+
+		menuSettings.ItemAutoWidth = false;
+		menuSettings.AllowSelectItem = false;
+		menuSettings.ApplyItemStyleToTemplates = true;
+
+		menuSettings.SettingsAdaptivity.Enabled = true;
+		menuSettings.SettingsAdaptivity.EnableAutoHideRootItems = true;
+		menuSettings.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+		menuSettings.SettingsAdaptivity.CollapseRootItemsToIconsAtWindowInnerWidth = 600;
+
+		menuSettings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+		menuSettings.ControlStyle.SeparatorWidth = System.Web.UI.WebControls.Unit.Pixel(0);
+		menuSettings.ControlStyle.CssClass = "page-toolbar";
+
+		menuSettings.Styles.Item.CssClass = "item";
+		menuSettings.Styles.Item.VerticalAlign = System.Web.UI.WebControls.VerticalAlign.Middle;
+
+		menuSettings.Images.Item.Width = System.Web.UI.WebControls.Unit.Pixel(16);
+		menuSettings.Images.Item.Height = System.Web.UI.WebControls.Unit.Pixel(16);
+
+		menuSettings.Items.Add(item =>
+		{
+			item.Name = "AddSamples";
+			item.Text = "Add samples by barcode";
+			item.Alignment = MenuItemAlignment.Right;
+			item.AdaptivePriority = 2;
+			item.Image.Url = "~/Content/Images/add.svg";
+		});
+		menuSettings.Items.Add(item =>
+		{
+			item.Name = "Process";
+			item.Text = "Correction in samples";
+			item.Alignment = MenuItemAlignment.Right;
+			item.AdaptivePriority = 2;
+			item.Image.Url = "~/Content/Images/process.svg";
+		});
+		menuSettings.ClientSideEvents.ItemClick = "onPageToolbarItemClick";
+	}).GetHtml()
+
+}
+
+
+
+@using (Html.BeginForm())
+{
+	@Html.Action("_SamplesFileAttachGridViewPartial")
+}
+
+@Html.DevExpress().PopupControl(
+	settings =>
+	{
+		settings.Name = "AddSamplesDialog";
+		settings.Width = 520;
+		settings.AllowDragging = true;
+		settings.CloseAction = CloseAction.CloseButton;
+		settings.CloseOnEscape = true;
+		settings.PopupAnimationType = AnimationType.None;
+		settings.HeaderText = "Add samples by Barcode's";
+		settings.Modal = true;
+		settings.AutoUpdatePosition = true;
+		settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+		settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+		settings.SetContent(() =>
+		{
+			using (Html.BeginForm("AddSamplesByBarcode", "SamplesFileAttach", FormMethod.Post, new { id = "popupForm", @class = "edit_form" })){
+				//Html.Hidden("ProductID");
+
+				@Html.DevExpress().FormLayout(s => {
+					s.Name = "ModalModeFormLayout";
+					s.RequiredMarkDisplayMode = RequiredMarkMode.None;
+					s.Width = Unit.Percentage(100);
+					s.Height = Unit.Percentage(100);
+
+					s.NestedExtensionWidth = Unit.Percentage(100);
+
+					s.Items.Add(i =>
+					{
+						i.Caption = "Samples barcode's (separated a line break)";
+						i.NestedExtensionType = FormLayoutNestedExtensionItemType.Default;
+					});
+
+					s.Items.Add(i => {
+						i.ShowCaption = DefaultBoolean.False;
+						i.Name = "SamplesBarcodes";
+						i.Caption = "";
+						i.NestedExtensionType = FormLayoutNestedExtensionItemType.Memo;
+						i.NestedExtensionSettings.Height = 70;
+					});
+
+					s.Items.Add(i => {
+						i.ShowCaption = DefaultBoolean.False;
+
+						i.SetNestedContent(() => {
+							Html.DevExpress().Button(
+								buttonSettings => {
+									buttonSettings.Name = "btnUpdate";
+									buttonSettings.ControlStyle.CssClass = "button";
+									buttonSettings.Width = 80;
+									buttonSettings.Text = "OK";
+									buttonSettings.UseSubmitBehavior = true;
+								}
+							).Render();
+							Html.DevExpress().Button(
+								buttonSettings => {
+									buttonSettings.Name = "btnCancel";
+									buttonSettings.ControlStyle.CssClass = "button";
+									buttonSettings.Width = 80;
+									buttonSettings.Text = "Cancel";
+									buttonSettings.ClientSideEvents.Click = "function(s, e){ AddSamplesDialog.Hide(); }";
+									buttonSettings.Style[HtmlTextWriterStyle.MarginLeft] = "5px";
+								}
+							).Render();
+
+						});
+					});
+				}).Render();
+			}
+		});
+
+		settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer(null, '', true); }";
+	}).GetHtml()

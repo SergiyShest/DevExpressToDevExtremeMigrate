@@ -1,0 +1,400 @@
+
+@using DevExpress.Utils
+@using DevExpress.Web
+@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@using Sasha.Lims.Core.Helpers
+
+@using Sasha.Lims.WebUI.Infrastructure.ViewModelHelpers;
+
+@model  Sasha.Lims.Core.BusinessObjects.SampleDraft
+<script src='@Url.Content("~/Scripts/vue.js")'></script>
+<script src="~/Scripts/components/vueErrorAborder.js"></script>
+@*<script src="~/Scripts/components/vueButton.js"></script>*@
+@*<link rel="stylesheet" type="text/css" href="~/Content/vueError.css" />*@
+<script>
+	window.addEventListener("load", init);
+
+	function init() {
+		var close = '@ViewBag.Close';
+		if (close == 'True') {
+			cancelForm();
+		}
+	}
+
+	function cancelForm() {
+		window.parent.postMessage("CloseUrlForm", '*');//send message parent window for  close this form
+	}
+
+	function save() {
+		var form = document.getElementById('form');
+		form.submit();
+	}
+
+</script>
+<style>
+
+	.dx-button {
+		outline: none !important;
+		min-width: 80px
+	}
+
+		.dx-button:disabled {
+			filter: brightness(100%) contrast(50%);
+			cursor: default;
+		}
+
+	.container {
+		overflow: hidden;
+		background-color: #eee;
+		border: unset solid #808080;
+		padding: 5px;
+		margin: 0px;
+		height: 100vh;
+	}
+
+	.wrap {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		height: 100%;
+	}
+
+	.scrollArea {
+		position: relative;
+		overflow: auto; /* Добавляем полосы прокрутки */
+		height: 100%; /*Высота блока */
+		padding: 5px; /* Поля вокруг текста */
+		border: solid 0px gray; /* Параметры рамки */
+		/*background-color: е;*/
+		flex-grow: 1;
+	}
+
+	.item {
+		margin: 2px;
+		padding: 2px; /* Поля вокруг текста */
+		border: 1px gray; /* Параметры рамки */
+		/*//  background-color: #66CCFF;*/
+	}
+
+	.p1 { /* Поля вокруг текста */
+		margin: 2px;
+		padding: 2px;
+	}
+
+	/*	select {
+		margin: 3px;
+		padding: 6px;
+		border: 0;
+		height: fit-content;
+		--outline: none !important
+	}*/
+
+	.message {
+		display: flex;
+		flex-direction: column;
+		border: solid darkgray 1px;
+		margin: 3px;
+	}
+
+	.message-text {
+		border: 0px;
+		text-wrap: normal;
+		background: lightgray;
+		min-height: 30px;
+		height: fit-content;
+	}
+
+	.headerColumn {
+		width: 200px;
+		margin:3px
+	}
+
+	.valueColumn {
+		width: 300px;
+		margin:3px
+	}
+
+	textarea {
+		margin: 1px;
+		width: 99%;
+		border: 0px;
+		outline: none !important;
+	}
+
+	.hided {
+		display: block;
+	}
+
+	.flex-row {
+		display: flex;
+		flex-direction: row
+	}
+
+	.flex-column {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.loader {
+		display: none;
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		/*background-image:url(/Content/icons/loading.gif);*/
+		/*align-content: center;*/
+		background: rgba(104, 104, 155, 0.5);
+	}
+
+	.loader-icon {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+	}
+</style>
+
+<style>
+
+	.tool-tip {
+		position: relative;
+		display: inline-block;
+	}
+
+		.tool-tip .tool-tiptext {
+			visibility: hidden;
+			width: 120px;
+			background-color: #555;
+			color: #fff;
+			text-align: center;
+			border-radius: 6px;
+			padding: 5px 0;
+			position: absolute;
+			z-index: 1;
+			bottom: 125%;
+			left: 50%;
+			margin-left: -60px;
+			opacity: 0;
+			transition: opacity 0.3s;
+		}
+
+			.tool-tip .tool-tiptext::after {
+				content: "";
+				position: absolute;
+				top: 100%;
+				left: 50%;
+				margin-left: -5px;
+				border-width: 5px;
+				border-style: solid;
+				border-color: #555 transparent transparent transparent;
+			}
+
+		.tool-tip:hover .tool-tiptext {
+			visibility: visible;
+			opacity: 1;
+		}
+
+	.error {
+		color: red;
+		border-color: red;
+		border-style: double;
+	}
+</style>
+
+
+@{
+	ViewBag.Title = "New sample";
+	Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+
+<div class="wrap" id="editForm">
+	<div class="flex-row">
+		<div class="headerColumn">Barcode:</div>
+		<input type="text" v-model="Draft.Barcode" class="valueColumn">
+	</div>
+	<div class="flex-row"><div class="headerColumn">Name:</div><input type="text" v-model="Draft.Name" class="valueColumn"></div>
+	<div class="flex-row">
+		<div class="headerColumn">Volume:</div>
+		<error-aborder v-bind:error="Errors.Volume">
+			<input type="number" v-model="Draft.Volume" class="valueColumn">
+		</error-aborder>
+	</div>
+	<div class="flex-row">
+		<div class="headerColumn">Tube type:</div>
+		<select v-model="Draft.TubeTypeId" class="valueColumn">
+			<option selected disabled value="" style="background: lightgray">Select Tube type</option>
+			<option v-for=" type in TubeTypes" :key="type.Id" :value="type.Id">
+				{{type.Name}} ({{type.Value}})
+			</option>
+		</select>
+	</div>
+	<div class="flex-row" style="color:red">{{Errors.GlobalErrors}}</div>
+	<div class="flex-row">
+		<dx-button text="Save"
+				   v-on:click.native="SaveDraft()" @*:disabled=" message.length==0 || selectedCommentType==''"*@></dx-button>
+		<dx-button text="Close" style="float: right;"
+				   v-on:click.native="cancelForm()"></dx-button>
+	</div>
+	<div class="loader" v-bind:style="{display:loadingStyle}  ">
+		<img class="loader-icon" src="~/Content/Images/loading.gif" />
+	</div>
+</div>
+
+<input type="hidden" name="Id" value="@ViewBag.Id" />
+<input type="hidden" name="editMode" value="@ViewBag.EditMode" />
+<script type="text/javascript">
+	Vue.component('dx-button',
+		{
+			props: { text: String },
+			template:
+				'<button class="dxbButton_@DataHelper.Current.UiTheme dxbButtonSys dxbTSys dx-button"  style="-webkit-user-select:none;padding:6px;margin: 3px;">' +
+					'{{text}}' +
+					'</button>'
+		});
+
+
+	var vue = new Vue({
+		el: "#editForm",
+		data: {
+			loadingData: false,
+			TubeTypes: [],
+			VolumeUnits: [],
+			Draft: {},
+			IdDraft: @(ViewBag.rowId??"null"),
+			IsChanged: false,
+			Errors: {
+				Volume: null,
+				GlobalErrors: null,
+				r: 'test'
+			}
+
+		},
+		computed: {
+			//Show or hide loading gif
+			loadingStyle: function() {
+				if (!this.loadingData) {
+					return 'none';
+				}
+				return 'block';
+			}
+		}
+		//,
+		//watch: {
+		//	selectedCommentType: function() {
+		//		localStorage.setItem("selectedCommentType",this.selectedCommentType);
+		//	}
+		//	//,
+		//	//отслеживание любых изменений в массиве comments
+		//	//comments: {
+		//	//	handler: function(after, before) {
+		//	//		var anyEditing = false;
+		//	//		for (var i = 0; i < this.comments.length; i++) {
+		//	//			var changed = (this.comments[i].Comment != this.comments[i].EtalonComment);
+		//	//			var typeChanged = (this.comments[i].CommentTypeName != this.comments[i].EtalonCommentTypeName);
+
+		//	//			this.comments[i].IsChanged = changed || typeChanged;
+		//	//			if (this.comments[i].IsEditing) {
+		//	//				anyEditing = true;
+		//	//			}
+		//	//		}
+		//	//		this.AnyCommentEditing = anyEditing;
+		//	//	},
+		//	//	deep: true
+		//	//}
+		//}
+		,
+		methods: {
+			cancelForm: function (value) {
+				window.parent.postMessage("CloseUrlForm", '*');//send message parent window for  close this form
+			}
+			,
+			visibleStyle: function(value) {
+				if (value) {
+					return 'display:block';
+				}
+				return 'display:none';
+			}
+			,
+			editStyle: function (value) {
+				if (value) {
+					return 'background:white';
+				}
+				return 'background:lightgray';
+			}
+			,
+
+			setEditable: function (comment) {
+				comment.IsEditing = true;
+				this.AnyCommentEditing = true;
+			}
+			,
+           //GetTubeTypes
+			GetTubeTypes: function() {
+				this.fetch(this.SetTubeTypes,"/GetTubeTypes?modelId=@ViewBag.modelId");
+			}
+			,
+			SetTubeTypes: function(val) {
+				this.TubeTypes = val;
+			}
+			,
+			//GetDraft
+			GetDraft: function () {
+				if (this.IdDraft!=null)
+					this.fetch(this.SetDraft, '/GetDraft?id=' + this.IdDraft +'&type=@ViewBag.modelId'+'&editMode=@ViewBag.EditMode');
+			}
+			,
+			SetDraft: function (val) {
+				this.Draft = val;
+
+			}
+			,
+			SaveDraft: function () {
+				var result = this.Result;
+				//var draft = JSON.stringify(this.Draft);
+				this.fetch(result, '/SaveDraftVue?id=' + this.IdDraft + '&type=@ViewBag.modelId' + '&editMode=@ViewBag.EditMode', this.Draft);
+
+			},
+
+			Result: function (res) {
+				this.IsChanged = res.IsChanged;
+				this.Errors = res.Errors;
+	        }
+			,
+			//универсальная функция получения/отправки данных
+			fetch: function (execFunction, pathEnd, data = null) {
+				this.loadingData = true;
+				var fetchRef = execFunction;
+				var path = document.location.href;
+				path = path.substr(0, path.lastIndexOf('/')) + pathEnd;
+				fetch(path,
+						{
+							method: 'POST', // *GET, POST, PUT, DELETE, etc.
+							mode: 'cors', // no-cors, *cors, same-origin
+							body: JSON.stringify(data), //sending data
+							headers: {
+								'Content-Type': 'application/json'
+							}
+						})
+					.then((response) => {
+						if (response)
+						return response.json();
+
+					})
+					.then((retData) => {
+						fetchRef(retData);
+						this.loadingData = false;
+					}).catch(error => {
+						alert("Error while getting server data: "+error);
+						this.loadingData = false;
+					});
+
+			}
+		}
+		,
+		mounted: function () {
+			this.GetTubeTypes();//типы 
+			this.GetDraft();//сообщения
+		}
+	});
+</script>

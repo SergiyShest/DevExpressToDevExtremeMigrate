@@ -1,0 +1,50 @@
+{
+    "Data": [
+        [
+            "10084",
+            "10084"
+        ],
+        [
+            "dddd4",
+            "dddd"
+        ],
+        [
+            "1011",
+            "1011"
+        ],
+        [
+            "AAA",
+            "AAA"
+        ],
+        [
+            "YYYY",
+            "YYYY"
+        ],
+        [
+            "1",
+            "1"
+        ],
+        [
+            "2022-12-12",
+            "2022-12-12"
+        ],
+        [
+            "Shest@rapm.ru",
+            "Shest2@rapm.ru"
+        ],
+        [],
+        []
+    ],
+    "Fields": [
+        "StatusId",
+        "Name",
+        "TubeTypeId",
+        "PatientFirstName",
+        "PatientLastName",
+        "",
+        "PatientDateOfBirth",
+        "PatientEmail",
+        null,
+        null
+    ]
+}

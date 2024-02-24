@@ -1,0 +1,217 @@
+@using System.Web.UI.WebControls
+@using DevExpress.XtraRichEdit.Model
+@using DevExpress.XtraSpreadsheet.DocumentFormats.Xlsb
+@using Sasha.Lims.DataAccess.Entities.Constants
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@using Sasha.Lims.WebUI.Localization
+@using System.Web.Optimization
+@using Sasha.Lims.Core.Helpers
+@model IQueryable<Sasha.Lims.DataAccess.Entities.Entity.vWorkflowRunList>
+
+
+@{
+	ViewBag.Title = Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.RunList));
+	Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+}
+
+@section Head {
+	<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Samples/SamplesGridView.css?v=" + AppVersionHelper.Version)" />
+	<script>var tableId=@((int)TableType.WorkflowRun)</script>
+	<script src="@Url.Content("~/Scripts/Properties/commonGridView.js?v=" + AppVersionHelper.Version)"></script>
+	<script>
+
+		function updateToolbarButtonsState() {
+			var enabled = gridView.GetFocusedRowIndex() >= 0;
+			pageToolbar.GetItemByName("Edit").SetEnabled(enabled);
+			pageToolbar.GetItemByName("btCommentSample").SetEnabled(enabled);
+			pageToolbar.GetItemByName("btAttachedFiles").SetEnabled(enabled);
+			pageToolbar.GetItemByName("EditBOM").SetEnabled(enabled);
+		}
+
+		function onPageToolbarItemClick(s, e) {
+			var id = GetFocusedRowId();
+
+			switch (e.item.name) {
+			case "New":
+					ShowUrlPopup("Add new ", '@Url.Action("AddNew", "WorkflowRunList", new {Area = ""})', 600,300);
+					break;
+			case "Edit":
+					edit(id);
+					break;
+				case "EditProcess":
+					if (!id) return;
+					editProcess(id);
+				break;
+			case "btCommentSample":
+				CommentSelectedRow();
+					break;
+				case "EditBOM":
+					editBOM(id);
+					break;
+			case "btAttachedFiles":
+				AttachedFiles();
+				break;
+			case "btShowColumnChooser":
+				onShowChooserClick(s, e);
+				break;
+
+				default:
+			if (!id) return;
+			var rezRegexp = e.item.name.match(/Set(.*)/);//комманда изменения статуса начиается с Set
+			if (rezRegexp) {
+				changeStatus(id,rezRegexp[1]);
+			}
+			}
+		}
+
+		function getSelectedFieldValuesCallback(values) {
+			gridView.PerformCallback({ customAction: 'Process', customParams: values });
+		}
+
+		function onGridViewBeginCallback(s, e) {
+			//e.customArgs['SelectedRows'] = selectedIds;
+		}
+
+		function onContextMenuItemClick(item, row) {
+			console.log(row.item.name);
+			var id = GetFocusedRowId();
+			if (!id) return;
+			switch (row.item.name) {
+
+
+				case "Edit":
+					 edit(id);
+					break; //
+				case "EditProcess":
+					editProcess(id);
+					break; //edit(id);
+			case "EditBOM":
+					editBOM(id);
+				break;
+			default:
+				var rezRegexp = row.item.name.match(/Set(.*)/);//комманда изменения статуса начиается с Set
+					if (rezRegexp) {
+						changeStatus(id, rezRegexp[1]);
+					}
+			}
+		}
+
+		function changeStatus(id, status) {
+				sendData(resDelegate, "@Url.Action("ChangeRunStatus", "WorkflowRunList", new {Area = ""})?rowId=" + id + "&status=" + status);
+				//В зависимости от ответа сервера Вызывает обновление грида или показ ошибки
+				function resDelegate(error) {
+					if (error != "") {
+						alert("ChangeRunStatus "+  error);
+					} else {
+						gridView.Refresh();
+					}
+				}
+			}
+
+		function editProcess(id) {
+			ShowUrlPopup("", '@Url.Action("RunProcessView", "Run", new {Area = "Workflow"})?rowId=' + id, document.documentElement.clientWidth - 15);
+		}
+
+		function editBOM(id) {
+
+			ShowUrlPopup("Bill of Material RunId =" + id, '@Url.Action("Index", "Bill", new {Area = "BillOfMaterial"})?runId=' + id);
+		}
+
+		function onRowDblClick() {
+			var id = GetFocusedRowId();
+			if (!id) return;
+			edit(id);
+		}
+
+		function edit(id) {
+			ShowUrlPopup("Edit ", '@Url.Action("Edit", "WorkflowRunList", new {Area = ""})?id=' + id, document.documentElement.clientWidth - 15);
+		}
+	</script>
+}
+
+@section PageToolbar {
+	@Html.DevExpress().Menu(menuSettings =>
+{
+	menuSettings.Name = "pageToolbar";
+
+	menuSettings.ItemAutoWidth = false;
+	menuSettings.AllowSelectItem = false;
+	menuSettings.ApplyItemStyleToTemplates = true;
+
+	menuSettings.SettingsAdaptivity.Enabled = true;
+	menuSettings.SettingsAdaptivity.EnableAutoHideRootItems = true;
+	menuSettings.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+	menuSettings.SettingsAdaptivity.CollapseRootItemsToIconsAtWindowInnerWidth = 600;
+
+	menuSettings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+	menuSettings.ControlStyle.SeparatorWidth = System.Web.UI.WebControls.Unit.Pixel(0);
+	menuSettings.ControlStyle.CssClass = "page-toolbar";
+
+	menuSettings.Styles.Item.CssClass = "item";
+	menuSettings.Styles.Item.VerticalAlign = System.Web.UI.WebControls.VerticalAlign.Middle;
+
+	menuSettings.Images.Item.Width = System.Web.UI.WebControls.Unit.Pixel(16);
+	menuSettings.Images.Item.Height = System.Web.UI.WebControls.Unit.Pixel(16);
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Title";
+		item.Text = ViewBag.Title;
+		item.ClientEnabled = false;
+		item.ItemStyle.Font.Bold = true;
+		item.Alignment = MenuItemAlignment.Left;
+		item.ItemStyle.CssClass = "titleMenuItemStyle";
+	});
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "btShowColumnChooser";
+		item.Text = "Columns";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 2;
+		item.Image.Url = "~/Content/Images/table_v2.svg";
+	});
+
+	Html.AddMenuFilesAndComments(menuSettings);
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "New";
+		item.Text = "New";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 2;
+		item.Image.Url = "~/Content/Images/add.svg";
+	});
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Edit";
+		item.Text = "Edit";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 2;
+		item.Image.Url = "~/Content/Images/edit.svg";
+	});
+	SettingHelper.AddChangeStatusToolBarMenuItems(menuSettings, DataHelper.GetAvailableStatuses(TableType.WorkflowRun));
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "EditBOM";
+		item.Text = "Bill of Material";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 1;
+		item.Image.Url = "~/Content/Images/sample-tube.svg";
+	});
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "EditProcess";
+		item.Text = "Process";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 1;
+		item.Image.Url = "~/Content/Images/edit.svg";
+	});
+
+	menuSettings.ClientSideEvents.ItemClick = "onPageToolbarItemClick";
+}).GetHtml()
+
+}
+
+@Html.Partial("_GridViewPartial", Model)
+

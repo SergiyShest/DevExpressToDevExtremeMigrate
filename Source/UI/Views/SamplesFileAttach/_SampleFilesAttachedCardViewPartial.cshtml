@@ -1,0 +1,30 @@
+@using Sasha.Lims.Core.DTO
+
+@model IEnumerable<FileDTO>
+
+<table class="filesTable">
+	<tbody>
+		@*<tr>
+			<td><b>File name</b>:</td>
+			<td>file1</td>
+			<td>90 kB</td>
+			<td>
+				<img src="~/Content/Images/delete.svg" alt="Delete" style="height: 16px; width: 16px;" onclick="alert(1);">
+			</td>
+		</tr>*@
+
+		@foreach (var product in ((IEnumerable<FileDTO>)Model))
+		{
+			<tr id="uploadedFile_@Html.Raw(product.Id)">
+				<td class="col1">
+					<a href="@Url.HttpRouteUrl("DefaultApi", new { controller = "Files", id = product.Id })">@product.Name</a>
+				</td>
+				<td class="col2">-------</td>
+				<td class="col3">
+					<img src="/Content/Images/delete.svg" alt="Delete" style="height: 16px; width: 16px;" onclick="deleteFile($(this).parent().parent(), '@Url.HttpRouteUrl("DefaultApi", new { controller = "Files", id = product.Id })');">
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+

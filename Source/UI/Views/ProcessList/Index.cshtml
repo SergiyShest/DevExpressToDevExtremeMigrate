@@ -1,0 +1,75 @@
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@using Sasha.Lims.WebUI.Controllers
+@using Sasha.Lims.WebUI.Localization
+
+@model int?
+
+@{
+	string processName = ViewBag.Title;
+	string processList = Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.ProcessList));
+	ViewBag.Title = String.IsNullOrWhiteSpace(processName) ? processList  : processName + " - " + processList;
+	Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+}
+
+@section Head {
+	<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Samples/SamplesGridView.css?v=" + AppVersionHelper.Version)" />
+}
+
+@section PageToolbar {
+
+	@Html.DevExpress().Menu(menuSettings =>
+{
+	menuSettings.Name = "pageToolbar";
+
+	menuSettings.ItemAutoWidth = false;
+	menuSettings.AllowSelectItem = false;
+	menuSettings.ApplyItemStyleToTemplates = true;
+
+	menuSettings.SettingsAdaptivity.Enabled = true;
+	menuSettings.SettingsAdaptivity.EnableAutoHideRootItems = true;
+	menuSettings.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+	menuSettings.SettingsAdaptivity.CollapseRootItemsToIconsAtWindowInnerWidth = 600;
+
+	menuSettings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+	menuSettings.ControlStyle.SeparatorWidth = System.Web.UI.WebControls.Unit.Pixel(0);
+	menuSettings.ControlStyle.CssClass = "page-toolbar";
+
+	menuSettings.Styles.Item.CssClass = "item";
+	menuSettings.Styles.Item.VerticalAlign = System.Web.UI.WebControls.VerticalAlign.Middle;
+
+	menuSettings.Images.Item.Width = System.Web.UI.WebControls.Unit.Pixel(16);
+	menuSettings.Images.Item.Height = System.Web.UI.WebControls.Unit.Pixel(16);
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Title";
+		item.Text = ViewBag.Title;
+		item.ClientEnabled = false;
+		item.ItemStyle.Font.Bold = true;
+		item.Alignment = MenuItemAlignment.Left;
+		item.ItemStyle.CssClass = "titleMenuItemStyle";
+	});
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "RunBo";
+		item.Text = Html.GetLocalizedText<UI>(nameof(UI.ButtonRun));
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 1;
+		item.Image.Url = "~/Content/Images/upbar.svg";
+		item.NavigateUrl = Url.Action("Index", "RunList").ToString();
+	});
+}).GetHtml()
+
+	<script type="text/javascript">
+		window.runId = @(((int?)ViewBag.RunId).GetValueOrDefault(0));
+		window.getGridView = function() {
+			return @ProcessListController.GridViewName;
+		}
+	</script>
+}
+
+@using (Html.BeginForm())
+{
+	@Html.Action("GridViewPartial")
+}

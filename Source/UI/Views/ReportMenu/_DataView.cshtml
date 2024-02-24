@@ -1,0 +1,34 @@
+@using System.Web.UI.WebControls
+@Html.DevExpress().DataView(
+	settings =>
+	{
+		settings.Name = "dataView";
+		settings.CallbackRouteValues = new {Controller = "ReportMenu", Action = "ReportListPartial"};
+		settings.SettingsTableLayout.RowsPerPage = 5;
+		settings.SettingsTableLayout.ColumnCount = 3;
+		settings.Layout = DevExpress.Web.Layout.Table;
+		settings.Styles.Item.Height = Unit.Pixel(10);
+		settings.Styles.Item.Spacing = 0;
+
+		settings.Width = Unit.Percentage(100);
+		settings.PagerAlign = PagerAlign.Justify;
+		settings.SetItemTemplateContent(c =>
+		{
+			var item = (KeyValuePair<string, string>) c.DataItem;
+			ViewContext.Writer.Write(
+				Html.DevExpress().HyperLink(s =>
+				{
+					s.Name = "repxlb_" + item.Key;
+					s.Properties.Text = item.Value;
+					s.Properties.Target = "_top";
+					s.NavigateUrl = Url.Action("Viewer", "Report", new {url = item.Key});
+				}).GetHtml()
+				);
+		});
+		settings.PagerSettings.ShowNumericButtons = true;
+		settings.PagerSettings.AllButton.Visible = false;
+		settings.PagerSettings.Summary.Visible = false;
+		settings.PagerSettings.PageSizeItemSettings.Visible = true;
+		settings.PagerSettings.PageSizeItemSettings.ShowAllItem = true;
+	}
+	).Bind(Model).GetHtml()

@@ -1,0 +1,34 @@
+@using System.Web.UI.WebControls
+@Html.DevExpress().Menu(menuSettings =>
+{
+	menuSettings.Name = "pageToolbar";
+
+	menuSettings.ItemAutoWidth = false;
+	menuSettings.AllowSelectItem = false;
+	menuSettings.ApplyItemStyleToTemplates = true;
+
+	menuSettings.SettingsAdaptivity.Enabled = true;
+	menuSettings.SettingsAdaptivity.EnableAutoHideRootItems = true;
+	menuSettings.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+	menuSettings.SettingsAdaptivity.CollapseRootItemsToIconsAtWindowInnerWidth = 600;
+
+	menuSettings.Width = Unit.Percentage(100);
+	menuSettings.ControlStyle.SeparatorWidth = Unit.Pixel(0);
+	menuSettings.ControlStyle.CssClass = "page-toolbar";
+
+	menuSettings.Styles.Item.CssClass = "item";
+	menuSettings.Styles.Item.VerticalAlign = VerticalAlign.Middle;
+
+	menuSettings.Images.Item.Width = Unit.Pixel(16);
+	menuSettings.Images.Item.Height = Unit.Pixel(16);
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Title";
+		item.Text = ViewBag.Title;
+		item.ClientEnabled = false;
+		item.ItemStyle.Font.Bold = true;
+		item.Alignment = MenuItemAlignment.Left;
+		item.ItemStyle.CssClass = "titleMenuItemStyle";
+	});
+}).GetHtml()

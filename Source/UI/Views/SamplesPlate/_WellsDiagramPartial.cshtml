@@ -1,0 +1,79 @@
+
+<script>
+
+	var plateTypeCode = '@ViewBag.plateType'; //'1:4,A:J';
+	var plateData = @Html.Raw(Model);
+
+	//var plateData = [
+	//	{ pos: '', id: 0, value: '' }, { pos: '1:A', id: 1, value: 'text A1' },
+	//	{ pos: '2:A', id: 2, value: 'text A2' }, { pos: '2:A', id: 3, value: 'text A3' },
+	//	{ pos: '4:F', id: 3, value: 'text F4' }
+	//];
+
+	//return Json(mySearchResult); WellDataForJSDiagram
+
+</script>
+<div class="horizontal-center-aligned">
+	<table class="plate-table">
+		<tbody>
+			@*<tr>
+					<td>
+						<div class="cell" title="test">
+							<div class="cell-content">
+								<span>1</span>
+							</div>
+							<div class="cell-info">
+								<div class="cell-pos">
+									<span>P</span>
+								</div>
+								<div class="cell-num">
+									<span>N</span>
+								</div>
+							</div>
+						</div>
+
+					</td>
+					<td>
+						<div class="cell" title="test">
+							<div class="cell-content">
+								<span>1</span>
+							</div>
+							<div class="cell-info">
+								<div class="cell-pos">
+									<span>P</span>
+								</div>
+								<div class="cell-num">
+									<span>N</span>
+								</div>
+							</div>
+						</div>
+
+					</td>
+					<td>
+						<div class="empty-cell" >
+
+						</div>
+					</td>
+					<td>
+						<div class="cell" title="test">
+							<div class="cell-content">
+								<span>1</span>
+							</div>
+							<div class="cell-info">
+								<div class="cell-pos">
+									<span>P</span>
+								</div>
+								<div class="cell-num">
+									<span>N</span>
+								</div>
+							</div>
+						</div>
+
+					</td>
+				</tr>*@
+		</tbody>
+	</table>
+	<table class="plate-table-info">
+		<tbody></tbody>
+	</table>
+</div>

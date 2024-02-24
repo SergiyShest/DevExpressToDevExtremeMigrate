@@ -1,0 +1,84 @@
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@using Sasha.Lims.WebUI.Localization
+
+@{
+	ViewBag.Title = Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.RunList));
+	Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+}
+
+@section Head {
+	<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Samples/SamplesGridView.css?v=" + AppVersionHelper.Version)" />
+	<script type="text/javascript" src="@Url.Content("~/Scripts/RunListGridview.js?v=" + AppVersionHelper.Version)"></script>
+}
+
+@section PageToolbar {
+
+	@Html.DevExpress().Menu(menuSettings =>
+	{
+		menuSettings.Name = "pageToolbar";
+
+		menuSettings.ItemAutoWidth = false;
+		menuSettings.AllowSelectItem = false;
+		menuSettings.ApplyItemStyleToTemplates = true;
+
+		menuSettings.SettingsAdaptivity.Enabled = true;
+		menuSettings.SettingsAdaptivity.EnableAutoHideRootItems = true;
+		menuSettings.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+		menuSettings.SettingsAdaptivity.CollapseRootItemsToIconsAtWindowInnerWidth = 600;
+
+		menuSettings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+		menuSettings.ControlStyle.SeparatorWidth = System.Web.UI.WebControls.Unit.Pixel(0);
+		menuSettings.ControlStyle.CssClass = "page-toolbar";
+
+		menuSettings.Styles.Item.CssClass = "item";
+		menuSettings.Styles.Item.VerticalAlign = System.Web.UI.WebControls.VerticalAlign.Middle;
+
+		menuSettings.Images.Item.Width = System.Web.UI.WebControls.Unit.Pixel(16);
+		menuSettings.Images.Item.Height = System.Web.UI.WebControls.Unit.Pixel(16);
+
+		menuSettings.Items.Add(item =>
+		{
+			item.Name = "Title";
+			item.Text = ViewBag.Title;
+			item.ClientEnabled = false;
+			item.ItemStyle.Font.Bold = true;
+			item.Alignment = MenuItemAlignment.Left;
+			item.ItemStyle.CssClass = "titleMenyItemStyle";
+		});
+
+		menuSettings.Items.Add(item =>
+		{
+			item.Name = "btShowColumnChooser";
+			item.Text = "Show Column Chooser";
+			item.Alignment = MenuItemAlignment.Right;
+			item.AdaptivePriority = 2;
+			item.Image.Url = "~/Content/Images/choosecolumn.svg";
+		});
+
+		menuSettings.Items.Add(item =>
+		{
+			item.Name = "New";
+			item.Text = "New";
+			item.Alignment = MenuItemAlignment.Right;
+			item.AdaptivePriority = 2;
+			item.Image.Url = "~/Content/Images/add.svg";
+		});
+
+		menuSettings.Items.Add(item =>
+		{
+			item.Name = "Process";
+			item.Text = Html.GetLocalizedText<UI>(nameof(UI.ButtonManagement));
+			item.Alignment = MenuItemAlignment.Right;
+			item.AdaptivePriority = 1;
+			item.Image.Url = "~/Content/Images/upbar.svg";
+		});
+
+		menuSettings.ClientSideEvents.ItemClick = "onPageToolbarItemClick";
+	}).GetHtml()
+
+}
+
+@using (Html.BeginForm())
+{
+	@Html.Action("RunListGridViewPartial")
+}

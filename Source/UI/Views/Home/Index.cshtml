@@ -1,0 +1,36 @@
+@using System.Threading
+@using System.Web.Optimization
+@using Sasha.Lims.WebUI.Localization
+@using Sasha.Lims.DataAccess.Entities.Constants
+@{
+	ViewBag.Title = Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.MainTitle));
+}
+
+@section Head {
+	@Html.DevExpress().GetStyleSheets(
+		new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+		new StyleSheet { ExtensionSuite = ExtensionSuite.Editors },
+		new StyleSheet { ExtensionSuite = ExtensionSuite.GridView },
+		new StyleSheet { ExtensionSuite = ExtensionSuite.TreeList }
+		)
+	@Html.DevExpress().GetScripts(
+		new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+		new Script { ExtensionSuite = ExtensionSuite.Editors },
+		new Script { ExtensionSuite = ExtensionSuite.GridView },
+		new Script { ExtensionSuite = ExtensionSuite.TreeList }
+		)
+	<script type="text/javascript" src="@Url.Content("~/Scripts/Script.js?v=1.2")"></script>
+
+	@Styles.Render("~/bundles/samplesApproved")
+	@Scripts.Render("~/scripts/samplesApproved")
+}
+
+
+<img src="~/Content/Images/logos/logo_9.svg" />
+
+
+
+
+
+
+

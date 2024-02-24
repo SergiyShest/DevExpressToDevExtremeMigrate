@@ -1,0 +1,285 @@
+@using System.Drawing
+@using System.Web.UI.WebControls
+@using DevExpress.Utils
+@using DevExpress.Web
+@using DevExpress.Web.ASPxThemes
+@using DevExpress.Web.Mvc.UI
+@using Sasha.Lims.Core.Helpers
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@using Sasha.Lims.WebUI.Localization
+@using Sasha.Lims.DataAccess.Entities.Constants
+@using Sasha.Lims.WebUI.Controllers
+@using ProcessStatus = Sasha.Lims.DataAccess.Entities.Constants.ProcessStatus
+@model Sasha.Lims.Core.BusinessObjects.ProcessBo
+@{
+	ViewBag.Title = Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Samples));
+	Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+
+@section Head {
+	<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Samples/SamplesGridView.css?v=" + AppVersionHelper.Version)"/>
+	<script src="@Url.Content("~/Scripts/Script.js?v=" + AppVersionHelper.Version)"></script>
+	<script>var tableId = @((int) TableType.WorkflowResult)</script>
+	<script src="@Url.Content("~/Scripts/Properties/commonGridView.js?v=" + AppVersionHelper.Version)"></script>
+	<script>
+		window.addEventListener("load", Init);
+
+		function Init() {
+			var headerText = 'Process name:@Model.Name';
+			window.parent.postMessage("SetPopUpHeader=" + headerText, '*'); //send message parent window for  close this form
+			//	AdjustGridSize();
+
+			updateToolbarButtonsState();
+
+		}
+
+		var gridView;
+
+		function updateToolbarButtonsState() {
+			var enabled = gridView.GetFocusedRowIndex() >= 0;
+
+			pageToolbar.GetItemByName("btCommentSample").SetEnabled(enabled);
+			pageToolbar.GetItemByName("btAttachedFiles").SetEnabled(enabled);
+			pageToolbar.GetItemByName("PublishResult").SetEnabled(enabled);
+			if (enabled) {
+				enabled = gridView.GetSelectedRowCount() > 0;
+			}
+			pageToolbar.GetItemByName("RemoveSamples").SetEnabled(enabled);
+		}
+
+		function onPageToolbarItemClick(s, e) {
+
+			switch (e.item.name) {
+			case "AddSamples":
+				AddSamples();
+				break;
+			case "RemoveSamples":
+				RemoveSamples();
+				break;
+			case "btCommentSample":
+				CommentSelectedRow();
+				break;
+				case "PublishResult":
+					PublishResult();
+					break;
+			case "btAttachedFiles":
+				AttachedFiles();
+				break;
+			case "btShowColumnChooser":
+				onShowChooserClick(s, e);
+				break;
+
+			default:
+
+				var rezRegexp = e.item.name.match(/Set(.*)/); //комманда изменения статуса начиается с Set
+				if (rezRegexp) {
+					changeSampleResultStatus(rezRegexp[1]);
+				}
+			}
+		}
+
+		function onContextMenuItemClick(item, row) {
+			var id = GetFocusedRowId();
+			switch (row.item.name) {
+			case "AddSamples":
+				AddSamples();
+				break;
+			case "RemoveSamples":
+				RemoveSamples();
+					break;
+				case "PublishResult":
+					PublishResult();
+					break;
+
+			case "Edit":
+				if (!id) return;
+				edit(id);
+				break;
+			default:
+				var rezRegexp = row.item.name.match(/Set(.*)/); //комманда изменения статуса начиается с Set
+				if (rezRegexp) {
+					changeSampleResultStatus(rezRegexp[1]);
+				}
+			}
+		}
+
+		//Изменение статуса результата
+		function changeSampleResultStatus(status) {
+			gridView.GetSelectedFieldValues("Id", getSelectedFieldValuesCallback);
+
+			function getSelectedFieldValuesCallback(values) {
+				if (values.length === 0) {
+					var id = GetFocusedRowId();
+					if (!id) return;
+					values = [id];
+				}
+				var selectedIds = values.join(',');
+				sendData(resDelegate, "@Url.Action("ChangeSampleResultStatus", "Process", new {Area = "Workflow"})?selectedIds=" + selectedIds + "&status=" + status);
+
+				//В зависимости от ответа сервера Вызывает обновление грида или показ ошибки
+				function resDelegate(error) {
+					if (error != "") {
+						alert("ChangeSampleResultStatus " + error);
+					} else {
+						gridView.Refresh();
+					}
+
+				}
+			}
+		}
+
+		function onGridViewBeginCallback(s, e) {
+			//need as tech function
+		}
+
+		function AddSamples() {
+			var id = @Model.Id;
+			ShowUrlPopup("", '@Url.Action("SelectSamples", "SelectSamples", new {Area = "Workflow"})?ProcessId=' + id);
+		}
+
+		function RemoveSamples() {
+
+			dxConfirm("Do you want to delete selected samples from process?").success(function() {
+				var id = @Model.Id;
+				gridView.GetSelectedFieldValues("SampleId", getSelectedFieldValuesCallback);
+
+				function getSelectedFieldValuesCallback(values) {
+					console.log(values);
+					var selectedIds = values.join(',');
+					sendData(resDelegate, "@Url.Action("RemoveSamples", "Process", new {Area = "Workflow"})?processId=" + id + "&selectedIds=" + selectedIds);
+
+					//В зависимости от ответа сервера Вызывает обновление грида или показ ошибки
+					function resDelegate(error) {
+						if (error != "") {
+							alert(error);
+						} else {
+							gridView.Refresh();
+						}
+					}
+				}
+			});
+		}
+
+		function cancelForm() {
+			window.parent.postMessage("CloseUrlForm", '*'); //send message parent window for  close this form
+		}
+
+		function PublishResult() {
+
+			dxConfirm("Do you want to publish result for selected samples?").success(function() {
+				var id = @Model.Id;
+				gridView.GetSelectedFieldValues("Id", getSelectedFieldValuesCallback);
+
+				function getSelectedFieldValuesCallback(values) {
+					var selectedIds = values.join(',');
+					sendData(resDelegate, "@Url.Action("PublishResult", "Process", new {Area = "Workflow"})?processId=" + id + "&selectedIds=" + selectedIds);
+
+					//В зависимости от ответа сервера Вызывает обновление грида или показ ошибки
+					function resDelegate(error) {
+						if (error != "") {
+							alert(error);
+						} else {
+							gridView.Refresh();
+						}
+					}
+				}
+			});
+		}
+
+
+	</script>
+}
+
+
+@Html.DevExpress().Menu(menuSettings =>
+{
+	menuSettings.Name = "pageToolbar";
+
+	menuSettings.ItemAutoWidth = false;
+	menuSettings.AllowSelectItem = false;
+	menuSettings.ApplyItemStyleToTemplates = true;
+
+	menuSettings.SettingsAdaptivity.Enabled = true;
+	menuSettings.SettingsAdaptivity.EnableAutoHideRootItems = true;
+	menuSettings.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+	menuSettings.SettingsAdaptivity.CollapseRootItemsToIconsAtWindowInnerWidth = 600;
+
+	menuSettings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+	menuSettings.ControlStyle.SeparatorWidth = System.Web.UI.WebControls.Unit.Pixel(0);
+	menuSettings.ControlStyle.CssClass = "page-toolbar";
+
+	menuSettings.Styles.Item.CssClass = "item";
+	menuSettings.Styles.Item.VerticalAlign = System.Web.UI.WebControls.VerticalAlign.Middle;
+
+	menuSettings.Images.Item.Width = System.Web.UI.WebControls.Unit.Pixel(16);
+	menuSettings.Images.Item.Height = System.Web.UI.WebControls.Unit.Pixel(16);
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Title";
+		item.Text = ViewBag.Title;
+		item.ClientEnabled = false;
+		item.ItemStyle.Font.Bold = true;
+		item.Alignment = MenuItemAlignment.Left;
+		item.ItemStyle.CssClass = "titleMenuItemStyle";
+	});
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "btShowColumnChooser";
+		item.Text = "Columns";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 2;
+		item.Image.Url = "~/Content/Images/table_v2.svg";
+	});
+
+	Html.AddMenuFilesAndComments(menuSettings);
+
+	SettingHelper.AddChangeStatusToolBarMenuItems(menuSettings, DataHelper.GetAvailableStatuses(TableType.WorkflowResult));
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "PublishResult";
+		item.Text = "Publish Result";//Html.GetLocalizedText<UI>(nameof(UI.ButtonEdit));
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 1;
+		item.Image.Url = "~/Content/Images/export.svg";
+	});
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "AddSamples";
+		item.Text = "Add samples";//Html.GetLocalizedText<UI>(nameof(UI.ButtonEdit));
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 1;
+		item.Image.Url = "~/Content/Images/add.svg";
+	});
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "RemoveSamples";
+		item.Text = "Remove Samples";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 1;
+		item.Image.Url = "~/Content/Images/move_to_box.svg";
+	});
+	menuSettings.ClientSideEvents.ItemClick = "onPageToolbarItemClick";
+}).GetHtml()
+
+@Html.Partial("_ProcessSamplesGridPartial", Model)
+
+<div style="display: block; margin:5px">
+	@if (Model.IsPathEnabled)
+	{
+		<div class="flex-row" style="float: left">
+			<div class="textHeader">Result Path:</div>
+			<div class="border textBody">
+				<input type="text" value="@Model.ResultPath" name="ResultPath">
+			</div>
+		</div>
+	}@*Result Path*@
+	<button onclick="cancelForm()" class="dxbButton_@DataHelper.Current.UiTheme dxbButtonSys dxbTSys dx-button" style="-webkit-user-select:none;padding:6px;margin: 3px; float: right">
+		Close
+	</button>
+</div>
+
+

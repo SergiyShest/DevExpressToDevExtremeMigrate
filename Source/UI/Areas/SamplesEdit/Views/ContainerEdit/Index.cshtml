@@ -1,0 +1,22 @@
+
+@{
+	ViewBag.Title = "Index";
+
+	Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+@section Head
+{
+	@{
+		var mdiIconCssUrl = "https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css";
+	}
+	<link href="@mdiIconCssUrl" rel="stylesheet">
+}
+@section Scripts
+{
+	<script>
+	const ContainerId = '@ViewBag.ContainerId';
+	const ContainerType = '@ViewBag.ContainerType';
+</script>
+	<script src="~/Scripts/vue-apps/container.js"></script>
+}
+<div id="app"></div>

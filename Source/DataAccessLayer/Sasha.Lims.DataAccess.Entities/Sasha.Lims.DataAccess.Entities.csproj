@@ -1,0 +1,590 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\Microsoft.EntityFrameworkCore.Design.3.0.1\build\net461\Microsoft.EntityFrameworkCore.Design.props" Condition="Exists('..\..\packages\Microsoft.EntityFrameworkCore.Design.3.0.1\build\net461\Microsoft.EntityFrameworkCore.Design.props')" />
+  <Import Project="..\..\packages\EntityFramework.6.3.0\build\EntityFramework.props" Condition="Exists('..\..\packages\EntityFramework.6.3.0\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8F1B592F-14DA-46F8-A414-DAAD524D65BC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Sasha.Lims.DataAccess.Entities</RootNamespace>
+    <AssemblyName>Sasha.Lims.DataAccess.Entities</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.v20.2, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Xpo.v20.2, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NLog.4.7.5\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Constants\UserFieldDataType.cs" />
+    <Compile Include="Constants\CommentType.cs" />
+    <Compile Include="EntityInterfaces\IEntity.cs" />
+    <Compile Include="Constants\JournalType.cs" />
+    <Compile Include="Constants\ProcessResult.cs" />
+    <Compile Include="Constants\PropsType.cs" />
+    <Compile Include="Constants\ReagentOperations.cs" />
+    <Compile Include="Constants\SampleModel.cs" />
+    <Compile Include="Constants\SampleStatus.cs" />
+    <Compile Include="Constants\TableType.cs" />
+    <Compile Include="EntityInterfaces\Sample.cs" />
+    <Compile Include="Entity\AspNetRole.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\AspNetUser.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\AspNetUserClaim.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\AspNetUserLogin.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\AspNetUserRole.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\a_comment.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\a_file.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\a_prop.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\a_tableLink.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\a_userAddData.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\a_userData.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\a_userField.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\a_userFieldList.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\a_userLayout.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\c_client.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\c_doctor.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\c_patient.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\C__EFMigrationsHistory.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\C__MigrationHistory.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\C__MigrationHistory1.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\EMLabModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EMLabModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\EMLabModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\EMLabModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EMLabModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\h_item.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\InsertAliquote_Result.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\InsertBox1_Result.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\InsertBox_Result.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\InsertPlate1_Result.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\InsertPlate_Result.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\mb_data.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\mb_report.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\mb_reportField.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\mb_taxonomy.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Resource.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\r_reagent.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\r_reagentLedger.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\r_reagentType.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\r_reagentTypeLink.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\srv_request.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\s_clones.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\s_custodyLog.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\s_jourLine.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\s_sample.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\testUI.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\User.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vBillOfMaterial.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vBioinformaticsRunList.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vClientDoctor.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vClientDoctorPatient.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vContaiter.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vContaiterDraft.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vCustodyLog.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vCustomData.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vDelIndexOptimize.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vDoctor.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vHospital.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vJourLine.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vJourLineFile.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vPatient.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vProcessResult.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vProperty.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vPropLocation.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vQuestionnaire.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vReagent.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vReagentLog.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vReagentType.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vRecomendateIndex.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vSampleFile.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vSampleLocation.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vSamplesBook.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vSamplesBookInProcess.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vWfWork.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\vWorkflowRunList.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\wf_bom.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\wf_bom_queue.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\wf_process.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\wf_result.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\wf_run.cs">
+      <DependentUpon>EMLabModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="UpdateScripts\20220729_GeneratingSamplesByBarcodeAnalysis.sql" />
+    <Content Include="UpdateScripts\20220721_changeBOM.sql" />
+    <Content Include="UpdateScripts\20220716_AddStorageMenu.sql" />
+    <Content Include="UpdateScripts\20220607_props_for_reagents.sql" />
+    <Content Include="UpdateScripts\20201122\20220201_VSamplesBook.sql" />
+    <Content Include="UpdateScripts\20220502_DraftApplayEdit.sql" />
+    <Content Include="UpdateScripts\20220502_SaveSamples.sql" />
+    <Content Include="UpdateScripts\20220502_changes.sql" />
+    <Content Include="UpdateScripts\20220410_AddContextMenuSettings.sql" />
+    <Content Include="UpdateScripts\20220515_Reagents.sql" />
+    <Content Include="UpdateScripts\20220424_Changes.sql" />
+    <Content Include="UpdateScripts\20220318_changes.sql" />
+    <Content Include="UpdateScripts\20220212_AddLocationMenu.sql" />
+    <Content Include="UpdateScripts\20220201_VSamplesBookAndVJourline.sql" />
+    <Content Include="UpdateScripts\20230121_TestUI.sql" />
+    <Content Include="UpdateScripts\20221218_SaveSamplesLog.sql" />
+    <Content Include="UpdateScripts\20221218_SaveSamples.sql" />
+    <Content Include="UpdateScripts\20221218_DraftApplayEdit.sql" />
+    <Content Include="UpdateScripts\20221218_improvements.sql" />
+    <Content Include="UpdateScripts\20221119_helpSystem.sql" />
+    <Content Include="UpdateScripts\20221105_Procedures.sql" />
+    <Content Include="UpdateScripts\20221003_types.sql" />
+    <Content Include="UpdateScripts\old\20211228_AddPointToWfResult.sql" />
+    <Content Include="UpdateScripts\old\20211206_Updates.sql" />
+    <Content Include="UpdateScripts\old\20211111_AlterUserDataColumns.sql" />
+    <Content Include="UpdateScripts\old\20211106_AddUserDataColumns.sql" />
+    <Content Include="UpdateScripts\old\20211010_AddAdminMenu.sql" />
+    <Content Include="UpdateScripts\old\20211007__1_UpdateTypes.sql" />
+    <Content Include="UpdateScripts\old\20211007__2_UpdateProcedures.sql" />
+    <Content Include="UpdateScripts\old\20211005_UserFieldsSamples.sql" />
+    <Content Include="UpdateScripts\old\20210916_UserFields.sql" />
+    <Content Include="UpdateScripts\old\20211224_Kits.sql" />
+    <Content Include="UpdateScripts\20220905_Questionnarie.sql" />
+    <Content Include="UpdateScripts\20220920_BillOfMaterial.sql" />
+    <Content Include="UpdateScripts\20220811_changes.sql" />
+    <Content Include="UpdateScripts\20220730_peregrine_barcodes.sql" />
+    <Content Include="UpdateScripts\old\20210910_refactoring_s_clones.sql" />
+    <Content Include="UpdateScripts\old\20210906_ChangeSettings.sql" />
+    <Content Include="UpdateScripts\old\20210822_Doctor.sql" />
+    <Content Include="UpdateScripts\20210819_Hospital.sql" />
+    <Content Include="UpdateScripts\old\20210810_vPatient.sql" />
+    <Content Include="UpdateScripts\20210722_LimsTasks\SaveSamples.sql" />
+    <Content Include="UpdateScripts\20210722_LimsTasks\UpdateBarcodes.sql" />
+    <Content Include="UpdateScripts\20210722_LimsTasks\DraftApplayEdit.sql" />
+    <Content Include="UpdateScripts\20210722_LimsTasks\20210722_LimsTasks.sql" />
+    <Content Include="UpdateScripts\20210226\1_Create_wf_result_Type.sql" />
+    <Content Include="UpdateScripts\20210226\7_Create_PROCEDURE_wfResult.sql" />
+    <Content Include="UpdateScripts\20210226\vReagent.sql" />
+    <Content Include="UpdateScripts\old\20210707_InsertSampleEditSettingsItem.sql" />
+    <Content Include="UpdateScripts\old\20210716_RepairErrors.sql" />
+    <Content Include="UpdateScripts\old\20210709_UpdateSamplesBookView.sql" />
+    <Content Include="UpdateScripts\old\20210817_Properties.sql" />
+    <Content Include="UpdateScripts\old\20210815_RenameCancerClones.sql" />
+    <Content Include="UpdateScripts\old\20210829_CustodyLog.sql" />
+    <Content Include="UpdateScripts\old\20210831_ApplayEdit  added Log.sql" />
+    <Content Include="UpdateScripts\old\20210831_SaveSamples  added Log.sql" />
+    <Content Include="UpdateScripts\old\20210922_UpdBioinformatics.sql" />
+    <Content Include="UpdateScripts\old\20210819_Hospital.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <EntityDeploy Include="Entity\EMLabModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>EMLabModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Entity\EMLabModel.edmx.diagram">
+      <DependentUpon>EMLabModel.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Entity\EMLabModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EMLabModel.edmx</DependentUpon>
+      <LastGenOutput>EMLabModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Entity\EMLabModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EMLabModel.edmx</DependentUpon>
+      <LastGenOutput>EMLabModel.cs</LastGenOutput>
+    </Content>
+    <Content Include="UpdateScripts\20210209\0_DeleteUnused.sql" />
+    <Content Include="UpdateScripts\20210209\1_addColumnJourLine.sql" />
+    <Content Include="UpdateScripts\old\20201227_Alter_vSamplesBook.sql" />
+    <Content Include="UpdateScripts\20201230\8_Add_vContinerDraft.sql" />
+    <Content Include="UpdateScripts\old\20201111_CorrectBardoces.sql" />
+    <Content Include="UpdateScripts\old\20201108_CreateBardoces.sql" />
+    <Content Include="UpdateScripts\20201122\addDiscriminator.sql" />
+    <Content Include="UpdateScripts\20201122\CreateViewConteiner.sql" />
+    <Content Include="UpdateScripts\20201122\CreateViewSample.sql" />
+    <Content Include="UpdateScripts\20201122\DeleteSample.sql" />
+    <Content Include="UpdateScripts\20201122\InsertAliquote.sql" />
+    <Content Include="UpdateScripts\20201122\insertBox.sql" />
+    <Content Include="UpdateScripts\20201122\InsertPlate.sql" />
+    <Content Include="UpdateScripts\20201122\InsertSample.sql" />
+    <Content Include="UpdateScripts\20201122\UpdateAliquote.sql" />
+    <Content Include="UpdateScripts\20201122\UpdateBox.sql" />
+    <Content Include="UpdateScripts\20201122\UpdatePlate.sql" />
+    <Content Include="UpdateScripts\20201122\UpdateSample.sql" />
+    <Content Include="UpdateScripts\20201230\3_Create_procedure_ChangeStatus.sql" />
+    <Content Include="UpdateScripts\20201230\4_Create_procedure_DraftApplayEdit.sql" />
+    <Content Include="UpdateScripts\20201230\5_Create_vContiner.sql" />
+    <Content Include="UpdateScripts\20201230\2_Create_function_GetAliqouteBarcode.sql" />
+    <Content Include="UpdateScripts\20201230\1_Create_TYPES_.sql" />
+    <Content Include="UpdateScripts\20201230\6_Create_PROCEDURE_SaveJourLines.sql" />
+    <Content Include="UpdateScripts\20201230\7_Create_PROCEDURE_SaveSamples.sql" />
+    <Content Include="UpdateScripts\20210209\2_Create_TYPES_.sql" />
+    <Content Include="UpdateScripts\20210209\3_alter_PROCEDURE_SaveJourLines.sql" />
+    <Content Include="UpdateScripts\20210209\4_Create_procedure_DraftApplayEdit.sql" />
+    <Content Include="UpdateScripts\old\20210710_Move_Clones_to_root_node.sql" />
+    <Content Include="UpdateScripts\old\20210614_InsertAdvansedMenuItem.sql" />
+    <Content Include="UpdateScripts\old\20210530_ImprovementProperties.sql" />
+    <Content Include="UpdateScripts\old\20210526_UpdateLicensing.sql" />
+    <Content Include="UpdateScripts\old\20210521_Menu.sql" />
+    <Content Include="UpdateScripts\old\20210516_journal_add_flags.sql" />
+    <Content Include="UpdateScripts\old\20210514_Licensing.sql" />
+    <Content Include="UpdateScripts\old\20210414_Create_Clones.sql" />
+    <Content Include="UpdateScripts\old\20210322_Create_Sended.sql" />
+    <Content Include="UpdateScripts\old\20210307_AddFilesCounf.sql" />
+    <Content Include="UpdateScripts\old\20210301_Create_WF_BOM.sql" />
+    <Content Include="UpdateScripts\old\20210226_Alter_vSamplesBook.sql" />
+    <Content Include="UpdateScripts\old\20190704_add_aspNetUserId.sql" />
+    <Content Include="UpdateScripts\old\20190716_recreate_afile_table.sql" />
+    <Content Include="UpdateScripts\old\20190723_add_path field.sql" />
+    <Content Include="UpdateScripts\old\20190819_recreate_s_custodyLog_table.sql" />
+    <Content Include="UpdateScripts\old\20190826_add_vClientDoctorPatient.sql" />
+    <Content Include="UpdateScripts\old\20190827_add_jourType_props.sql" />
+    <Content Include="UpdateScripts\old\20190910_add_vClientDoctor.sql" />
+    <Content Include="UpdateScripts\old\20190924_create_vJourLineFile_view.sql" />
+    <Content Include="UpdateScripts\old\20190924_create_vSampleFile_view.sql" />
+    <Content Include="UpdateScripts\old\20190924_update_afile_table.sql" />
+    <Content Include="UpdateScripts\old\20191003_add_CreateDate_ModDate_fields.sql" />
+    <Content Include="UpdateScripts\old\20191025_add_sample_data_pacient.sql" />
+    <Content Include="UpdateScripts\old\20191029_add_dataofbird.sql" />
+    <Content Include="UpdateScripts\old\20191029_add_vPropLocation.sql" />
+    <Content Include="UpdateScripts\old\20191025_add_vCustodyLog.sql" />
+    <Content Include="UpdateScripts\old\20191025_add_vLocation.sql" />
+    <Content Include="UpdateScripts\old\20201008_add_TCR_workflow.sql" />
+    <Content Include="UpdateScripts\old\20200915_add_metagenomics_extra_parameters.sql" />
+    <Content Include="UpdateScripts\old\20201106_CreateIndexesForView_JourLine.sql" />
+    <Content Include="UpdateScripts\old\20201106_alterView_JourLine .sql" />
+    <Content Include="UpdateScripts\old\20201009_Create_JourLine.sql" />
+    <Content Include="UpdateScripts\old\20201009_Create_ PropertyTheme.sql" />
+    <Content Include="UpdateScripts\old\20201005_Create_vProcessResult.sql" />
+    <Content Include="UpdateScripts\old\20200927_changesForTask281.sql" />
+    <Content Include="UpdateScripts\old\20200926_Replace_vSamplesBook .sql" />
+    <Content Include="UpdateScripts\old\20200912_Create_vWfWork.sql" />
+    <Content Include="UpdateScripts\old\20200912_Insert_prop.sql" />
+    <Content Include="UpdateScripts\old\20200912_Create_vWorkflowRunList.sql" />
+    <Content Include="UpdateScripts\old\20200903_update_resources.sql" />
+    <Content Include="UpdateScripts\old\20200831_Create_vSamplesBook.sql" />
+    <Content Include="UpdateScripts\old\20200830_add_props_for_file_managment_system.sql" />
+    <Content Include="UpdateScripts\old\20200828_update_resources.sql" />
+    <Content Include="UpdateScripts\old\20200820_update_resources.sql" />
+    <Content Include="UpdateScripts\old\20191030_update_resources.sql" />
+    <Content Include="UpdateScripts\old\20191031_add_types.sql" />
+    <Content Include="UpdateScripts\old\20191110_change_vCustodyLog.sql">
+      <SubType>Component</SubType>
+    </Content>
+    <Content Include="UpdateScripts\old\20191105_change_vCustodyLog.sql">
+      <SubType>Component</SubType>
+    </Content>
+    <Content Include="UpdateScripts\old\20191106_add_workflow_statuses.sql" />
+    <Content Include="UpdateScripts\old\20191111_add_new_tables.sql" />
+    <Content Include="UpdateScripts\old\20191112_add_prop_id_index.sql" />
+    <Content Include="UpdateScripts\old\20191112_update_resources.sql" />
+    <Content Include="UpdateScripts\old\20191114_update_db.sql" />
+    <Content Include="UpdateScripts\old\20191119_del_samples_fields.sql" />
+    <Content Include="UpdateScripts\old\20191130_add_samples_parentId.sql" />
+    <Content Include="UpdateScripts\old\20191130_add_user_Id.sql" />
+    <Content Include="UpdateScripts\old\20191130_update_resources.sql" />
+    <Content Include="UpdateScripts\old\20191204_add process_and_run_data.sql" />
+    <Content Include="UpdateScripts\old\20191209_AddAliquotingType.sql" />
+    <Content Include="UpdateScripts\old\20191212_AddBatch_data.sql" />
+    <Content Include="UpdateScripts\old\20191218_update_resources.sql" />
+    <Content Include="UpdateScripts\old\20191212_update_resources.sql" />
+    <Content Include="UpdateScripts\old\20191224_update_samples_model_id.sql" />
+    <Content Include="UpdateScripts\old\20200113_add_sample_tube_box_type_id.sql" />
+    <Content Include="UpdateScripts\old\20200121_add_model_id_to_journals.sql" />
+    <Content Include="UpdateScripts\old\20200410_resources_for_reagents.sql" />
+    <Content Include="UpdateScripts\old\20200417_update_resources.sql" />
+    <Content Include="UpdateScripts\old\20200410_update_resources.sql" />
+    <Content Include="UpdateScripts\old\20200324_update_resources.sql" />
+    <Content Include="UpdateScripts\old\20200121_update_resources.sql" />
+    <Content Include="UpdateScripts\old\20200127_add_makeAliquot_to_journals.sql" />
+    <Content Include="UpdateScripts\old\20200403_create_reagents.sql" />
+    <Content Include="UpdateScripts\old\20200411_resources_for_reagents.sql" />
+    <Content Include="UpdateScripts\old\20200415_props_for_reagents.sql" />
+    <Content Include="UpdateScripts\old\20200415_reagents_structure_update.sql" />
+    <Content Include="UpdateScripts\old\20200415_resources_for_reagents.sql" />
+    <Content Include="UpdateScripts\old\20200420_resources_refactor.sql" />
+    <Content Include="UpdateScripts\old\20200420_tables_for_reagents.sql" />
+    <Content Include="UpdateScripts\old\20200420_add_wf_result.sql" />
+    <Content Include="UpdateScripts\old\20200421_correct_wf_result.sql" />
+    <Content Include="UpdateScripts\old\20200723_prop_custom_report_list.sql" />
+    <Content Include="UpdateScripts\old\20200812_add_props_for_comments.sql" />
+    <Content Include="UpdateScripts\old\20200802_z_add_metagenomics_report_to_list.sql" />
+    <Content Include="UpdateScripts\old\20200809_add_metagenomics_extra_parameters.sql" />
+    <Content Include="UpdateScripts\old\20200422_add_prop_wf_process_result.sql" />
+    <Content Include="UpdateScripts\old\20200423_more_resources_for_ui.sql" />
+    <Content Include="UpdateScripts\old\20200423_resources_for_userfields.sql" />
+    <Content Include="UpdateScripts\old\20200423_tables_for_userFields.sql" />
+    <Content Include="UpdateScripts\old\20200515_add_test_row_for_wf_result.sql" />
+    <Content Include="UpdateScripts\old\20200517_resources_process_result.sql" />
+    <Content Include="UpdateScripts\old\20200519_user_fields_everywhere.sql" />
+    <Content Include="UpdateScripts\old\20200526_fix_userFields.sql" />
+    <Content Include="UpdateScripts\old\20200601_new_aliquot_barcodes.sql" />
+    <Content Include="UpdateScripts\old\20200619_missing_resource.sql" />
+    <Content Include="UpdateScripts\old\20200802_extend_name_field.sql" />
+    <Content Include="UpdateScripts\old\20200907_add_metagenomics_subreports.sql" />
+    <Content Include="UpdateScripts\old\20200901_CreateIndexForSample.sql" />
+    <Content Include="UpdateScripts\old\20201014_modify_metagenomics_reports.sql" />
+    <Content Include="UpdateScripts\old\20201010_plate_export.sql" />
+    <Content Include="UpdateScripts\old\20201014_UpdBioinformatics.sql" />
+    <Content Include="UpdateScripts\old\20201022_alter_vProcessResult.sql" />
+    <Content Include="UpdateScripts\old\20201016_alter_vProcessResult.sql" />
+    <Content Include="UpdateScripts\old\20201021_TCR_Report.sql" />
+    <Content Include="UpdateScripts\old\20201024_Optimized_vProcessResult.sql" />
+    <Content Include="UpdateScripts\old\20201024_vLocation.sql" />
+    <Content Include="UpdateScripts\old\20201030_Add_Properties.sql" />
+    <Content Include="UpdateScripts\old\20201029_vSampleBook.sql" />
+    <Content Include="UpdateScripts\old\20201029_vProcessResult.sql" />
+    <Content Include="UpdateScripts\old\20201024_vProcessResult.sql" />
+    <Content Include="UpdateScripts\old\20201024_vSamplesBook.sql" />
+    <Content Include="UpdateScripts\old\20201027_alter_GetParentsPropCodes.sql" />
+    <Content Include="UpdateScripts\old\20201028_GetAspNetUsersName.sql" />
+    <Content Include="UpdateScripts\old\20201028_vProcessResult.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\EntityFramework.6.3.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\EntityFramework.6.3.0\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\EntityFramework.6.3.0\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.EntityFrameworkCore.Design.3.0.1\build\net461\Microsoft.EntityFrameworkCore.Design.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.EntityFrameworkCore.Design.3.0.1\build\net461\Microsoft.EntityFrameworkCore.Design.props'))" />
+  </Target>
+  <Import Project="..\..\packages\EntityFramework.6.3.0\build\EntityFramework.targets" Condition="Exists('..\..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" />
+</Project>

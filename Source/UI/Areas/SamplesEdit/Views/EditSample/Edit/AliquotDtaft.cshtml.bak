@@ -1,0 +1,220 @@
+@using System.Web.UI.WebControls
+@using ChoETL
+@using DevExpress.Utils
+@using DevExpress.Web
+@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@using Sasha.Lims.DataAccess.Entities.Constants
+@using Sasha.Lims.WebUI.Areas.SamplesEdit.Controllers
+@using Sasha.Lims.WebUI.Controllers;
+@using Sasha.Lims.WebUI.Infrastructure.ViewModelHelpers;
+
+@model  Sasha.Lims.Core.BusinessObjects.AliquoteDraft
+<script>
+	window.addEventListener("load", init);
+	function init() {
+		var close = '@ViewBag.Close';
+		if (close == 'True') {
+			cancelForm();
+		}
+	}
+
+	function cancelForm() {
+		window.parent.postMessage("CloseUrlForm", '*'); //send message parent window for  close this form
+	}
+
+	function save() {
+		var form = document.getElementById('form');
+		form.submit();
+	}
+
+	function GenerateBarcode() {
+
+		var model = '@SampleModel.Sample';
+
+			sendData(setBarcodeDelegate, "@Url.Action("GetBarcode", "Samples", new {Area = ""})?hospitalId=" + 0 + "&model=" + model );
+			function setBarcodeDelegate(barcode) {
+				Barcode.SetValue(barcode);
+			}
+
+	//универсальная функция отправки получения данных
+	function sendData(execFunction, path, data = null) {
+		LoadingPanel.Show();
+		this.loadingData = true;
+		var execFunctionRef = execFunction;
+
+		fetch(path,
+				{
+					method: 'POST', // *GET, POST, PUT, DELETE, etc.
+					mode: 'cors', // no-cors, *cors, same-origin
+					body: JSON.stringify(data), //sending data
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				})
+			.then((response) => {
+				return response.json();
+			})
+			.then((retData) => {
+				execFunctionRef(retData);
+				LoadingPanel.Hide();
+			}).catch(error => {
+				alert("Error while getting server data: " + error);
+				LoadingPanel.Hide();
+			});
+
+	}
+
+}
+
+
+</script>
+
+
+<form id="form" method="post" action="@Url.Action("SaveAliquoteDraft","EditSample")?editMode=@ViewBag.EditMode">
+	<input type="text" name="Id" id="Id" value="@Model.Id"/>
+	@{
+		ViewBag.Title = "New sample";
+		Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+	}
+
+
+	@Html.DevExpress().FormLayout(settings =>
+{
+	settings.Name = "FormEditSample";
+
+	settings.SettingsItems.ShowCaption = DefaultBoolean.True;
+	settings.SettingsItemCaptions.Location = LayoutItemCaptionLocation.Left;
+	settings.Items.AddGroupItem(group =>
+	{
+		group.GroupBoxDecoration = GroupBoxDecoration.None;
+		group.ColCount = 2;
+		//group.Items.Add(m => m.Id);
+		group.Items.Add(m => m.Barcode);
+		group.Items.Add(m => m.Name);
+		group.Items.Add(m => m.Barcode, i =>
+		{
+			i.Caption = "";
+			i.NestedExtension().Button(s =>
+			{
+				s.Name = "BarcodeBtn";
+				s.Text = "Generate barcode";
+				s.ClientSideEvents.Click = "function(){ GenerateBarcode();}";
+			});
+
+		});
+		group.Items.Add(m => m.CollectedDate);
+		group.Items.Add(m => m.SampleTypeId, item =>
+		{
+			item.ValidateFor("SampleTypeId");
+			item.Caption = "Sample Type";
+			item.NestedExtension().ComboBox(cb =>
+			{
+				cb.Properties.TextField = "Value";
+				cb.Properties.ValueField = "Key";
+				cb.Properties.DropDownStyle = DropDownStyle.DropDownList;
+				cb.Properties.NullText = "[Null]";
+				cb.Properties.ValueType = typeof(int);
+				cb.Properties.DataSource = PropertiesController.PropertiesReader.GetProperties((int)PropsType.SampleTypes);
+			});
+		});
+		//group.Items.Add(m => m.SampleStatusId, item =>
+		//{
+		//	item.Caption = "Sample Type";
+		//	item.NestedExtension().ComboBox(cb =>
+		//	{
+		//		cb.Properties.TextField = "Value";
+		//		cb.Properties.ValueField = "Key";
+		//		cb.Properties.DropDownStyle = DropDownStyle.DropDownList;
+		//		cb.Properties.NullText = "[Null]";
+		//		cb.Properties.ValueType = typeof(int);
+		//		cb.Properties.DataSource = PropertiesController.PropertiesReader.GetProperties((int)PropsType.SampleTypes);
+		//	});
+		//});
+
+		//	group.Items.AddGroupItemForVmField(m => m.SampleStatusId);
+		//		group.Items.AddGroupItemForVmField(m => m.SampleWorkflowStatusId);
+
+		//	group.Items.Add(i =>
+		//	{
+		//////
+		//i.Caption = "Location:";
+		////i.FieldName = "LocationId";
+		//i.Name = "EditingLocation";
+
+		//		i.NestedExtension().DropDownEdit(cb =>
+		//		{
+		//			cb.Properties.ClientSideEvents.Init = "onInitTreeViewLocations";
+		//			cb.Properties.ClientSideEvents.DropDown = "onDropDownTreeViewLocations";
+		//			cb.Properties.NullText = "(No Selection)";
+		//			cb.ReadOnly = true;
+		//			cb.SetDropDownWindowTemplateContent(c => Html.RenderAction("LocationsTreeListPartial", new { selectedId = Model?.LocationId }));
+		//		});
+		//	});
+
+		group.Items.Add(m => m.Well);
+		group.Items.Add(m => m.DoctorId, item =>
+		{
+			item.Caption = "Doctors";
+			item.SetNestedContent(() => Html.RenderPartial("~/Views/Doctors/_ComboBoxPartial.cshtml", new ViewDataDictionary(Model?.DoctorId)));
+		});
+
+		group.Items.AddEmptyItem(); // to align patient on new line
+
+		group.Items.Add(m => m.PatientNo, i => i.Caption = "Patient Number");
+		group.Items.Add(m => m.PatientFirstName, i => i.Caption = "Patient First Name");
+		group.Items.Add(m => m.PatientLastName, i => i.Caption = "Patient Last Name");
+		group.Items.Add(m => m.PatientDateOfBirth, i => i.Caption = "Patient Date of Birth:");
+		group.Items.Add(m => m.PatientEmail, i => i.Caption = "Patient Email:");
+		group.Items.Add(m => m.PatientSendEmail, i =>
+		{
+			i.Caption = "Patient Send Email:";
+			i.NestedExtension().CheckBox(s => { });
+		});
+
+	}
+
+	);
+
+	settings.Items.AddGroupItem(group =>
+	{
+		group.ClientVisible = false;
+		group.Items.Add(m => m.LocationId, i => { });
+		group.Items.Add(m => m.PatientId, i => { });
+	});
+
+	settings.Items.AddGroupItem(group =>
+	{
+		group.HorizontalAlign = FormLayoutHorizontalAlign.Right;
+		group.GroupBoxDecoration = GroupBoxDecoration.None;
+		group.ColCount = 2;
+
+		group.Items.Add(i =>
+		{
+			i.HorizontalAlign = FormLayoutHorizontalAlign.Right;
+			i.ShowCaption = DefaultBoolean.False;
+			i.NestedExtensionType = FormLayoutNestedExtensionItemType.Button;
+			var button = (ButtonSettings)i.NestedExtensionSettings;
+			button.Name = Model == null ? "insert" : "update";
+			button.Text = "Save";
+			button.UseSubmitBehavior = false;
+			button.ClientSideEvents.Click = "save";
+		});
+		group.Items.Add(i =>
+		{
+			i.HorizontalAlign = FormLayoutHorizontalAlign.Right;
+			i.ShowCaption = DefaultBoolean.False;
+			i.NestedExtensionType = FormLayoutNestedExtensionItemType.Button;
+			var button = (ButtonSettings)i.NestedExtensionSettings;
+			button.Name = "cancel";
+			button.Text = "Cancel";
+			button.UseSubmitBehavior = false;
+			button.ClientSideEvents.Click = "cancelForm";
+		});
+	});
+}).GetHtml()
+
+	<div style="color:red">@ViewBag.GeneralError</div>
+	<input type="hidden" name="Id" value="@ViewBag.Id" />
+	<input type="hidden" name="editMode" value="@ViewBag.EditMode" />
+</form>

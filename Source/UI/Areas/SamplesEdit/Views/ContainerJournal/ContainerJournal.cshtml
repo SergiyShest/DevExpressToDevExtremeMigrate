@@ -1,0 +1,571 @@
+
+@using System.Web.UI.WebControls
+@using DevExpress.Web
+@using DevExpress.Web.Mvc.UI
+@using Sasha.Lims.DataAccess.Entities.Constants
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@using Sasha.Lims.WebUI.Localization
+
+@model IQueryable<Sasha.Lims.DataAccess.Entities.Entity.vContaiter>
+
+@{
+
+	ViewBag.Title = "Container journal";
+	Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+}
+
+@section Head {
+	<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Samples/SamplesGridView.css?v=" + AppVersionHelper.Version)" />
+	<script>const tableId = @((int) TableType.Sample)</script>
+	<script src="@Url.Content("~/Scripts/Properties/commonGridView.js?v=" + AppVersionHelper.Version)"></script>
+	<script type="text/javascript" src="@Url.Content("~/Scripts/Samples/SamplesBarcodeInput.js?v=" + AppVersionHelper.Version)"></script>
+
+	<script>
+		window.addEventListener("load", init);
+		window.addEventListener("message", receiveMessage, false);
+
+		var GroupMode = false;//режим группового выделения
+		var grMode = localStorage.getItem("GroupMode");
+		if (grMode == 'true') {
+			GroupMode = true;
+		}
+
+		function init() {
+			if (GroupMode) {
+				GroupModeCheckBox.SetChecked(GroupMode);
+			}
+			gridView.Refresh();
+		}
+
+		var SelectedOrFocusedIdsStr = '';
+
+		function OnGroupModeCheckBoxChanged() {
+
+			GroupMode = GroupModeCheckBox.GetValue();
+			localStorage.setItem("GroupMode", GroupMode);
+			gridView.UnselectAllRowsOnPage();
+			gridView.Refresh();
+		}
+
+		function onGridViewSelectionOrFocusChanged() {
+			updateToolbarButtonsState();
+			//так как при любом изменении выделения всегда вызывается эта функция я поместил здесь установку выделенных значений
+		 var selectedIds = GetSelectedOrFocusedRowsId();
+			SelectedOrFocusedIdsStr = SelectedIdsToString(selectedIds);
+
+			function GetSelectedOrFocusedRowsId() {
+				var selectedIds = [];
+				if (GroupMode) {
+					selectedIds = gridView.GetSelectedKeysOnPage();
+
+				} else {
+					var rowIndex = gridView.GetFocusedRowIndex();
+					if (rowIndex > -1) {
+						id = gridView.GetRowKey(rowIndex);
+						selectedIds.push(id);
+					}
+				}
+				return selectedIds;
+			}
+
+		}
+		// перед поднятием контекстного меню  над row Detail
+		function OnDraftGridContextMenu(s, e) {
+
+			var rowIndex = draftDataGrid.GetFocusedRowIndex();
+			if (rowIndex > -1)
+			{
+				if (rowIndex > -1)
+	            {//Если есть содержимое, то его можно показать.
+					setItemEnabled(e,"Wells",true);;
+				} else {
+					setItemEnabled(e,"Wells",false);;
+				}
+
+			} else {
+				setItemEnabled(e,"Wells",false);;
+			}
+		}
+
+		// перед поднятием контекстного меню над основным гридом
+		function OnGridContextMenu(s, e) {
+
+			var hasSelectedOrFocused = HasSelectedOrFocused();
+			//доступность групповых операций если хоть что ни будь выделено
+
+				//setItemEnabled(e,"SetDisposed",hasSelectedOrFocused);
+				//setItemEnabled(e,"SetCheckedIn",hasSelectedOrFocused);;
+				//setItemEnabled(e,"SetCheckedOut",hasSelectedOrFocused);;
+				setItemEnabled(e,"MakeAliquote",hasSelectedOrFocused);
+				setItemEnabled(e,"LocationEdit",hasSelectedOrFocused);
+
+
+			var hasOneSelectedOrFocused = HasOneSelectedOrFocused();
+			setItemEnabled(e,"Edit",hasOneSelectedOrFocused);;
+			setItemEnabled(e, "ShowLog", hasOneSelectedOrFocused);
+			if (hasOneSelectedOrFocused)//одиночные операции
+			{
+					var visibleIndex = getIndex(gridView.cp_Indexes, SelectedOrFocusedIdsStr);
+				//var draftCount = gridView.cp_DraftCount[visibleIndex];
+				//if (draftCount > 0) {//Если есть черновик то эти операции имеют смысл
+				//	setItemEnabled(e,"UndoEdit",true);;
+				//	setItemEnabled(e,"CommitEdit",true);;
+				//} else {
+				//	setItemEnabled(e,"UndoEdit",false);;
+				//	setItemEnabled(e,"CommitEdit",false);;
+				//}
+				var contentCount = gridView.cp_ContentListCount[visibleIndex];
+				if (contentCount > 0) {//Если есть содержимое, то его можно показать.
+					setItemEnabled(e,"Wells",true);;
+				} else {
+					setItemEnabled(e,"Wells",false);;
+				}
+			} else {
+				setItemEnabled(e,"UndoEdit",false);;
+				setItemEnabled(e,"CommitEdit",false);;
+				setItemEnabled(e,"Wells",false);;
+			}
+		}
+
+		//если что то выделено  или сфокусинован  ряд
+		function HasOneSelectedOrFocused() {
+			var hasOneSelectedOrFocused;
+			if (GroupMode) {
+				hasOneSelectedOrFocused = gridView.GetSelectedRowCount() == 1;
+			} else {
+				hasOneSelectedOrFocused = gridView.GetFocusedRowIndex() > -1;
+			}
+			return hasOneSelectedOrFocused;
+		}
+
+		//если выделен или сфокусинован один ряд
+		function HasSelectedOrFocused() {
+			var hasOneSelectedOrFocused;
+			if (GroupMode) {
+				hasOneSelectedOrFocused = gridView.GetSelectedRowCount() > 0;
+			} else {
+				hasOneSelectedOrFocused = gridView.GetFocusedRowIndex() > -1;
+			}
+			return hasOneSelectedOrFocused;
+		}
+
+		function updateToolbarButtonsState() {
+			//реализован подход при котором:
+			//групповые операции возможны как по выделенным рядам или по сфокусированному ряду
+			//одиночные операции возможны если выделен один ряд или по сфокусированному ряду
+			var hasSelectedOrFocused = HasSelectedOrFocused();
+			pageToolbar.GetItemByName("Delete").SetEnabled(hasSelectedOrFocused);
+			pageToolbar.GetItemByName("Print").SetEnabled(hasSelectedOrFocused);
+			pageToolbar.GetItemByName("GroupEdit").SetEnabled(hasSelectedOrFocused);
+
+			var hasOneSelectedOrFocused = HasOneSelectedOrFocused();
+			pageToolbar.GetItemByName("Edit").SetEnabled(hasOneSelectedOrFocused);
+			pageToolbar.GetItemByName("btCommentSample").SetEnabled(hasOneSelectedOrFocused);
+			pageToolbar.GetItemByName("btAttachedFiles").SetEnabled(hasOneSelectedOrFocused);
+		}
+
+		function onPageToolbarItemClick(s, e) {
+			switch (e.item.name) {
+			case "NewBox":
+				newEdit('@SampleModel.Box'); //do
+
+				break;
+			case "NewPlate":
+				newEdit('@SampleModel.Plate'); //do
+				break;
+			case "LocationEdit":
+				LocationEdit();
+				break;
+			case "Edit":
+				edit();
+				break;
+				case "StatusEdit":
+					ChangeSamplesStatusDialog.Show();
+					break;
+			case "btCommentSample":
+					if (SelectedOrFocusedIdsStr) { comment(SelectedOrFocusedIdsStr);}
+				break;
+			case "btAttachedFiles":
+				AttachedFiles();
+				break;
+			case "btShowColumnChooser":
+				onShowChooserClick(s, e);
+				break;
+			case "Print":
+				Print();
+				break;
+			case "Delete":
+				deleteSelectedRecords();
+				break;
+			case "Export":
+				gridView.ExportTo(ASPxClientGridViewExportFormat.Xlsx);
+				break;
+			case "MakeAliquot":
+				MakeAliquot();
+				break;
+			default:
+			}
+		}
+
+		function onContextMenuItemClick(item, row) {
+
+			switch (row.item.name) {
+				case "Edit":
+					edit();
+					break; //edit(id);
+				case "MakeAliquote":
+					gridView.PerformCallback({ customAction: 'makeAliquot', selectedIds: SelectedOrFocusedIdsStr });
+					break;
+				case "CommitEdit":
+					gridView.PerformCallback({ customAction: 'commitEdit', selectedIds: SelectedOrFocusedIdsStr });
+					break;
+				case "UndoEdit":
+					gridView.PerformCallback({ customAction: 'undoEdit', selectedIds: SelectedOrFocusedIdsStr });
+					break;
+				case "Wells":
+					ShowWells();
+					break;
+				case "LocationEdit":
+					LocationEdit();
+					break;
+				case "ShowLog":
+					ShowLog();
+					break;
+				default:
+					var rezRegexp = row.item.name.match(/Set(.*)/); //комманда изменения статуса начиается с Set
+					if (rezRegexp) {
+						changeStatus(rezRegexp[1]);
+					}
+			}
+		}
+
+		function onDraftContextMenuItemClick(item, row) {
+
+			switch (row.item.name) {
+
+				case "Wells":
+					ShowDraftWells();
+					break;
+			}
+		}
+
+		function ShowDraftWells() {
+			var rowIndex = draftDataGrid.GetFocusedRowIndex() - gridView.GetTopVisibleIndex();;
+			if (rowIndex.length == 0) return;
+			var key = draftDataGrid.cp_SampleId[rowIndex];
+			var barcode = draftDataGrid.cp_Barcode[rowIndex];
+			ShowUrlPopup("Container Content ", '@Url.Action("ContainerDraftContentJournal", "ContainerContent", new {Area = "SamplesEdit"})?containerId=' + key + '&barcode='+barcode, document.documentElement.clientWidth - 150);
+
+		};
+
+		function ShowWells() {
+			var rowIndex = gridView.GetFocusedRowIndex()-gridView.GetTopVisibleIndex();
+			if (rowIndex.length == 0) return;
+			var barcode = gridView.cp_Barcode[rowIndex];
+			ShowUrlPopup("Container Content ", '@Url.Action("ContainerContentJournal", "ContainerContent", new {Area = "SamplesEdit"})?containerId=' + SelectedOrFocusedIdsStr+'&barcode='+barcode, document.documentElement.clientWidth - 150);
+
+		};
+
+		function LocationEdit() {
+
+			if (!SelectedOrFocusedIdsStr) return;
+			var firstId;//вне зависимости от режима выделения я хочу получить первый выделенный объект (это влияет только на выбор значения )
+			if (SelectedOrFocusedIdsStr.indexOf(",") == -1) {
+				firstId = SelectedOrFocusedIdsStr;
+			} else {
+				firstId = SelectedOrFocusedIdsStr.substr(0, SelectedOrFocusedIdsStr.indexOf(","));
+			}
+
+			ShowUrlPopup("Select location ", '@Url.Action("Index", "SelectLocation", new {Area = "Location"})?sampleId=' + firstId, document.documentElement.clientWidth - 150);
+		}
+
+		function refreshGrid(event) {
+			if (typeof event.data === 'string' && event.data.indexOf('RefreshGrid') > -1) {
+				gridView.Refresh();
+			}
+		}
+
+		//прием сообщения
+		function receiveMessage(event) {
+
+			receiveMessageLocation(event);
+			refreshGrid(event);
+		}
+
+		//прием сообщения о новом месте  из Popup Location
+		function receiveMessageLocation(event) {
+
+			if (typeof event.data === 'string' && event.data.indexOf('SelectedLocationId=') > -1) {
+				var arr = event.data.split('=');
+				if (arr[1] != '') {
+					var locationId = arr[1];
+					gridView.PerformCallback({
+						editMode: '@ViewBag.EditMode',
+						customAction: 'assignLocation',
+						selectedIds: SelectedOrFocusedIdsStr,
+						newValue: locationId
+					});
+
+				}
+			}
+		}
+
+		function SendReport() {
+			var val = sendReportCheckBox.GetValue();
+			gridView.PerformCallback({ editMode: '@ViewBag.EditMode', customAction: 'sendReport', selectedIds: SelectedOrFocusedIdsStr, newValue: val });
+		}
+
+		function MakeAliquot() {
+
+			dxConfirm("Are you sure to accept correction in samples?")
+				.success(function() {
+					gridView.PerformCallback({ customAction: 'makeAliquot', selectedIds: SelectedOrFocusedIdsStr });
+				});
+		}
+
+		function deleteSelectedRecords() {
+
+			dxConfirm("Are you sure to delete selected samples?")
+				.success(function() {
+
+					gridView.PerformCallback({ customAction: 'delete', selectedIds: SelectedOrFocusedIdsStr });
+				//	setTimeout(gridView.UnselectAllRowsOnPage(), 500);
+				});
+		}
+
+		function Print() {
+
+			ShowUrlPopup("@Html.GetLocalizedCommonText("SampleBookPrintTitle")", '@Url.Action("Book", "Print", new {Area = ""})?ids=' + SelectedOrFocusedIdsStr + '&dontShowMainMenu=true', document.documentElement.clientWidth - 150);
+		}
+
+		function newEdit(type) {
+			ShowUrlPopup("", '@Url.Action("Index", "ContainerEdit", new {Area = "SamplesEdit"})?containerType=' + type, document.documentElement.clientWidth - 150);
+		}
+
+		function edit() {
+			if (!SelectedOrFocusedIdsStr) {
+				alert("select any row please!");
+				return;
+			}
+			ShowUrlPopup("Edit", '@Url.Action("Index", "ContainerEdit", new {Area = "SamplesEdit"})?sampleId=' + SelectedOrFocusedIdsStr, document.documentElement.clientWidth - 150);
+		}
+
+		function onRowDblClick() {
+			edit();
+		}
+
+		function onGridViewBeginCallback(s, e) {
+			console.log('BeginCallback');
+			LoadingPanel.Hide();
+			e.customArgs['groupMode'] = GroupMode;
+		}
+
+		function onGridViewEndCallback(s, e) {
+			LoadingPanel.Hide();
+			updateToolbarButtonsState();
+		}
+
+		function changeStatusFromMenu() {
+			var status = ChangeSamplesStatusCombo.GetValue();
+			changeStatus(status);
+		}
+
+		function changeStatus(status) {
+			gridView.PerformCallback({ customAction: 'changeStatus', selectedIds: SelectedOrFocusedIdsStr, newValue: status });
+		}
+
+		function ShowLog() {
+		var id = GetFocusedRowId();
+
+		ShowUrlPopup("Log for ", '@Url.Action("Index", "CustodyLogJournal", new {Area = "Common"})?sampleId=' + id + '&dontShowMainMenu=true', document.documentElement.clientWidth - 150);
+
+			function GetFocusedRowId() {
+				var rowIndex = gridView.GetFocusedRowIndex();
+				if (rowIndex == -1) {
+					return null;
+				}
+				return gridView.GetRowKey(rowIndex);
+			}
+
+		}
+
+	</script>
+}
+
+
+
+@Html.DevExpress().Menu(menuSettings =>
+{
+	var unit16px = System.Web.UI.WebControls.Unit.Pixel(16);
+
+	menuSettings.Name = "pageToolbar";
+
+	menuSettings.ItemAutoWidth = false;
+	menuSettings.AllowSelectItem = false;
+	menuSettings.ApplyItemStyleToTemplates = true;
+
+	menuSettings.SettingsAdaptivity.Enabled = true;
+	menuSettings.SettingsAdaptivity.EnableAutoHideRootItems = true;
+	menuSettings.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+	menuSettings.SettingsAdaptivity.CollapseRootItemsToIconsAtWindowInnerWidth = 600;
+
+	menuSettings.Width = Unit.Percentage(100);
+	menuSettings.ControlStyle.SeparatorWidth = Unit.Pixel(0);
+	menuSettings.ControlStyle.CssClass = "page-toolbar";
+
+	menuSettings.Styles.Item.CssClass = "item";
+	menuSettings.Styles.Item.VerticalAlign = VerticalAlign.Middle;
+
+	menuSettings.Images.Item.Width = unit16px;
+	menuSettings.Images.Item.Height = unit16px;
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Title";
+		item.Text = ViewBag.Title;
+		item.ClientEnabled = false;
+		item.ItemStyle.Font.Bold = true;
+		item.Alignment = MenuItemAlignment.Left;
+		item.ItemStyle.CssClass = "titleMenuItemStyle";
+	});// Title
+
+	menuSettings.Items.Add(item =>
+	{
+		item.SetTemplateContent(f =>
+		{
+			@Html.DevExpress().CheckBox(c =>
+			{
+				c.Name = "GroupModeCheckBox";
+				c.Text = "Group mode";
+				c.Properties.EnableClientSideAPI = true;
+				c.Properties.ClientSideEvents.CheckedChanged = "OnGroupModeCheckBoxChanged";
+			}).Render();
+		});
+	});// GroupModeCheckBox
+
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "btShowColumnChooser";
+		item.Text = "Columns";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 2;
+		item.Image.Url = "~/Content/Images/table_v2.svg";
+	});// btShowColumnChooser
+
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Print";
+		item.Text = Html.GetLocalizedText<UI>(nameof(UI.ButtonPrint));
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 7;
+		item.Image.Url = "~/Content/Images/print.svg";
+		item.Image.Width = Unit.Pixel(16);
+		item.Image.Height = Unit.Pixel(16);
+	});// Print
+
+	Html.AddMenuFilesAndComments(menuSettings);
+
+
+	menuSettings.Items.Add(subMenu =>
+	{
+		subMenu.Name = "NewBox";
+		subMenu.Text = "New Box";
+		subMenu.Alignment = MenuItemAlignment.Right;
+		subMenu.AdaptivePriority = 2;
+		subMenu.Image.Url = "~/Content/Images/add.svg";
+	});
+	menuSettings.Items.Add(subMenu =>
+	{
+		subMenu.Name = "NewPlate";
+		subMenu.Text = "New Plate";
+		subMenu.Alignment = MenuItemAlignment.Right;
+		subMenu.AdaptivePriority = 2;
+		subMenu.Image.Url = "~/Content/Images/add.svg";
+	});
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "GroupEdit";
+		item.Text = "Group edit";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 6;
+		item.Image.Url = "~/Content/Images/group_edit.svg";
+		item.Items.Add(subMenu =>
+		{
+			subMenu.Name = "StatusEdit";
+			subMenu.Text = "Status";
+			subMenu.Alignment = MenuItemAlignment.Right;
+			subMenu.AdaptivePriority = 6;
+			subMenu.Image.Url = "~/Content/Images/edit.svg";
+			subMenu.Image.Width = unit16px;
+			subMenu.Image.Height = unit16px;
+		});
+		item.Items.Add(subMenu =>
+		{
+			subMenu.Name = "LocationEdit";
+			subMenu.Text = "Location";
+			subMenu.Alignment = MenuItemAlignment.Right;
+			subMenu.AdaptivePriority = 6;
+			subMenu.Image.Url = "~/Content/Images/move.svg";
+			subMenu.Image.Width = unit16px;
+			subMenu.Image.Height = unit16px;
+		});// LocationEdit
+
+		item.Items.Add(subMenu =>
+		{
+			subMenu.Name = "MakeAliquot";
+			subMenu.Text = "Make Aliquot";
+			subMenu.Alignment = MenuItemAlignment.Right;
+			subMenu.AdaptivePriority = 6;
+			subMenu.Image.Url = "~/Content/Images/aliquoting.svg";
+			subMenu.Image.Width = unit16px;
+			subMenu.Image.Height = unit16px;
+		});
+	});
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Edit";
+		item.Text = Html.GetLocalizedText<UI>(nameof(UI.ButtonEdit));
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 3;
+		item.Image.Url = "~/Content/Images/edit.svg";
+	});
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Delete";
+		item.Text = "Delete";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 4;
+		item.Image.Url = "~/Content/Images/delete_v2.svg";
+		item.Image.Width = unit16px;
+		item.Image.Height = unit16px;
+	});
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Export";
+		item.Text = "Export";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 5;
+		item.Image.Url = "~/Content/Images/export.svg";
+	});
+
+
+	menuSettings.ClientSideEvents.ItemClick = "onPageToolbarItemClick";
+
+}).GetHtml()
+
+
+<form>
+	@Html.Partial("_GridViewPartial", Model)
+</form>
+
+@Html.Partial("Blocks\\PopupChangeSamplesStatus")
+@Html.Partial("Blocks\\PopupChangeSamplesSendReport")
+
+
+

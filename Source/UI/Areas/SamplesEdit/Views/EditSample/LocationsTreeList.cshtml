@@ -1,0 +1,64 @@
+@using System.Web.Optimization
+@using DevExpress.Web.Mvc.UI
+@using Sasha.Lims.Core.Helpers
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@{
+	ViewBag.Title = "Select ";
+	Layout = null;
+}
+@{
+
+	@Html.DevExpress().GetStyleSheets(
+		new StyleSheet { ExtensionSuite = ExtensionSuite.Editors },
+		new StyleSheet { ExtensionSuite = ExtensionSuite.TreeList }
+
+		)
+	@Html.DevExpress().GetScripts(
+
+		new Script { ExtensionSuite = ExtensionSuite.Editors },
+		new Script { ExtensionSuite = ExtensionSuite.TreeList }
+		)
+}
+@*<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Samples/SamplesGridView.css?v=" + AppVersionHelper.Version)" />*@
+
+<script>
+
+	const LocationSelectedId = '@ViewBag.LocationSelectedId';
+
+	function onFocusedNodeChangedTreeViewLocations(s, e) {
+		var locationId = s.GetFocusedNodeKey();
+		document.getElementById('LocationId').value = locationId;
+	}
+
+	function onCustomButtonClickTreeViewLocations(s, e) {
+
+		SelectField();
+
+	}
+
+	function SelectField(locationId) {
+
+		window.parent.postMessage("LocationId=" + document.getElementById('LocationId').value , '*'); //send message parent window for  close this form
+		cancelForm();
+	}
+	function cancelForm() {
+		window.parent.postMessage("CloseUrlForm", '*'); //send message parent window for  close this form
+	}
+</script>
+<input type="hidden" id="LocationId" />
+@Html.Action("LocationsTreeListPartial", new { selectedId = ViewBag.LocationSelectedId })
+<div style="display: flex; margin: 5px; flex-direction: row; justify-content: flex-end" >
+	<button name="AddButton"
+	        onclick="SelectField()"
+	        class="dxbButton_@DataHelper.Current.UiTheme dxbButtonSys dxbTSys dx-button"
+	        style="-webkit-user-select:none;padding:6px;margin: 3px; min-width: 80px ">
+		Ok
+	</button>
+	<button onclick="cancelForm()" class="dxbButton_@DataHelper.Current.UiTheme dxbButtonSys dxbTSys dx-button" style="		-webkit-user-select: none;
+		padding: 6px;
+		margin: 3px;
+		min-width: 80px
+">
+		Close
+	</button>
+</div>

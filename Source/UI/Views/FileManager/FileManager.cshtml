@@ -1,0 +1,69 @@
+@using Sasha.Lims.WebUI.Localization
+@{
+	Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+	@Html.DevExpress().GetStyleSheets(
+		new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+		new StyleSheet { ExtensionSuite = ExtensionSuite.Editors }
+
+		)
+	@Html.DevExpress().GetScripts(
+		new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+		new Script { ExtensionSuite = ExtensionSuite.Editors }
+		)
+</head>
+<body>
+<script type="text/javascript">
+	function uploadStarted(s, e) {
+		var fileNames = e.fileNames;
+		var existsFiles = fileManager.GetItems();
+
+		var found = [];
+
+		for (var i = 0; i < existsFiles.length; i++) {
+			var ef = existsFiles[i];
+			for (var j = 0; j < fileNames.length; j++) {
+				if (ef.name.toLowerCase() == fileNames[j].toLowerCase())
+					found.push(ef.name);
+			}
+		}
+		if (found.length > 0) {
+			if (confirm("Overwrite " + found.length + " files?")) {
+				document.getElementById('overwrite').value = true;
+				return;
+			}
+			e.cancel = true;
+		}
+		document.getElementById('overwrite').value = false;
+	}
+</script>
+
+@using (Html.BeginForm())
+{
+	<div style="display: flex;flex-direction: column;
+	                                  justify-content: normal;
+	                                  height: 100%;">
+		@Html.Hidden("overwrite")
+		<div>
+			@Html.Action("FileManagerPartial", "FileManager", new { table = ViewBag.Table, id = ViewBag.Id })
+		</div>
+		<div>
+			<div style="float: right; margin-top: 3px">
+				@Html.DevExpress().Button(button =>
+				{
+					button.Height = 20;
+					button.Name = "ConfirmNo";
+					button.Text = "Close";
+					button.ClientSideEvents.Click = "function(){ window.parent.postMessage('CloseUrlForm', '*'); }";
+				}).GetHtml()
+			</div>
+		</div>
+	</div>
+}
+
+</body>
+</html>
+

@@ -1,0 +1,94 @@
+@model IEnumerable<Sasha.Lims.WebUI.Models.SampleViewModel>
+@using System.Web.Optimization
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@using Sasha.Lims.WebUI.Localization
+@using Sasha.Lims.DataAccess.Entities.Constants
+@using Sasha.Lims.WebUI.Controllers
+
+@{
+	object objEditMode = ViewBag?.EditMode;
+	JournalType journalType = objEditMode is JournalType ? (JournalType)objEditMode : objEditMode != null && Enum.TryParse(objEditMode.ToString(), out journalType) ? journalType : JournalType.Management;
+
+	string getTitleForEditMode(JournalType editMode)
+	{
+		switch (editMode)
+		{
+			case JournalType.Management: return Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Management));
+			case JournalType.Receiving: return Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Reception));
+			case JournalType.MassCheckOut: return Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.CheckOut));
+			case JournalType.MassCheckIn: return Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.CheckIn));
+			case JournalType.MassMove: return Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Move));
+			case JournalType.MassDispose: return Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Dispose));
+			case JournalType.Aliquoting: return Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Aliquoting));
+			case JournalType.Box: return Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Box));
+
+			default: return Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.SampleJournal));
+		}
+	}
+
+	ViewBag.Title = getTitleForEditMode(journalType);
+	Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+	ViewBag.EditMode = journalType;
+}
+
+@section Head {
+	<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Samples/SamplesGridView.css?v=" + AppVersionHelper.Version)" />
+	<script type="text/javascript" src="@Url.Content("~/Scripts/Samples/SamplesGridView.js?v=" + AppVersionHelper.Version)"></script>
+	<script type="text/javascript" src="@Url.Content("~/Scripts/LocationDropdown.js?v=" + AppVersionHelper.Version)"></script>
+	<script type="text/javascript" src="@Url.Content("~/Scripts/Samples/SamplesBarcodeInput.js?v=" + AppVersionHelper.Version)"></script>
+	@Scripts.Render("~/scripts/samplesGroupEditor")
+}
+<script>
+	window.editMode = @((int)journalType);
+	window.exportUrl = '@Url.Action(nameof(SamplesController.Export))';
+
+	window.addEventListener("message", receiveMessage, false);
+	function receiveMessage(event) {
+		if (typeof event.data !== 'string' && !(event.data instanceof String)) return;
+		if (event.data.indexOf('CommentCountChanged') > -1) {
+			var re = /count=(\d+)&rowId=(\d+)/i;
+			var found = event.data.match(re);
+			var contrName = "comment_Count_" + found[2];
+			var controls = ASPxClientControl.GetControlCollection();
+			var control = controls.GetByName(contrName);
+			if (control != null) {
+				control.SetText(found[1]); 
+			}
+		}
+	}
+
+		function CommentSelectedRow() {
+			var visibleIndex = SamplesGridView.GetFocusedRowIndex();
+			if (visibleIndex == -1) return;
+			var key = SamplesGridView.GetRowKey(visibleIndex);
+			comment(key);
+		}
+	function comment(key) {
+		ShowUrlPopup("Comments", '@Url.Action("CommentForm", "Comments")?rowId=' + key+'&tableId=1502' ,900,600 );
+	}
+</script>
+
+
+@section PageToolbar {
+	@Html.Partial("Blocks\\ToolbarSamplesEdit", ViewBag.Title as string)
+}
+
+@switch (journalType)
+{
+	case JournalType.MassCheckIn:@Html.Partial("Blocks\\PanelCheckIn") break;
+	case JournalType.MassMove: @Html.Partial("Blocks\\PanelMove") break;
+	//case JournalType.Box: @Html.Partial("Blocks\\PanelBoxing")					break;
+}
+
+@using (Html.BeginForm())
+{
+	@*@Html.AntiForgeryToken()*@
+	@Html.Action("GridViewPartial")
+}
+
+@Html.Partial("Blocks\\PopupAddSamples")
+@Html.Partial("Blocks\\PopupChangeSamplesStatus")
+@Html.Partial("Blocks\\PopupChangeSamplesLocation")
+@Html.Partial("Blocks\\PopupChangeSamplesBatch")
+@Html.Partial("Blocks\\PopupChangeSamplesAliquot")
+@Html.Partial("Blocks\\PopupChangeSamplesSendReport")

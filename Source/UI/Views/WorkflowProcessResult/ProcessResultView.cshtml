@@ -1,0 +1,216 @@
+@using Sasha.Lims.DataAccess.Entities.Constants
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+
+@model IQueryable<Sasha.Lims.DataAccess.Entities.Entity.vProcessResult>
+
+@{
+	//ViewBag.Title = Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.RunList));
+	ViewBag.Title = "Process Results";
+	Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+}
+
+@section Head {
+	<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Samples/SamplesGridView.css?v=" + AppVersionHelper.Version)"/>
+	<script>var tableId = @((int) TableType.WorkflowResult)</script>
+	<script src="@Url.Content("~/Scripts/Properties/commonGridView.js?v=" + AppVersionHelper.Version)"></script>
+	<script>
+		window.addEventListener("load", init);
+
+		function init() {
+			gridView.Refresh();
+		}
+
+		function updateToolbarButtonsState() {
+			var rowIndex = gridView.GetFocusedRowIndex();
+			var enabled = rowIndex >= 0;
+			var menuReport = pageToolbar.GetItemByName("btShowRepx");
+
+			menuReport.SetEnabled(enabled);
+
+			if (enabled) {
+				gridView.GetRowValues(rowIndex, 'Run;ProcessTypeCode;ProcessStatus', function (values) {
+					var items = menuReport.items; // closure
+					if (items == null) return;
+					for (var i = 0; i < items.length; i++) {
+						var split = items[i].name.split('.');
+						var customParameters = null;
+						if (split.length === 3) {
+							customParameters = split[2].split('$');
+						}
+						items[i].SetEnabled(
+							values != null
+							&& values.length === 3
+							&& split.length === 3
+							&& customParameters != null
+							&& customParameters.length > 0
+							&& 'CALC' === values[1]
+							&& values[2] === 'Completed'
+							&& (split[2] === '0' || split[2] === 'IDS' || contains(values[0], customParameters)));
+					}
+				});
+			}
+			pageToolbar.GetItemByName("btCommentSample").SetEnabled(enabled);
+			pageToolbar.GetItemByName("btAttachedFiles").SetEnabled(enabled);
+		}
+
+		function onPageToolbarItemClick(s, e) {
+			var id = GetFocusedRowId();
+
+			switch (e.item.name) {
+			case "btCommentSample":
+				CommentSelectedRow();
+				break;
+			case "btAttachedFiles":
+				AttachedFiles();
+				break;
+			case "btShowColumnChooser":
+				onShowChooserClick(s, e);
+				break;
+			default:
+				if (!id) return;
+				CustomCommand(id, e.item.name);
+			}
+		}
+
+		function CustomCommand(id, name) {
+			var rezRegexp = name.match(/Set(.*)/); //комманда изменения статуса начиается с Set
+			if (rezRegexp) {
+				changeStatus(id, rezRegexp[1]);
+				return;
+			}
+			var repRegexp = name.match(/Report(.*)/);
+			if (repRegexp) {
+				if (name.indexOf('IDS') > 0) {
+					gridView.GetSelectedFieldValues("Id", openReportWithManyIds(name));
+				} else {
+					openReport(GetFocusedRowId(), name);
+				}
+			}
+		}
+
+		function openReport(id, name) {
+			var split = name.split('.');
+			if (split.length !== 3 || split[0] !== 'Report') return;
+			var reportId = split[1];
+			var url = '@Url.Action("CustomReport", "Print")' + '?id=' + id + '&reportId=' + reportId + '&dontShowMainMenu=true';
+			ShowUrlPopup("Report", url, 980, 630);
+		}
+
+		function openReportWithManyIds(name) {
+			return function(values) {
+				if (values.length === 0) {
+					var rowIndex = gridView.GetFocusedRowIndex();
+					if (rowIndex == -1) {
+						return;
+					}
+					var rowId = gridView.GetRowKey(rowIndex);
+					openReport(rowId, name);
+					return;
+				}
+				var ids = values.join(',');
+				var split = name.split('.');
+				if (split.length !== 3 || split[0] !== 'Report') return;
+				var reportId = split[1];
+				var url = '@Url.Action("CustomReportWithIds", "Print")' + '?ids=' + ids + '&reportId=' + reportId + '&dontShowMainMenu=true';
+				ShowUrlPopup("Report", url, 980, 630);
+			}
+		}
+
+		function contains(val, arrayOfVal) {
+			for (var i = 0; i < arrayOfVal.length; i++) {
+				if (val === arrayOfVal[i]) return true;
+			}
+			return false;
+		}
+
+
+		function onGridViewBeginCallback(s, e) {
+			//e.customArgs['SelectedRows'] = selectedIds;
+		}
+
+
+		function onContextMenuItemClick(item, row) {
+
+		}
+
+		@*	function changeStatus(id, status) {
+			sendData(resDelegate, "@Url.Action("ChangeRunStatus", "WorkflowRunList", new {Area = ""})?rowId=" + id + "&status=" + status);
+
+			//В зависимости от ответа сервера Вызывает обновление грида или показ ошибки
+			function resDelegate(error) {
+				if (error != "") {
+					alert("ChangeRunStatus " + error);
+				} else {
+					gridView.Refresh();
+				}
+			}
+
+		}
+		function edit(id) {
+			//ShowUrlPopup("", '@Url.Action("RunProcessView", "Run", new {Area = "Workflow"})?rowId=' + id, document.documentElement.clientWidth - 150);
+		}*@
+
+		function onRowDblClick() {
+			//	var id = GetFocusedRowId();
+			//	if (!id) return;
+			//	edit(id);
+		}
+	</script>
+}
+
+@section PageToolbar {
+
+	@Html.DevExpress().Menu(menuSettings =>
+{
+	menuSettings.Name = "pageToolbar";
+
+	menuSettings.ItemAutoWidth = false;
+	menuSettings.AllowSelectItem = false;
+	menuSettings.ApplyItemStyleToTemplates = true;
+
+	menuSettings.SettingsAdaptivity.Enabled = true;
+	menuSettings.SettingsAdaptivity.EnableAutoHideRootItems = true;
+	menuSettings.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+	menuSettings.SettingsAdaptivity.CollapseRootItemsToIconsAtWindowInnerWidth = 600;
+
+	menuSettings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+	menuSettings.ControlStyle.SeparatorWidth = System.Web.UI.WebControls.Unit.Pixel(0);
+	menuSettings.ControlStyle.CssClass = "page-toolbar";
+
+	menuSettings.Styles.Item.CssClass = "item";
+	menuSettings.Styles.Item.VerticalAlign = System.Web.UI.WebControls.VerticalAlign.Middle;
+
+	menuSettings.Images.Item.Width = System.Web.UI.WebControls.Unit.Pixel(16);
+	menuSettings.Images.Item.Height = System.Web.UI.WebControls.Unit.Pixel(16);
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Title";
+		item.Text = ViewBag.Title;
+		item.ClientEnabled = false;
+		item.ItemStyle.Font.Bold = true;
+		item.Alignment = MenuItemAlignment.Left;
+		item.ItemStyle.CssClass = "titleMenuItemStyle";
+	});
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "btShowColumnChooser";
+		item.Text = "Columns";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 2;
+		item.Image.Url = "~/Content/Images/table_v2.svg";
+	});
+
+	Html.AddMenuFilesAndComments(menuSettings);
+
+	Html.AddReportMenuForTable(menuSettings.Items, "wf_result",false);
+
+
+	menuSettings.ClientSideEvents.ItemClick = "onPageToolbarItemClick";
+}).GetHtml()
+
+}
+
+@Html.Partial("_GridViewPartial", Model)
+

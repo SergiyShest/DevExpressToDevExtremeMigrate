@@ -1,0 +1,48 @@
+@using System.Web.UI.WebControls
+@using Sasha.Lims.WebUI.Infrastructure.ViewModelHelpers
+@using Sasha.Lims.WebUI.Localization
+@Html.DevExpress().PopupControl(settings =>
+{
+	settings.Name = "ConfirmPopup";
+	settings.HeaderText = Html.GetLocalizedCommonText("LabelWarning");
+
+	settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+	settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+
+	settings.SetContent(() =>
+	{
+		Html.DevExpress().FormLayout(form =>
+		{
+			form.Name = "ConfirmForm";
+			form.ColCount = 2;
+			form.SettingsItems.ShowCaption = DefaultBoolean.False;
+			form.Items.Add(i =>
+			{
+				i.NestedExtension().Label(label =>
+				{
+					label.Name = "ConfirmLabel";
+					label.Properties.EnableClientSideAPI = true;
+					label.Text = Html.GetLocalizedCommonText("MessageConfirm");
+				});
+				i.ColSpan = 2;
+			});
+			form.Items.Add(i =>
+			{
+				i.NestedExtension().Button(button =>
+				{
+					button.Name = "ConfirmYes";
+					button.Text = Html.GetLocalizedText<UI>(nameof(UI.ButtonYes));
+				});
+			});
+			form.Items.Add(i =>
+			{
+				i.NestedExtension().Button(button =>
+				{
+					button.Name = "ConfirmNo";
+					button.Text = Html.GetLocalizedText<UI>(nameof(UI.ButtonNo));
+					button.ClientSideEvents.Click = "function(){ ConfirmPopup.Hide(); }";
+				});
+			});
+		}).Render();
+	});
+}).GetHtml()

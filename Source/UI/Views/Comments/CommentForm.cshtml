@@ -1,0 +1,412 @@
+@using Sasha.Lims.WebUI.Localization
+@using Sasha.Lims.Core.Helpers
+@{
+	Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+	<script src='@Url.Content("~/Scripts/Samples/SamplesApprovedGridview.js")'></script>
+	<script src='@Url.Content("~/Scripts/vue.js")'></script>
+	<script src='@Url.Content("~/Scripts/jquery-3.2.1.min.js")'></script>
+
+	@Html.DevExpress().GetStyleSheets(
+		new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+		new StyleSheet { ExtensionSuite = ExtensionSuite.Editors }
+
+		)
+	@Html.DevExpress().GetScripts(
+		new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+		new Script { ExtensionSuite = ExtensionSuite.Editors }
+		)
+</head>
+<body style="padding:0px;margin:0px" class="container">
+	<style>
+		.dx-button {
+			outline: none !important;
+			min-width:80px
+		}
+
+			.dx-button:disabled {
+				filter: brightness(100%) contrast(50%); 
+				cursor: default;
+			}
+
+		.container {
+			overflow: hidden;
+			background-color: #eee;
+			border: unset solid #808080;
+			padding: 5px;
+			margin: 0px;
+			height: 100vh;
+		}
+
+		.wrap {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			height: 100%;
+		}
+
+		.scrollArea {
+			position: relative;
+			overflow: auto; /* Добавляем полосы прокрутки */
+			height: 100%; /*Высота блока */
+			padding: 5px; /* Поля вокруг текста */
+			border: solid 0px gray; /* Параметры рамки */
+			/*background-color: е;*/
+			flex-grow: 1;
+		}
+
+		.item {
+			margin: 2px;
+			padding: 2px; /* Поля вокруг текста */
+			border: 1px gray; /* Параметры рамки */
+			/*//  background-color: #66CCFF;*/
+		}
+
+		.p1 { /* Поля вокруг текста */
+			margin: 2px;
+			padding: 2px;
+		}
+
+
+
+		select {
+			margin: 3px;
+			padding: 6px;
+			border: 0;
+			height: fit-content;
+			outline: none !important
+		}
+
+		.message {
+			display: flex;
+			flex-direction: column;
+			border: solid darkgray 1px;
+			margin: 3px;
+		}
+
+		.message-text {
+			border: 0px;
+			text-wrap: normal;
+			background: lightgray;
+			min-height: 30px;
+			height: fit-content;
+		}
+
+		textarea {
+			margin: 1px;
+			width: 99%;
+			border: 0px;
+			outline: none !important;
+		}
+
+		.hided {
+			display: block;
+		}
+
+		.flex-row {
+			display: flex;
+			flex-direction: row
+		}
+
+		.loader {
+			display: none;
+			position: absolute;
+			left: 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			/*background-image:url(/Content/icons/loading.gif);*/
+			/*align-content: center;*/
+			background: rgba(104, 104, 155, 0.5);
+		}
+
+		.loader-icon {
+			display: block;
+			margin-left: auto;
+			margin-right: auto;
+		}
+	</style>
+
+	<div class="wrap" id="commentForm">
+		<div id="scroll" class="scrollArea">
+			<h1 v-if=" comments.length==0 && !this.loadingData" style="color: #aaaaaa; font-style: italic;">
+				No comments
+			</h1>
+			<h1 v-if="this.loadingData" style="color: #aaaaaa;font-style: italic;">
+				Comments is loading!
+			</h1>
+			<div class="message" v-for="(comment,num) in comments" :v-key="message.Id">
+				<textarea v-bind:id="'mess'+num" class="p1 message-text" v-model="comment.Comment" :readonly="!comment.IsEditing" v-bind:style="editStyle(comment.IsEditing)" oninput="auto_grow(this)"></textarea>
+				<div class="flex-row" style="justify-content: space-between">
+					<div class="p1">
+						<span v-if="!comment.IsEditing" class="p1 nam"> {{comment.CommentTypeName}}</span>
+						<select v-else v-model="comment.CommentTypeName" class="p1 nam" style="font-size: initial">
+							<option v-for=" type in commentTypes" :v-key="type.Key" :v-value="type.Value">
+								{{type.Value}}
+							</option>
+						</select>
+						<span class="p1 ">{{comment.CreatedDateTimeStr}}</span>
+						<span class="p1 ">{{comment.AuthorName}}</span>
+					</div>
+					<div class="flex-row" style="justify-content: flex-end">
+						<dx-button text="Ok"
+								   v-on:click.native="saveComment(comment)"
+								   v-bind:style="visibleStyle(comment.IsEditing)"
+								   :disabled="!comment.IsChanged"></dx-button>
+						<dx-button text="Edit"
+								   v-on:click.native="setEditable(comment)"
+								   v-bind:style="visibleStyle(!comment.IsEditing)"
+								   :disabled="AnyCommentEditing"></dx-button>
+
+						<dx-button text="Delete"
+								   v-on:click.native="deleteComment(comment)"
+								   :disabled="AnyCommentEditing"></dx-button>
+						<dx-button text="Cancel"
+								   v-on:click.native="cancelEdit(comment)"
+								   v-bind:style="visibleStyle(comment.IsEditing)">
+						</dx-button>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="message">
+			<textarea style=" margin: 3px;border:thin  gray "
+					  placeholder="Type your comment"
+					  v-model="message" oninput="auto_grow(this)"></textarea>
+			<div class="flex-row">
+				<select v-model="selectedCommentType" class="p1 " style="font-size: initial;padding:7px  ">
+					<option selected disabled value="" style="background: lightgray">Select comment type</option>
+					<option v-for=" type in commentTypes" :v-key="type.Key" :v-value="type.Value">
+						{{type.Value}}
+					</option>
+				</select>
+				<dx-button text="Add"
+						   v-on:click.native="addNewComment()" :disabled=" message.length==0 || selectedCommentType==''"></dx-button>
+			</div>
+
+		</div>
+		<div>
+			<dx-button text="Close" style="float:right;"
+					   v-on:click.native="cancelForm()"></dx-button>
+		</div>
+		<div class="loader" v-bind:style="{display:loadingStyle}  ">
+			<img class="loader-icon" src="~/Content/Images/loading.gif" />
+		</div>
+	</div>
+	<script type="text/javascript">
+	//плавная прокурутка при добавлении сообщения
+	function scrollSmoothToBottom(scrollId) {
+		var div = document.getElementById(scrollId);
+		$('#' + scrollId).animate({
+			scrollTop: div.scrollHeight
+		}, 500);
+	}
+	//using for text Area
+		function auto_grow(element) {
+			try {
+				element.style.height = "30px";
+				element.style.height = element.scrollHeight + "px";
+			}
+			catch(error) {
+
+			}
+
+		}
+
+
+	Vue.component('dx-button',
+		{
+			props: {text: String},
+			template:
+				'<button class="dxbButton_@DataHelper.Current.UiTheme dxbButtonSys dxbTSys dx-button"  style="-webkit-user-select:none;padding:6px;margin: 3px;">'+
+					'{{text}}'+
+	           '</button>'
+		});
+
+	var vue = new Vue({
+		el: "#commentForm",
+		data: {
+			loadingData: true,
+			comments: [],
+			message: '',
+			commentTypes: [],
+			selectedCommentType: '',
+			AnyCommentEditing: false
+		},
+		computed: {
+			//Show or hide loading gif
+			loadingStyle: function() {
+				if (!this.loadingData) {
+					return 'none';
+				}
+				return 'block';
+			}
+		},
+		watch: {
+			selectedCommentType: function() {
+				localStorage.setItem("selectedCommentType",this.selectedCommentType);
+			}
+			,
+			//отслеживание любых изменений в массиве comments
+			comments: {
+				handler: function(after, before) {
+					var anyEditing = false;
+					for (var i = 0; i < this.comments.length; i++) {
+						var changed = (this.comments[i].Comment != this.comments[i].EtalonComment);
+						var typeChanged = (this.comments[i].CommentTypeName != this.comments[i].EtalonCommentTypeName);
+
+						this.comments[i].IsChanged = changed || typeChanged;
+						if (this.comments[i].IsEditing) {
+							anyEditing = true;
+						}
+					}
+					this.AnyCommentEditing = anyEditing;
+				},
+				deep: true
+			}
+		}
+		,
+		methods: {
+			  cancelForm: function (value) {
+				  window.parent.postMessage("CloseUrlForm", '*');//send message parent window for  close this form
+			}
+			,
+			visibleStyle: function(value) {
+				if (value) {
+					return 'display:block';
+				}
+				return 'display:none';
+			}
+			,
+			editStyle: function (value) {
+				if (value) {
+					return 'background:white';
+				}
+				return 'background:lightgray';
+			}
+			,
+			cancelEdit: function (comment) {
+				comment.Comment =   comment.EtalonComment;
+				comment.CommentTypeName = comment.EtalonCommentTypeName;
+
+				comment.IsEditing = false;
+				this.AnyCommentEditing = false;
+			}
+			,
+			setEditable: function (comment) {
+				comment.IsEditing = true;
+				this.AnyCommentEditing = true;
+			}
+			,
+			getCommentTypes: function() {
+				this.fetch(this.setCommentTypes,"/GetCommentTypes");
+			}
+			,
+			setCommentTypes: function(val) {
+				this.commentTypes = val;
+				var pr = localStorage.getItem("selectedCommentType");
+				if (pr) {
+					this.selectedCommentType = pr;
+				}
+			}
+			,
+			addNewComment: function() {
+				var newComment = {};
+				newComment.Comment = this.message;
+				newComment.CommentTypeName = this.selectedCommentType;
+
+				this.fetch(this.reloadComments,
+					"/AddComment?rowId=@ViewBag.rowId&tableId=@ViewBag.tableId",
+					newComment);
+				this.message = '';
+
+			}
+			,
+			saveComment: function(comment) {
+				this.fetch(this.reloadComments, "/SaveComment?rowId=@ViewBag.rowId&tableId=@ViewBag.tableId", comment);
+				this.message = '';
+
+			}
+			,
+			readAllComments: function() {
+				this.fetch(this.reloadComments, "/GetComments?rowId=@ViewBag.rowId&tableId=@ViewBag.tableId");
+			}
+			,
+			reloadComments: function (val) {
+				window.parent.postMessage("CommentCountChanged(count="+val.length+"&rowId=@ViewBag.rowId)", '*');//send message parent window for update button text
+				this.comments = val;
+
+				for (var i = 0; i < this.comments.length; i++) {
+					//add watched properties
+					this.$set(this.comments[i], 'IsChanged', false);
+					this.$set(this.comments[i], 'IsEditing', false);
+                 //save initial values
+					this.comments[i].EtalonComment = this.comments[i].Comment;
+					this.comments[i].EtalonCommentTypeName = this.comments[i].CommentTypeName;
+				}
+
+				scrollSmoothToBottom('scroll');
+
+				this.$nextTick(function() {
+					this.loadingData = false;
+
+					for (var i = 0; i < this.comments.length; i++) {
+						var texarea = document.getElementById("mess" + i);
+						auto_grow(texarea);
+					}
+
+				})
+			}
+			,
+			deleteComment: function (comment) {
+				var fetch = this.fetch;
+				var reloadComments = this.reloadComments;
+				dxConfirm("Do you want to delete comment?").success(function() {
+					fetch(reloadComments,
+						"/DeleteComment?rowId=@ViewBag.rowId&id=" +comment.Id +"&tableId=@ViewBag.tableId");
+				});
+
+
+			}
+			,
+			//универсальная функция получения/отправки данных
+			fetch: function (execFunction, pathEnd, data = null) {
+				this.loadingData = true;
+				var fetchRef = execFunction;
+				var path = document.location.href;
+				path = path.substr(0, path.lastIndexOf('/')) + pathEnd;
+				fetch(path,
+					{
+						method: 'POST', // *GET, POST, PUT, DELETE, etc.
+						mode: 'cors', // no-cors, *cors, same-origin
+						body: JSON.stringify(data), //sending data
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					})
+					.then((response) => {
+						return response.json();
+					})
+					.then((retData) => {
+						fetchRef(retData);
+					}).catch(error => {
+						alert("Error while getting server data: "+error);
+						this.loadingData = false;
+					});
+
+			}
+		}
+		,
+		mounted: function () {
+			this.getCommentTypes();//типы
+			this.readAllComments();//сообщения
+		}
+	});
+	</script>
+	@Html.Partial("_ConfirmPopup")
+</body>
+</html>

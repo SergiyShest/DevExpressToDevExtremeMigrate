@@ -1,0 +1,38 @@
+@using System.Web.UI.WebControls
+@using Sasha.Lims.WebUI.Controllers
+
+@{
+	var gridView = Html.DevExpress().GridView(gridViewSettings =>
+	{
+		gridViewSettings.Name = "ProcessListDetailGridViewPartial_" + ViewData["ProcessListId"];
+		gridViewSettings.SettingsDetail.MasterGridName = ProcessListController.GridViewName;
+		gridViewSettings.Width = Unit.Pixel(340);
+		gridViewSettings.SettingsBehavior.AllowFocusedRow = true;
+		gridViewSettings.SettingsBehavior.AllowSelectByRowClick = true;
+		gridViewSettings.SettingsBehavior.AllowEllipsisInText = true;
+		gridViewSettings.SettingsBehavior.AllowDragDrop = false;
+
+		gridViewSettings.Settings.VerticalScrollBarMode = ScrollBarMode.Hidden;
+
+		gridViewSettings.CallbackRouteValues = new { Controller = "ProcessList", Action = "DetailPartial", TypeId = ViewData["ProcessListId"] };
+
+		gridViewSettings.KeyFieldName = "Id";
+
+		gridViewSettings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Number";
+			columnSettings.Caption = "Number";
+			columnSettings.Width = Unit.Pixel(90);
+		});
+		gridViewSettings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Name";
+			columnSettings.Caption = "Name";
+			columnSettings.Width = Unit.Pixel(250);
+		});
+
+	});
+}
+
+@gridView.Bind(Model).GetHtml()
+

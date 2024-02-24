@@ -1,0 +1,98 @@
+@model IEnumerable<Sasha.Lims.WebUI.Models.ResourceViewModel>
+@using System.Drawing
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@using System.Web.Optimization
+@using Sasha.Lims.WebUI.Localization
+
+@{
+	ViewBag.Title = Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Resources));
+	Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+}
+
+@section Head {
+
+	<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Samples/SamplesGridView.css?v=" + AppVersionHelper.Version)" />
+	<script type="text/javascript" src="@Url.Content("~/Scripts/ResourceGridview.js?v=" + AppVersionHelper.Version)"></script>
+
+	@*@Html.DevExpress().GetStyleSheets(
+			new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+			new StyleSheet { ExtensionSuite = ExtensionSuite.Editors },
+			new StyleSheet { ExtensionSuite = ExtensionSuite.GridView }
+			)
+		@Html.DevExpress().GetScripts(
+			new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+			new Script { ExtensionSuite = ExtensionSuite.Editors },
+			new Script { ExtensionSuite = ExtensionSuite.GridView }
+			)*@
+	@*@Styles.Render("~/bundles/samplesApproved")*@
+}
+@section PageToolbar {
+	@*<h2>Hospitals</h2>*@
+	@Html.DevExpress().Menu(menuSettings =>
+{
+	menuSettings.Name = "pageToolbar";
+
+	menuSettings.ItemAutoWidth = false;
+	menuSettings.AllowSelectItem = false;
+	menuSettings.ApplyItemStyleToTemplates = true;
+
+	menuSettings.SettingsAdaptivity.Enabled = true;
+	menuSettings.SettingsAdaptivity.EnableAutoHideRootItems = true;
+	menuSettings.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+	menuSettings.SettingsAdaptivity.CollapseRootItemsToIconsAtWindowInnerWidth = 600;
+
+	menuSettings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+	menuSettings.ControlStyle.SeparatorWidth = System.Web.UI.WebControls.Unit.Pixel(0);
+	menuSettings.ControlStyle.CssClass = "page-toolbar";
+
+	menuSettings.Styles.Item.CssClass = "item";
+	menuSettings.Styles.Item.VerticalAlign = System.Web.UI.WebControls.VerticalAlign.Middle;
+
+	menuSettings.Images.Item.Width = System.Web.UI.WebControls.Unit.Pixel(16);
+	menuSettings.Images.Item.Height = System.Web.UI.WebControls.Unit.Pixel(16);
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Title";
+		item.Text = ViewBag.Title;
+		item.ClientEnabled = false;
+		item.ItemStyle.Font.Bold = true;
+		item.Alignment = MenuItemAlignment.Left;
+		item.ItemStyle.CssClass = "titleMenuItemStyle";
+	});
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "New";
+		item.Text = "New";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 2;
+		item.Image.Url = "~/Content/Images/add.svg";
+	});
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Edit";
+		item.Text = "Edit";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 2;
+		item.Image.Url = "~/Content/Images/edit.svg";
+	});
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Delete";
+		item.Text = "Delete";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 2;
+		item.Image.Url = "~/Content/Images/delete.svg";
+	});
+	menuSettings.ClientSideEvents.ItemClick = "onPageToolbarItemClick";
+
+	//menuSettings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+	//menuSettings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+}).GetHtml()
+}
+
+@using (Html.BeginForm())
+{
+	@Html.Action("ResourcesGridViewPartial")
+}

@@ -1,0 +1,47 @@
+@using Sasha.Lims.WebUI.Controllers;
+@using Sasha.Lims.WebUI.Infrastructure.ViewModelHelpers
+
+@model Sasha.Lims.WebUI.Models.UserFieldViewModel
+
+@Html.DevExpress().FormLayout(settings => {
+	settings.Name = "FormEditUserFields";
+
+	settings.SettingsItems.ShowCaption = DefaultBoolean.True;
+	settings.SettingsItemCaptions.Location = LayoutItemCaptionLocation.Left;
+
+	settings.Items.AddGroupItem(group => {
+		group.GroupBoxDecoration = GroupBoxDecoration.None;
+		group.ColCount = 2;
+
+		group.Items.AddGroupItemForVmField(m => m.TableId);
+		group.Items.AddGroupItemForVmField(m => m.FieldNumber);
+		group.Items.AddGroupItemForVmField(m => m.Caption);
+		group.Items.AddGroupItemForVmField(m => m.FieldTypeId).SetNestedContent(() => Html.RenderPartial("~/Views/USerFieldTypes/_ComboBoxPartial.cshtml", new ViewDataDictionary(Model?.FieldTypeId)));
+		group.Items.Add(s =>
+		{
+			s.FieldName = "Type";
+			s.Caption = "Data Type";
+			s.Width = 100;
+			Dictionary<int, string> dict = new Dictionary<int, string>();
+			foreach (var item in Enum.GetValues(typeof(Sasha.Lims.Core.BusinessObjects.UserFieldDataType)))
+			{
+				dict.Add((int)item, item.ToString());
+			}
+
+			s.NestedExtension().ComboBox(cb =>
+			{
+				cb.Properties.TextField = "Value";
+				cb.Properties.ValueField = "Key";
+				cb.Properties.DropDownStyle = DropDownStyle.DropDownList;
+				cb.Properties.NullText = "[Null]";
+				cb.Properties.ValueType = typeof(int);
+				cb.Properties.DataSource = dict;
+			});
+
+		});
+	});
+
+	settings.Items.AddSaveCancelButtons(UserFieldsController.GridViewName, Model);
+}).GetHtml()
+
+@Html.DevExpress().ValidationSummary().GetHtml()

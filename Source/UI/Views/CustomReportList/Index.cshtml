@@ -1,0 +1,34 @@
+@using Sasha.Lims.WebUI.Localization
+@using Sasha.Lims.Core.Services.Common.Logic
+@model Sasha.Lims.WebUI.Models.CustomReportListVM
+@{
+	Html.DevExpress().Menu(menu =>
+	{
+		var keyValue = Model.RecordId;
+		string tableName = Model.TableName;
+		var customParameter = Model.CustomParameter;
+		menu.ShowPopOutImages = DefaultBoolean.True;
+		menu.AllowSelectItem = true;
+		menu.Name = "menu_print_" + keyValue;
+		var menuRoot = menu.Items.Add("Reports");
+		menuRoot.Selected = true;
+
+		foreach (var property in Model.Properties)
+		{
+			if (property.ReportSource != CustomReportSource.Subreport
+			    && property.ReportSource != CustomReportSource.Image
+			    && (property.CustomParameters == null
+			        || (property.CustomParameters.Length == 1 && property.CustomParameters[0].Equals("IDS", StringComparison.CurrentCultureIgnoreCase))
+			        || property.CustomParameters.Contains(customParameter)))
+			{
+				var menuLabel = menuRoot.Items.Add(HtmlResourceExtensions.GetGlobalResourceText(property.LocalizationNameKey, "CustomReport"));
+				menuLabel.NavigateUrl = Url.Action("CustomReport", "Print", new {id = keyValue, reportId = property.PropertyId});
+			}
+		}
+		if (tableName == "s_sample" && (customParameter == "Box" || customParameter =="Plate"))
+		{
+			var menuScheme = menuRoot.Items.Add("Template");
+			menuScheme.NavigateUrl = Url.Action("Batch", "Print", new { id = keyValue });
+		}
+	}).Render();
+}

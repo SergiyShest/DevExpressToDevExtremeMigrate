@@ -1,0 +1,270 @@
+@using DevExpress.Web.Mvc.UI
+@using Sasha.Lims.Core.Helpers
+@using Sasha.Lims.DataAccess.Entities.Constants
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@using Sasha.Lims.WebUI.Models
+@model IQueryable<Sasha.Lims.DataAccess.Entities.Entity.vProcessResult>
+@functions {
+	private void FillContextMenuItems(object sender, ASPxGridViewContextMenuEventArgs e)
+	{
+		if (e.MenuType == GridViewContextMenuType.Rows)
+		{
+			var item = e.Items.FindByCommand(GridViewContextMenuCommand.DeleteRow);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.NewRow);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.Refresh);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.EditRow);
+			e.Items.Remove(item);
+			item = e.Items.Add("Edit", "Edit");
+			item.Image.Url = "~/Content/Images/edit.svg";
+			SettingHelper.AddChangeStatusContextMenuItems(e, DataHelper.GetAvailableStatuses(TableType.WorkflowRun));//создание меню для изменения статуса
+		}
+	}
+}
+@{
+
+	var gridView = Html.DevExpress().GridView(settings =>
+	{
+
+		SettingHelper.InitAdvancedGridSettings(settings, "WorkflowProcessResult", ViewContext);
+		settings.SettingsDataSecurity.AllowReadUnlistedFieldsFromClientApi = DefaultBoolean.True;
+		//settings.SettingsContextMenu.EnableRowMenu = DefaultBoolean.False;
+		//settings.FillContextMenuItems = FillContextMenuItems;
+		settings.ClientSideEvents.ContextMenuItemClick = "onContextMenuItemClick";
+
+
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Id";
+			columnSettings.Caption = "Id";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 50;
+			columnSettings.Visible = false;
+		}); //Id
+
+
+		SettingHelper.AddPropComboBoxColumnWithImage(settings, "ResultId", "Result", DataHelper.GetAvailableStatuses(TableType.WorkflowResult), ViewContext);
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Workflow";
+			columnSettings.Caption = "Workflow";
+			columnSettings.MinWidth = 100;
+
+
+		}); //Workflow
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Run";
+			columnSettings.Caption = "Run";
+			columnSettings.MinWidth = 100;
+
+
+		}); //Run
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "RunDateStarted";
+			columnSettings.Caption = "Run Date Started";
+			columnSettings.MinWidth = 60;
+
+		}); //RunDateStarted
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "RunDateCompleted";
+			columnSettings.Caption = "Run Date Completed";
+			columnSettings.MinWidth = 60;
+
+		}); //RunDateCompleted
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "RunCreatedUserName";
+			columnSettings.Caption = "Run Created User";
+			columnSettings.MinWidth = 60;
+
+
+		}); //RunCreatedUserName
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "RunCompletedUserName";
+			columnSettings.Caption = "Run Completed User";
+			columnSettings.MinWidth = 100;
+		}); //RunCompletedUserName
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Process";
+			columnSettings.Caption = "Process";
+			columnSettings.MinWidth = 100;
+
+		}); //Process
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "ProcessTypeCode";
+			columnSettings.Caption = "Process Code";
+			columnSettings.MinWidth = 100;
+			columnSettings.Visible = false;
+
+		}); //ProcessCode
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "ProcessDateStarted";
+			columnSettings.Caption = "Process Date Started";
+			columnSettings.MinWidth = 60;
+
+		}); //ProcessDateStarted
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "ProcessDateCompleted";
+			columnSettings.Caption = "Process Date Completed";
+			columnSettings.MinWidth = 60;
+
+		}); //ProcessDateCompleted
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "ProcessCreatedUserName";
+			columnSettings.Caption = "Process Created User";
+			columnSettings.MinWidth = 60;
+
+
+		}); //ProcessCreatedUserName
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "ProcessCompletedUserName";
+			columnSettings.Caption = "Process Completed User";
+			columnSettings.MinWidth = 100;
+		}); //ProcessCompletedUserName
+
+		//settings.Columns.Add(columnSettings =>
+		//{
+		//	columnSettings.FieldName = "ProcessStatus";
+		//	columnSettings.Caption = "Process Status";
+		//	columnSettings.MinWidth = 100;
+		//}); //ProcessStatus
+
+		SettingHelper.AddPropComboBoxColumnWithImage(settings, "ProcessStatusId", "Process Status", DataHelper.GetAvailableStatuses(TableType.WorkflowProcess), ViewContext);
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Barcode";
+			columnSettings.Caption = "Barcode";
+			columnSettings.MinWidth = 100;
+		}); //Barcode
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Name";
+			columnSettings.Caption = "Name";
+			columnSettings.MinWidth = 100;
+		}); //Name
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Location";
+			columnSettings.Caption = "Location";
+			columnSettings.MinWidth = 100;
+		}); //Location
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Well";
+			columnSettings.Caption = "Well";
+			columnSettings.MinWidth = 50;
+		}); //Well
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Doctor";
+			columnSettings.Caption = "Doctor";
+			columnSettings.MinWidth = 50;
+		}); //Doctor
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Patient";
+			columnSettings.Caption = "Patient";
+			columnSettings.MinWidth = 50;
+		}); //Patient
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "IsChild";
+			columnSettings.Caption = "Aliquot";
+			columnSettings.MinWidth = 50;
+		}); //Aliquot
+
+
+		SettingHelper.AddPropComboBoxColumn(settings, "ModelId", "Model", PropsType.Models);
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "HospitalName";
+			columnSettings.Caption = "Hospital Name";
+			columnSettings.MinWidth = 50;
+		}); //HospitalName
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "ParentName";
+			columnSettings.Caption = "Parent Name";
+			columnSettings.MinWidth = 50;
+		}); //ParentName
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "SampleCurrentProcessName";
+			columnSettings.Caption = "Current/last Process Name";
+			columnSettings.MinWidth = 50;
+		}); //SampleCurrentProcessName
+		settings.Columns.Add("CollectedDateTime", "Collected Date Time");
+		settings.Columns.Add("AcceptedDate", "Accepted Date");
+		settings.Columns.Add("DateCreate", "Accepted Date");
+		settings.Columns.Add("Volume");
+		settings.Columns.Add("BatchName", "Batch Name");
+
+		Html.AddColmmentCountColumn(settings, false); //Comment
+		Html.AddFilesCountColumn(settings, false);
+		SettingHelper.AddCustomColumns(settings, ViewContext.Controller);
+
+		settings.CustomJSProperties = (sender, e) =>
+		{
+			var Grid = sender as MVCxGridView;
+			var dictionary = new Dictionary<object, string>();
+
+			for (int i = 0; i < Grid.SettingsPager.PageSize; i++)
+			{
+				var visibleIndex = i + Grid.VisibleStartIndex;
+				if (visibleIndex >= Grid.VisibleRowCount)
+					break;
+
+				object[] rowValues = (object[])Grid.GetRowValues(visibleIndex, Grid.KeyFieldName, "RowVersion");
+				dictionary[(rowValues[0] ?? 0).ToString()] = Convert.ToBase64String((byte[])(rowValues[1] ?? new byte[] { }));
+			}
+
+			e.Properties["cpRowVersions"] = new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(dictionary);
+			e.Properties["cpRowCount"] = Grid.VisibleRowCount;
+
+			if (ViewData["EditError"] != null)
+				e.Properties["cpEditError"] = ViewData["EditError"];
+		};
+
+		settings.ClientSideEvents.FocusedRowChanged = "onGridViewSelectionChanged";
+		settings.ClientSideEvents.BeginCallback = "onGridViewBeginCallback";
+		settings.ClientSideEvents.CustomizationWindowCloseUp = "onGridCustomizationWindowCloseUp";
+		settings.ClientSideEvents.RowDblClick = "onRowDblClick";
+
+	});
+	if (Model == null)
+	{
+		@gridView.GetHtml()
+	}
+	else
+	{
+		@gridView.BindToEF(string.Empty, string.Empty, (s, e) =>
+		{
+			e.QueryableSource = Model;
+			e.KeyExpression = "Id";
+		}, (s, e) =>
+		{
+			// Handle internal exception
+			var mess = e.Exception?.InnerException.Message ?? e.Exception.Message;
+			mess = "<div style='color:red'>" + mess + "</div>";
+			ViewContext.Writer.Write(mess); //пишу ошибку прямо на экран
+		}).GetHtml()
+	}
+}

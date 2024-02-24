@@ -1,0 +1,31 @@
+<script>
+	// Функция отображения окна About
+	function ShowUrlPopupAbout(header, url, width, height) {
+		UrlPopupAbout.SetContentUrl(url);
+		UrlPopupAbout.SetHeaderText(header);
+		if (width == null && height == null) {
+			UrlPopup.SetMaximized(true);
+
+		} else {
+			if (width == null) width = document.documentElement.clientWidth;
+			if (height == null) height = document.documentElement.clientHeight;
+			UrlPopupAbout.SetWidth(width);
+			UrlPopupAbout.SetHeight(height);
+		}
+		UrlPopupAbout.Show();
+	}
+</script>
+
+@Html.DevExpress().PopupControl(settings =>
+{
+	settings.Name = "UrlPopupAbout";
+	settings.Width = 300;
+	settings.AllowDragging = true;
+	settings.CloseAction = CloseAction.CloseButton;
+
+	settings.Styles.Header.CssClass = "titleMenuItemStyle disabled ";
+	settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+	settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+	settings.ClientSideEvents.Closing = "function(s,e){ s.SetContentHtml(null);} ";
+
+}).GetHtml()

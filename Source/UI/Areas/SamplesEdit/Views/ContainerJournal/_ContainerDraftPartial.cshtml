@@ -1,0 +1,121 @@
+
+@using System.Web.UI.WebControls
+@using DevExpress.DataProcessing
+@using DevExpress.Utils
+@using DevExpress.Web
+@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@using DevExpress.XtraPrinting.Native
+
+@using Sasha.Lims.Core.Helpers
+@using Sasha.Lims.DataAccess.Entities.Constants
+
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+
+
+@functions {
+	private void Fill_ContextMenuItems(object sender, ASPxGridViewContextMenuEventArgs e)
+	{
+		if (e.MenuType == GridViewContextMenuType.Rows)
+		{
+			var item = e.Items.FindByCommand(GridViewContextMenuCommand.DeleteRow);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.NewRow);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.Refresh);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.EditRow);
+			e.Items.Remove(item);
+			item = e.Items.Add("Wells", "Wells");
+			item.Image.Url = "~/Content/Images/sample-aliquot.svg";
+			item.Image.Width = Unit.Pixel(16);
+		}
+	}
+}
+@{
+
+	var gridView = Html.DevExpress().GridView(settings =>
+	{
+		SettingHelper.InitCommonGridSettings(settings);
+		settings.CallbackRouteValues = new { Controller = "ContainerJournal", Action = "ContainerDraftPartial", id = ViewData["ContainerId"] };
+		settings.Name = "draftDataGrid";
+		settings.SettingsBehavior.EnableCustomizationWindow = false;
+		settings.SettingsCookies.Enabled = false;
+		settings.SettingsBehavior.AllowSelectByRowClick = false;
+		settings.SettingsBehavior.AllowDragDrop = false;
+		settings.SettingsPager.PageSizeItemSettings.Visible = false;
+		settings.SettingsPager.Visible = false;
+		settings.SettingsPager.Summary.Visible = false;
+		settings.Settings.ShowFilterRow = false;
+		settings.Settings.ShowFilterRow = false;
+		settings.Settings.ShowFilterRowMenu = false;
+		settings.SettingsContextMenu.Enabled = true;
+		settings.SettingsContextMenu.EnableRowMenu = DefaultBoolean.True;
+		settings.FillContextMenuItems = Fill_ContextMenuItems;
+		settings.ClientSideEvents.ContextMenu = "OnDraftGridContextMenu";
+		settings.ClientSideEvents.ContextMenuItemClick = "onDraftContextMenuItemClick";
+
+		settings.Styles.Header.Wrap = DefaultBoolean.True;
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Id";
+			columnSettings.Caption = "Id";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 50;
+			columnSettings.Visible = false;
+		}); //Id
+
+		settings.Columns.Add("Type", "Type");
+		settings.Columns.Add("SampleId", "SampleId");
+		settings.Columns.Add("Barcode", "Barcode");
+		settings.Columns.Add("Name", "Name");
+		settings.Columns.Add("CollectedDate", "Collected Date");
+		settings.Columns.Add("Status", "Status");
+		settings.Columns.Add("ContentListCount", "Content Count");
+		settings.Columns.Add("Location", "Location");
+
+		settings.Columns.Add("BatchName", "Batch Name");
+		//settings.Columns.Add("BatchBarcode", "Batch Barcode");
+
+		settings.Columns.Add("Model", "Model");
+
+
+		//Command columns settings
+		SettingHelper.AddCommandColumn(settings);
+		settings.CustomJSProperties = (sender, e) =>
+		{
+			var Grid = sender as MVCxGridView;
+			string[] dataFields = new string[] { "Status", "ContentListCount", "SampleId", "Barcode" };
+			var serverData = Grid.GetCurrentPageRowValues(dataFields);
+			if (serverData.Any())//массив для поиска по видимому индексу
+			{
+				e.Properties["cp_Status"] = serverData.Select(s => (s as object[])[0]).ToArray();
+				e.Properties["cp_ContentListCount"] = serverData.Select(s => (s as object[])[1]).ToArray();
+				e.Properties["cp_SampleId"] = serverData.Select(s => (s as object[])[2]).ToArray();
+				e.Properties["cp_Barcode"] = serverData.Select(s => (s as object[])[3]).ToArray();
+			}
+		};
+
+		settings.ClientSideEvents.Init = "onGridViewInit";
+
+	});
+	if (Model == null)
+	{
+		@gridView.GetHtml()
+	}
+	else
+	{
+		@gridView.BindToEF(string.Empty, string.Empty, (s, e) =>
+		{
+			e.QueryableSource = Model;
+			e.KeyExpression = "Id";
+		}, (s, e) =>
+		{
+			// Handle internal exception
+			var mess = e.Exception?.InnerException.Message ?? e.Exception.Message;
+			mess = "<div style='color:red'>" + mess + "</div>";
+			ViewContext.Writer.Write(mess); //пишу ошибку прямо на экран
+		}).GetHtml()
+	}
+}

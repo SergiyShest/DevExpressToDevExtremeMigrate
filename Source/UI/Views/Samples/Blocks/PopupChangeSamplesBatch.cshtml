@@ -1,0 +1,43 @@
+@using System.Web.UI.WebControls;
+@using Sasha.Lims.WebUI.Infrastructure.ViewModelHelpers
+
+@Html.DevExpress().PopupControl(
+	settings =>
+	{
+		settings.Name = "ChangeSamplesBatchDialog";
+		settings.Width = 320;
+		settings.AllowDragging = true;
+		settings.CloseAction = CloseAction.CloseButton;
+		settings.CloseOnEscape = true;
+		settings.PopupAnimationType = AnimationType.None;
+		settings.HeaderText = "Change samples batch";
+		settings.Modal = true;
+		settings.AutoUpdatePosition = true;
+		settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+		settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+		settings.SetContent(() =>
+		{
+			using (Html.BeginForm("ChangeSamplesGroupDialog", "Samples", new { editMode = ViewBag.EditMode, customAction = "BatchChange" }, FormMethod.Post, new { id = "popupForm4", @class = "edit_form" })){
+
+				@Html.DevExpress().FormLayout(s => {
+					s.Name = "ModalModeFormLayout_SamplesBatch";
+					s.RequiredMarkDisplayMode = RequiredMarkMode.None;
+					s.Width = Unit.Percentage(100);
+					s.Height = Unit.Percentage(100);
+
+					s.NestedExtensionWidth = Unit.Percentage(100);
+
+					s.Items.Add(i =>
+					{
+						i.Caption = "Batch:";
+						i.Name = "BatchIdForGroup";
+						i.SetNestedContent(() => Html.RenderPartial("_BatchComboBoxPartial", new { BatchId = (int?)null }));
+					});
+
+					s.Items.Add(Html.MakeDxOkCancelButtonForPopup("ChangeSamplesBatchDialog"));
+				}).Render();
+			}
+		});
+
+		settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer(null, '', false); }";
+	}).GetHtml()

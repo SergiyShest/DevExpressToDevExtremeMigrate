@@ -1,0 +1,243 @@
+
+@using System.Web.UI.WebControls
+@using DevExpress.Utils
+@using DevExpress.Web
+@using DevExpress.Web.ASPxThemes
+@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@using DevExpress.XtraGrid
+@using Sasha.Lims.Core.Helpers
+@using Sasha.Lims.DataAccess.Entities.Constants
+@using Sasha.Lims.WebUI.Controllers
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+
+@using Sasha.Lims.WebUI.Localization
+@using Sasha.Lims.WebUI.Models
+
+@model Sasha.Lims.Core.BusinessObjects.ProcessBo
+
+
+@functions {
+	private void AddPropComboBoxColumn(GridViewSettings settings, string fieldName, string caption, PropsType propsType)
+	{
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = fieldName;
+			columnSettings.Caption = caption;
+			columnSettings.Settings.SortMode = ColumnSortMode.DisplayText;
+			columnSettings.EditorProperties().ComboBox(comboBoxProperties =>
+			{
+				comboBoxProperties.ShowImageInEditBox = true;
+				comboBoxProperties.ItemImage.Width = 16;
+				comboBoxProperties.ItemImage.Height = 16;
+				comboBoxProperties.ValueField = "Key";
+				comboBoxProperties.TextField = "Value";
+				comboBoxProperties.BindList(
+					PropertiesController.PropertiesReader.GetProperties((int)propsType));
+			});
+		});
+	}
+
+	private void FillContextMenuItems(object sender, ASPxGridViewContextMenuEventArgs e)
+	{
+
+		if (e.MenuType == GridViewContextMenuType.Rows)
+		{
+			var item = e.Items.FindByCommand(GridViewContextMenuCommand.DeleteRow);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.NewRow);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.Refresh);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.EditRow);
+			e.Items.Remove(item);
+			item = e.Items.Add("Add Samples", "AddSamples");
+			item.Image.IconID = IconID.EditCustomization16x16;
+
+			item = e.Items.Add("Remove Samples", "RemoveSamples");
+			item.Image.IconID = IconID.ActionsDeletelist16x16;
+
+			item = e.Items.Add("Publish Result", "PublishResult");
+			item.Image.IconID = IconID.ActionsShow16x16gray;
+
+
+			SettingHelper.AddChangeStatusContextMenuItems(e, DataHelper.GetAvailableStatuses(TableType.WorkflowResult));//создание меню для изменения статуса
+		}
+	}
+}
+@{
+
+	var gridView = Html.DevExpress().GridView(settings =>
+	{
+		SettingHelper.InitAdvancedGridSettings(settings, "Process", ViewContext);
+
+		settings.CallbackRouteValues = new { Action = "CallbackRouteValues", Controller = "Process", Area = "Workflow", rowId = ViewBag.RowId };
+		SampleApprovedViewModel vm = null;
+
+		//		settings.SettingsBehavior.ProcessFocusedRowChangedOnServer = false;
+		settings.SettingsBehavior.AllowFocusedRow = true;
+		settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+
+		settings.SettingsContextMenu.Enabled = true;
+		settings.SettingsContextMenu.EnableRowMenu = DefaultBoolean.True;
+		settings.FillContextMenuItems = FillContextMenuItems;
+		settings.ClientSideEvents.ContextMenuItemClick = "onContextMenuItemClick";
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Id";
+			columnSettings.Caption = "Id";
+			columnSettings.MinWidth = 20;
+			columnSettings.Width = 30;
+			columnSettings.Visible = false;
+		}); //Id
+
+		settings.Columns.Add(column =>
+		{
+			column.FieldName = "Result";
+			column.Caption = "";
+			column.Width = 30;
+			column.MaxWidth = 80;
+			column.SetDataItemTemplateContent(c =>
+			{
+				var status = DataBinder.Eval(c.DataItem, "SampleBookRecord.Result");
+				if (status == null) return;
+				string imageUrl = new UrlHelper(HttpContext.Current.Request.RequestContext).Content(
+					string.Format("~/Content/Images/Status/{0}.png", status));
+				ViewContext.Writer.Write("<img src=\"{0}\" style=\"width:20px\" /><span style=\"margin:4px\" >{1}</span>", imageUrl,status);
+			});
+		}); // Status img
+
+		settings.Columns.Add(column =>
+		{
+			column.FieldName = "Publish result";
+			column.Caption = "";
+			column.Width = 30;
+			column.MaxWidth = 40;
+			column.SetDataItemTemplateContent(c =>
+			{
+				//var res = DataBinder.Eval(c.DataItem, "SampleBookRecord.Sended");
+				//if (res == null) return;
+				var resId = DataBinder.Eval(c.DataItem, "SampleBookRecord.sended_id");
+				if (resId == null)
+				{
+					ViewContext.Writer.Write("<button onclick = PublishResult() " +
+											 "class=\"dxbButton_"+@DataHelper.Current.UiTheme+ " dxbButtonSys dxbTSys dx - button\"  style=\" - webkit - user - select:none; padding: 3px; margin: 1px; \" >Publish</button>");
+				}
+				else
+				{
+					var res = "";
+					switch (resId.ToString())
+					{
+						case "1": res = "Sended";
+							break;
+						case "2":
+							res = "Published";
+							break;
+						case "3":
+							res = "Publish error";
+							break;
+					}
+
+					ViewContext.Writer.Write($"<span style=\"margin:4px\" >" + res + "</span>");
+				}
+
+			});
+		}); // Sended
+
+		Html.AddFilesCountColumn(settings, true);
+
+		Html.AddColmmentCountColumn(settings, false); //Comment
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "SampleBookRecord.Barcode";
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Barcode));
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 100;
+
+		}); //Barcode
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "SampleBookRecord.Name";
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Name));
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 150;
+		}); //Name
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "SampleBookRecord.Location";
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Location));
+			columnSettings.MinWidth = 100;
+		}); //Location
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "SampleBookRecord.BatchName";
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Box));
+			columnSettings.MinWidth = 100;
+		}); //BatchName
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Sample.Record.Well";
+			columnSettings.Caption =  Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Well));
+		}); //Well
+
+		AddPropComboBoxColumn(settings, "SampleBookRecord.SampleWorkflowStatusId", "WorkflowStatus", PropsType.ProcessStatus);
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "SampleBookRecord.ProcessName";
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Process));
+		}); //ProcessName
+
+		AddPropComboBoxColumn(settings, "SampleBookRecord.SampleStatusId", "Sample Status", PropsType.SampleStatuses);
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "SampleBookRecord.UserName";
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_User));
+		}); //UserId
+
+		settings.Columns.Add(columnSettings =>
+		{
+		columnSettings.FieldName = "SampleId";
+		columnSettings.Caption = "Sample Id";
+		columnSettings.Visible = false;
+			
+	}); //UserId
+		//settings.Columns.Add(columnSettings =>
+		//{
+		//	columnSettings.FieldName = "SampleBookRecord.Sended";
+		//	columnSettings.Caption = "Result sended";
+		//}); //Sended
+
+
+
+	settings.Columns.Add(columnSettings =>
+	{
+		columnSettings.FieldName = "SampleBookRecord.Patient";
+		columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>
+			(nameof(ViewModelFields.Sample_Patient));
+	}); // Patient
+
+	settings.Columns.Add(columnSettings =>
+	{
+		columnSettings.FieldName = "SampleBookRecord.Doctor";
+		columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>
+			(nameof(ViewModelFields.Sample_Doctor));
+
+	}); //Doctor
+
+
+	//Command columns settings
+	SettingHelper.AddCommandColumn(settings);
+
+	settings.ClientSideEvents.SelectionChanged = "onGridViewSelectionChanged";
+	settings.ClientSideEvents.BeginCallback = "onGridViewBeginCallback";
+
+
+	});
+
+			@gridView.Bind(Model.Samples).GetHtml()
+			}

@@ -1,0 +1,376 @@
+@using Sasha.Lims.Core.Helpers
+@using System.Web.Optimization
+@using DevExpress.Web.Mvc.UI
+@using Sasha.Lims.DataAccess.Entities.Constants
+@using Sasha.Lims.WebUI.Localization
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@{
+	ViewData["Title"] = Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Samples));
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IQueryable<Sasha.Lims.DataAccess.Entities.Entity.vSamplesBook>
+@section Head {
+	@Html.DevExpress().GetStyleSheets(
+		new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+		new StyleSheet { ExtensionSuite = ExtensionSuite.Editors },
+		new StyleSheet { ExtensionSuite = ExtensionSuite.GridView },
+		new StyleSheet { ExtensionSuite = ExtensionSuite.TreeList }
+		)
+	@Html.DevExpress().GetScripts(
+		new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+		new Script { ExtensionSuite = ExtensionSuite.Editors },
+		new Script { ExtensionSuite = ExtensionSuite.GridView },
+		new Script { ExtensionSuite = ExtensionSuite.TreeList }
+		)
+	<script type="text/javascript" src="@Url.Content("~/Scripts/Script.js?v=2.5")"></script>
+
+	@Styles.Render("~/bundles/samplesApproved")
+
+	<script type="text/javascript" src="@Url.Content("~/Scripts/Samples/SamplesApprovedGridview.js?v=" + AppVersionHelper.Version)"></script>
+
+	<script>
+
+		window.addEventListener("message", receiveMessage, false);
+
+		function receiveMessage(event) {
+			if (typeof event.data !== 'string' && !(event.data instanceof String)) return;
+			console.log(event.data);
+			if (event.data.indexOf('CommentCountChanged') > -1) {
+				var re = /count=(\d+)&rowId=(\d+)/i;
+				var found = event.data.match(re);
+				var contrName = "comment_Count_" + found[2];
+				var controls = ASPxClientControl.GetControlCollection();
+				var control = controls.GetByName(contrName);
+				if (control != null) {
+					control.SetText(found[1]);
+				}
+			}
+			if (event.data.indexOf('CloseUrlForm') > -1) {
+				gridView.Refresh();
+			}
+		}
+
+		function GetFocusedRowId() {
+			var rowIndex = gridView.GetFocusedRowIndex();
+			if (rowIndex == -1) {
+				return null;
+			}
+			return gridView.GetRowKey(rowIndex);
+		}
+
+		function GetSelectedOrFocusedRowsId() {
+				var selectedIds = [];
+
+				selectedIds = gridView.GetSelectedKeysOnPage();
+
+				if ( selectedIds.length==0) {
+					var rowIndex = gridView.GetFocusedRowIndex();
+					if (rowIndex > -1) {
+						id = gridView.GetRowKey(rowIndex);
+						selectedIds.push(id);
+					}
+				}
+				return SelectedIdsToString(selectedIds);
+
+
+				//grid View functions
+				function SelectedIdsToString(values) {
+					var selectedIdsStr = null;
+					if (Array.isArray(values)) {
+						selectedIdsStr = values.join(',');
+						return selectedIdsStr ;
+					}
+				}
+			}
+
+		// перед поднятием контекстного меню над основным гридом
+		function OnGridContextMenu(s, e) {
+
+			var visibleIndex = gridView.GetFocusedRowIndex();
+			hasFocused = visibleIndex > -1;
+			if (!hasFocused) {
+				e.menu.GetItemByName("Edit").SetEnabled(false);
+				e.menu.GetItemByName("EditContent").SetVisible(false);
+				e.menu.GetItemByName("Wells").SetVisible(false);
+				e.menu.GetItemByName("CancerClonesMenuItem").SetVisible(false);
+				e.menu.GetItemByName("ShowLog").SetVisible(false);
+				return;
+			}
+			e.menu.GetItemByName("ShowLog").SetVisible(true);
+			e.menu.GetItemByName("Edit").SetVisible(true);
+			var index = visibleIndex - gridView.GetTopVisibleIndex();
+			var clones = gridView.cp_Clones[index];
+			if (clones != null) {
+				e.menu.GetItemByName("CancerClonesMenuItem").SetEnabled(true);
+			} else {
+				e.menu.GetItemByName("CancerClonesMenuItem").SetEnabled(false);
+			}
+			var modelIsContainer = false;
+			var model = gridView.cp_Model[index];
+			if (model == 'Box' || model == 'Plate') {
+				modelIsContainer = true;
+			}
+			if (modelIsContainer) {
+
+				e.menu.GetItemByName("EditContent").SetVisible(true);
+				e.menu.GetItemByName("Wells").SetVisible(true);
+			} else {
+				e.menu.GetItemByName("EditContent").SetVisible(false);
+				e.menu.GetItemByName("Wells").SetVisible(false);
+			}
+
+
+		}
+
+		function onContextMenuItemClick(item, row) {
+			switch (row.item.name) {
+
+			case "CancerClonesMenuItem":
+				ShowCancerClones();
+				break;
+
+			case "PublishResult":
+				PublishResult();
+				break;
+				case "Edit":
+					var id = GetFocusedRowId();
+					GroupEdit(id,true);
+					break;
+				case "Wells":
+					ShowWells();
+					break;
+				case "EditContent":
+					EditContainer();
+					break;
+				case "ShowLog":
+					ShowLog();
+					break;
+
+			default:
+				var rezRegexp = row.item.name.match(/Set(.*)/); //комманда изменения статуса начиается с Set
+				if (rezRegexp) {
+					changeStatus(rezRegexp[1]);
+				}
+			}
+		}
+
+
+
+	function onRowDblClick(s, e)
+	{
+
+		if ('@ViewBag.ShowSelectCancelButtons' != 'True') {
+			var key = gridView.GetRowKey(gridView.GetFocusedRowIndex())
+			GroupEditUn([key]);
+		}
+		else {
+			SelectItem()
+		}
+	}
+
+	function GroupEdit(id, singleEdit) {
+
+		if (singleEdit) {
+			GroupEditUn([id]);
+			return;
+		}
+
+		var selectedIds = gridView.GetSelectedKeysOnPage();
+
+		if (id && (selectedIds.length == 0 )) {
+			selectedIds.push(id);
+		}
+		if (selectedIds.length == 0) {
+			alert("Nothing edit");
+			retrun;
+		}
+		GroupEditUn(selectedIds);
+	}
+
+
+
+
+	function GroupEditUn(selectedIds) {
+
+
+
+		var barcodes = [];
+		var more = false;
+		for (var i = 0; i < selectedIds.length; i++) {
+			id = selectedIds[i];
+			var visibleIndex = getIndex(gridView.cp_Indexes,id);
+			var barcode = gridView.cp_Barcode[visibleIndex]
+			barcodes.push(barcode)
+			if (i > 4) {
+				more = true;
+				break;
+			}
+		}
+		var header = "";
+		if (barcodes.length == 1) {
+			header = "Edit item with barcode = " + barcodes[0]
+		} else {
+			header = "Edit " + selectedIds.length + " items with barcods: " + barcodes.join(', ')
+			if (more) { header += '...' }
+		}
+		ShowUrlPopup(header, "@Url.Action("EditSample", "GroupEdit", new {Area = "SamplesEdit"})?ids=" + selectedIds, document.documentElement.clientWidth - 150);
+	}
+
+	function AddNew() {
+
+		ShowUrlPopup("Create new", "@Url.Action("EditSample", "GroupEdit", new {Area = "SamplesEdit"})?ids=", document.documentElement.clientWidth - 150);
+
+	}
+
+	function ShowWells() {
+		var id = GetFocusedRowId();
+		var rowIndex = gridView.GetFocusedRowIndex() - gridView.GetTopVisibleIndex();
+		if (rowIndex.length == 0) return;
+		var barcode = gridView.cp_Barcode[rowIndex];
+		ShowUrlPopup("Container Content ", '@Url.Action("ContainerContentJournal", "ContainerContent", new {Area = "SamplesEdit"})?containerId=' + id + '&barcode=' + barcode, document.documentElement.clientWidth - 150);
+
+	}
+
+	function EditContainer() {
+		var id = GetFocusedRowId();
+
+		ShowUrlPopup("Edit container content", '@Url.Action("Index", "ContainerEdit", new {Area = "SamplesEdit"})?sampleId=' + id, document.documentElement.clientWidth - 150);
+	}
+
+	function changeStatus(status) {
+		gridView.PerformCallback({ customAction: 'changeStatus', selectedIds: GetSelectedOrFocusedRowsId(), newValue: status });
+	}
+
+	function CommentSelectedRow() {
+		var visibleIndex = gridView.GetFocusedRowIndex();
+		if (visibleIndex == -1) return;
+		var key = gridView.GetRowKey(visibleIndex);
+		comment(key);
+	}
+
+	function comment(key) {
+		ShowUrlPopup("Comments", '@Url.Action("CommentForm", "Comments")?rowId=' + key + '&tableId=@((int)TableType.Sample)', 900, 600);
+	}
+
+	//загрузка файлов
+	function AttachedFiles() {
+		var visibleIndex = gridView.GetFocusedRowIndex();
+		if (visibleIndex == -1) return;
+		var key = gridView.GetRowKey(visibleIndex);
+		files(key);
+
+	}
+
+	function files(key) {
+		ShowUrlPopup("Files", '/FileManager/FileManager?rowId=' + key + '&tableId=@((int)TableType.Sample)', 900, 630);
+	}
+
+	function PrintBook() {
+
+		ids = gridView.GetSelectedKeysOnPage()
+			ShowUrlPopup("@Html.GetLocalizedCommonText("SampleBookPrintTitle")", '@Url.Action("Book", "Print")?ids=' + ids + '&dontShowMainMenu=true', document.documentElement.clientWidth - 150);
+	}
+
+	function openReport(id, name) {
+		var split = name.split('.');
+		if (split.length !== 3 || split[0] !== 'Report') return;
+		var reportId = split[1];
+		var url = '@Url.Action("CustomReport", "Print")' + '?id=' + id + '&reportId=' + reportId + '&dontShowMainMenu=true';
+		ShowUrlPopup("Report", url, 980, 630);
+	}
+
+	function openReportWithManyIds(name) {
+		var values = gridView.GetSelectedKeysOnPage();
+		if (values.length === 0) {
+			var rowIndex = gridView.GetFocusedRowIndex();
+			if (rowIndex == -1) {
+				return;
+			}
+			var rowId = gridView.GetRowKey(rowIndex);
+			openReport(rowId, name);
+			return;
+		}
+		var ids = values.join(',');
+		var split = name.split('.');
+		if (split.length !== 3 || split[0] !== 'Report') return;
+		var reportId = split[1];
+		var url = '@Url.Action("CustomReportWithIds", "Print")' + '?ids=' + ids + '&reportId=' + reportId + '&dontShowMainMenu=true';
+		ShowUrlPopup("Report", url, 980, 630);
+
+	}
+
+
+	function openTemplateReport(id, name) {
+		var url = '@Url.Action("Batch", "Print")' + '?id=' + id + '&dontShowMainMenu=true';
+		ShowUrlPopup("Report", url, 980, 630);
+	}
+
+	function ShowCustomPropertiesAttr(val) {
+		var url = '@Url.Action("FileManager", "FileManager")' + '?rowId=' + val + '&tableId=@((int)TableType.Prop)';
+		ShowUrlPopup("Edit custom Properties", url, 980, 630);
+	}
+
+	function ShowCancerClones() {
+
+		var visibleIndex = gridView.GetFocusedRowIndex();
+		if (visibleIndex == -1) return;
+
+		gridView.GetRowKey(visibleIndex);
+
+		var index = visibleIndex - gridView.GetTopVisibleIndex();
+		var p1 = gridView.cp_PatientId[index];
+		var url = '@Url.Action("Index", "CancerClones", new { Area = "CancerClones" })' + '?patientId=' + p1;
+		ShowUrlPopup("Clones", url, document.documentElement.clientWidth -  50, document.documentElement.clientHeight - 50);
+	}
+	function ShowLog() {
+		var id = GetFocusedRowId();
+
+		ShowUrlPopup("Log for ", '@Url.Action("Index", "CustodyLogJournal", new {Area = "Common"})?sampleId=' + id + '&dontShowMainMenu=true', document.documentElement.clientWidth - 150);
+	}
+
+	</script>
+}
+
+@Html.Partial("ToolbarSamplesGrid")
+<form>
+	@Html.Partial("_GridViewPartial", Model)
+</form>
+@if (ViewBag.ShowSelectCancelButtons == true)
+{
+<script>
+
+	function SelectItems() {
+		var ids = '';
+		if ('@ViewBag.MultiSelect' == 'True') {
+			var idIds = gridView.GetSelectedKeysOnPage();
+			if (idIds.length == 0) return;
+			ids = idIds.join(',');
+		}
+		else
+		{
+			var ind = gridView.GetFocusedRowIndex();
+			if (ind < 0) return;
+			ids = gridView.GetRowKey(ind)
+		}
+		window.parent.postMessage("@ViewBag.varName=" + ids , '*'); //send message parent window for selected sample
+		cancelForm();
+	}
+
+		function cancelForm() {
+			window.parent.postMessage("CloseUrlForm", '*'); //send message parent window for  close this form
+		}
+</script>
+	<div style="display: flex;
+		justify-content: flex-end;
+		margin: 5px">
+		<button name="SelectSampleBtn"
+				onclick="SelectItems()"
+				class="dxbButton_@DataHelper.Current.UiTheme dxbButtonSys dxbTSys dx-button"
+				style="-webkit-user-select:none;padding:6px;margin: 3px; width: 50px;">
+			OK
+		</button>
+		<button onclick="cancelForm()" class="dxbButton_@DataHelper.Current.UiTheme dxbButtonSys dxbTSys dx-button" style="-webkit-user-select:none;padding:6px;margin: 3px; width: 50px;">
+			Close
+		</button>
+	</div>
+}

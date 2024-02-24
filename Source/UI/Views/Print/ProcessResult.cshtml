@@ -1,0 +1,20 @@
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@using Sasha.Lims.WebUI.Localization
+@model CachedReportSourceWeb
+@{
+	string titlePage = "Process result";//Html.GetLocalizedCommonText("SampleBookPrintTitle");
+	ViewBag.Title = titlePage;
+	Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+}
+@section Head {
+	<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Samples/SamplesGridView.css?v=" + AppVersionHelper.Version)" />
+}
+@section PageToolbar {
+	@Html.Partial("Blocks\\Toolbar")
+}
+<p>Under construction</p>
+@Html.DevExpress().WebDocumentViewer(
+	settings =>
+	{
+					settings.Name = "PrintViewer";
+	}).Bind(Model).GetHtml()

@@ -1,0 +1,8 @@
+[
+  {
+    "Input": "Name",
+    "Expected":"<kf-input text='Name' v-model='Item.Name'  ></kf-input>",
+    "Name": "Name"
+  }
+
+]

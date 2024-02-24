@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	@{
+		ViewBag.Title = "Reagent Edit";
+		Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+	}
+	<meta charset="utf-8" />
+	<title>Reagent Edit</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/21.2.7/css/dx.common.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/21.2.7/css/dx.greenmist.css" />
+	@*<link href="~/Scripts/vue-apps/custom/css/app.css" rel="preload" as="style">
+	<link href="~/Scripts/vue-apps/custom/css/chunk-vendors.css" rel="preload" as="style">
+	<link href="~/Scripts/vue-apps/custom/js/app.js" rel="preload" as="script">
+	<link href="~/Scripts/vue-apps/custom/js/chunk-vendors.js" rel="preload" as="script">
+	<link href="~/Scripts/vue-apps/custom/css/chunk-vendors.css" rel="stylesheet">
+	<link href="~/Scripts/vue-apps/custom/css/app.css" rel="stylesheet">*@
+</head>
+<body>
+
+	<script>
+		
+		const TypeId = '@ViewBag.TypeId';
+		const Id = '@ViewBag.Id';
+		const New = (Id == null || Id == 0);
+		const ForCopy = '@ViewBag.ForCopy' == "True";
+		const ReagentTypeId ='@ViewBag.ReagentTypeId'
+		//const GetPath = '@ViewBag.GetPath';
+		//const SavePath = '@ViewBag.SavePath';
+		const StringValuePath ='@ViewBag.StringValuePath'
+
+	</script>
+
+	<div id="app"></div>
+	@*<script src="~/Scripts/vue-apps/custom/js/chunk-vendors.js"></script>
+	<script src="~/Scripts/vue-apps/custom/js/app.js"></script>*@
+	<script src="~/Scripts/vue-apps/reagent-edit.js?v=1"></script>
+	<script>
+		window.addEventListener("message", receiveMessage, false);
+
+		function FindItem(listName, varName) {
+			console.log(varName);
+			switch (listName) {
+				case 'Samples':
+				case 'Sample':
+					ShowUrlPopup("Select Sample", '@Url.Action("Select", "SamplesBook", new {Area = "" })?varName=' + varName + '&showSelectCancelButtons=true', document.documentElement.clientWidth - 150);
+					break;
+				case 'Patients':
+				case 'Patient':
+					ShowUrlPopup("Select Patient", '@Url.Action("SelectPatient", "PatientJournal", new {Area = "Common"})?varName=' + varName + '&showSelectCancelButtons=true', document.documentElement.clientWidth - 150);
+					break;
+				case 'SelectReagentType':
+					ShowUrlPopup("Select Reagent Type", '@Url.Action("SelectReagentType", "ReagentTypeJournal", new {Area = "Reagents"})?varName=' + varName + '&showSelectCancelButtons=true', document.documentElement.clientWidth - 150);
+					break;
+				case 'LocationId':
+					ShowUrlPopup("Select location ", '@Url.Action("Index", "SelectLocation", new {Area = "Location"})?varName=' + varName + '&LocationId=' , document.documentElement.clientWidth - 150);
+					break;
+				default: alert('Dont supported List: ' + listName + ' called for ' + varName)
+			}
+
+		}
+
+
+		function AddReagents(kitId) {
+			var varName = 'SelectedIdsForAdd';
+			ShowUrlPopup("Select Reagent",
+				'@Url.Action("SelectReagent", "ReagentJournal", new {Area = "Reagents"})?varName=' + varName + '&kitId='+kitId ,
+				document.documentElement.clientWidth - 150);
+		}
+
+
+		function receiveMessage(event) {
+			
+			if (typeof event.data === 'string') {
+				var arr = event.data.split('=');
+				if (arr.length>1) {
+					let id = arr[1];
+					var varName = arr[0]
+					window.globalEvent.$emit(varName, id);
+				}
+			}
+			console.log('receivedMessage:'+event.data)
+
+		}
+	</script>
+
+
+</body>
+</html>
+
+

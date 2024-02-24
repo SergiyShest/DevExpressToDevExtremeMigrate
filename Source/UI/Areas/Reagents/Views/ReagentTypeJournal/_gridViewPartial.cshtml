@@ -1,0 +1,189 @@
+@using Sasha.Lims.Core.Helpers
+@using Sasha.Lims.Core.BusinessObjects
+@using DevExpress.Utils
+@using DevExpress.Web
+@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@using Sasha.Lims.DataAccess.Entities.Constants
+
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@functions {
+	private void FillContextMenuItems(object sender, ASPxGridViewContextMenuEventArgs e)
+	{
+		if (e.MenuType == GridViewContextMenuType.Rows)
+		{
+			var item = e.Items.FindByCommand(GridViewContextMenuCommand.DeleteRow);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.NewRow);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.Refresh);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.EditRow);
+			e.Items.Remove(item);
+			item = e.Items.Add("Edit", "Edit");
+			item.Image.Url = "~/Content/Images/edit.svg";
+		
+		}
+	}
+}
+@{
+	var gridView = Html.DevExpress().GridView(settings =>
+	{
+
+		SettingHelper.InitAdvancedGridSettings(settings, "ReagentTypeJournal", ViewContext);
+
+		settings.KeyFieldName = "Id";
+		settings.SettingsContextMenu.EnableRowMenu = DefaultBoolean.True;
+		settings.FillContextMenuItems = FillContextMenuItems;
+		settings.ClientSideEvents.ContextMenuItemClick = "onContextMenuItemClick";
+
+		settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;//все колонки сжимаются
+		settings.SettingsPager.PageSize = 50;
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.Caption = "Type";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 150;
+			columnSettings.SetDataItemTemplateContent(c =>
+			{
+				var type = DataBinder.Eval(c.DataItem, "TypeId")?.ToString();
+				var typeName = DataBinder.Eval(c.DataItem, "TypeName")?.ToString();
+				string imageUrl = null;
+
+
+				if (type == ((int)ReagentTypes.KitReagents).ToString())
+				{
+					imageUrl = new UrlHelper(HttpContext.Current.Request.RequestContext).Content(string.Format("~/Content/Images/Reagents/"+ ReagentTypes.KitReagents + ".png"));
+				}else
+					if (type == ((int)ReagentTypes.BoxKitReagents).ToString())
+				{
+					imageUrl = new UrlHelper(HttpContext.Current.Request.RequestContext).Content(string.Format("~/Content/Images/Reagents/"+ ReagentTypes.BoxKitReagents +".png"));
+				}
+				else
+					if (type == ((int)ReagentTypes.BoxReagents).ToString())
+				{
+					imageUrl = new UrlHelper(HttpContext.Current.Request.RequestContext).Content(string.Format("~/Content/Images/Reagents/" + ReagentTypes.BoxReagents + ".png"));
+				}
+				else
+				{
+					imageUrl = new UrlHelper(HttpContext.Current.Request.RequestContext).Content(string.Format("~/Content/Images/Reagents/"+ ReagentTypes.SingleReagent +".png"));
+				}
+
+
+				ViewContext.Writer.Write("<img src=\"{0}\" style=\"width:20px\" />"+ typeName, imageUrl);
+			});
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Id";
+			columnSettings.Caption = "Id";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 50;
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Name";
+			columnSettings.Caption = "Name";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 150;
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Barcode";
+			columnSettings.Caption = "Barcode";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 150;
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Quantity";
+			columnSettings.Caption = "Quantity";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 150;
+		});
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "UnitName";
+			columnSettings.Caption = "UnitName";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 50;
+
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Size";
+			columnSettings.Caption = "Size";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 50;
+
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "StorageTemp";
+			columnSettings.Caption = "Storage Temperature";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 150;
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "ChaildCount";
+			columnSettings.Caption = "Chaild Count";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 50;
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "ParentCount";
+			columnSettings.Caption = "Contains in Count";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 50;
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "VendorName";
+			columnSettings.Caption = "Vendor Name";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 50;
+		});
+
+		settings.DataBound = (s, e) =>
+		{
+			if (ViewData["filterExpression"] != null)
+				((ASPxGridView)s).FilterExpression = ViewData["filterExpression"].ToString();
+		};
+		//SettingHelper.AddCustomColumnsAdv(settings, TableType.ReagentType);
+
+		Html.AddColmmentCountColumn(settings, false); //Comment
+		Html.AddFilesCountColumn(settings, false); //Files
+		SettingHelper.AddCommandColumn(settings);
+		settings.CommandColumn.ShowSelectCheckbox = (ViewBag.GroupMode == true);
+		settings.CommandColumn.SelectAllCheckboxMode = (ViewBag.GroupMode == true) ? GridViewSelectAllCheckBoxMode.Page : GridViewSelectAllCheckBoxMode.None;
+		settings.ClientSideEvents.SelectionChanged = "onGridViewSelectionChanged";
+		settings.ClientSideEvents.BeginCallback = "onGridViewBeginCallback";
+		settings.ClientSideEvents.EndCallback = "onGridViewEndCallback";
+		settings.ClientSideEvents.CustomizationWindowCloseUp = "onGridCustomizationWindowCloseUp";
+		settings.ClientSideEvents.RowDblClick = "onRowDblClick";
+		settings.ClientSideEvents.Init = "onGridViewInit";
+		settings.ClientSideEvents.FocusedRowChanged = "onFocusedRowChanged";
+
+	});
+	if (Model == null)
+	{
+		@gridView.GetHtml()
+	}
+	else
+	{
+		@gridView.BindToEF(string.Empty, string.Empty, (s, e) =>
+   {
+	   e.QueryableSource = Model;
+	   e.KeyExpression = "Id";
+   }, (s, e) =>
+   {
+	   // Handle internal 
+	   var mess = e.Exception.GetAllMessages();
+	   mess = "<div style='color:red'>" + mess + "</div>";
+	   ViewContext.Writer.Write(mess); //пишу ошибку прямо на экран
+   }).GetHtml()
+	}
+}

@@ -1,0 +1,110 @@
+@using Sasha.Lims.WebUI.Models
+@using System.Web.UI.WebControls
+@using Sasha.Lims.WebUI.Infrastructure.ViewModelHelpers
+@model IEnumerable<ProcessResultViewModel>
+@{
+	var gridView = Html.DevExpress().GridView(settings =>
+	{
+		var unit16px = Unit.Pixel(16);
+
+		settings.Name = $"ProcessResultGridView_{ViewBag.RunId}";
+		settings.SettingsDetail.MasterGridName = "RunListGridView";
+		settings.Width = Unit.Percentage(100);
+
+		settings.Settings.VerticalScrollBarMode = ScrollBarMode.Hidden;
+		settings.SettingsResizing.ColumnResizeMode = ColumnResizeMode.Control;
+		settings.SettingsResizing.Visualization = ResizingMode.Postponed;
+
+		settings.SettingsBehavior.ProcessColumnMoveOnClient = false;
+		settings.SettingsBehavior.ColumnMoveMode = GridColumnMoveMode.AmongSiblings;
+		settings.SettingsBehavior.EnableCustomizationWindow = true;
+		settings.SettingsCookies.Enabled = true;
+		settings.SettingsCookies.StoreColumnsVisiblePosition = true;
+		settings.SettingsCookies.StoreColumnsWidth = true;
+		settings.SettingsCookies.StoreControlWidth = true;
+		settings.SettingsCookies.StoreFiltering = false;
+		settings.SettingsCookies.StorePaging = false;
+		settings.SettingsCookies.StoreColumnsHierarchy = false;
+		settings.SettingsCookies.StoreFiltering = false;
+		settings.Settings.ShowGroupPanel = false;
+
+		settings.SettingsBehavior.AllowFocusedRow = true;
+		settings.SettingsBehavior.AllowSelectByRowClick = false;
+		settings.SettingsBehavior.AllowEllipsisInText = true;
+		settings.SettingsBehavior.AllowDragDrop = true;
+		settings.SettingsBehavior.AllowSort = false;
+
+		settings.SettingsPopup.EditForm.SettingsAdaptivity.MaxWidth = 800;
+		settings.SettingsPopup.EditForm.SettingsAdaptivity.Mode = PopupControlAdaptivityMode.Always;
+		settings.SettingsPopup.EditForm.SettingsAdaptivity.VerticalAlign = PopupAdaptiveVerticalAlign.WindowCenter;
+
+		settings.CallbackRouteValues = new
+		{
+			Controller = "ProcessResult",
+			Action = "GridViewPartial",
+			rid = ViewBag.RunId};
+
+		settings.SettingsEditing.UpdateRowRouteValues = new {Controller = "ProcessResult", Action = "CommentUpdate"};
+		settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+
+		settings.SetEditFormTemplateContent(c =>
+		{
+			Html.RenderAction("EditFormPartial", new {rid = (int) c.KeyValue});
+		});
+
+
+		ProcessResultViewModel vm = null; // compiler needs just type info, not the value
+
+		settings.KeyFieldName = "Id";
+
+
+		// data columns
+		settings.Columns.AddColumnForVmField(vm, m => m.ProcessId);
+		settings.Columns.AddColumnForVmField(vm, m => m.SampleId);
+		settings.Columns.AddColumnForVmField(vm, m => m.ResultId);
+
+		/*Command Column Emulation*/
+		settings.Columns.Add(column =>
+		{
+			column.Caption = "#";
+			column.SetDataItemTemplateContent(c =>
+			{
+				Html.DevExpress().Button(button =>
+				{
+					button.Name = "buttonEdit_" + c.KeyValue;
+					button.UseSubmitBehavior = false;
+					button.CausesValidation = false;
+					button.RenderMode = ButtonRenderMode.Link;
+					button.Text = "";
+					button.ToolTip = "Comment";
+					button.ImagePosition = ImagePosition.Left;
+					button.Images.Image.Url = "~/Content/Images/comment_v2.svg";
+					button.Images.Image.Width = unit16px;
+					button.Images.Image.Height = unit16px;
+					button.Styles.Style.HorizontalAlign = HorizontalAlign.Left;
+					button.ClientSideEvents.Click = $"function(s, e) {{ {settings.Name}.StartEditRow('{c.VisibleIndex}'); }}";
+				}).Render();
+
+				ViewContext.Writer.Write("&nbsp;");
+
+				Html.DevExpress().Button(button =>
+				{
+					button.Name = "buttonReport_" + c.KeyValue;
+					button.UseSubmitBehavior = true;
+					button.CausesValidation = false;
+					button.RenderMode = ButtonRenderMode.Link;
+					button.Text = "";
+					button.ToolTip = "Report";
+					button.ImagePosition = ImagePosition.Left;
+					button.Images.Image.Url = "~/Content/Images/report.svg";
+					button.Images.Image.Width = unit16px;
+					button.Images.Image.Height = unit16px;
+					button.Styles.Style.HorizontalAlign = HorizontalAlign.Left;
+
+					button.RouteValues = new { Controller = "Print", Action = "ProcessResult", id = c.KeyValue };
+				}).Render();
+			});
+		});
+	});
+}
+@gridView.Bind(Model).GetHtml()

@@ -1,0 +1,140 @@
+@using Sasha.Lims.WebUI.Models;
+@using System.Web.UI.WebControls;
+@using Sasha.Lims.WebUI.Controllers;
+@using DevExpress.XtraGrid
+@using Sasha.Lims.WebUI.Infrastructure.ViewModelHelpers;
+@using Sasha.Lims.WebUI.Localization
+
+@{
+	//int samplesCount = (int)ViewBag.SamplesCount;
+	ReagentsLedgerController controller = (ReagentsLedgerController)ViewContext.Controller;
+	var gridView = Html.DevExpress().GridView(settings =>
+	{
+		settings.Name = ReagentsLedgerController.GridViewName;
+		settings.Width = Unit.Percentage(100);
+
+		settings.Settings.VerticalScrollBarMode = ScrollBarMode.Hidden;
+		settings.SettingsResizing.ColumnResizeMode = ColumnResizeMode.Control;
+		settings.SettingsResizing.Visualization = ResizingMode.Postponed;
+
+		settings.SettingsBehavior.ProcessColumnMoveOnClient = false;
+		settings.SettingsBehavior.ColumnMoveMode = GridColumnMoveMode.AmongSiblings;
+		settings.SettingsBehavior.EnableCustomizationWindow = true;
+		settings.SettingsCookies.Enabled = true;
+		settings.SettingsCookies.StoreColumnsVisiblePosition = true;
+		settings.SettingsCookies.StoreColumnsWidth = true;
+		settings.SettingsCookies.StoreControlWidth = false;
+		settings.SettingsCookies.StoreFiltering = true;
+		settings.SettingsCookies.StorePaging = false;
+		settings.SettingsCookies.StoreColumnsHierarchy = false;
+		settings.SettingsCookies.StoreFiltering = false;
+		settings.Settings.ShowGroupPanel = false;
+
+		settings.SettingsBehavior.AllowFocusedRow = true;
+		settings.SettingsBehavior.AllowSelectByRowClick = false;
+		settings.SettingsBehavior.AllowEllipsisInText = true;
+		settings.SettingsBehavior.AllowDragDrop = true;
+
+
+		settings.SettingsPager.Visible = true;
+		settings.Styles.PagerBottomPanel.HorizontalAlign = HorizontalAlign.Right;
+		settings.SettingsPager.Position = PagerPosition.Bottom;
+		settings.SettingsPager.Summary.Visible = false;
+
+		settings.Settings.ShowFilterRow = true;
+		settings.Settings.ShowFilterRowMenu = true;
+		settings.SettingsBehavior.FilterRowMode = GridViewFilterRowMode.Auto;
+
+
+		ReagentLedgerViewModel vm = null; // compiler needs just type info, not the value
+		settings.Columns.AddColumnForVmField(vm, m => m.OperationType);
+		settings.Columns.AddColumnForVmField(vm, m => m.ReagentId);
+		settings.Columns.AddColumnForVmField(vm, m => m.Quantity);
+		settings.Columns.AddColumnForVmField(vm, m => m.LotNumber);
+		settings.Columns.AddColumnForVmField(vm, m => m.ExpirationDate);
+		settings.Columns.AddColumnForVmField(vm, m => m.ProcessId);
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "LocationId";
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.ReagentLedger_LocationId));
+			columnSettings.Settings.SortMode = ColumnSortMode.DisplayText;
+
+			columnSettings.EditorProperties().ComboBox(comboBoxProperties =>
+			{
+				comboBoxProperties.ShowImageInEditBox = true;
+				comboBoxProperties.ItemImage.Width = 16;
+				comboBoxProperties.ItemImage.Height = 16;
+				comboBoxProperties.ValueField = "ShortLocationId";
+				comboBoxProperties.TextField = "ShortPath";
+				comboBoxProperties.BindList(controller.GetSortLocations());
+			});
+		});
+		settings.Columns.AddColumnForVmField(vm, m => m.OperationDate);
+
+		settings.CustomJSProperties = (sender, e) =>
+		{
+			var grid = sender as MVCxGridView;
+			e.Properties["cpRowCount"] = grid.VisibleRowCount;
+
+			if (ViewData["EditError"] != null)
+				e.Properties["cpEditError"] = ViewData["EditError"];
+		};
+
+		settings.SettingsPopup.HeaderFilter.Height = Unit.Pixel(440);
+		settings.SettingsPopup.HeaderFilter.Width = Unit.Pixel(360);
+		settings.SettingsPopup.HeaderFilter.SettingsAdaptivity.Mode = PopupControlAdaptivityMode.OnWindowInnerWidth;
+		settings.SettingsPopup.HeaderFilter.SettingsAdaptivity.SwitchAtWindowInnerWidth = 768;
+
+		//Command columns settings
+		settings.CommandColumn.Visible = true;
+		settings.CommandColumn.ShowSelectCheckbox = true;
+		settings.CommandColumn.SelectAllCheckboxMode = GridViewSelectAllCheckBoxMode.Page;
+		settings.CommandColumn.VisibleIndex = 0;
+		settings.CommandColumn.Width = Unit.Pixel(52);
+
+		settings.SettingsContextMenu.EnableRowMenu = DefaultBoolean.False;
+
+		//Handles standard grid callback requests.
+		settings.CallbackRouteValues = new { Controller = "ReagentsLedger", Action = "GridViewPartial" };
+
+		settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+		settings.SettingsEditing.EditFormColumnCount = 2;
+		settings.SettingsPopup.EditForm.SettingsAdaptivity.MaxWidth = 800;
+		settings.SettingsPopup.EditForm.SettingsAdaptivity.Mode = PopupControlAdaptivityMode.Always;
+		settings.SettingsPopup.EditForm.SettingsAdaptivity.VerticalAlign = PopupAdaptiveVerticalAlign.WindowCenter;
+
+		settings.SetEditFormTemplateContent(c => Html.RenderAction("DetailsPartial", "ReagentsLedger", new { id = DataBinder.Eval(c.DataItem, "Id") }));
+
+		//Handles grid data operations - in this sample, paging and sorting.
+		settings.CustomBindingRouteValuesCollection.Add(GridViewOperationType.Paging, new { Controller = "ReagentsLedger", Action = "GridViewPagingAction" });
+		settings.CustomBindingRouteValuesCollection.Add(GridViewOperationType.Sorting, new { Controller = "ReagentsLedger", Action = "GridViewSortingAction" });
+		settings.CustomBindingRouteValuesCollection.Add(GridViewOperationType.Filtering, new { Controller = "ReagentsLedger", Action = "GridViewFilteringAction" });
+
+		settings.CustomActionRouteValues = new { Controller = "ReagentsLedger", Action = "GridViewCustomAction" };
+
+		//Select checkbox enabled
+		settings.CommandButtonInitialize = (sender, e) =>
+		{
+			if (e.VisibleIndex == -1) return;
+			if (e.ButtonType == ColumnCommandButtonType.SelectCheckbox)
+			{
+				var enabled = true;
+				e.Visible = enabled;
+				e.Enabled = enabled;
+			}
+		};
+
+		settings.SettingsDataSecurity.AllowReadUnlistedFieldsFromClientApi = DefaultBoolean.True;
+
+		settings.ClientSideEvents.Init = "onGridViewInit";
+		settings.ClientSideEvents.SelectionChanged = "onGridViewSelectionChanged";
+		settings.ClientSideEvents.BeginCallback = "onGridViewBeginCallback";
+		settings.ClientSideEvents.EndCallback = "onGridViewEndCallback";
+		//settings.ClientSideEvents.RowDblClick = "onRowDblClick";
+		settings.ClientSideEvents.ColumnResized = "function(s, e) {	e.processOnServer = true; }"; // force event to save cookie
+		settings.ClientSideEvents.CustomizationWindowCloseUp = "onGridCustomizationWindowCloseUp";
+	});
+}
+
+@gridView.BindToCustomData(Model).GetHtml()

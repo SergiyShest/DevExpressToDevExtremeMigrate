@@ -1,0 +1,241 @@
+@using System.Drawing
+@using Sasha.Lims.Core.BusinessObjects
+@using DevExpress.Utils
+@using DevExpress.Web
+@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@using Sasha.Lims.DataAccess.Entities.Constants
+
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@functions {
+	private void FillContextMenuItems(object sender, ASPxGridViewContextMenuEventArgs e)
+	{
+		if (e.MenuType == GridViewContextMenuType.Rows)
+		{
+			var item = e.Items.FindByCommand(GridViewContextMenuCommand.DeleteRow);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.NewRow);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.Refresh);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.EditRow);
+			e.Items.Remove(item);
+			item = e.Items.Add("Edit", "Edit");
+			item.Image.Url = "~/Content/Images/edit.svg";
+			item = e.Items.Add("Copy", "Copy");
+			item.Image.Url = "~/Content/Images/move.svg";
+			item = e.Items.Add("Discard", "Discard");
+			item.Image.Url = "~/Content/Images/delete_v2.svg";
+		}
+	}
+}
+@{
+	var gridView = Html.DevExpress().GridView(settings =>
+	{
+		SettingHelper.InitCommonGridSettings(settings);
+		settings.CallbackRouteValues = new { Action = "CallbackRouteValues", Controller = "ReagentJournal", Area = "Reagents" };
+		//SettingHelper.InitAdvancedGridSettings(settings, "ReagentJournal", ViewContext);
+		settings.SettingsEditing.BatchUpdateRouteValues = new { Action = "BatchEditingUpdateModel", Controller = "ReagentJournal", Area = "Reagents" };
+		settings.KeyFieldName = "Id";
+		settings.SettingsContextMenu.EnableRowMenu = DefaultBoolean.True;
+		settings.FillContextMenuItems = FillContextMenuItems;
+		settings.ClientSideEvents.ContextMenuItemClick = "onContextMenuItemClick";
+
+		settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;//все колонки сжимаются
+																	   //settings.SettingsEditing.Mode = GridViewEditingMode.Inline;
+		settings.SettingsEditing.Mode = GridViewEditingMode.Inline;
+		settings.SettingsPager.Mode = GridViewPagerMode.EndlessPaging;
+		settings.SettingsEditing.BatchEditSettings.EditMode = GridViewBatchEditMode.Row;
+		settings.SettingsEditing.BatchEditSettings.StartEditAction = GridViewBatchStartEditAction.FocusedCellClick;
+		settings.SettingsEditing.BatchEditSettings.HighlightDeletedRows = true;
+		settings.SettingsEditing.BatchEditSettings.KeepChangesOnCallbacks = DefaultBoolean.True;
+
+		settings.SettingsPager.PageSize = 50;
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.Caption = "Type";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 150;
+			columnSettings.EditFormSettings.Visible = DefaultBoolean.False;
+			columnSettings.SetDataItemTemplateContent(c =>
+			{
+				try
+				{
+
+					var type = DataBinder.Eval(c.DataItem, "Type_id")?.ToString();
+					var typeName = DataBinder.Eval(c.DataItem, "TypeName")?.ToString();
+					string imageUrl = null;
+
+
+					if (type == ((int)ReagentTypes.KitReagents).ToString())
+					{
+						imageUrl = new UrlHelper(HttpContext.Current.Request.RequestContext).Content(string.Format("~/Content/Images/Reagents/" + ReagentTypes.KitReagents + ".png"));
+					}
+					else
+						if (type == ((int)ReagentTypes.BoxKitReagents).ToString())
+					{
+						imageUrl = new UrlHelper(HttpContext.Current.Request.RequestContext).Content(string.Format("~/Content/Images/Reagents/" + ReagentTypes.BoxKitReagents + ".png"));
+					}
+					else
+						if (type == ((int)ReagentTypes.BoxReagents).ToString())
+					{
+						imageUrl = new UrlHelper(HttpContext.Current.Request.RequestContext).Content(string.Format("~/Content/Images/Reagents/" + ReagentTypes.BoxReagents + ".png"));
+					}
+					else
+					{
+						imageUrl = new UrlHelper(HttpContext.Current.Request.RequestContext).Content(string.Format("~/Content/Images/Reagents/" + ReagentTypes.SingleReagent + ".png"));
+					}
+
+
+					ViewContext.Writer.Write("<img src=\"{0}\" style=\"width:20px\" />" + typeName, imageUrl);
+
+				}
+				catch (Exception )
+				{
+
+				}
+			});
+
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Id";
+			columnSettings.Caption = "Id";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 50;
+			columnSettings.EditFormSettings.Visible = DefaultBoolean.False;
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Name";
+			columnSettings.Caption = "Name";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 150;
+			columnSettings.EditFormSettings.Visible = DefaultBoolean.False;
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Barcode";
+			columnSettings.Caption = "Barcode";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 150;
+			columnSettings.EditFormSettings.Visible = DefaultBoolean.False;
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "InitialQuantity";
+			columnSettings.Caption = "Initial Quantity";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 100;
+			columnSettings.EditFormSettings.Visible = DefaultBoolean.False;
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Quantity";
+			columnSettings.Caption = "Quantity";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 100;
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "UnitName";
+			columnSettings.Caption = "Unit Name";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 100;
+			columnSettings.EditFormSettings.Visible = DefaultBoolean.False;
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "ExpirationDate";
+			columnSettings.Caption = "Expiration Date";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 100;
+			columnSettings.EditFormSettings.Visible = DefaultBoolean.False;
+
+		});
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Location";
+			columnSettings.Caption = "Location";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 200;
+			columnSettings.EditFormSettings.Visible = DefaultBoolean.False;
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Batch";
+			columnSettings.Caption = "Batch";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 200;
+			columnSettings.EditFormSettings.Visible = DefaultBoolean.False;
+
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "StorageTemp";
+			columnSettings.Caption = "Storage Temperature";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 150;
+			columnSettings.EditFormSettings.Visible = DefaultBoolean.False;
+		});
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Size";
+			columnSettings.Caption = "Size";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 50;
+			columnSettings.EditFormSettings.Visible = DefaultBoolean.False;
+
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "ChaildCount";
+			columnSettings.Caption = "Chaild Count";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 150;
+			columnSettings.Visible = true;
+			columnSettings.EditFormSettings.Visible = DefaultBoolean.False;
+		});
+		settings.DataBound = (s, e) =>
+		{
+			if (ViewData["filterExpression"] != null)
+				((ASPxGridView)s).FilterExpression = ViewData["filterExpression"].ToString();
+
+			System.Diagnostics.Debug.WriteLine(((ASPxGridView)s).FilterExpression);
+		};
+		SettingHelper.AddCustomColumnsAdv(settings, TableType.Reagent);
+
+		Html.AddColmmentCountColumn(settings, false); //Comment
+		Html.AddFilesCountColumn(settings, false); //Files
+		SettingHelper.AddCommandColumn(settings);
+		settings.ClientSideEvents.SelectionChanged = "onGridViewSelectionChanged";
+		settings.ClientSideEvents.BeginCallback = "onGridViewBeginCallback";
+		settings.ClientSideEvents.EndCallback = "onGridViewEndCallback";
+		settings.ClientSideEvents.CustomizationWindowCloseUp = "onGridCustomizationWindowCloseUp";
+		settings.ClientSideEvents.RowDblClick = "onRowDblClick";
+		settings.ClientSideEvents.Init = "onGridViewInit";
+		settings.ClientSideEvents.FocusedRowChanged = "onFocusedRowChanged";
+
+	});
+	if (Model == null)
+	{
+		@gridView.GetHtml()
+	}
+	else
+	{
+		@gridView.BindToEF(string.Empty, string.Empty, (s, e) =>
+			{
+				e.QueryableSource = Model;
+				e.KeyExpression = "Id";
+			}, (s, e) =>
+			{
+				// Handle internal exception
+				var mess = e.Exception?.InnerException.Message ?? e.Exception.Message;
+				mess = "<div style='color:red'>" + mess + "</div>";
+				ViewContext.Writer.Write(mess); //пишу ошибку прямо на экран
+			}).GetHtml()
+	}
+}

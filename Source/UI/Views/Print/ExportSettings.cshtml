@@ -1,0 +1,21 @@
+@model CachedReportSourceWeb
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+	@Html.DevExpress().GetStyleSheets(
+		new StyleSheet { ExtensionSuite = ExtensionSuite.Report }
+		)
+	@Html.DevExpress().GetScripts(
+		new Script { ExtensionSuite = ExtensionSuite.Report }
+		)
+</head>
+<body>
+	<div>
+		@Html.Partial("_ExportSettingsPartial")
+	</div>
+</body>
+</html>

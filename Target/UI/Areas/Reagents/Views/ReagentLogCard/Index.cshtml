@@ -1,0 +1,76 @@
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+	Layout = "_LayoutEmpty";
+}
+<link rel="stylesheet" href="/example.css">
+<script src="~/lib/vue2.js" ></script>
+<script src="~/BaseMixinSDN.js" asp-append-version="true"></script>
+<script src="~/vueComponents.js" asp-append-version="true"></script>
+
+<div style="display:flex;flex-direction:column;align-items:flex-start;align-content:flex-start;align-self:stretch">
+	<h1></h1>
+
+	<div id="app" style="display: flex;flex-direction: column;width: 450px;">
+		<div id="items"  class="grid-container">
+		    /<kf-number text = 'Id' v-model = 'Item.Id'  ></kf-number>
+<kf-input text = 'Name' v-model = 'Item.Name'  ></kf-input>
+<kf-input text = 'VendorName' v-model = 'Item.VendorName'  ></kf-input>
+<kf-number text = 'Reagent Id' v-model = 'Item.ReagentId'  ></kf-number>
+<kf-number text = 'Is Writed Of' v-model = 'Item.IsExists'  ></kf-number>
+<kf-number text = 'Quantity' v-model = 'Item.Quantity'  ></kf-number>
+<kf-input text = 'Unit Name' v-model = 'Item.UnitName'  ></kf-input>
+<kf-input text = 'Location' v-model = 'Item.Location'  ></kf-input>
+<kf-number text = 'OperationId' v-model = 'Item.OperationId'  ></kf-number>
+<kf-input text = 'Operation Name' v-model = 'Item.OperationName'  ></kf-input>
+<kf-input text = 'Singature' v-model = 'Item.Singature'  ></kf-input>
+<kf-input text = 'UserName' v-model = 'Item.UserName'  ></kf-input>
+
+		</div>
+
+		<div style="display:flex;flex-direction:row;">
+
+			<kf-button id="saveButton" v-if="mode!='view'"		 v-on:click.native="SaveClick"	text="Coхранить"		image="copy"  ></kf-button>
+			<kf-button id="closeButton" v-if="mode!='view'"	     v-on:click.native="CloseClick"	text="Закрыть"			image="delete" style="margin-left:auto"  ></kf-button>
+		</div>
+	</div>
+</div>
+
+<script>
+
+    $(window).on("load",function () {
+	@Html.Raw(TempData["StartupScript"])
+		});
+		 let Mode = '@ViewBag.Mode'
+	     let Id = '@ViewBag.Id';
+
+
+	 let vue_ = new Vue({
+		 el: "#app",
+		 mixins: [baseMixin],
+		 data() {
+			 return {
+				 Item: {  }
+			 }
+		 }
+		 ,
+		 methods: {
+			 Get() {
+				 const pathEnd = "/Reagents/ReagentLogCard/Get?id="+Id;
+				 this.FetchJson( pathEnd,this.Ok)
+			 },
+			 Ok(data) {
+				 console.log(data)
+				 this.Item = data;
+			 },
+
+			CloseClick() {
+			 
+		  }
+		 },
+		 mounted: function () {
+          this.Get()
+
+
+		 }
+	 });
+</script>

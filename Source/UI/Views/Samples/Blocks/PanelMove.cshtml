@@ -1,0 +1,66 @@
+@using System.Web.UI.WebControls
+@using Sasha.Lims.WebUI.Localization
+
+<script>
+	(function () {
+		function validateMove(s, e) {
+			var locationId = $("input[name='LocationId']")
+			var canSubmit = locationId[0] && locationId[0].value ; // location up set by dx comboedit
+			if (!canSubmit)
+				alert('@Html.GetLocalizedCommonText("InvalidOperationFillLocationFirst")');
+			return !(!canSubmit);
+		}
+		window.validateMove = validateMove;
+	})()
+</script>
+
+@using (Html.BeginForm("Move", "Samples", new { editMode = ViewBag.EditMode }, FormMethod.Post, new { onsubmit = "return validateMove()" }))
+{
+	@Html.DevExpress().FormLayout(s =>
+	{
+		s.ColCount = 2;
+		s.Name = "MovePanel";
+		s.Width = Unit.Percentage(100);
+		s.Items.Add(i =>
+		{
+			i.Caption = "New Location";
+			i.Name = "EditingLocation";
+			i.NestedExtension().DropDownEdit(cb =>
+			{
+				cb.Properties.ClientSideEvents.Init = "onInitTreeViewLocations";
+				cb.Properties.ClientSideEvents.DropDown = "onDropDownTreeViewLocations";
+				cb.Properties.NullText = "(No Selection)";
+				cb.ReadOnly = true;
+				cb.SetDropDownWindowTemplateContent(c =>
+				{
+					Html.RenderAction("LocationsTreeListPartial", new { selectedId = Model?.LocationId });
+				});
+			});
+		});
+		s.Items.Add(i =>
+		{
+			i.ShowCaption = DefaultBoolean.False;
+			i.Name = "grpMoveCmd";
+			i.Width = Unit.Percentage(100);
+			i.SetNestedContent(() => {
+				Html.DevExpress().Button(
+					buttonSettings =>
+					{
+						buttonSettings.Name = "btnMove";
+						buttonSettings.ControlStyle.CssClass = "button";
+						buttonSettings.Width = 80;
+						buttonSettings.Text = Html.GetLocalizedText<UI>(nameof(UI.ButtonMove));
+						buttonSettings.UseSubmitBehavior = true;
+					}
+				).GetHtml();
+			});
+		});
+		s.Items.Add(i =>
+		{
+			i.Name = "LocationId";
+			i.Caption = "HiddenVis";
+			i.ClientVisible = false;
+		});
+	}).GetHtml()
+
+}

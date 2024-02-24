@@ -1,0 +1,1361 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="EMLabModelStoreContainer" CdmEntityContainer="EMLabEntities">
+    <EntitySetMapping Name="a_prop">
+      <EntityTypeMapping TypeName="EMLabModel.a_prop">
+        <MappingFragment StoreEntitySet="a_prop">
+          <ScalarProperty Name="path" ColumnName="path" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="num" ColumnName="num" />
+          <ScalarProperty Name="value" ColumnName="value" />
+          <ScalarProperty Name="code" ColumnName="code" />
+          <ScalarProperty Name="prop_id" ColumnName="prop_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="v" ColumnName="v" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="c_client">
+      <EntityTypeMapping TypeName="EMLabModel.c_client">
+        <MappingFragment StoreEntitySet="c_client">
+          <ScalarProperty Name="prop10" ColumnName="prop10" />
+          <ScalarProperty Name="prop9" ColumnName="prop9" />
+          <ScalarProperty Name="prop8" ColumnName="prop8" />
+          <ScalarProperty Name="prop7" ColumnName="prop7" />
+          <ScalarProperty Name="prop6" ColumnName="prop6" />
+          <ScalarProperty Name="prop5" ColumnName="prop5" />
+          <ScalarProperty Name="prop4" ColumnName="prop4" />
+          <ScalarProperty Name="prop3" ColumnName="prop3" />
+          <ScalarProperty Name="prop2" ColumnName="prop2" />
+          <ScalarProperty Name="prop1" ColumnName="prop1" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="v" ColumnName="v" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="c_doctor">
+      <EntityTypeMapping TypeName="EMLabModel.c_doctor">
+        <MappingFragment StoreEntitySet="c_doctor">
+          <ScalarProperty Name="prop10" ColumnName="prop10" />
+          <ScalarProperty Name="prop9" ColumnName="prop9" />
+          <ScalarProperty Name="prop8" ColumnName="prop8" />
+          <ScalarProperty Name="prop7" ColumnName="prop7" />
+          <ScalarProperty Name="prop6" ColumnName="prop6" />
+          <ScalarProperty Name="prop5" ColumnName="prop5" />
+          <ScalarProperty Name="prop4" ColumnName="prop4" />
+          <ScalarProperty Name="prop3" ColumnName="prop3" />
+          <ScalarProperty Name="prop2" ColumnName="prop2" />
+          <ScalarProperty Name="prop1" ColumnName="prop1" />
+          <ScalarProperty Name="sendEmail" ColumnName="sendEmail" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="lastName" ColumnName="lastName" />
+          <ScalarProperty Name="firstName" ColumnName="firstName" />
+          <ScalarProperty Name="client_id" ColumnName="client_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="v" ColumnName="v" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="c_patient">
+      <EntityTypeMapping TypeName="EMLabModel.c_patient">
+        <MappingFragment StoreEntitySet="c_patient">
+          <ScalarProperty Name="Sended" ColumnName="Sended" />
+          <ScalarProperty Name="prop10" ColumnName="prop10" />
+          <ScalarProperty Name="prop9" ColumnName="prop9" />
+          <ScalarProperty Name="prop8" ColumnName="prop8" />
+          <ScalarProperty Name="prop7" ColumnName="prop7" />
+          <ScalarProperty Name="prop6" ColumnName="prop6" />
+          <ScalarProperty Name="prop5" ColumnName="prop5" />
+          <ScalarProperty Name="prop4" ColumnName="prop4" />
+          <ScalarProperty Name="prop3" ColumnName="prop3" />
+          <ScalarProperty Name="prop2" ColumnName="prop2" />
+          <ScalarProperty Name="prop1" ColumnName="prop1" />
+          <ScalarProperty Name="sendEmail" ColumnName="sendEmail" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="dob" ColumnName="dob" />
+          <ScalarProperty Name="lastName" ColumnName="lastName" />
+          <ScalarProperty Name="firstName" ColumnName="firstName" />
+          <ScalarProperty Name="no" ColumnName="no" />
+          <ScalarProperty Name="doctor_id" ColumnName="doctor_id" />
+          <ScalarProperty Name="client_id" ColumnName="client_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="v" ColumnName="v" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="s_custodyLog">
+      <EntityTypeMapping TypeName="EMLabModel.s_custodyLog">
+        <MappingFragment StoreEntitySet="s_custodyLog">
+          <ScalarProperty Name="singature" ColumnName="singature" />
+          <ScalarProperty Name="aspNetUser_Id" ColumnName="aspNetUser_Id" />
+          <ScalarProperty Name="location_id" ColumnName="location_id" />
+          <ScalarProperty Name="status_id" ColumnName="status_id" />
+          <ScalarProperty Name="sample_id" ColumnName="sample_id" />
+          <ScalarProperty Name="logDateTime" ColumnName="logDateTime" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="v" ColumnName="v" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="a_file">
+      <EntityTypeMapping TypeName="EMLabModel.a_file">
+        <MappingFragment StoreEntitySet="a_file">
+          <ScalarProperty Name="path" ColumnName="path" />
+          <ScalarProperty Name="aspNetUser_Id" ColumnName="aspNetUser_Id" />
+          <ScalarProperty Name="data" ColumnName="data" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="type_id" ColumnName="type_id" />
+          <ScalarProperty Name="createdByUser_id" ColumnName="createdByUser_id" />
+          <ScalarProperty Name="createdDateTime" ColumnName="createdDateTime" />
+          <ScalarProperty Name="row_id" ColumnName="row_id" />
+          <ScalarProperty Name="table_id" ColumnName="table_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="v" ColumnName="v" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="a_tableLink">
+      <EntityTypeMapping TypeName="EMLabModel.a_tableLink">
+        <MappingFragment StoreEntitySet="a_tableLink">
+          <ScalarProperty Name="rowTo_id" ColumnName="rowTo_id" />
+          <ScalarProperty Name="tableTo_id" ColumnName="tableTo_id" />
+          <ScalarProperty Name="rowFrom_id" ColumnName="rowFrom_id" />
+          <ScalarProperty Name="tableFrom_id" ColumnName="tableFrom_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="v" ColumnName="v" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vJourLineFiles">
+      <EntityTypeMapping TypeName="EMLabModel.vJourLineFile">
+        <MappingFragment StoreEntitySet="vJourLineFile">
+          <ScalarProperty Name="aspNetUser_Id" ColumnName="aspNetUser_Id" />
+          <ScalarProperty Name="data" ColumnName="data" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="type_id" ColumnName="type_id" />
+          <ScalarProperty Name="createdDateTime" ColumnName="createdDateTime" />
+          <ScalarProperty Name="file_id" ColumnName="file_id" />
+          <ScalarProperty Name="sample_id" ColumnName="sample_id" />
+          <ScalarProperty Name="jourLine_id" ColumnName="jourLine_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vSampleFiles">
+      <EntityTypeMapping TypeName="EMLabModel.vSampleFile">
+        <MappingFragment StoreEntitySet="vSampleFile">
+          <ScalarProperty Name="aspNetUser_Id" ColumnName="aspNetUser_Id" />
+          <ScalarProperty Name="data" ColumnName="data" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="type_id" ColumnName="type_id" />
+          <ScalarProperty Name="createdDateTime" ColumnName="createdDateTime" />
+          <ScalarProperty Name="file_id" ColumnName="file_id" />
+          <ScalarProperty Name="sample_id" ColumnName="sample_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="s_jourLine">
+      <EntityTypeMapping TypeName="EMLabModel.s_jourLine">
+        <MappingFragment StoreEntitySet="s_jourLine">
+          <ScalarProperty Name="propd5" ColumnName="propd5" />
+          <ScalarProperty Name="propd4" ColumnName="propd4" />
+          <ScalarProperty Name="propd3" ColumnName="propd3" />
+          <ScalarProperty Name="propd2" ColumnName="propd2" />
+          <ScalarProperty Name="propd1" ColumnName="propd1" />
+          <ScalarProperty Name="propn5" ColumnName="propn5" />
+          <ScalarProperty Name="propn4" ColumnName="propn4" />
+          <ScalarProperty Name="propn3" ColumnName="propn3" />
+          <ScalarProperty Name="propn2" ColumnName="propn2" />
+          <ScalarProperty Name="propn1" ColumnName="propn1" />
+          <ScalarProperty Name="props5" ColumnName="props5" />
+          <ScalarProperty Name="props4" ColumnName="props4" />
+          <ScalarProperty Name="props3" ColumnName="props3" />
+          <ScalarProperty Name="props2" ColumnName="props2" />
+          <ScalarProperty Name="props1" ColumnName="props1" />
+          <ScalarProperty Name="flags" ColumnName="flags" />
+          <ScalarProperty Name="draft_bathId" ColumnName="draft_bathId" />
+          <ScalarProperty Name="Discriminator" ColumnName="Discriminator" />
+          <ScalarProperty Name="process_id" ColumnName="process_id" />
+          <ScalarProperty Name="source_id" ColumnName="source_id" />
+          <ScalarProperty Name="prop10" ColumnName="prop10" />
+          <ScalarProperty Name="prop9" ColumnName="prop9" />
+          <ScalarProperty Name="prop8" ColumnName="prop8" />
+          <ScalarProperty Name="prop7" ColumnName="prop7" />
+          <ScalarProperty Name="prop6" ColumnName="prop6" />
+          <ScalarProperty Name="prop5" ColumnName="prop5" />
+          <ScalarProperty Name="prop4" ColumnName="prop4" />
+          <ScalarProperty Name="prop3" ColumnName="prop3" />
+          <ScalarProperty Name="prop2" ColumnName="prop2" />
+          <ScalarProperty Name="prop1" ColumnName="prop1" />
+          <ScalarProperty Name="patientSendEmail" ColumnName="patientSendEmail" />
+          <ScalarProperty Name="patientEmail" ColumnName="patientEmail" />
+          <ScalarProperty Name="emailReport" ColumnName="emailReport" />
+          <ScalarProperty Name="makeAliquot" ColumnName="makeAliquot" />
+          <ScalarProperty Name="batch_id" ColumnName="batch_id" />
+          <ScalarProperty Name="parent_id" ColumnName="parent_id" />
+          <ScalarProperty Name="acceptedDate" ColumnName="acceptedDate" />
+          <ScalarProperty Name="sample_version" ColumnName="sample_version" />
+          <ScalarProperty Name="workflowStatus_id" ColumnName="workflowStatus_id" />
+          <ScalarProperty Name="ModDate" ColumnName="ModDate" />
+          <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+          <ScalarProperty Name="aspNetUser_Id" ColumnName="aspNetUser_Id" />
+          <ScalarProperty Name="tubeType_id" ColumnName="tubeType_id" />
+          <ScalarProperty Name="volumeUnit_id" ColumnName="volumeUnit_id" />
+          <ScalarProperty Name="volume" ColumnName="volume" />
+          <ScalarProperty Name="sampleType_id" ColumnName="sampleType_id" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="equipment_id" ColumnName="equipment_id" />
+          <ScalarProperty Name="location_id" ColumnName="location_id" />
+          <ScalarProperty Name="patient_id" ColumnName="patient_id" />
+          <ScalarProperty Name="doctor_id" ColumnName="doctor_id" />
+          <ScalarProperty Name="client_id" ColumnName="client_id" />
+          <ScalarProperty Name="status_id" ColumnName="status_id" />
+          <ScalarProperty Name="collectedDate" ColumnName="collectedDate" />
+          <ScalarProperty Name="workflow_id" ColumnName="workflow_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="well" ColumnName="well" />
+          <ScalarProperty Name="barcode" ColumnName="barcode" />
+          <ScalarProperty Name="sample_id" ColumnName="sample_id" />
+          <ScalarProperty Name="documentNo" ColumnName="documentNo" />
+          <ScalarProperty Name="jourType_id" ColumnName="jourType_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="v" ColumnName="v" />
+          <ScalarProperty Name="patientNo" ColumnName="PacientNo" />
+          <ScalarProperty Name="patientFirstName" ColumnName="PacientFirstName" />
+          <ScalarProperty Name="patientLastName" ColumnName="PacientLastName" />
+          <ScalarProperty Name="patientDateOfBirth" ColumnName="PacientDateOfBirth" />
+          <ScalarProperty Name="model_id" ColumnName="model_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="s_sample">
+      <EntityTypeMapping TypeName="IsTypeOf(EMLabModel.s_sample)">
+        <MappingFragment StoreEntitySet="s_sample">
+          <ScalarProperty Name="propd5" ColumnName="propd5" />
+          <ScalarProperty Name="propd4" ColumnName="propd4" />
+          <ScalarProperty Name="propd3" ColumnName="propd3" />
+          <ScalarProperty Name="propd2" ColumnName="propd2" />
+          <ScalarProperty Name="propd1" ColumnName="propd1" />
+          <ScalarProperty Name="propn5" ColumnName="propn5" />
+          <ScalarProperty Name="propn4" ColumnName="propn4" />
+          <ScalarProperty Name="propn3" ColumnName="propn3" />
+          <ScalarProperty Name="propn2" ColumnName="propn2" />
+          <ScalarProperty Name="propn1" ColumnName="propn1" />
+          <ScalarProperty Name="props5" ColumnName="props5" />
+          <ScalarProperty Name="props4" ColumnName="props4" />
+          <ScalarProperty Name="props3" ColumnName="props3" />
+          <ScalarProperty Name="props2" ColumnName="props2" />
+          <ScalarProperty Name="props1" ColumnName="props1" />
+          <ScalarProperty Name="flags" ColumnName="flags" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="v" ColumnName="v" />
+          <ScalarProperty Name="barcode" ColumnName="barcode" />
+          <ScalarProperty Name="tubeType_id" ColumnName="tubeType_id" />
+          <ScalarProperty Name="well" ColumnName="well" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="workflow_id" ColumnName="workflow_id" />
+          <ScalarProperty Name="collectedDateTime" ColumnName="collectedDateTime" />
+          <ScalarProperty Name="status_id" ColumnName="status_id" />
+          <ScalarProperty Name="client_id" ColumnName="client_id" />
+          <ScalarProperty Name="doctor_id" ColumnName="doctor_id" />
+          <ScalarProperty Name="patient_id" ColumnName="patient_id" />
+          <ScalarProperty Name="location_id" ColumnName="location_id" />
+          <ScalarProperty Name="equipment_id" ColumnName="equipment_id" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="sampleType_id" ColumnName="sampleType_id" />
+          <ScalarProperty Name="volume" ColumnName="volume" />
+          <ScalarProperty Name="volumeUnit_id" ColumnName="volumeUnit_id" />
+          <ScalarProperty Name="aspNetUser_Id" ColumnName="aspNetUser_Id" />
+          <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+          <ScalarProperty Name="ModDate" ColumnName="ModDate" />
+          <ScalarProperty Name="workflowStatus_id" ColumnName="workflowStatus_id" />
+          <ScalarProperty Name="process_id" ColumnName="process_id" />
+          <ScalarProperty Name="model_id" ColumnName="model_id" />
+          <ScalarProperty Name="parent_id" ColumnName="parent_id" />
+          <ScalarProperty Name="acceptedDate" ColumnName="acceptedDate" />
+          <ScalarProperty Name="isChild" ColumnName="isChild" />
+          <ScalarProperty Name="batch_id" ColumnName="batch_id" />
+          <ScalarProperty Name="prop1" ColumnName="prop1" />
+          <ScalarProperty Name="prop2" ColumnName="prop2" />
+          <ScalarProperty Name="prop3" ColumnName="prop3" />
+          <ScalarProperty Name="prop4" ColumnName="prop4" />
+          <ScalarProperty Name="prop5" ColumnName="prop5" />
+          <ScalarProperty Name="prop6" ColumnName="prop6" />
+          <ScalarProperty Name="prop7" ColumnName="prop7" />
+          <ScalarProperty Name="prop8" ColumnName="prop8" />
+          <ScalarProperty Name="prop9" ColumnName="prop9" />
+          <ScalarProperty Name="prop10" ColumnName="prop10" />
+          <ScalarProperty Name="source_id" ColumnName="source_id" />
+          <ScalarProperty Name="Discriminator" ColumnName="Discriminator" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vPropLocations">
+      <EntityTypeMapping TypeName="IsTypeOf(EMLabModel.vPropLocation)">
+        <MappingFragment StoreEntitySet="vPropLocation">
+          <ScalarProperty Name="limited_path" ColumnName="limited_path" />
+          <ScalarProperty Name="limited_id" ColumnName="limited_id" />
+          <ScalarProperty Name="limited_level" ColumnName="limited_level" />
+          <ScalarProperty Name="treepath" ColumnName="treepath" />
+          <ScalarProperty Name="LEVEL" ColumnName="LEVEL" />
+          <ScalarProperty Name="prop_id" ColumnName="prop_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="a_comment">
+      <EntityTypeMapping TypeName="EMLabModel.a_comment">
+        <MappingFragment StoreEntitySet="a_comment">
+          <ScalarProperty Name="commentType_id" ColumnName="commentType_id" />
+          <ScalarProperty Name="comment" ColumnName="comment" />
+          <ScalarProperty Name="createdByUser_id" ColumnName="createdByUser_id" />
+          <ScalarProperty Name="createdDateTime" ColumnName="createdDateTime" />
+          <ScalarProperty Name="row_id" ColumnName="row_id" />
+          <ScalarProperty Name="table_id" ColumnName="table_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="v" ColumnName="v" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="wf_process">
+      <EntityTypeMapping TypeName="EMLabModel.wf_process">
+        <MappingFragment StoreEntitySet="wf_process">
+          <ScalarProperty Name="flags" ColumnName="flags" />
+          <ScalarProperty Name="result_path" ColumnName="result_path" />
+          <ScalarProperty Name="dateUpdated" ColumnName="dateUpdated" />
+          <ScalarProperty Name="updatedBy_id" ColumnName="updatedBy_id" />
+          <ScalarProperty Name="createdBy_id" ColumnName="createdBy_id" />
+          <ScalarProperty Name="dateCreated" ColumnName="dateCreated" />
+          <ScalarProperty Name="completedBy_id" ColumnName="completedBy_id" />
+          <ScalarProperty Name="startedBy_id" ColumnName="startedBy_id" />
+          <ScalarProperty Name="dateCompleted" ColumnName="dateCompleted" />
+          <ScalarProperty Name="dateStarted" ColumnName="dateStarted" />
+          <ScalarProperty Name="status_id" ColumnName="status_id" />
+          <ScalarProperty Name="type_id" ColumnName="type_id" />
+          <ScalarProperty Name="run_id" ColumnName="run_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="v" ColumnName="v" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="wf_run">
+      <EntityTypeMapping TypeName="EMLabModel.wf_run">
+        <MappingFragment StoreEntitySet="wf_run">
+          <ScalarProperty Name="completedBy_id" ColumnName="completedBy_id" />
+          <ScalarProperty Name="createdBy_id" ColumnName="createdBy_id" />
+          <ScalarProperty Name="dateCreated" ColumnName="dateCreated" />
+          <ScalarProperty Name="updatedBy_id" ColumnName="updatedBy_id" />
+          <ScalarProperty Name="startedBy_id" ColumnName="startedBy_id" />
+          <ScalarProperty Name="dateCompleted" ColumnName="dateCompleted" />
+          <ScalarProperty Name="dateUpdated" ColumnName="dateUpdated" />
+          <ScalarProperty Name="dateStarted" ColumnName="dateStarted" />
+          <ScalarProperty Name="status_id" ColumnName="status_id" />
+          <ScalarProperty Name="curProcess_id" ColumnName="curProcess_id" />
+          <ScalarProperty Name="code" ColumnName="code" />
+          <ScalarProperty Name="type_id" ColumnName="type_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="v" ColumnName="v" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="srv_request">
+      <EntityTypeMapping TypeName="EMLabModel.srv_request">
+        <MappingFragment StoreEntitySet="srv_request">
+          <ScalarProperty Name="prop_id" ColumnName="prop_id" />
+          <ScalarProperty Name="data_id" ColumnName="data_id" />
+          <ScalarProperty Name="dateTimeRequested" ColumnName="dateTimeRequested" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="r_reagent">
+      <EntityTypeMapping TypeName="EMLabModel.r_reagent">
+        <MappingFragment StoreEntitySet="r_reagent">
+          <ScalarProperty Name="prop10" ColumnName="prop10" />
+          <ScalarProperty Name="prop9" ColumnName="prop9" />
+          <ScalarProperty Name="prop8" ColumnName="prop8" />
+          <ScalarProperty Name="prop7" ColumnName="prop7" />
+          <ScalarProperty Name="prop6" ColumnName="prop6" />
+          <ScalarProperty Name="prop5" ColumnName="prop5" />
+          <ScalarProperty Name="prop4" ColumnName="prop4" />
+          <ScalarProperty Name="prop3" ColumnName="prop3" />
+          <ScalarProperty Name="prop2" ColumnName="prop2" />
+          <ScalarProperty Name="prop1" ColumnName="prop1" />
+          <ScalarProperty Name="vendor_id" ColumnName="vendor_id" />
+          <ScalarProperty Name="storageTemp_id" ColumnName="storageTemp_id" />
+          <ScalarProperty Name="catalogNumber" ColumnName="catalogNumber" />
+          <ScalarProperty Name="quantity" ColumnName="quantity" />
+          <ScalarProperty Name="unit_id" ColumnName="unit_id" />
+          <ScalarProperty Name="kitType_id" ColumnName="kitType_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="barcode" ColumnName="barcode" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="r_reagentJournal">
+      <EntityTypeMapping TypeName="EMLabModel.r_reagentJournal">
+        <MappingFragment StoreEntitySet="r_reagentJournal">
+          <ScalarProperty Name="prop10" ColumnName="prop10" />
+          <ScalarProperty Name="prop9" ColumnName="prop9" />
+          <ScalarProperty Name="prop8" ColumnName="prop8" />
+          <ScalarProperty Name="prop7" ColumnName="prop7" />
+          <ScalarProperty Name="prop6" ColumnName="prop6" />
+          <ScalarProperty Name="prop5" ColumnName="prop5" />
+          <ScalarProperty Name="prop4" ColumnName="prop4" />
+          <ScalarProperty Name="prop3" ColumnName="prop3" />
+          <ScalarProperty Name="prop2" ColumnName="prop2" />
+          <ScalarProperty Name="prop1" ColumnName="prop1" />
+          <ScalarProperty Name="parent_id" ColumnName="parent_id" />
+          <ScalarProperty Name="process_id" ColumnName="process_id" />
+          <ScalarProperty Name="location_id" ColumnName="location_id" />
+          <ScalarProperty Name="expirationDate" ColumnName="expirationDate" />
+          <ScalarProperty Name="lotNumber" ColumnName="lotNumber" />
+          <ScalarProperty Name="quantity" ColumnName="quantity" />
+          <ScalarProperty Name="reagent_id" ColumnName="reagent_id" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="jourType_id" ColumnName="jourType_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="r_reagentLedger">
+      <EntityTypeMapping TypeName="EMLabModel.r_reagentLedger">
+        <MappingFragment StoreEntitySet="r_reagentLedger">
+          <ScalarProperty Name="prop10" ColumnName="prop10" />
+          <ScalarProperty Name="prop9" ColumnName="prop9" />
+          <ScalarProperty Name="prop8" ColumnName="prop8" />
+          <ScalarProperty Name="prop7" ColumnName="prop7" />
+          <ScalarProperty Name="prop6" ColumnName="prop6" />
+          <ScalarProperty Name="prop5" ColumnName="prop5" />
+          <ScalarProperty Name="prop4" ColumnName="prop4" />
+          <ScalarProperty Name="prop3" ColumnName="prop3" />
+          <ScalarProperty Name="prop2" ColumnName="prop2" />
+          <ScalarProperty Name="prop1" ColumnName="prop1" />
+          <ScalarProperty Name="parent_id" ColumnName="parent_id" />
+          <ScalarProperty Name="operationDate" ColumnName="operationDate" />
+          <ScalarProperty Name="operation_id" ColumnName="operation_id" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="process_id" ColumnName="process_id" />
+          <ScalarProperty Name="location_id" ColumnName="location_id" />
+          <ScalarProperty Name="expirationDate" ColumnName="expirationDate" />
+          <ScalarProperty Name="lotNumber" ColumnName="lotNumber" />
+          <ScalarProperty Name="quantity" ColumnName="quantity" />
+          <ScalarProperty Name="reagent_id" ColumnName="reagent_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="wf_result">
+      <EntityTypeMapping TypeName="EMLabModel.wf_result">
+        <MappingFragment StoreEntitySet="wf_result">
+          <ScalarProperty Name="jsonData" ColumnName="jsonData" />
+          <ScalarProperty Name="Sended" ColumnName="Sended" />
+          <ScalarProperty Name="comment" ColumnName="comment" />
+          <ScalarProperty Name="filePath" ColumnName="filePath" />
+          <ScalarProperty Name="value" ColumnName="value" />
+          <ScalarProperty Name="result_id" ColumnName="result_id" />
+          <ScalarProperty Name="sample_id" ColumnName="sample_id" />
+          <ScalarProperty Name="process_id" ColumnName="process_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="v" ColumnName="v" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="a_userField">
+      <EntityTypeMapping TypeName="EMLabModel.a_userField">
+        <MappingFragment StoreEntitySet="a_userField">
+          <ScalarProperty Name="dopAttr" ColumnName="dopAttr" />
+          <ScalarProperty Name="order" ColumnName="order" />
+          <ScalarProperty Name="groupName" ColumnName="groupName" />
+          <ScalarProperty Name="column" ColumnName="column" />
+          <ScalarProperty Name="dataType" ColumnName="dataType" />
+          <ScalarProperty Name="table_id" ColumnName="table_id" />
+          <ScalarProperty Name="caption" ColumnName="caption" />
+          <ScalarProperty Name="fieldList_id" ColumnName="fieldList_id" />
+          <ScalarProperty Name="fieldNumber" ColumnName="fieldNumber" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vClientDoctors">
+      <EntityTypeMapping TypeName="EMLabModel.vClientDoctor">
+        <MappingFragment StoreEntitySet="vClientDoctor">
+          <ScalarProperty Name="clientName" ColumnName="clientName" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="lastName" ColumnName="lastName" />
+          <ScalarProperty Name="firstName" ColumnName="firstName" />
+          <ScalarProperty Name="client_id" ColumnName="client_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="v" ColumnName="v" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vClientDoctorPatients">
+      <EntityTypeMapping TypeName="EMLabModel.vClientDoctorPatient">
+        <MappingFragment StoreEntitySet="vClientDoctorPatient">
+          <ScalarProperty Name="patient_lastName" ColumnName="patient_lastName" />
+          <ScalarProperty Name="patient_firstName" ColumnName="patient_firstName" />
+          <ScalarProperty Name="patient_id" ColumnName="patient_id" />
+          <ScalarProperty Name="doctor_lastName" ColumnName="doctor_lastName" />
+          <ScalarProperty Name="doctor_firstName" ColumnName="doctor_firstName" />
+          <ScalarProperty Name="doctor_title" ColumnName="doctor_title" />
+          <ScalarProperty Name="doctor_id" ColumnName="doctor_id" />
+          <ScalarProperty Name="client_name" ColumnName="client_name" />
+          <ScalarProperty Name="client_id" ColumnName="client_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vSamplesBooks">
+      <EntityTypeMapping TypeName="EMLabModel.vSamplesBook">
+        <MappingFragment StoreEntitySet="vSamplesBook">
+          <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+          <ScalarProperty Name="PropD5" ColumnName="PropD5" />
+          <ScalarProperty Name="PropD4" ColumnName="PropD4" />
+          <ScalarProperty Name="PropD3" ColumnName="PropD3" />
+          <ScalarProperty Name="PropD2" ColumnName="PropD2" />
+          <ScalarProperty Name="PropD1" ColumnName="PropD1" />
+          <ScalarProperty Name="PropN5" ColumnName="PropN5" />
+          <ScalarProperty Name="PropN4" ColumnName="PropN4" />
+          <ScalarProperty Name="PropN3" ColumnName="PropN3" />
+          <ScalarProperty Name="PropN2" ColumnName="PropN2" />
+          <ScalarProperty Name="PropN1" ColumnName="PropN1" />
+          <ScalarProperty Name="PropS5" ColumnName="PropS5" />
+          <ScalarProperty Name="PropS4" ColumnName="PropS4" />
+          <ScalarProperty Name="PropS3" ColumnName="PropS3" />
+          <ScalarProperty Name="PropS2" ColumnName="PropS2" />
+          <ScalarProperty Name="PropS1" ColumnName="PropS1" />
+          <ScalarProperty Name="HospitalId" ColumnName="HospitalId" />
+          <ScalarProperty Name="DoctorId" ColumnName="DoctorId" />
+          <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+          <ScalarProperty Name="Clones" ColumnName="Clones" />
+          <ScalarProperty Name="Sended" ColumnName="Sended" />
+          <ScalarProperty Name="Sended_Id" ColumnName="Sended_Id" />
+          <ScalarProperty Name="Files" ColumnName="Files" />
+          <ScalarProperty Name="FilesCount" ColumnName="FilesCount" />
+          <ScalarProperty Name="ContentListCount" ColumnName="ContentListCount" />
+          <ScalarProperty Name="Result" ColumnName="Result" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="BatchName" ColumnName="BatchName" />
+          <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+          <ScalarProperty Name="HospitalName" ColumnName="HospitalName" />
+          <ScalarProperty Name="VolumeUnitId" ColumnName="VolumeUnitId" />
+          <ScalarProperty Name="SampleTypeId" ColumnName="SampleTypeId" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="Prop10" ColumnName="Prop10" />
+          <ScalarProperty Name="Prop9" ColumnName="Prop9" />
+          <ScalarProperty Name="Prop8" ColumnName="Prop8" />
+          <ScalarProperty Name="Prop7" ColumnName="Prop7" />
+          <ScalarProperty Name="Prop6" ColumnName="Prop6" />
+          <ScalarProperty Name="Prop5" ColumnName="Prop5" />
+          <ScalarProperty Name="Prop4" ColumnName="Prop4" />
+          <ScalarProperty Name="Prop3" ColumnName="Prop3" />
+          <ScalarProperty Name="Prop2" ColumnName="Prop2" />
+          <ScalarProperty Name="Prop1" ColumnName="Prop1" />
+          <ScalarProperty Name="ProcessName" ColumnName="ProcessName" />
+          <ScalarProperty Name="ParentName" ColumnName="ParentName" />
+          <ScalarProperty Name="SampleStatusId" ColumnName="SampleStatusId" />
+          <ScalarProperty Name="SampleWorkflowStatusId" ColumnName="SampleWorkflowStatusId" />
+          <ScalarProperty Name="ProcessId" ColumnName="ProcessId" />
+          <ScalarProperty Name="IsChild" ColumnName="IsChild" />
+          <ScalarProperty Name="AcceptedDate" ColumnName="AcceptedDate" />
+          <ScalarProperty Name="CollectedDateTime" ColumnName="CollectedDateTime" />
+          <ScalarProperty Name="ModDate" ColumnName="ModDate" />
+          <ScalarProperty Name="CommentsCount" ColumnName="CommentsCount" />
+          <ScalarProperty Name="TubeTypeId" ColumnName="TubeTypeId" />
+          <ScalarProperty Name="EquipmentId" ColumnName="EquipmentId" />
+          <ScalarProperty Name="ModelId" ColumnName="ModelId" />
+          <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+          <ScalarProperty Name="Volume" ColumnName="Volume" />
+          <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Patient" ColumnName="Patient" />
+          <ScalarProperty Name="Doctor" ColumnName="Doctor" />
+          <ScalarProperty Name="Well" ColumnName="Well" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vWorkflowRunLists">
+      <EntityTypeMapping TypeName="EMLabModel.vWorkflowRunList">
+        <MappingFragment StoreEntitySet="vWorkflowRunList">
+          <ScalarProperty Name="Files" ColumnName="Files" />
+          <ScalarProperty Name="FilesCount" ColumnName="FilesCount" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="CommentsCount" ColumnName="CommentsCount" />
+          <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+          <ScalarProperty Name="CompletedUserName" ColumnName="CompletedUserName" />
+          <ScalarProperty Name="UpdatedUserName" ColumnName="UpdatedUserName" />
+          <ScalarProperty Name="CreatedUserName" ColumnName="CreatedUserName" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="DateCompleted" ColumnName="DateCompleted" />
+          <ScalarProperty Name="DateUpdated" ColumnName="DateUpdated" />
+          <ScalarProperty Name="DateStarted" ColumnName="DateStarted" />
+          <ScalarProperty Name="CurProcessId" ColumnName="CurProcessId" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="WfType" ColumnName="WfType" />
+          <ScalarProperty Name="TypeZId" ColumnName="TypeZId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vWfWorks">
+      <EntityTypeMapping TypeName="EMLabModel.vWfWork">
+        <MappingFragment StoreEntitySet="vWfWork">
+          <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+          <ScalarProperty Name="SampleName" ColumnName="SampleName" />
+          <ScalarProperty Name="ResStatus" ColumnName="ResStatus" />
+          <ScalarProperty Name="StepName" ColumnName="StepName" />
+          <ScalarProperty Name="WfCode" ColumnName="WfCode" />
+          <ScalarProperty Name="WfType" ColumnName="WfType" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="a_userLayout">
+      <EntityTypeMapping TypeName="EMLabModel.a_userLayout">
+        <MappingFragment StoreEntitySet="a_userLayout">
+          <ScalarProperty Name="user_name" ColumnName="user_name" />
+          <ScalarProperty Name="userData" ColumnName="userData" />
+          <ScalarProperty Name="layout_id" ColumnName="layout_id" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="v" ColumnName="v" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vProcessResults">
+      <EntityTypeMapping TypeName="EMLabModel.vProcessResult">
+        <MappingFragment StoreEntitySet="vProcessResult">
+          <ScalarProperty Name="FilesCount" ColumnName="FilesCount" />
+          <ScalarProperty Name="ModelId" ColumnName="ModelId" />
+          <ScalarProperty Name="ProcessStatusId" ColumnName="ProcessStatusId" />
+          <ScalarProperty Name="ResultId" ColumnName="ResultId" />
+          <ScalarProperty Name="SampleCommentsCount" ColumnName="SampleCommentsCount" />
+          <ScalarProperty Name="ProcessStatus" ColumnName="ProcessStatus" />
+          <ScalarProperty Name="ProcessTypeCode" ColumnName="ProcessTypeCode" />
+          <ScalarProperty Name="Workflow" ColumnName="Workflow" />
+          <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+          <ScalarProperty Name="Prop10" ColumnName="Prop10" />
+          <ScalarProperty Name="Prop9" ColumnName="Prop9" />
+          <ScalarProperty Name="Prop8" ColumnName="Prop8" />
+          <ScalarProperty Name="Prop7" ColumnName="Prop7" />
+          <ScalarProperty Name="Prop6" ColumnName="Prop6" />
+          <ScalarProperty Name="Prop5" ColumnName="Prop5" />
+          <ScalarProperty Name="Prop4" ColumnName="Prop4" />
+          <ScalarProperty Name="Prop3" ColumnName="Prop3" />
+          <ScalarProperty Name="Prop2" ColumnName="Prop2" />
+          <ScalarProperty Name="Prop1" ColumnName="Prop1" />
+          <ScalarProperty Name="BatchName" ColumnName="BatchName" />
+          <ScalarProperty Name="Volume" ColumnName="Volume" />
+          <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+          <ScalarProperty Name="AcceptedDate" ColumnName="AcceptedDate" />
+          <ScalarProperty Name="CollectedDateTime" ColumnName="CollectedDateTime" />
+          <ScalarProperty Name="ModDate" ColumnName="ModDate" />
+          <ScalarProperty Name="CommentsCount" ColumnName="CommentsCount" />
+          <ScalarProperty Name="SampleCurrentProcessName" ColumnName="SampleCurrentProcessName" />
+          <ScalarProperty Name="ParentName" ColumnName="ParentName" />
+          <ScalarProperty Name="SampleStatusId" ColumnName="SampleStatusId" />
+          <ScalarProperty Name="SampleWorkflowStatusId" ColumnName="SampleWorkflowStatusId" />
+          <ScalarProperty Name="VolumeUnitId" ColumnName="VolumeUnitId" />
+          <ScalarProperty Name="SampleTypeId" ColumnName="SampleTypeId" />
+          <ScalarProperty Name="HospitalName" ColumnName="HospitalName" />
+          <ScalarProperty Name="TubeTypeId" ColumnName="TubeTypeId" />
+          <ScalarProperty Name="EquipmentId" ColumnName="EquipmentId" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="IsChild" ColumnName="IsChild" />
+          <ScalarProperty Name="Patient" ColumnName="Patient" />
+          <ScalarProperty Name="Doctor" ColumnName="Doctor" />
+          <ScalarProperty Name="Well" ColumnName="Well" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+          <ScalarProperty Name="SampleId" ColumnName="SampleId" />
+          <ScalarProperty Name="ProcessCompletedUserName" ColumnName="ProcessCompletedUserName" />
+          <ScalarProperty Name="ProcessCreatedUserName" ColumnName="ProcessCreatedUserName" />
+          <ScalarProperty Name="ProcessDateCompleted" ColumnName="ProcessDateCompleted" />
+          <ScalarProperty Name="ProcessDateStarted" ColumnName="ProcessDateStarted" />
+          <ScalarProperty Name="Process" ColumnName="Process" />
+          <ScalarProperty Name="RunCompletedUserName" ColumnName="RunCompletedUserName" />
+          <ScalarProperty Name="RunCreatedUserName" ColumnName="RunCreatedUserName" />
+          <ScalarProperty Name="RunDateCompleted" ColumnName="RunDateCompleted" />
+          <ScalarProperty Name="RunDateStarted" ColumnName="RunDateStarted" />
+          <ScalarProperty Name="Run" ColumnName="Run" />
+          <ScalarProperty Name="Result" ColumnName="Result" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="C__MigrationHistory">
+      <EntityTypeMapping TypeName="EMLabModel.C__MigrationHistory">
+        <MappingFragment StoreEntitySet="__MigrationHistory">
+          <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
+          <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AspNetRoles">
+      <EntityTypeMapping TypeName="EMLabModel.AspNetRole">
+        <MappingFragment StoreEntitySet="AspNetRoles">
+          <ScalarProperty Name="Discriminator" ColumnName="Discriminator" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AspNetUserClaims">
+      <EntityTypeMapping TypeName="EMLabModel.AspNetUserClaim">
+        <MappingFragment StoreEntitySet="AspNetUserClaims">
+          <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+          <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AspNetUserLogins">
+      <EntityTypeMapping TypeName="EMLabModel.AspNetUserLogin">
+        <MappingFragment StoreEntitySet="AspNetUserLogins">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+          <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AspNetUserRoles">
+      <EntityTypeMapping TypeName="EMLabModel.AspNetUserRole">
+        <MappingFragment StoreEntitySet="AspNetUserRoles">
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AspNetUsers">
+      <EntityTypeMapping TypeName="EMLabModel.AspNetUser">
+        <MappingFragment StoreEntitySet="AspNetUsers">
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+          <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+          <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+          <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+          <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+          <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+          <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="mb_report">
+      <EntityTypeMapping TypeName="EMLabModel.mb_report">
+        <MappingFragment StoreEntitySet="mb_report">
+          <ScalarProperty Name="value_id" ColumnName="value_id" />
+          <ScalarProperty Name="taxon_id" ColumnName="taxon_id" />
+          <ScalarProperty Name="reportField_id" ColumnName="reportField_id" />
+          <ScalarProperty Name="sample_id" ColumnName="sample_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="v" ColumnName="v" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="mb_reportField">
+      <EntityTypeMapping TypeName="EMLabModel.mb_reportField">
+        <MappingFragment StoreEntitySet="mb_reportField">
+          <ScalarProperty Name="refHighValue" ColumnName="refHighValue" />
+          <ScalarProperty Name="refLowValue" ColumnName="refLowValue" />
+          <ScalarProperty Name="taxon_id" ColumnName="taxon_id" />
+          <ScalarProperty Name="ruleCode" ColumnName="ruleCode" />
+          <ScalarProperty Name="lineNum" ColumnName="lineNum" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="fieldCode" ColumnName="fieldCode" />
+          <ScalarProperty Name="sectionCode" ColumnName="sectionCode" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="v" ColumnName="v" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="mb_taxonomy">
+      <EntityTypeMapping TypeName="EMLabModel.mb_taxonomy">
+        <MappingFragment StoreEntitySet="mb_taxonomy">
+          <ScalarProperty Name="s" ColumnName="s" />
+          <ScalarProperty Name="g" ColumnName="g" />
+          <ScalarProperty Name="f" ColumnName="f" />
+          <ScalarProperty Name="o" ColumnName="o" />
+          <ScalarProperty Name="c" ColumnName="c" />
+          <ScalarProperty Name="p" ColumnName="p" />
+          <ScalarProperty Name="k" ColumnName="k" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="v" ColumnName="v" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="C__MigrationHistory1">
+      <EntityTypeMapping TypeName="EMLabModel.C__MigrationHistory1">
+        <MappingFragment StoreEntitySet="__MigrationHistory1">
+          <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
+          <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Resources">
+      <EntityTypeMapping TypeName="EMLabModel.Resource">
+        <MappingFragment StoreEntitySet="Resources">
+          <ScalarProperty Name="NameSpace" ColumnName="NameSpace" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Culture" ColumnName="Culture" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ResourceId" ColumnName="ResourceId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="mb_data">
+      <EntityTypeMapping TypeName="EMLabModel.mb_data">
+        <MappingFragment StoreEntitySet="mb_data">
+          <ScalarProperty Name="proportion" ColumnName="proportion" />
+          <ScalarProperty Name="count" ColumnName="count" />
+          <ScalarProperty Name="taxonomy_id" ColumnName="taxonomy_id" />
+          <ScalarProperty Name="sample_id" ColumnName="sample_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="v" ColumnName="v" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vBioinformaticsRunLists">
+      <EntityTypeMapping TypeName="EMLabModel.vBioinformaticsRunList">
+        <MappingFragment StoreEntitySet="vBioinformaticsRunList">
+          <ScalarProperty Name="task_id" ColumnName="task_id" />
+          <ScalarProperty Name="sqlFail" ColumnName="sqlFail" />
+          <ScalarProperty Name="sqlCompleted" ColumnName="sqlCompleted" />
+          <ScalarProperty Name="cmd" ColumnName="cmd" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vJourLines">
+      <EntityTypeMapping TypeName="EMLabModel.vJourLine">
+        <MappingFragment StoreEntitySet="vJourLine">
+          <ScalarProperty Name="FilesCount" ColumnName="FilesCount" />
+          <ScalarProperty Name="MakeAliquot" ColumnName="MakeAliquot" />
+          <ScalarProperty Name="DoubleBarcodeJourLineValidation" ColumnName="DoubleBarcodeJourLineValidation" />
+          <ScalarProperty Name="DoubleBarcodeValidation" ColumnName="DoubleBarcodeValidation" />
+          <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+          <ScalarProperty Name="Prop10" ColumnName="Prop10" />
+          <ScalarProperty Name="Prop9" ColumnName="Prop9" />
+          <ScalarProperty Name="Prop8" ColumnName="Prop8" />
+          <ScalarProperty Name="Prop7" ColumnName="Prop7" />
+          <ScalarProperty Name="Prop6" ColumnName="Prop6" />
+          <ScalarProperty Name="Prop5" ColumnName="Prop5" />
+          <ScalarProperty Name="Prop4" ColumnName="Prop4" />
+          <ScalarProperty Name="Prop3" ColumnName="Prop3" />
+          <ScalarProperty Name="Prop2" ColumnName="Prop2" />
+          <ScalarProperty Name="Prop1" ColumnName="Prop1" />
+          <ScalarProperty Name="BatchBarcode" ColumnName="BatchBarcode" />
+          <ScalarProperty Name="HospitalName" ColumnName="HospitalName" />
+          <ScalarProperty Name="CommentsCount" ColumnName="CommentsCount" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="ModelId" ColumnName="ModelId" />
+          <ScalarProperty Name="BatchName" ColumnName="BatchName" />
+          <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="Patient" ColumnName="Patient" />
+          <ScalarProperty Name="Doctor" ColumnName="Doctor" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="CollectedDate" ColumnName="CollectedDate" />
+          <ScalarProperty Name="WorkflowId" ColumnName="WorkflowId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Well" ColumnName="Well" />
+          <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+          <ScalarProperty Name="SampleId" ColumnName="SampleId" />
+          <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="CreateBarcode" FunctionName="EMLabModel.Store.CreateBarcode" />
+    <FunctionImportMapping FunctionImportName="DeleteSample" FunctionName="EMLabModel.Store.DeleteSample" />
+    <FunctionImportMapping FunctionImportName="prepare_mb_report_data" FunctionName="EMLabModel.Store.prepare_mb_report_data" />
+    <FunctionImportMapping FunctionImportName="send_email" FunctionName="EMLabModel.Store.send_email" />
+    <EntitySetMapping Name="vContaiterDrafts">
+      <EntityTypeMapping TypeName="EMLabModel.vContaiterDraft">
+        <MappingFragment StoreEntitySet="vContaiterDraft">
+          <ScalarProperty Name="DoubleBarcodeJourLineValidation" ColumnName="DoubleBarcodeJourLineValidation" />
+          <ScalarProperty Name="DoubleBarcodeValidation" ColumnName="DoubleBarcodeValidation" />
+          <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+          <ScalarProperty Name="Prop10" ColumnName="Prop10" />
+          <ScalarProperty Name="Prop9" ColumnName="Prop9" />
+          <ScalarProperty Name="Prop8" ColumnName="Prop8" />
+          <ScalarProperty Name="Prop7" ColumnName="Prop7" />
+          <ScalarProperty Name="Prop6" ColumnName="Prop6" />
+          <ScalarProperty Name="Prop5" ColumnName="Prop5" />
+          <ScalarProperty Name="Prop4" ColumnName="Prop4" />
+          <ScalarProperty Name="Prop3" ColumnName="Prop3" />
+          <ScalarProperty Name="Prop2" ColumnName="Prop2" />
+          <ScalarProperty Name="Prop1" ColumnName="Prop1" />
+          <ScalarProperty Name="MakeAliquot" ColumnName="MakeAliquot" />
+          <ScalarProperty Name="CommentsCount" ColumnName="CommentsCount" />
+          <ScalarProperty Name="ContentListCount" ColumnName="ContentListCount" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="ModelId" ColumnName="ModelId" />
+          <ScalarProperty Name="BatchBarcode" ColumnName="BatchBarcode" />
+          <ScalarProperty Name="BatchName" ColumnName="BatchName" />
+          <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="CollectedDate" ColumnName="CollectedDate" />
+          <ScalarProperty Name="WorkflowId" ColumnName="WorkflowId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+          <ScalarProperty Name="SampleId" ColumnName="SampleId" />
+          <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="ChangeStatus" FunctionName="EMLabModel.Store.ChangeStatus" />
+    <EntitySetMapping Name="vContaiters">
+      <EntityTypeMapping TypeName="EMLabModel.vContaiter">
+        <MappingFragment StoreEntitySet="vContaiter">
+          <ScalarProperty Name="FilesCount" ColumnName="FilesCount" />
+          <ScalarProperty Name="ContainerTypeDescription" ColumnName="ContainerTypeDescription" />
+          <ScalarProperty Name="ContainerType" ColumnName="ContainerType" />
+          <ScalarProperty Name="DoubleBarcodeValidation" ColumnName="DoubleBarcodeValidation" />
+          <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+          <ScalarProperty Name="Prop10" ColumnName="Prop10" />
+          <ScalarProperty Name="Prop9" ColumnName="Prop9" />
+          <ScalarProperty Name="Prop8" ColumnName="Prop8" />
+          <ScalarProperty Name="Prop7" ColumnName="Prop7" />
+          <ScalarProperty Name="Prop6" ColumnName="Prop6" />
+          <ScalarProperty Name="Prop5" ColumnName="Prop5" />
+          <ScalarProperty Name="Prop4" ColumnName="Prop4" />
+          <ScalarProperty Name="Prop3" ColumnName="Prop3" />
+          <ScalarProperty Name="Prop2" ColumnName="Prop2" />
+          <ScalarProperty Name="Prop1" ColumnName="Prop1" />
+          <ScalarProperty Name="DraftCount" ColumnName="DraftCount" />
+          <ScalarProperty Name="CommentsCount" ColumnName="CommentsCount" />
+          <ScalarProperty Name="ContentListCount" ColumnName="ContentListCount" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="ModelId" ColumnName="ModelId" />
+          <ScalarProperty Name="BatchBarcode" ColumnName="BatchBarcode" />
+          <ScalarProperty Name="BatchName" ColumnName="BatchName" />
+          <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="CollectedDate" ColumnName="CollectedDate" />
+          <ScalarProperty Name="WorkflowId" ColumnName="WorkflowId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="wf_bom">
+      <EntityTypeMapping TypeName="EMLabModel.wf_bom">
+        <MappingFragment StoreEntitySet="wf_bom">
+          <ScalarProperty Name="updatedBy_id" ColumnName="updatedBy_id" />
+          <ScalarProperty Name="createdBy_id" ColumnName="createdBy_id" />
+          <ScalarProperty Name="dateUpdated" ColumnName="dateUpdated" />
+          <ScalarProperty Name="dateCreated" ColumnName="dateCreated" />
+          <ScalarProperty Name="catalog_number" ColumnName="catalog_number" />
+          <ScalarProperty Name="run_id" ColumnName="run_id" />
+          <ScalarProperty Name="barcode" ColumnName="barcode" />
+          <ScalarProperty Name="expirationDate" ColumnName="expirationDate" />
+          <ScalarProperty Name="lot_number" ColumnName="lot_number" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="v" ColumnName="v" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vBillOfMaterials">
+      <EntityTypeMapping TypeName="EMLabModel.vBillOfMaterial">
+        <MappingFragment StoreEntitySet="vBillOfMaterial">
+          <ScalarProperty Name="Files" ColumnName="Files" />
+          <ScalarProperty Name="FilesCount" ColumnName="FilesCount" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="UpdatedUser" ColumnName="UpdatedUser" />
+          <ScalarProperty Name="CreatedUser" ColumnName="CreatedUser" />
+          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+          <ScalarProperty Name="CatalogNumber" ColumnName="CatalogNumber" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="CommentsCount" ColumnName="CommentsCount" />
+          <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
+          <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+          <ScalarProperty Name="LotNumber" ColumnName="LotNumber" />
+          <ScalarProperty Name="ReagentName" ColumnName="ReagentName" />
+          <ScalarProperty Name="RunId" ColumnName="RunId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vReagents">
+      <EntityTypeMapping TypeName="EMLabModel.vReagent">
+        <MappingFragment StoreEntitySet="vReagent">
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+          <ScalarProperty Name="Vendor_id" ColumnName="Vendor_id" />
+          <ScalarProperty Name="StorageTemp" ColumnName="StorageTemp" />
+          <ScalarProperty Name="StorageTemp_id" ColumnName="StorageTemp_id" />
+          <ScalarProperty Name="CatalogNumber" ColumnName="CatalogNumber" />
+          <ScalarProperty Name="UnitName" ColumnName="UnitName" />
+          <ScalarProperty Name="Unit_id" ColumnName="Unit_id" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="KitName" ColumnName="KitName" />
+          <ScalarProperty Name="KitType_id" ColumnName="KitType_id" />
+          <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vSamplesBookInProcesses">
+      <EntityTypeMapping TypeName="EMLabModel.vSamplesBookInProcess">
+        <MappingFragment StoreEntitySet="vSamplesBookInProcess">
+          <ScalarProperty Name="RowVersion" ColumnName="RowVersion" />
+          <ScalarProperty Name="Prop10" ColumnName="Prop10" />
+          <ScalarProperty Name="Prop9" ColumnName="Prop9" />
+          <ScalarProperty Name="Prop8" ColumnName="Prop8" />
+          <ScalarProperty Name="Prop7" ColumnName="Prop7" />
+          <ScalarProperty Name="Prop6" ColumnName="Prop6" />
+          <ScalarProperty Name="Prop5" ColumnName="Prop5" />
+          <ScalarProperty Name="Prop4" ColumnName="Prop4" />
+          <ScalarProperty Name="Prop3" ColumnName="Prop3" />
+          <ScalarProperty Name="Prop2" ColumnName="Prop2" />
+          <ScalarProperty Name="Prop1" ColumnName="Prop1" />
+          <ScalarProperty Name="Sended" ColumnName="Sended" />
+          <ScalarProperty Name="sended_id" ColumnName="sended_id" />
+          <ScalarProperty Name="wf_result_id" ColumnName="wf_result_id" />
+          <ScalarProperty Name="Result" ColumnName="Result" />
+          <ScalarProperty Name="BatchName" ColumnName="BatchName" />
+          <ScalarProperty Name="Volume" ColumnName="Volume" />
+          <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+          <ScalarProperty Name="AcceptedDate" ColumnName="AcceptedDate" />
+          <ScalarProperty Name="CollectedDateTime" ColumnName="CollectedDateTime" />
+          <ScalarProperty Name="ModDate" ColumnName="ModDate" />
+          <ScalarProperty Name="Files" ColumnName="Files" />
+          <ScalarProperty Name="FilesCount" ColumnName="FilesCount" />
+          <ScalarProperty Name="CommentsCount" ColumnName="CommentsCount" />
+          <ScalarProperty Name="ContentListCount" ColumnName="ContentListCount" />
+          <ScalarProperty Name="ProcessName" ColumnName="ProcessName" />
+          <ScalarProperty Name="ParentName" ColumnName="ParentName" />
+          <ScalarProperty Name="SampleStatusId" ColumnName="SampleStatusId" />
+          <ScalarProperty Name="SampleWorkflowStatusId" ColumnName="SampleWorkflowStatusId" />
+          <ScalarProperty Name="VolumeUnitId" ColumnName="VolumeUnitId" />
+          <ScalarProperty Name="SampleTypeId" ColumnName="SampleTypeId" />
+          <ScalarProperty Name="HospitalName" ColumnName="HospitalName" />
+          <ScalarProperty Name="ProcessId" ColumnName="ProcessId" />
+          <ScalarProperty Name="TubeTypeId" ColumnName="TubeTypeId" />
+          <ScalarProperty Name="EquipmentId" ColumnName="EquipmentId" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="ModelId" ColumnName="ModelId" />
+          <ScalarProperty Name="BatchId" ColumnName="BatchId" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="IsChild" ColumnName="IsChild" />
+          <ScalarProperty Name="Patient" ColumnName="Patient" />
+          <ScalarProperty Name="Doctor" ColumnName="Doctor" />
+          <ScalarProperty Name="Well" ColumnName="Well" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vPatients">
+      <EntityTypeMapping TypeName="EMLabModel.vPatient">
+        <MappingFragment StoreEntitySet="vPatient">
+          <ScalarProperty Name="PropD5" ColumnName="PropD5" />
+          <ScalarProperty Name="PropD4" ColumnName="PropD4" />
+          <ScalarProperty Name="PropD3" ColumnName="PropD3" />
+          <ScalarProperty Name="PropD2" ColumnName="PropD2" />
+          <ScalarProperty Name="PropD1" ColumnName="PropD1" />
+          <ScalarProperty Name="PropN5" ColumnName="PropN5" />
+          <ScalarProperty Name="PropN4" ColumnName="PropN4" />
+          <ScalarProperty Name="PropN3" ColumnName="PropN3" />
+          <ScalarProperty Name="PropN2" ColumnName="PropN2" />
+          <ScalarProperty Name="PropN1" ColumnName="PropN1" />
+          <ScalarProperty Name="PropS5" ColumnName="PropS5" />
+          <ScalarProperty Name="PropS4" ColumnName="PropS4" />
+          <ScalarProperty Name="PropS3" ColumnName="PropS3" />
+          <ScalarProperty Name="PropS2" ColumnName="PropS2" />
+          <ScalarProperty Name="PropS1" ColumnName="PropS1" />
+          <ScalarProperty Name="Prop10" ColumnName="Prop10" />
+          <ScalarProperty Name="Prop9" ColumnName="Prop9" />
+          <ScalarProperty Name="Prop8" ColumnName="Prop8" />
+          <ScalarProperty Name="Prop7" ColumnName="Prop7" />
+          <ScalarProperty Name="Prop6" ColumnName="Prop6" />
+          <ScalarProperty Name="Prop5" ColumnName="Prop5" />
+          <ScalarProperty Name="Prop4" ColumnName="Prop4" />
+          <ScalarProperty Name="Prop3" ColumnName="Prop3" />
+          <ScalarProperty Name="Prop2" ColumnName="Prop2" />
+          <ScalarProperty Name="Prop1" ColumnName="Prop1" />
+          <ScalarProperty Name="FilesCount" ColumnName="FilesCount" />
+          <ScalarProperty Name="CommentsCount" ColumnName="CommentsCount" />
+          <ScalarProperty Name="SampleCount" ColumnName="SampleCount" />
+          <ScalarProperty Name="doctor" ColumnName="doctor" />
+          <ScalarProperty Name="hospital" ColumnName="hospital" />
+          <ScalarProperty Name="sendEmail" ColumnName="sendEmail" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="dob" ColumnName="dob" />
+          <ScalarProperty Name="lastName" ColumnName="lastName" />
+          <ScalarProperty Name="firstName" ColumnName="firstName" />
+          <ScalarProperty Name="no" ColumnName="no" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vProperties">
+      <EntityTypeMapping TypeName="EMLabModel.vProperty">
+        <MappingFragment StoreEntitySet="vProperty">
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="FilesCount" ColumnName="FilesCount" />
+          <ScalarProperty Name="CommentsCount" ColumnName="CommentsCount" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Number" ColumnName="Number" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vHospitals">
+      <EntityTypeMapping TypeName="EMLabModel.vHospital">
+        <MappingFragment StoreEntitySet="vHospital">
+          <ScalarProperty Name="PropD5" ColumnName="PropD5" />
+          <ScalarProperty Name="PropD4" ColumnName="PropD4" />
+          <ScalarProperty Name="PropD3" ColumnName="PropD3" />
+          <ScalarProperty Name="PropD2" ColumnName="PropD2" />
+          <ScalarProperty Name="PropD1" ColumnName="PropD1" />
+          <ScalarProperty Name="PropN5" ColumnName="PropN5" />
+          <ScalarProperty Name="PropN4" ColumnName="PropN4" />
+          <ScalarProperty Name="PropN3" ColumnName="PropN3" />
+          <ScalarProperty Name="PropN2" ColumnName="PropN2" />
+          <ScalarProperty Name="PropN1" ColumnName="PropN1" />
+          <ScalarProperty Name="PropS5" ColumnName="PropS5" />
+          <ScalarProperty Name="PropS4" ColumnName="PropS4" />
+          <ScalarProperty Name="PropS3" ColumnName="PropS3" />
+          <ScalarProperty Name="PropS2" ColumnName="PropS2" />
+          <ScalarProperty Name="PropS1" ColumnName="PropS1" />
+          <ScalarProperty Name="Prop10" ColumnName="Prop10" />
+          <ScalarProperty Name="Prop9" ColumnName="Prop9" />
+          <ScalarProperty Name="Prop8" ColumnName="Prop8" />
+          <ScalarProperty Name="Prop7" ColumnName="Prop7" />
+          <ScalarProperty Name="Prop6" ColumnName="Prop6" />
+          <ScalarProperty Name="Prop5" ColumnName="Prop5" />
+          <ScalarProperty Name="Prop4" ColumnName="Prop4" />
+          <ScalarProperty Name="Prop3" ColumnName="Prop3" />
+          <ScalarProperty Name="Prop2" ColumnName="Prop2" />
+          <ScalarProperty Name="Prop1" ColumnName="Prop1" />
+          <ScalarProperty Name="FilesCount" ColumnName="FilesCount" />
+          <ScalarProperty Name="CommentsCount" ColumnName="CommentsCount" />
+          <ScalarProperty Name="SampleCount" ColumnName="SampleCount" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vDoctors">
+      <EntityTypeMapping TypeName="EMLabModel.vDoctor">
+        <MappingFragment StoreEntitySet="vDoctor">
+          <ScalarProperty Name="PropD5" ColumnName="PropD5" />
+          <ScalarProperty Name="PropD4" ColumnName="PropD4" />
+          <ScalarProperty Name="PropD3" ColumnName="PropD3" />
+          <ScalarProperty Name="PropD2" ColumnName="PropD2" />
+          <ScalarProperty Name="PropD1" ColumnName="PropD1" />
+          <ScalarProperty Name="PropN5" ColumnName="PropN5" />
+          <ScalarProperty Name="PropN4" ColumnName="PropN4" />
+          <ScalarProperty Name="PropN3" ColumnName="PropN3" />
+          <ScalarProperty Name="PropN2" ColumnName="PropN2" />
+          <ScalarProperty Name="PropN1" ColumnName="PropN1" />
+          <ScalarProperty Name="PropS5" ColumnName="PropS5" />
+          <ScalarProperty Name="PropS4" ColumnName="PropS4" />
+          <ScalarProperty Name="PropS3" ColumnName="PropS3" />
+          <ScalarProperty Name="PropS2" ColumnName="PropS2" />
+          <ScalarProperty Name="PropS1" ColumnName="PropS1" />
+          <ScalarProperty Name="Prop10" ColumnName="Prop10" />
+          <ScalarProperty Name="Prop9" ColumnName="Prop9" />
+          <ScalarProperty Name="Prop8" ColumnName="Prop8" />
+          <ScalarProperty Name="Prop7" ColumnName="Prop7" />
+          <ScalarProperty Name="Prop6" ColumnName="Prop6" />
+          <ScalarProperty Name="Prop5" ColumnName="Prop5" />
+          <ScalarProperty Name="Prop4" ColumnName="Prop4" />
+          <ScalarProperty Name="Prop3" ColumnName="Prop3" />
+          <ScalarProperty Name="Prop2" ColumnName="Prop2" />
+          <ScalarProperty Name="Prop1" ColumnName="Prop1" />
+          <ScalarProperty Name="FilesCount" ColumnName="FilesCount" />
+          <ScalarProperty Name="CommentsCount" ColumnName="CommentsCount" />
+          <ScalarProperty Name="SampleCount" ColumnName="SampleCount" />
+          <ScalarProperty Name="HospitalId" ColumnName="HospitalId" />
+          <ScalarProperty Name="Hospital" ColumnName="Hospital" />
+          <ScalarProperty Name="SendEmail" ColumnName="SendEmail" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vCustodyLogs">
+      <EntityTypeMapping TypeName="EMLabModel.vCustodyLog">
+        <MappingFragment StoreEntitySet="vCustodyLog">
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="Signature" ColumnName="Signature" />
+          <ScalarProperty Name="AmountInOut" ColumnName="AmountInOut" />
+          <ScalarProperty Name="StoredAt" ColumnName="StoredAt" />
+          <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="SampleName" ColumnName="SampleName" />
+          <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+          <ScalarProperty Name="SampleId" ColumnName="SampleId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="C__EFMigrationsHistory">
+      <EntityTypeMapping TypeName="EMLabModel.C__EFMigrationsHistory">
+        <MappingFragment StoreEntitySet="__EFMigrationsHistory">
+          <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+          <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="s_clones">
+      <EntityTypeMapping TypeName="EMLabModel.s_clones">
+        <MappingFragment StoreEntitySet="s_clones">
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="createdDateTime" ColumnName="createdDateTime" />
+          <ScalarProperty Name="flags" ColumnName="flags" />
+          <ScalarProperty Name="fraction" ColumnName="fraction" />
+          <ScalarProperty Name="Count" ColumnName="Count" />
+          <ScalarProperty Name="cdr3" ColumnName="cdr3" />
+          <ScalarProperty Name="j" ColumnName="j" />
+          <ScalarProperty Name="v" ColumnName="v" />
+          <ScalarProperty Name="patientId" ColumnName="patientId" />
+          <ScalarProperty Name="sampleBarcode" ColumnName="sampleBarcode" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="EMLabModel.User">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="Guid" ColumnName="Guid" />
+          <ScalarProperty Name="Auth" ColumnName="Auth" />
+          <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+          <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+          <ScalarProperty Name="BirthDay" ColumnName="BirthDay" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="Logon" ColumnName="Logon" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="a_userData">
+      <EntityTypeMapping TypeName="EMLabModel.a_userData">
+        <MappingFragment StoreEntitySet="a_userData">
+          <ScalarProperty Name="prop5" ColumnName="prop5" />
+          <ScalarProperty Name="prop4" ColumnName="prop4" />
+          <ScalarProperty Name="prop3" ColumnName="prop3" />
+          <ScalarProperty Name="prop2" ColumnName="prop2" />
+          <ScalarProperty Name="prop1" ColumnName="prop1" />
+          <ScalarProperty Name="aspNetUser_Id" ColumnName="aspNetUser_Id" />
+          <ScalarProperty Name="createdByUser_id" ColumnName="createdByUser_id" />
+          <ScalarProperty Name="createdDateTime" ColumnName="createdDateTime" />
+          <ScalarProperty Name="propd5" ColumnName="propd5" />
+          <ScalarProperty Name="propd4" ColumnName="propd4" />
+          <ScalarProperty Name="propd3" ColumnName="propd3" />
+          <ScalarProperty Name="propd2" ColumnName="propd2" />
+          <ScalarProperty Name="propd1" ColumnName="propd1" />
+          <ScalarProperty Name="propn5" ColumnName="propn5" />
+          <ScalarProperty Name="propn4" ColumnName="propn4" />
+          <ScalarProperty Name="propn3" ColumnName="propn3" />
+          <ScalarProperty Name="propn2" ColumnName="propn2" />
+          <ScalarProperty Name="propn1" ColumnName="propn1" />
+          <ScalarProperty Name="props5" ColumnName="props5" />
+          <ScalarProperty Name="props4" ColumnName="props4" />
+          <ScalarProperty Name="props3" ColumnName="props3" />
+          <ScalarProperty Name="props2" ColumnName="props2" />
+          <ScalarProperty Name="props1" ColumnName="props1" />
+          <ScalarProperty Name="row_id" ColumnName="row_id" />
+          <ScalarProperty Name="table_id" ColumnName="table_id" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="a_userFieldList">
+      <EntityTypeMapping TypeName="EMLabModel.a_userFieldList">
+        <MappingFragment StoreEntitySet="a_userFieldList">
+          <ScalarProperty Name="sqlQuery" ColumnName="sqlQuery" />
+          <ScalarProperty Name="isHierarchy" ColumnName="isHierarchy" />
+          <ScalarProperty Name="branchRoot" ColumnName="branchRoot" />
+          <ScalarProperty Name="linkedTable_id" ColumnName="linkedTable_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vCustomDatas">
+      <EntityTypeMapping TypeName="EMLabModel.vCustomData">
+        <MappingFragment StoreEntitySet="vCustomData">
+          <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+          <ScalarProperty Name="TypeName" ColumnName="TypeName" />
+          <ScalarProperty Name="FilesCount" ColumnName="FilesCount" />
+          <ScalarProperty Name="CommentsCount" ColumnName="CommentsCount" />
+          <ScalarProperty Name="PropD5" ColumnName="PropD5" />
+          <ScalarProperty Name="PropD4" ColumnName="PropD4" />
+          <ScalarProperty Name="PropD3" ColumnName="PropD3" />
+          <ScalarProperty Name="PropD2" ColumnName="PropD2" />
+          <ScalarProperty Name="PropD1" ColumnName="PropD1" />
+          <ScalarProperty Name="PropN5" ColumnName="PropN5" />
+          <ScalarProperty Name="PropN4" ColumnName="PropN4" />
+          <ScalarProperty Name="PropN3" ColumnName="PropN3" />
+          <ScalarProperty Name="PropN2" ColumnName="PropN2" />
+          <ScalarProperty Name="PropN1" ColumnName="PropN1" />
+          <ScalarProperty Name="PropS5" ColumnName="PropS5" />
+          <ScalarProperty Name="PropS4" ColumnName="PropS4" />
+          <ScalarProperty Name="PropS3" ColumnName="PropS3" />
+          <ScalarProperty Name="PropS2" ColumnName="PropS2" />
+          <ScalarProperty Name="PropS1" ColumnName="PropS1" />
+          <ScalarProperty Name="Prop5" ColumnName="Prop5" />
+          <ScalarProperty Name="Prop4" ColumnName="Prop4" />
+          <ScalarProperty Name="Prop3" ColumnName="Prop3" />
+          <ScalarProperty Name="Prop2" ColumnName="Prop2" />
+          <ScalarProperty Name="Prop1" ColumnName="Prop1" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,59 @@
+@using System.Web.UI.WebControls
+@using Sasha.Lims.WebUI.Infrastructure.ViewModelHelpers
+
+@Html.DevExpress().PopupControl(
+	settings =>
+	{
+		settings.Name = "ChangeSamplesLocationDialog";
+		settings.Width = 320;
+		settings.AllowDragging = true;
+		settings.CloseAction = CloseAction.CloseButton;
+		settings.CloseOnEscape = true;
+		settings.PopupAnimationType = AnimationType.None;
+		settings.HeaderText = "Change samples locations";
+		settings.Modal = true;
+		settings.AutoUpdatePosition = true;
+		settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+		settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+		settings.SetContent(() =>
+		{
+			using (Html.BeginForm("ChangeSamplesGroupDialog", "Samples", new { editMode = ViewBag.EditMode, customAction = "LocationChange" }, FormMethod.Post, new { id = "popupForm3", @class = "edit_form" })){
+
+				@Html.DevExpress().FormLayout(s => {
+					s.Name = "ModalModeFormLayout_SamplesLocation";
+					s.RequiredMarkDisplayMode = RequiredMarkMode.None;
+					s.Width = Unit.Percentage(100);
+					s.Height = Unit.Percentage(100);
+
+					s.NestedExtensionWidth = Unit.Percentage(100);
+
+					s.Items.Add(i =>
+					{
+						i.Caption = "Location:";
+						i.Name = "GpEditingLocation";
+
+						i.NestedExtension().DropDownEdit(cb =>
+						{
+							cb.Properties.ClientSideEvents.Init = "onInitGpTreeViewLocations";
+							cb.Properties.ClientSideEvents.DropDown = "onDropDownGpTreeViewLocations";
+							cb.Properties.NullText = "(No Selection)";
+							cb.ReadOnly = true;
+							cb.SetDropDownWindowTemplateContent(c =>
+							{
+								Html.RenderAction("GpLocationTreeListPartial");
+							});
+						});
+					});
+
+					s.Items.Add(Html.MakeDxOkCancelButtonForPopup("ChangeSamplesLocationDialog", html => {
+						Html.DevExpress().TextBox(tbs => {
+							tbs.ClientVisible = false;
+							tbs.Name = "GpLocationId";
+						}).Render();
+					}));
+				}).Render();
+			}
+		});
+
+		settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer(null, '', false); }";
+	}).GetHtml()

@@ -1,0 +1,312 @@
+@using DevExpress.Web
+@using DevExpress.Web.Mvc.UI
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@using Sasha.Lims.WebUI.Localization
+@using Sasha.Lims.Core.Helpers
+@using Sasha.Lims.DataAccess.Entities.Constants
+
+@model IQueryable<Sasha.Lims.DataAccess.Entities.Entity.vSamplesBook>
+
+@{
+	ViewBag.Title = Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Samples));
+	Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+<style>
+	table.filter {
+		border: 1pt solid black;
+		border-collapse: collapse;
+		background-color: #ccc;
+	}
+
+	tr.border_bottom td {
+		border-bottom: 1pt solid black;
+	}
+
+	.labelBase {
+		margin: 2px;
+	}
+
+	.greyBackground {
+		background-color: #eee; /* Цвет фона для неактивного котнрола */
+	}
+
+	.inputBase {
+		margin: 2px;
+		min-width: 170px;
+	}
+</style>
+<style>
+	body {
+		font-size: 16px;
+		padding-top: 5px;
+		padding-bottom: 5px;
+	}
+
+	.flex-row {
+		background-color: lightgray;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: center;
+	}
+
+	.flex-column {
+		display: flex;
+		flex-direction: column
+	}
+
+	.textHeader {
+		margin: 5px;
+		vertical-align: center
+	}
+
+	.border {
+		padding: 2px;
+		border: lightblue solid 1px;
+	}
+
+	.textBody {
+		color: #444;
+		margin: 5px;
+		font-weight: bold;
+		min-width: 50px;
+	}
+</style>
+@section Head {
+	<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Samples/SamplesGridView.css?v=" + AppVersionHelper.Version)" />
+	<script src="@Url.Content("~/Scripts/Script.js?v=" + AppVersionHelper.Version)"></script>
+	<script src="@Url.Content("~/Scripts/Properties/commonGridView.js?v=" + AppVersionHelper.Version)"></script>
+	<script src="@Url.Content("~/Scripts/Properties/FilterItem.js")" type="text/javascript"></script>
+	<script src="@Url.Content("~/Scripts/Properties/FilterControls.js")" type="text/javascript"></script>
+	<script src="@Url.Content("~/Scripts/Properties/FilterHelper.js")" type="text/javascript"></script>
+	<script src="@Url.Content("~/Scripts/Properties/DateFormat.js")" type="text/javascript"></script>
+	<script>var tableId=@((int)TableType.Sample)</script>
+	<script>
+		window.addEventListener("load", Init);
+
+		function Init() {
+			var headerText = 'Select samples for process @ViewBag.ProcessName';
+			window.parent.postMessage("SetPopUpHeader=" + headerText, '*'); //send message from Popup to parent window for set header
+			gridView.Refresh();
+			AdjustGridSize();
+
+		}
+
+		function updateToolbarButtonsState() {
+
+		}
+
+		function onPageToolbarItemClick(s, e) {
+			var id = GetFocusedRowId();
+
+			switch (e.item.name) {
+			case "Add":
+				if (!id) return;
+				AddSamplesToProcess();
+				break;
+			case "btShowColumnChooser":
+				onShowChooserClick(s, e);
+				break;
+
+			default:
+				if (!id) return;
+				var rezRegexp = e.item.name.match(/Set(.*)/); //комманда изменения статуса начиается с Set
+				if (rezRegexp) {
+					changeStatus(id, rezRegexp[1]);
+				}
+			}
+		}
+
+		function onContextMenuItemClick(item, row) {
+			var id = GetFocusedRowId();
+			if (!id) return;
+			switch (row.item.name) {
+				case "AddSamples":
+					AddSamplesToProcess();
+				break;
+
+			default:
+
+			}
+
+
+		}
+
+		function onGridViewBeginCallback(s, e) {
+			//e.customArgs['SelectedRows'] = selectedIds;
+		}
+
+		function AddSamplesToProcess() {
+			var processId = @ViewBag.ProcessId;
+
+			var ids = gridView.GetSelectedKeysOnPage();
+			var selectedIds = ids.join(',');
+
+				sendData(resDelegate, "@Url.Action("AddSamples", "SelectSamples", new {Area = "Workflow" })?processId=" + processId + "&selectedIds=" + selectedIds);
+				//В зависимости от ответа сервера Вызывает обновление грида или показ ошибки
+				function resDelegate(error) {
+					if (error != "") {
+						alert(error);
+					} else {
+						cancelForm();
+					}
+				}
+		
+		}
+
+
+		function onSelectionChanged() {
+			updateToolbarButtonsState();
+			var text = 'Selected @(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Samples))) count' + '-' + gridView.GetSelectedRowCount();
+			pageToolbar.GetItemByName('Title').SetText(text);
+		}
+
+		function cancelForm() {
+			window.parent.postMessage("CloseUrlForm", '*'); //send message parent window for  close this form
+		}
+	</script>
+}
+
+@Html.DevExpress().Menu(menuSettings =>
+{
+menuSettings.Name = "pageToolbar";
+
+menuSettings.ItemAutoWidth = false;
+menuSettings.AllowSelectItem = false;
+menuSettings.ApplyItemStyleToTemplates = true;
+menuSettings.EnableClientSideAPI = true;
+menuSettings.SettingsAdaptivity.Enabled = true;
+menuSettings.SettingsAdaptivity.EnableAutoHideRootItems = true;
+menuSettings.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+menuSettings.SettingsAdaptivity.CollapseRootItemsToIconsAtWindowInnerWidth = 600;
+
+menuSettings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+menuSettings.ControlStyle.SeparatorWidth = System.Web.UI.WebControls.Unit.Pixel(0);
+menuSettings.ControlStyle.CssClass = "page-toolbar";
+
+menuSettings.Styles.Item.CssClass = "item";
+menuSettings.Styles.Item.VerticalAlign = System.Web.UI.WebControls.VerticalAlign.Middle;
+
+menuSettings.Images.Item.Width = System.Web.UI.WebControls.Unit.Pixel(16);
+menuSettings.Images.Item.Height = System.Web.UI.WebControls.Unit.Pixel(16);
+
+menuSettings.Items.Add(item =>
+{
+   item.Name = "Title";
+   item.Text = ViewBag.Title;
+
+   item.ClientEnabled = false;
+   item.ItemStyle.Font.Bold = true;
+   item.Alignment = MenuItemAlignment.Left;
+   item.ItemStyle.CssClass = "titleMenuItemStyle";
+
+});
+
+menuSettings.Items.Add(item =>
+{
+   item.Name = "btShowColumnChooser";
+   item.Text = "Columns";
+   item.Alignment = MenuItemAlignment.Right;
+   item.AdaptivePriority = 2;
+   item.Image.Url = "~/Content/Images/table_v2.svg";
+});
+
+
+menuSettings.ClientSideEvents.ItemClick = "onPageToolbarItemClick";
+}).GetHtml()
+
+
+
+@Html.Partial("_SelectSamplesGridViewPartial", Model)
+
+<div style="display: flex;
+		justify-content: flex-end;
+		margin: 5px">
+	<button name="AddButton"
+			onclick="AddSamplesToProcess()"
+			class="dxbButton_@DataHelper.Current.UiTheme dxbButtonSys dxbTSys dx-button"
+			style="-webkit-user-select:none;padding:6px;margin: 3px; width: 50px;">
+		OK
+	</button>
+	<button onclick="cancelForm()" class="dxbButton_@DataHelper.Current.UiTheme dxbButtonSys dxbTSys dx-button" style="-webkit-user-select:none;padding:6px;margin: 3px; width: 50px;">
+		Close
+	</button>
+</div>
+
+@* <div>
+		<div class="flex-row" style="flex-grow: 0">
+			ОБРАЗЕЦ ДОБАВЛЕНИЯ ФИЛЬТРА
+				<div class="flex-row">
+					<div class="textHeader">Name:</div>
+					<input class="textHeader" type="checkbox" id="NameCheckbox">
+					<div class="border textBody">
+						<input class="inputBase greyBackground" id="NameInput" style="width: 100px">
+					</div>
+				</div>
+				<div class="flex-row">
+					<div class="textHeader">Barcode:</div>
+					<input type="checkbox" id="BarcodeCheckbox">
+					<div class="border textBody">
+						<input class="inputBase greyBackground" id="BarcodeInput" style="width: 100px">
+					</div>
+				</div>
+				<div class="flex-row">
+					<div class="textHeader">CollectedDate:</div>
+					from @Html.DevExpress().DateEdit(settings =>
+					{
+						settings.Name = "fromDateEdit";
+					}).GetHtml()
+
+					to @Html.DevExpress().DateEdit(settings =>
+					{
+						settings.Name = "toDateEdit";
+					}).GetHtml()
+
+				</div>
+				<div class="flex-row">
+					@Html.DevExpress().RadioButtonList(settings =>
+				{
+					settings.Name = "RadioButtons";
+
+					settings.Properties.RepeatLayout = RepeatLayout.Table;
+					settings.Properties.RepeatColumns = 3;
+					settings.Properties.Items.AddRange(new ListEditItem[]
+					{
+							new ListEditItem{Text="Plate",Selected =true ,Value=(int)SampleModel.Plate },
+							new ListEditItem{Text="Box",Selected =false ,Value=(int)SampleModel.Box  },
+							new ListEditItem{Text="Aliquot",Selected =false ,Value=(int)SampleModel.Aliquot }
+					});
+				}).GetHtml()
+				</div>
+				<div style="flex-grow: 0"></div>
+				<button class="dxbButton_@DataHelper.Current.UiTheme dxbButtonSys dxbTSys dx-button" style="align-self: center;-webkit-user-select:none;padding:6px;margin: 3px; border: none;" onclick="FilterFind()" id="findButton">Find</button>
+			</div>
+	</div>*@
+
+@*<script type="text/javascript">
+	 //Кастомная фильтрация
+		var filterDiscr = [
+		//	{ dataField: "Name",    caption: 'Name'   , dataType: "string", filterType: "", filter: true },
+		//	{ dataField: "Barcode", caption: 'Barcode', dataType: "string", filterType: "", filter: true }
+		];
+
+		 var filter = new FilterElements(gridView, null);
+
+		filter.SetOuterFilter(filterDiscr);//установка готового фильтра (идентификаторы элементов должны соответствовать автогенеренному фильтру)
+
+		filter.AddDevexpressRadioButtons(RadioButtons, "ModelId");//добавление контрола RadioButton
+
+		function FilterFind() {
+
+			filter.FilterFind();
+			SaveFilter();
+		}
+		function ReadFilter() {
+			filter.ReadSettings();
+		}
+
+		function SaveFilter() {
+			filter.SaveSettings();
+		}
+
+	</script>*@

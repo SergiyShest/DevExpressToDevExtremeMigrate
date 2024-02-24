@@ -1,0 +1,356 @@
+@using DevExpress.Web.Mvc.UI
+@using DevExpress.Data;
+@using Sasha.Lims.Core.Helpers
+@using Sasha.Lims.DataAccess.Entities.Constants
+@using Sasha.Lims.WebUI.Controllers
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@using Sasha.Lims.WebUI.Infrastructure.ViewModelHelpers
+@using Sasha.Lims.WebUI.Localization
+@using Sasha.Lims.WebUI.Models
+@using System.Web.UI.WebControls
+@using System.Diagnostics
+@using Sasha.Lims.DataAccess.Entities.Entity
+
+@model IQueryable<Sasha.Lims.DataAccess.Entities.Entity.vSamplesBook>
+
+@functions {
+	private void FillContextMenuItems(object sender, ASPxGridViewContextMenuEventArgs e)
+	{
+
+		if (e.MenuType == GridViewContextMenuType.Rows)
+
+		{
+			var item = e.Items.FindByCommand(GridViewContextMenuCommand.CollapseDetailRow);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.ExpandDetailRow);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.DeleteRow);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.NewRow);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.Refresh);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.EditRow);
+			e.Items.Remove(item);
+
+			//item = e.Items.Add("Publish Result", "PublishResult");
+
+
+			item = e.Items.Add("Edit", "Edit");
+			item.Image.Url = "~/Content/Images/edit.svg";
+			item.Image.Width = Unit.Pixel(16);
+
+			item = e.Items.Add("Edit content", "EditContent");
+			item.Image.Url = "~/Content/Images/edit.svg";
+			item.Image.Width = Unit.Pixel(16);
+
+			item = e.Items.Add("Show wells", "Wells");
+			item.Image.Url = "~/Content/Images/edit.svg";
+			item.Image.Width = Unit.Pixel(16);
+
+			item = e.Items.Add("Show Clones", "CancerClonesMenuItem");
+			item.Image.Url = "~/Content/Images/attach.svg";
+			item.Image.Width = Unit.Pixel(16);
+
+			item = e.Items.Add("Show Log", "ShowLog");
+			item.Image.Url = "~/Content/Images/move.svg";
+			item.Image.Width = Unit.Pixel(16);
+
+			//item = e.Items.Add("ShowPropertyFiles", "Show property files");
+			//item.Image.Url = "~/Content/Images/attach.svg";
+			//item.Image.Width = Unit.Pixel(16);
+			//SettingHelper.AddChangeStatusContextMenuItems(e, DataHelper.GetAvailableStatuses(TableType.Sample));//создание меню для изменения статуса
+		}
+	}
+}
+
+
+
+@{
+
+
+
+	var gridView = Html.DevExpress().GridView(settings =>
+	{
+
+		SettingHelper.InitAdvancedGridSettings(settings, "SamplesBook", ViewContext);
+
+		settings.SettingsContextMenu.Enabled = true;
+		settings.SettingsContextMenu.EnableRowMenu = DefaultBoolean.True;
+		settings.FillContextMenuItems = FillContextMenuItems;
+		settings.ClientSideEvents.ContextMenuItemClick = "onContextMenuItemClick";
+		settings.ClientSideEvents.ContextMenu = "OnGridContextMenu";
+
+
+		SampleApprovedViewModel vm = null;
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Id";
+			columnSettings.Caption = "Id";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 100;
+			columnSettings.Visible = false;
+		}); //Id
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Barcode";
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Barcode));
+			columnSettings.MinWidth = 100;
+			columnSettings.Width = 100;
+
+		}); //Barcode
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Name";
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Name));
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 150;
+		}); //Name
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Location";
+			columnSettings.Caption = "Location";//Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Location));
+			columnSettings.MinWidth = 200;
+		}); //Location
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "SampleType";
+			columnSettings.Caption = "Sample Type ";
+
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 100;
+		}); //Sample Type
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "BatchName";
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Box));
+			columnSettings.MinWidth = 200;
+		}); //BatchName
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Result";
+			columnSettings.Caption = "Result";
+			columnSettings.MinWidth = 50;
+		}); //BatchName
+
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "ContentListCount";
+			columnSettings.Caption = "Content Count";
+
+
+		}); //Well
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Well";
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Well));
+		}); //Well
+
+		Html.AddColmmentCountColumn(settings, false); //Comment
+		Html.AddFilesCountColumn(settings, false); //Files
+
+		SettingHelper.AddPropComboBoxColumn(settings, "SampleWorkflowStatusId", Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_WorkflowStatus)), PropsType.ProcessStatus);
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "ProcessName";
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Process));
+		}); //ProcessName
+
+		settings.Columns.AddColumnForVmField(vm, m => m.Volume);
+
+		settings.Columns.AddColumnForVmField(vm, m => m.CollectedDateTime);
+
+		SettingHelper.AddPropComboBoxColumn(settings, "SampleStatusId", Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_SampleStatus)), PropsType.SampleStatuses);
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "UserName";
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_User));
+		}); //UserId
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "IsChild";
+			columnSettings.Caption = "Aliquot";
+			columnSettings.ColumnType = MVCxGridViewColumnType.CheckBox;
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 100;
+		}); //Aliquot
+
+
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "ParentName";
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Parent));
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 100;
+		}); //PatentSampleName
+
+		settings.Columns.AddColumnForVmField(vm, m => m.ModelId);
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Patient";
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Patient));
+		}); // Patient
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "PatientId";
+			columnSettings.Caption = "Patient Id";
+			columnSettings.Visible = false;
+		}); // PatientId
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Doctor";
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Doctor));
+
+		}); //Doctor
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "DoctorId";
+			columnSettings.Caption = "Doctor Id";
+			columnSettings.Visible = false;
+		}); // DoctorId
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "HospitalName";
+			columnSettings.Caption = "Hospital";
+
+		}); //Hospital
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "HospitalId";
+			columnSettings.Caption = "Hospital Id";
+			columnSettings.Visible = false;
+		}); // HospitalId
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "LocationId";
+			columnSettings.Caption = "Location Id";
+			columnSettings.Visible = false;
+		}); // HospitalId
+			//todo: кешировать запросы
+
+
+		SettingHelper.AddPropNameValueComboBoxColumn(settings, "Clones", "Clones", PropsType.CancerClonesFlag);
+
+		SettingHelper.AddCustomColumnsAdv(settings, TableType.Sample);
+		//SettingHelper.AddCustomColumns(settings, ViewContext.Controller, Html);
+
+		//Command columns settings
+		SettingHelper.AddCommandColumn(settings);
+
+
+		settings.SettingsDetail.AllowOnlyOneMasterRowExpanded = false;
+		settings.SettingsDetail.ShowDetailRow = true;
+
+		settings.SetDetailRowTemplateContent(c => Html.RenderPartial("GridRowDetails", c));
+
+		settings.SettingsDataSecurity.AllowReadUnlistedFieldsFromClientApi = DefaultBoolean.True;
+
+		settings.CustomJSProperties = (sender, e) =>
+		{
+			var Grid = sender as MVCxGridView;
+			var dictionary = new System.Collections.Generic.Dictionary<object, string>();
+
+			for (int i = 0; i < Grid.SettingsPager.PageSize; i++)
+			{
+				var visibleIndex = i + Grid.VisibleStartIndex;
+				if (visibleIndex >= Grid.VisibleRowCount)
+					break;
+
+				object[] rowValues = (object[])Grid.GetRowValues(visibleIndex, Grid.KeyFieldName, "RowVersion");
+				dictionary[(rowValues[0] ?? 0).ToString()] = Convert.ToBase64String((byte[])(rowValues[1] ?? new byte[] { }));
+			}
+
+			e.Properties["cpRowVersions"] = new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(dictionary);
+			e.Properties["cpRowCount"] = Grid.VisibleRowCount;
+
+			if (ViewData["EditError"] != null)
+				e.Properties["cpEditError"] = ViewData["EditError"];
+			//-------------------------------------------------------------------------------------------------------------------
+			string[] dataFields = new string[] { "Clones", "PatientId", "SampleStatusId", "Model", "Barcode", "Id" };
+			var serverData = Grid.GetCurrentPageRowValues(dataFields);
+			if (serverData.Any())//массив для поиска по видимому индексу
+			{
+				e.Properties["cp_Clones"] = serverData.Select(s => (s as object[])[0]).ToArray();
+				e.Properties["cp_PatientId"] = serverData.Select(s => (s as object[])[1]).ToArray();
+				e.Properties["cp_Status"] = serverData.Select(s => (s as object[])[2]).ToArray();
+				e.Properties["cp_Model"] = serverData.Select(s => (s as object[])[3]).ToArray();
+				e.Properties["cp_Barcode"] = serverData.Select(s => (s as object[])[4]).ToArray();
+				e.Properties["cp_Indexes"] = serverData.Select(s => (s as object[])[5]).ToArray();//массив соответствия между видимым иднексом и ключем
+			}
+		};
+		settings.DataBound = (s, e) =>
+		{
+			if (ViewData["filterExpression"] != null)
+				((ASPxGridView)s).FilterExpression = ViewData["filterExpression"].ToString();
+		};
+		settings.TotalSummary.Add(DevExpress.Data.SummaryItemType.Custom, "ContentListCount");
+		//settings.Settings.ShowFooter = true;
+		//settings.CustomSummaryCalculate = (s, e) =>
+		//{
+		//	ASPxSummaryItem summary = e.Item as ASPxSummaryItem;
+		//	MVCxGridView gridVi = s as MVCxGridView;
+		//	if (summary.FieldName != "ContentListCount")
+		//		return;
+		//	if (e.IsTotalSummary)
+		//	{
+		//		int totalValue = 0;
+		//		if (e.SummaryProcess == CustomSummaryProcess.Start)
+		//		{
+		//			totalValue = 0;
+		//		}
+		//		else if (e.SummaryProcess == CustomSummaryProcess.Calculate)
+		//		{
+		//			//bool isCancelled = (bool)e.GetValue("isCancelled");
+		//			//if (!isCancelled)
+		//			//{
+		//				totalValue += (int)e.FieldValue;
+		//			//}
+		//		}
+		//		else if (e.SummaryProcess == CustomSummaryProcess.Finalize)
+		//		{
+		//			e.TotalValue = totalValue;
+		//			e.TotalValueReady = true;
+		//		}
+		//	}
+		//};
+		settings.ClientSideEvents.Init = "onGridViewInit";
+		settings.ClientSideEvents.SelectionChanged = "onGridViewSelectionChanged";
+		settings.ClientSideEvents.FocusedRowChanged = "onGridViewSelectionChanged";
+		settings.ClientSideEvents.BeginCallback = "onGridViewBeginCallback";
+		settings.ClientSideEvents.RowDblClick = "onRowDblClick";
+		settings.ClientSideEvents.CustomizationWindowCloseUp = "onGridCustomizationWindowCloseUp";
+
+	});
+	if (Model == null)
+	{
+		gridView.GetHtml();
+	}
+	else
+	{
+		gridView.BindToEF(string.Empty, string.Empty, (s, e) =>
+		{
+			e.QueryableSource = Model;
+			e.KeyExpression = "Id";
+		}, (s, e) =>
+		{
+			// Handle internal exception
+			var mess = CoreHelper.GetAllMessages(e.Exception);
+			mess = "<div style='color:red'>" + mess + "</div>";
+			ViewContext.Writer.Write(mess); //пишу error прямо на экран
+		}).GetHtml();
+
+	}
+}

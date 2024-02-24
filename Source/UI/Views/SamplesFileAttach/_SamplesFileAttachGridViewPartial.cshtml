@@ -1,0 +1,170 @@
+@using System.Web.UI.WebControls
+@using Sasha.Lims.WebUI.Controllers
+@*@model System.Collections.Generic.IList<Sasha.Lims.WebUI.Models.SampleViewModel>*@
+
+@Html.DevExpress().GridView(settings => {
+	settings.Name = "SamplesFileAttachGridView";
+	settings.KeyFieldName = "Id";
+	settings.CallbackRouteValues = new { Controller = "SamplesFileAttach", Action = "_SamplesFileAttachGridViewPartial" };
+
+	settings.CustomActionRouteValues = new { Controller = "SamplesFileAttach", Action = "SamplesFileAttachCustomActionPartial" };
+
+	//settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "SamplesFileAttach", Action = "GridViewAddNewPartial" };
+	//settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "SamplesFileAttach", Action = "GridViewUpdatePartial" };
+	//settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "SamplesFileAttach", Action = "GridViewDeletePartial" };
+
+	settings.SettingsPager.Visible = true;
+	settings.Styles.PagerBottomPanel.HorizontalAlign = HorizontalAlign.Right;
+	settings.SettingsPager.Position = PagerPosition.Bottom;
+
+	settings.SettingsPager.Summary.Visible = false;
+
+	settings.SettingsDataSecurity.AllowReadUnlistedFieldsFromClientApi = DefaultBoolean.True;
+
+
+	settings.ControlStyle.CssClass = "grid-view";
+	settings.Width = Unit.Percentage(100);
+
+	settings.SettingsBehavior.AllowFocusedRow = true;
+	settings.SettingsBehavior.AllowSelectByRowClick = true;
+	settings.SettingsBehavior.AllowEllipsisInText = true;
+	settings.SettingsBehavior.AllowDragDrop = false;
+
+	settings.Settings.VerticalScrollBarMode = ScrollBarMode.Hidden;
+	settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
+
+
+	settings.CommandColumn.Visible = true;
+	settings.CommandColumn.ShowEditButton = false;
+	settings.CommandColumn.ShowNewButton = false;
+	settings.CommandColumn.ShowDeleteButton = false;
+	settings.CommandColumn.ShowSelectCheckbox = true;
+	settings.CommandColumn.SelectAllCheckboxMode = GridViewSelectAllCheckBoxMode.Page;
+	settings.CommandColumn.VisibleIndex = 0;
+	settings.CommandColumn.Width = Unit.Pixel(152);
+
+	//settings.ClientSideEvents.RowDblClick = "onRowDblClick";
+
+	settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm; // POPUP EDIT FORM
+
+	settings.SettingsPopup.EditForm.SettingsAdaptivity.MaxWidth = 800;
+	settings.SettingsPopup.EditForm.SettingsAdaptivity.Mode = PopupControlAdaptivityMode.Always;
+	settings.SettingsPopup.EditForm.SettingsAdaptivity.VerticalAlign = PopupAdaptiveVerticalAlign.WindowCenter;
+
+	settings.EditFormLayoutProperties.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+	settings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 600;
+
+	settings.SetEditFormTemplateContent(c =>
+	{
+		Html.RenderPartial("_UploadFilesSamplesFileAttachDetailPartial",
+			!c.Grid.IsNewRowEditing ?
+				c.DataItem :
+				new Sasha.Lims.WebUI.Models.SampleViewModel() {});
+	});
+
+	settings.Columns.Add(columnSettings =>
+	{
+		columnSettings.FieldName = "Barcode";
+		columnSettings.Caption = "Barcode";
+		columnSettings.Width = Unit.Pixel(150);
+		columnSettings.ExportWidth = 100;
+	});
+
+	settings.Columns.Add(columnSettings =>
+	{
+		columnSettings.FieldName = "Name";
+		columnSettings.Caption = "Name";
+		columnSettings.Width = Unit.Pixel(150);
+	});
+
+	settings.Columns.Add(columnSettings =>
+	{
+		columnSettings.Settings.AllowHeaderFilter = DefaultBoolean.False;
+		columnSettings.FieldName = "CollectedDateTime";
+		columnSettings.Caption = "Collected date time";
+		columnSettings.Width = Unit.Pixel(150);
+		columnSettings.ExportWidth = 100;
+		columnSettings.PropertiesEdit.DisplayFormatString = "d";
+	});
+
+
+	settings.Columns.Add(columnSettings =>
+	{
+		columnSettings.FieldName = "SampleStatusId";
+		columnSettings.Caption = "SampleStatus";
+		columnSettings.Width = Unit.Pixel(150);
+
+		columnSettings.EditorProperties().ComboBox(comboBoxProperties =>
+		{
+			comboBoxProperties.ShowImageInEditBox = true;
+			comboBoxProperties.ItemImage.Width = 16;
+			comboBoxProperties.ItemImage.Height = 16;
+			comboBoxProperties.ValueField = "Id";
+			comboBoxProperties.TextField = "DisplayText";
+			comboBoxProperties.BindList(((SamplesFileAttachController)ViewContext.Controller).GetProperties("SampleStatus"));
+		});
+	});
+
+	settings.Columns.Add(columnSettings =>
+	{
+		columnSettings.FieldName = "PatientId";
+		columnSettings.Caption = "Patient";
+		columnSettings.Width = Unit.Pixel(150);
+
+		columnSettings.EditorProperties().ComboBox(comboBoxProperties =>
+		{
+			comboBoxProperties.ShowImageInEditBox = true;
+			comboBoxProperties.ItemImage.Width = 16;
+			comboBoxProperties.ItemImage.Height = 16;
+			comboBoxProperties.ValueField = "Id";
+			comboBoxProperties.TextField = "DisplayText";
+			comboBoxProperties.BindList(((SamplesFileAttachController)ViewContext.Controller).GetPatients());
+		});
+	});
+
+	settings.Columns.Add(columnSettings =>
+	{
+		columnSettings.FieldName = "DoctorId";
+		columnSettings.Caption = "Doctor";
+		columnSettings.Width = Unit.Pixel(150);
+
+		columnSettings.EditorProperties().ComboBox(comboBoxProperties =>
+		{
+			comboBoxProperties.ShowImageInEditBox = true;
+			comboBoxProperties.ItemImage.Width = 16;
+			comboBoxProperties.ItemImage.Height = 16;
+			comboBoxProperties.ValueField = "Id";
+			comboBoxProperties.TextField = "DisplayText";
+			comboBoxProperties.BindList(((SamplesFileAttachController)ViewContext.Controller).GetDoctors());
+		});
+	});
+
+	settings.Columns.Add(columnSettings =>
+	{
+		columnSettings.FieldName = "ClientId";
+		columnSettings.Caption = "Client";
+		columnSettings.Width = Unit.Pixel(150);
+
+		columnSettings.EditorProperties().ComboBox(comboBoxProperties =>
+		{
+			comboBoxProperties.ShowImageInEditBox = true;
+			comboBoxProperties.ItemImage.Width = 16;
+			comboBoxProperties.ItemImage.Height = 16;
+			comboBoxProperties.ValueField = "Id";
+			comboBoxProperties.TextField = "Name";
+			comboBoxProperties.BindList(((SamplesFileAttachController)ViewContext.Controller).GetClients());
+		});
+	});
+
+	settings.SettingsDetail.AllowOnlyOneMasterRowExpanded = false;
+	settings.SettingsDetail.ShowDetailRow = true;
+
+	settings.SetDetailRowTemplateContent(c =>
+	{
+		Html.RenderPartial("_UploadFilesSamplesFileAttachDetailPartial", c.DataItem);
+	});
+
+	settings.ClientSideEvents.Init = "onGridViewInit";
+	settings.ClientSideEvents.SelectionChanged = "onGridViewSelectionChanged";
+
+}).SetEditErrorText((string)ViewData["EditError"]).BindToCustomData(Model).GetHtml()

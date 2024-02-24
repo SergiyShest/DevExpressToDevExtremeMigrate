@@ -1,0 +1,147 @@
+@using DevExpress.XtraGrid
+@using Sasha.Lims.WebUI.Controllers
+@using System.Web.UI.WebControls
+
+@{
+	var gridView = Html.DevExpress().GridView(gridViewSettings =>
+	{
+		gridViewSettings.Name = "CustodyLogGridView";
+		gridViewSettings.Width = Unit.Percentage(100);
+		gridViewSettings.SettingsBehavior.AllowFocusedRow = true;
+		gridViewSettings.SettingsBehavior.AllowSelectByRowClick = true;
+		gridViewSettings.SettingsBehavior.AllowEllipsisInText = true;
+		gridViewSettings.SettingsBehavior.AllowDragDrop = false;
+
+		gridViewSettings.Settings.VerticalScrollBarMode = ScrollBarMode.Hidden;
+
+		gridViewSettings.SettingsPager.Visible = true;
+		gridViewSettings.Styles.PagerBottomPanel.HorizontalAlign = HorizontalAlign.Right;
+		gridViewSettings.SettingsPager.Position = PagerPosition.Bottom;
+		gridViewSettings.SettingsPager.Summary.Visible = false;
+
+		gridViewSettings.SettingsPopup.HeaderFilter.Height = Unit.Pixel(420);
+		gridViewSettings.SettingsPopup.HeaderFilter.Width = Unit.Pixel(290);
+		gridViewSettings.SettingsPopup.HeaderFilter.SettingsAdaptivity.Mode = PopupControlAdaptivityMode.OnWindowInnerWidth;
+		gridViewSettings.SettingsPopup.HeaderFilter.SettingsAdaptivity.SwitchAtWindowInnerWidth = 768;
+
+		gridViewSettings.SettingsPager.PageSize = 15;
+		gridViewSettings.SettingsPager.FirstPageButton.Visible = true;
+		gridViewSettings.SettingsPager.LastPageButton.Visible = true;
+		gridViewSettings.SettingsPager.PageSizeItemSettings.Visible = true;
+		gridViewSettings.SettingsPager.PageSizeItemSettings.ShowPopupShadow = true;
+		gridViewSettings.SettingsPager.PageSizeItemSettings.Position = PagerPageSizePosition.Left;
+		gridViewSettings.SettingsPager.PageSizeItemSettings.Items = new string[] { "15", "50", "100", "200" };
+
+
+		gridViewSettings.Settings.ShowFilterRow = true;
+		gridViewSettings.Settings.ShowFilterRowMenu = true;
+		gridViewSettings.SettingsBehavior.FilterRowMode = GridViewFilterRowMode.Auto;
+
+		gridViewSettings.CallbackRouteValues = new { Controller = "CustodyLog", Action = "CustodyLogGridViewPartial" };
+
+		gridViewSettings.CustomBindingRouteValuesCollection.Add(
+			GridViewOperationType.Paging,
+			new { Controller = "CustodyLog", Action = "CustodyLogsGridViewPagingAction" }
+			);
+		gridViewSettings.CustomBindingRouteValuesCollection.Add(
+			GridViewOperationType.Sorting,
+			new { Controller = "CustodyLog", Action = "CustodyLogsGridViewSortingAction" }
+			);
+		gridViewSettings.CustomBindingRouteValuesCollection.Add(
+			GridViewOperationType.Filtering,
+			new { Controller = "CustodyLog", Action = "CustodyLogsGridViewFilteringAction" }
+			);
+
+		//gridViewSettings.CustomActionRouteValues = new { Controller = "CustodyLog", Action = "CustodyLogCustomActionPartial" };
+
+		gridViewSettings.KeyFieldName = "Id";
+
+		gridViewSettings.Columns.Add(columnSettings =>
+		{
+			//columnSettings.Settings.AllowHeaderFilter = DefaultBoolean.True;
+			columnSettings.FieldName = "Sample.Name";
+			columnSettings.Caption = "Sample number";
+			columnSettings.Width = Unit.Pixel(130);
+		});
+		gridViewSettings.Columns.Add(columnSettings =>
+		{
+			//columnSettings.Settings.AllowHeaderFilter = DefaultBoolean.True;
+			columnSettings.FieldName = "StatusId";
+			columnSettings.Caption = "Status";
+			columnSettings.Width = Unit.Pixel(130);
+
+			columnSettings.EditorProperties().ComboBox(comboBoxProperties =>
+			{
+				comboBoxProperties.ShowImageInEditBox = true;
+				comboBoxProperties.ItemImage.Width = 16;
+				comboBoxProperties.ItemImage.Height = 16;
+				comboBoxProperties.ValueField = "Id";
+				comboBoxProperties.TextField = "DisplayText";
+				//comboBoxProperties.BindList(((SamplesApprovedController)ViewContext.Controller).GetLocations());
+				comboBoxProperties.BindList(((CustodyLogController) ViewContext.Controller).GetProperties("SampleStatus"));
+			});
+		});
+		gridViewSettings.Columns.Add(columnSettings =>
+		{
+			columnSettings.Settings.AllowHeaderFilter = DefaultBoolean.True;
+			columnSettings.FieldName = "LogDateTime";
+			columnSettings.Caption = "Date time";
+			columnSettings.Width = Unit.Pixel(180);
+			//columnSettings.ExportWidth = 100;
+			//columnSettings.PropertiesEdit.DisplayFormatString = "d";
+			columnSettings.SettingsHeaderFilter.Mode = GridHeaderFilterMode.DateRangeCalendar;
+		});
+		gridViewSettings.Columns.Add(columnSettings =>
+		{
+			//columnSettings.Settings.AllowHeaderFilter = DefaultBoolean.True;
+			columnSettings.FieldName = "LocationId";
+			columnSettings.Caption = "Location";
+			columnSettings.Width = Unit.Pixel(300);
+			columnSettings.EditorProperties().ComboBox(comboBoxProperties =>
+			{
+				comboBoxProperties.ShowImageInEditBox = true;
+				comboBoxProperties.ItemImage.Width = 16;
+				comboBoxProperties.ItemImage.Height = 16;
+				comboBoxProperties.ValueField = "ShortLocationId";
+				comboBoxProperties.TextField = "ShortPath";
+				comboBoxProperties.BindList(((CustodyLogController)ViewContext.Controller).GetSortLocations());
+			});
+		});
+		//gridViewSettings.Columns.Add(columnSettings =>
+		//{
+		//	//columnSettings.Settings.AllowHeaderFilter = DefaultBoolean.True;
+		//	columnSettings.FieldName = "AmountInOut";
+		//	columnSettings.Caption = "Amount In Out";
+		//	columnSettings.Width = Unit.Pixel(130);
+		//});
+		gridViewSettings.Columns.Add(columnSettings =>
+		{
+			//columnSettings.Settings.AllowHeaderFilter = DefaultBoolean.True;
+			columnSettings.FieldName = "AspNetUserId";
+			columnSettings.Caption = "User name";
+			columnSettings.Width = Unit.Pixel(200);
+			columnSettings.Settings.SortMode = ColumnSortMode.DisplayText;
+
+			columnSettings.EditorProperties().ComboBox(comboBoxProperties =>
+			{
+				comboBoxProperties.ShowImageInEditBox = true;
+				comboBoxProperties.ItemImage.Width = 16;
+				comboBoxProperties.ItemImage.Height = 16;
+				comboBoxProperties.ValueField = "Id";
+				comboBoxProperties.TextField = "DisplayText";
+				comboBoxProperties.BindList(((CustodyLogController)ViewContext.Controller).GetAspNetUsers());
+			});
+		});
+
+		gridViewSettings.SettingsExport.EnableClientSideExportAPI = true;
+
+		//gridViewSettings.Toolbars.Add(t => {
+		//	t.Items.Add(GridViewToolbarCommand.ExportToPdf);
+		//});
+
+		gridViewSettings.ClientSideEvents.Init = "onGridViewInit";
+
+	});
+}
+
+@gridView.BindToCustomData(Model).GetHtml()

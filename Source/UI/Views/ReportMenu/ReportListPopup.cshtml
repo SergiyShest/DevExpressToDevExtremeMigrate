@@ -1,0 +1,17 @@
+@{
+	Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+	@Html.DevExpress().GetStyleSheets(
+				new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout }
+				)
+	@Html.DevExpress().GetScripts(
+				new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout }
+				)
+</head>
+<body>
+	@Html.Action("ReportListPartial")
+</body>
+</html>

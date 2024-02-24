@@ -1,0 +1,45 @@
+@using Sasha.Lims.WebUI.Localization
+<!DOCTYPE html>
+<html>
+<head>
+	@{
+		ViewBag.Title = "Group Input";
+		Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+	}
+	<meta charset="utf-8" />
+	<title>custom-Type</title>
+
+   <script defer src="~/Scripts/vue-app/js/chunk-vendors.js"> </script>
+   <script defer src="~/Scripts/vue-app/js/group-input.js"></script>
+		<script>
+
+
+		const EditingRowCount = '@ViewBag.EditingRowCount';
+		const SelectedIds = '@ViewBag.SelectedIds';
+		const JournalType = '@ViewBag.JournalType';
+
+		window.addEventListener("message", receiveMessage, false);
+
+		function EditHelpItem(id,path) {
+			var url = '@Url.Action("Index", "HelpEditor", new {Area = "Help"})?id=' + id + '&path=' + path + '&dontShowMainMenu=true'
+			ShowUrlPopup("Edit help item" , url, document.documentElement.clientWidth - 150);
+		}
+	
+		function receiveMessage(event) {
+			if (typeof event.data === 'string') {
+				if (event.data == 'RefreshHelp'); {
+					window.globalEvent.$emit('refresh-help');
+				}
+			}
+		}
+
+	</script>
+</head>
+<body>
+
+	<div id="app"></div>
+
+</body>
+</html>
+
+

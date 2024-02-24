@@ -1,0 +1,20 @@
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@using Sasha.Lims.WebUI.Localization
+@model XtraReport
+@{
+	// todo: move to resources
+	string titlePage = Html.GetLocalizedCommonText("ReportDesignerTitle");
+	ViewBag.Title = titlePage;
+	Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+}
+@section Head {
+	<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Samples/SamplesGridView.css?v=" + AppVersionHelper.Version)" />
+}
+@section PageToolbar {
+	@Html.Partial("Blocks\\Toolbar")
+}
+@Html.DevExpress().ReportDesigner(settings =>
+{
+	settings.Name = "ReportDesigner";
+
+}).Bind(Model).GetHtml()

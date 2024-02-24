@@ -1,0 +1,112 @@
+
+@using System.Web.UI.WebControls
+@using DevExpress.XtraGrid
+@using Sasha.Lims.WebUI.Controllers
+
+@{
+	Html.EnableClientValidation();
+	Html.EnableUnobtrusiveJavaScript();
+}
+
+@Html.DevExpress().GridView(settings => {
+	settings.Name = "gridViewSamplesEditor";
+	settings.KeyFieldName = "Id";
+	settings.Width = Unit.Percentage(100);
+	settings.CallbackRouteValues = new { Controller = "SamplesPlate", Action = "SamplesGridViewEditingPartial" };
+	settings.SettingsEditing.UpdateRowRouteValues = new { Controller = "SamplesPlate", Action = "UpdateSamplePartial" };
+	settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "SamplesPlate", Action = "DeleteSamplePartial" };
+	settings.SettingsBehavior.ConfirmDelete = false;
+
+
+	settings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+	settings.SettingsPager.Mode = GridViewPagerMode.ShowPager;
+
+	settings.SettingsEditing.BatchEditSettings.EditMode = GridViewBatchEditMode.Row;
+	settings.Settings.VerticalScrollableHeight = 594;
+
+	settings.CommandColumn.Visible = true;
+	settings.CommandColumn.ShowCancelButton = true;
+	settings.CommandColumn.ShowDeleteButton = true;
+	settings.CommandColumn.ShowEditButton = true;
+	settings.CommandColumn.ShowCancelButton = true;
+	settings.CommandColumn.Width = Unit.Pixel(150);
+	settings.CommandColumn.CellStyle.HorizontalAlign = HorizontalAlign.Left;
+
+	settings.Columns.Add(c => {
+		c.FieldName = "Name";
+	});
+
+	settings.Columns.Add(c =>
+	{
+		c.FieldName = "Well";
+		c.ColumnType = MVCxGridViewColumnType.TextBox;
+		var prop = (TextBoxProperties)c.PropertiesEdit;
+		prop.MaskSettings.Mask = "<1..100>:L";
+		prop.MaskSettings.ErrorText = "Input number, colon and letter";
+		prop.ValidationSettings.ErrorDisplayMode = ErrorDisplayMode.ImageWithText;
+		prop.ValidationSettings.Display = Display.Static;
+	});
+
+	settings.Columns.Add(c => {
+		c.FieldName = "AcceptedDate";
+		c.ColumnType = MVCxGridViewColumnType.DateEdit;
+		c.PropertiesEdit.DisplayFormatString = "d";
+	});
+	settings.Columns.Add(c =>
+	{
+		c.FieldName = "Volume";
+		c.EditorProperties().SpinEdit(p =>
+		{
+			p.NumberType = SpinEditNumberType.Integer;
+			p.MinValue = 0;
+			p.MaxValue = 10000;
+		});
+	});
+
+	settings.Columns.Add(columnSettings =>
+	{
+		columnSettings.FieldName = "VolumeUnitId";
+		columnSettings.Caption = "Volume Unit";
+		columnSettings.Settings.SortMode = ColumnSortMode.DisplayText;
+		//columnSettings.EditFormSettings.Visible = DefaultBoolean.False;
+		columnSettings.EditorProperties().ComboBox(comboBoxProperties =>
+		{
+			comboBoxProperties.ShowImageInEditBox = true;
+			comboBoxProperties.ItemImage.Width = 16;
+			comboBoxProperties.ItemImage.Height = 16;
+			comboBoxProperties.ValueField = "Id";
+			comboBoxProperties.TextField = "Name";
+			comboBoxProperties.BindList(((SamplesPlateController)ViewContext.Controller).GetProperties("ValueUnit"));
+		});
+	});
+
+	settings.ClientSideEvents.BeginCallback = "OnBeginGridCallback";
+	settings.ClientSideEvents.EndCallback = "OnEndGridCallback";
+
+	//Handles grid data operations - in this sample, paging and sorting.
+	settings.CustomBindingRouteValuesCollection.Add(GridViewOperationType.Paging, new {Controller = "SamplesPlate", Action = "SamplesEditorGridViewPagingAction"});
+	settings.CustomBindingRouteValuesCollection.Add(GridViewOperationType.Sorting, new {Controller = "SamplesPlate", Action = "SamplesEditorGridViewSortingAction"});
+	settings.CustomBindingRouteValuesCollection.Add(GridViewOperationType.Filtering, new {Controller = "SamplesPlate", Action = "SamplesEditorGridViewFilteringAction"});
+
+	settings.CustomActionRouteValues = new { Controller = "SamplesPlate", Action = "GridViewCustomAction" };
+
+    settings.CommandButtonInitialize = (sender, e) =>
+    {
+        var grd = sender as MVCxGridView;
+        if (e.ButtonType == ColumnCommandButtonType.Delete)
+        {
+			// we must prevent to delete existing aliquots in the plate
+			// delete is available for a new aliquots tha are not posted yet
+	        var sampleId = grd.GetRowValues(e.VisibleIndex, "SampleId");
+	        e.Visible = sampleId == null;
+        }
+    };
+
+
+}).BindToCustomData(Model).GetHtml()
+@if ((ViewBag.plateData ?? "") != "")
+{
+
+	@Html.Hidden("plateTypeCodeJSTextInput", (string)ViewBag.plateType)
+	@Html.Hidden("plateDataJSTextInput", (string)ViewBag.plateData)
+}

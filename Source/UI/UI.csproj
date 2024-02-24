@@ -1,0 +1,1562 @@
+﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.1.10.13\build\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.props" Condition="Exists('..\packages\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.1.10.13\build\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.props')" />
+  <Import Project="..\packages\EntityFramework.6.3.0\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F776BF1E-F110-439A-BE70-7BCB85C113CD}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Sasha.Lims.WebUI</RootNamespace>
+    <AssemblyName>Sasha.Lims.WebUI</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort>44363</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>3.9</TypeScriptToolsVersion>
+    <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
+    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
+    <DockerLaunchUrl>http://{ServiceIPAddress}</DockerLaunchUrl>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.4.1.9004, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="AutoMapper, Version=8.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.8.1.1\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="ChoETL, Version=1.2.0.8, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ChoETL.1.2.0.8\lib\net45\ChoETL.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Charts.v20.2.Core, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.CodeParser.v20.2, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Data.Desktop.v20.2, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Data.v20.2, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.DataAccess.v20.2, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Docs.v20.2, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Office.v20.2.Core, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Pdf.v20.2.Core, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.PivotGrid.v20.2.Core, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Printing.v20.2.Core, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.RichEdit.v20.2.Core, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.RichEdit.v20.2.Export, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Sparkline.v20.2.Core, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.Web.ASPxThemes.v20.2, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Web.ASPxTreeList.v20.2, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Web.Mvc5.v20.2, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Web.v20.2, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Xpo.v20.2, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraCharts.v20.2, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraGauges.v20.2.Core, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraReports.v20.2, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraReports.v20.2.Web, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.XtraReports.v20.2.Web.WebForms, Version=20.2.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExtreme.AspNet.Data, Version=2.8.6.0, Culture=neutral, PublicKeyToken=982f5dab1439d0f7, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExtreme.AspNet.Data.2.8.6\lib\net452\DevExtreme.AspNet.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="DynamicInterop, Version=0.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DynamicInterop.0.9.1\lib\netstandard2.0\DynamicInterop.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="JmesPath.Net, Version=1.0.125.0, Culture=neutral, PublicKeyToken=b29d616b7f4faff0, processorArchitecture=MSIL">
+      <HintPath>..\packages\JmesPath.Net.1.0.125\lib\net45\JmesPath.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="JUST.net, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\JUST.net.4.0.0\lib\net461\JUST.net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.2\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.2\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.4.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.4.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=4.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.4.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Win32.Registry, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Win32.Registry.4.5.0\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json.Schema, Version=3.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.Schema.3.0.10\lib\net45\Newtonsoft.Json.Schema.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Common, Version=3.3.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.Common.3.3.0\lib\net45\Ninject.Web.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Common.WebHost, Version=3.3.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.Common.WebHost.3.3.0\lib\net45\Ninject.Web.Common.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.WebApi, Version=3.3.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.WebApi.3.3.0\lib\net45\Ninject.Web.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.WebApi.WebHost, Version=3.3.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.WebApi.WebHost.3.3.0\lib\net45\Ninject.Web.WebApi.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.7.5\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.Web.4.9.3\lib\net35\NLog.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Portable.Licensing, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Portable.Licensing.1.1.0\lib\portable-net40+sl4+wp7+win8\Portable.Licensing.dll</HintPath>
+    </Reference>
+    <Reference Include="RDotNet, Version=1.8.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\R.NET.1.8.2\lib\netstandard2.0\RDotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="System.CodeDom, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.CodeDom.4.4.0\lib\net461\System.CodeDom.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.4.4.1\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration.ConfigurationManager, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Configuration.ConfigurationManager.4.4.1\lib\net461\System.Configuration.ConfigurationManager.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.SqlClient, Version=4.2.0.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SqlClient.4.4.3\lib\net461\System.Data.SqlClient.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.4\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reflection.4.3.0\lib\net462\System.Reflection.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security.AccessControl, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.AccessControl.4.5.0\lib\net461\System.Security.AccessControl.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Principal.Windows, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Principal.Windows.4.5.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.4\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.4\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease, Version=1.5.2.14234, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\babel.config.js" />
+    <Content Include="Areas\BillOfMaterial\Views\Bill\BillItem.js" />
+    <Content Include="Areas\BillOfMaterial\Views\Bill\main.js" />
+    <Content Include="Areas\Custom\Views\EditCustom\babel.config.js" />
+    <Content Include="Areas\Custom\Views\EditCustom\src\assets\logo.png" />
+    <Content Include="Areas\Custom\Views\EditCustom\src\assets\logo.svg" />
+    <Content Include="Areas\Custom\Views\EditCustom\src\EditModel.js" />
+    <Content Include="Areas\Custom\Views\EditCustom\src\main.js" />
+    <Content Include="Areas\Custom\Views\EditCustom\src\plugins\vuetify.js" />
+    <Content Include="Areas\Custom\Views\EditCustom\vue.config.js" />
+    <Content Include="Areas\Custom\Views\EditList\main.js" />
+    <Content Include="Areas\Help\Views\HelpEditor\main.js" />
+    <Content Include="Areas\Help\Views\Help\HelpMixin.js" />
+    <Content Include="Areas\Help\Views\Help\main.js" />
+    <Content Include="Areas\Location\Views\ManageLocation\main.js" />
+    <Content Include="Areas\Location\Views\SelectLocation\babel.config.js" />
+    <Content Include="Areas\Location\Views\SelectLocation\src\assets\images\folder.png" />
+    <Content Include="Areas\Location\Views\SelectLocation\src\assets\images\rack.png" />
+    <Content Include="Areas\Location\Views\SelectLocation\src\assets\images\refrigerator.png" />
+    <Content Include="Areas\Location\Views\SelectLocation\src\assets\images\row.png" />
+    <Content Include="Areas\Location\Views\SelectLocation\src\assets\images\shelf.png" />
+    <Content Include="Areas\Location\Views\SelectLocation\src\assets\images\shelfEmpty.png" />
+    <Content Include="Areas\Location\Views\SelectLocation\src\assets\logo.png" />
+    <Content Include="Areas\Location\Views\SelectLocation\src\assets\logo.svg" />
+    <Content Include="Areas\Location\Views\SelectLocation\src\components\ArrayFunctions.js" />
+    <Content Include="Areas\Location\Views\SelectLocation\src\components\locationMixin.js" />
+    <Content Include="Areas\Location\Views\SelectLocation\src\main.js" />
+    <Content Include="Areas\Location\Views\SelectLocation\src\plugins\vuetify.js" />
+    <Content Include="Areas\Location\Views\SelectLocation\vue.config.js" />
+    <Content Include="Areas\Location\Views\ManageLocation\components\ArrayFunctions.js" />
+    <Content Include="Areas\Location\Views\ManageLocation\plugins\vuetify.js" />
+    <Content Include="Areas\Location\Views\ManageLocation\vue.config.js" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\images\barcode.png" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\images\bill.png" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\images\box.png" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\images\BoxKitsReagents.png" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\images\BoxReagents.png" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\images\dote.png" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\images\folder.png" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\images\KitReagents.png" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\images\plate.png" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\images\rack.png" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\images\rack2.png" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\images\refrigerator.png" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\images\room.png" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\images\row.png" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\images\Rows.png" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\images\rows2.png" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\images\settings-3d.png" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\images\settings.png" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\images\settingsConst.png" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\images\shelf.png" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\images\shelf2.png" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\images\shelfEmpty.png" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\images\SingleReagent.png" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\images\sizeSetting.png" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\images\tube.png" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\images\up.png" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\logo.png" />
+    <Content Include="Areas\PropertyTree\Views\Properties\assets\logo.svg" />
+    <Content Include="Areas\PropertyTree\Views\Properties\babel.config.js" />
+    <Content Include="Areas\PropertyTree\Views\Properties\components\ArrayFunctions.js" />
+    <Content Include="Areas\PropertyTree\Views\Properties\components\Menu\MenuSetting.js" />
+    <Content Include="Areas\PropertyTree\Views\Properties\components\BarcodeSettings\BarcodeSettings.js" />
+    <Content Include="Areas\PropertyTree\Views\Properties\components\Reagents\ReagentTemplateModel.js" />
+    <Content Include="Areas\PropertyTree\Views\Properties\components\Storage\StoragePlaceDescription.js" />
+    <Content Include="Areas\PropertyTree\Views\Properties\components\treeMixin.js" />
+    <Content Include="Areas\PropertyTree\Views\Properties\main.js" />
+    <Content Include="Areas\PropertyTree\Views\Properties\plugins\vuetify.js" />
+    <Content Include="Areas\PropertyTree\Views\Properties\vue.config.js" />
+    <Content Include="Areas\PropertyTree\Views\PropertyEdit\main.js" />
+    <Content Include="Areas\PropertyTree\Views\RuleEdit\main.js" />
+    <Content Include="Areas\Questions\Views\Questionnaire\babel.config.js" />
+    <Content Include="Areas\Questions\Views\Questionnaire\src\assets\images\box.png" />
+    <Content Include="Areas\Questions\Views\Questionnaire\src\assets\images\BoxKitsReagents.png" />
+    <Content Include="Areas\Questions\Views\Questionnaire\src\assets\images\BoxReagents.png" />
+    <Content Include="Areas\Questions\Views\Questionnaire\src\assets\images\dote.png" />
+    <Content Include="Areas\Questions\Views\Questionnaire\src\assets\images\folder.png" />
+    <Content Include="Areas\Questions\Views\Questionnaire\src\assets\images\KitReagents.png" />
+    <Content Include="Areas\Questions\Views\Questionnaire\src\assets\images\plate.png" />
+    <Content Include="Areas\Questions\Views\Questionnaire\src\assets\images\rack.png" />
+    <Content Include="Areas\Questions\Views\Questionnaire\src\assets\images\refrigerator.png" />
+    <Content Include="Areas\Questions\Views\Questionnaire\src\assets\images\room.png" />
+    <Content Include="Areas\Questions\Views\Questionnaire\src\assets\images\row.png" />
+    <Content Include="Areas\Questions\Views\Questionnaire\src\assets\images\settings.png" />
+    <Content Include="Areas\Questions\Views\Questionnaire\src\assets\images\settingsConst.png" />
+    <Content Include="Areas\Questions\Views\Questionnaire\src\assets\images\shelf.png" />
+    <Content Include="Areas\Questions\Views\Questionnaire\src\assets\images\shelfEmpty.png" />
+    <Content Include="Areas\Questions\Views\Questionnaire\src\assets\images\SingleReagent.png" />
+    <Content Include="Areas\Questions\Views\Questionnaire\src\assets\images\tube.png" />
+    <Content Include="Areas\Questions\Views\Questionnaire\src\assets\images\up.png" />
+    <Content Include="Areas\Questions\Views\Questionnaire\src\assets\logo.png" />
+    <Content Include="Areas\Questions\Views\Questionnaire\src\assets\logo.svg" />
+    <Content Include="Areas\Questions\Views\Questionnaire\src\main.js" />
+    <Content Include="Areas\Questions\Views\Questionnaire\src\plugins\vuetify.js" />
+    <Content Include="Areas\Questions\Views\Questionnaire\vue.config.js" />
+    <Content Include="Areas\Reagents\Views\ReagentTypeEdit\main.js" />
+    <Content Include="Areas\Reagents\Views\ReagentEdit\main.js" />
+    <Content Include="Areas\SamplesEdit\Views\GroupInput\components\ArrayFunctions.js" />
+    <Content Include="Areas\SamplesEdit\Views\GroupInput\HelpMixin.js" />
+    <Content Include="Areas\SamplesEdit\Views\GroupInput\main.js" />
+    <Content Include="Areas\SamplesEdit\Views\GroupInput\plugins\vuetify.js" />
+    <Content Include="Areas\vue.config.js" />
+    <Content Include="Areas\VueCore\ArrayFunctions.js" />
+    <Content Include="Areas\VueCore\assets\images\box.png" />
+    <Content Include="Areas\VueCore\assets\images\BoxKitsReagents.png" />
+    <Content Include="Areas\VueCore\assets\images\BoxReagents.png" />
+    <Content Include="Areas\VueCore\assets\images\folder.png" />
+    <Content Include="Areas\VueCore\assets\images\KitReagents.png" />
+    <Content Include="Areas\VueCore\assets\images\plate.png" />
+    <Content Include="Areas\VueCore\assets\images\rack.png" />
+    <Content Include="Areas\VueCore\assets\images\refrigerator.png" />
+    <Content Include="Areas\VueCore\assets\images\room.png" />
+    <Content Include="Areas\VueCore\assets\images\row.png" />
+    <Content Include="Areas\VueCore\assets\images\shelf.png" />
+    <Content Include="Areas\VueCore\assets\images\shelfEmpty.png" />
+    <Content Include="Areas\VueCore\assets\images\SingleReagent.png" />
+    <Content Include="Areas\VueCore\assets\images\tube.png" />
+    <Content Include="Areas\VueCore\assets\images\up.png" />
+    <Content Include="Areas\VueCore\assets\logo.png" />
+    <Content Include="Areas\VueCore\assets\logo.svg" />
+    <Content Include="Areas\VueCore\vuetify.js" />
+    <Content Include="Content\bootstrap-grid.css" />
+    <Content Include="Content\bootstrap-grid.min.css" />
+    <Content Include="Content\bootstrap-reboot.css" />
+    <Content Include="Content\bootstrap-reboot.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\bundledSamplesApproved.css">
+      <DependentUpon>bundledSamplesApproved.scss</DependentUpon>
+    </Content>
+    <Content Include="Content\bundledSamplesApproved.min.css">
+      <DependentUpon>bundledSamplesApproved.css</DependentUpon>
+    </Content>
+    <Content Include="Content\bundledSamplesEditor.css">
+      <DependentUpon>bundledSamplesEditor.scss</DependentUpon>
+    </Content>
+    <Content Include="Content\bundledSamplesEditor.min.css">
+      <DependentUpon>bundledSamplesEditor.css</DependentUpon>
+    </Content>
+    <Content Include="Content\bundledSamplesWellDiagram.css">
+      <DependentUpon>bundledSamplesWellDiagram.scss</DependentUpon>
+    </Content>
+    <Content Include="Content\bundledSamplesWellDiagram.min.css">
+      <DependentUpon>bundledSamplesWellDiagram.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Content.css" />
+    <Content Include="Content\dx.common.css" />
+    <Content Include="Content\dx.light.css" />
+    <Content Include="Content\grey.css" />
+    <Content Include="Content\Icons\add.png" />
+    <Content Include="Content\Icons\AddFrom.png" />
+    <Content Include="Content\Icons\Discard.png" />
+    <Content Include="Content\Icons\edit.png" />
+    <Content Include="Content\Icons\excel.jpg" />
+    <Content Include="Content\Icons\ready.png" />
+    <Content Include="Content\Icons\filter.png" />
+    <Content Include="Content\Icons\refresh.png" />
+    <Content Include="Content\Icons\remove.png" />
+    <Content Include="Content\Icons\save.jpg" />
+    <Content Include="Content\Icons\unChecked.png" />
+    <Content Include="Content\Images\add.svg" />
+    <Content Include="Content\Images\aliquoting.svg" />
+    <Content Include="Content\Images\aliquoting_.svg" />
+    <Content Include="Content\Images\arrow3left.svg" />
+    <Content Include="Content\Images\attach.svg" />
+    <Content Include="Content\Images\Attachment.svg" />
+    <Content Include="Content\Images\batch_add.svg" />
+    <Content Include="Content\Images\box.svg" />
+    <Content Include="Content\Images\cell.svg" />
+    <Content Include="Content\Images\check.svg" />
+    <Content Include="Content\Images\check_in.svg" />
+    <Content Include="Content\Images\check_out.svg" />
+    <Content Include="Content\Images\choosecolumn.svg" />
+    <Content Include="Content\Images\comment_v2.svg" />
+    <Content Include="Content\Images\delete_v2.svg" />
+    <Content Include="Content\Images\dispose.svg" />
+    <Content Include="Content\Images\edit.svg" />
+    <Content Include="Content\Images\export.svg" />
+    <Content Include="Content\Images\group_edit.svg" />
+    <Content Include="Content\Images\loading.gif" />
+    <Content Include="Content\Images\logos\logo_1.svg" />
+    <Content Include="Content\Images\logos\logo_10.svg" />
+    <Content Include="Content\Images\logos\logo_2.svg" />
+    <Content Include="Content\Images\logos\logo_3.svg" />
+    <Content Include="Content\Images\logos\logo_4.svg" />
+    <Content Include="Content\Images\logos\logo_6.svg" />
+    <Content Include="Content\Images\logos\logo_7.svg" />
+    <Content Include="Content\Images\logos\logo_8.svg" />
+    <Content Include="Content\Images\logos\logo_9.svg" />
+    <Content Include="Content\Images\move.svg" />
+    <Content Include="Content\Images\move_to_box.svg" />
+    <Content Include="Content\Images\operations.svg" />
+    <Content Include="Content\Images\plate.svg" />
+    <Content Include="Content\Images\print.svg" />
+    <Content Include="Content\Images\print_.svg" />
+    <Content Include="Content\Images\process.svg" />
+    <Content Include="Content\Images\question-mark.svg" />
+    <Content Include="Content\Images\Reagents\BoxReagents.png" />
+    <Content Include="Content\Images\Reagents\BoxKitReagents.png" />
+    <Content Include="Content\Images\Reagents\SingleReagent.png" />
+    <Content Include="Content\Images\Reagents\KitReagents.png" />
+    <Content Include="Content\Images\report.svg" />
+    <Content Include="Content\Images\sample-aliquot.svg" />
+    <Content Include="Content\Images\sample-box.svg" />
+    <Content Include="Content\Images\sample-plate.svg" />
+    <Content Include="Content\Images\sample-tube.svg" />
+    <Content Include="Content\Images\save.svg" />
+    <Content Include="Content\Images\square-grid.svg" />
+    <Content Include="Content\Images\Status\CheckedIn.png" />
+    <Content Include="Content\Images\Status\CheckedOut.png" />
+    <Content Include="Content\Images\Status\Disposed.png" />
+    <Content Include="Content\Images\Status\Included.png" />
+    <Content Include="Content\Images\Status\In Process.png" />
+    <Content Include="Content\Images\Status\Pass.png" />
+    <Content Include="Content\Images\Status\In Progress.png" />
+    <Content Include="Content\Images\Status\Fail.png" />
+    <Content Include="Content\Images\Status\Failed.png" />
+    <Content Include="Content\Images\Status\Active.png" />
+    <Content Include="Content\Images\Status\Delete.png" />
+    <Content Include="Content\Images\Status\Completed.png" />
+    <Content Include="Content\Images\Status\Negative.png" />
+    <Content Include="Content\Images\Status\Positive.png" />
+    <Content Include="Content\Images\Status\process.png" />
+    <Content Include="Content\Images\Status\Started.png" />
+    <Content Include="Content\Images\Status\Created.png" />
+    <Content Include="Content\Images\Status\Stopped.png" />
+    <Content Include="Content\Images\table_v1.svg" />
+    <Content Include="Content\Images\table_v2.svg" />
+    <Content Include="Content\Images\upbar.svg" />
+    <Content Include="Content\Layout.css" />
+    <Content Include="Content\Images\add_.svg" />
+    <Content Include="Content\Images\delete.svg" />
+    <Content Include="Content\Images\edit_.svg" />
+    <Content Include="Content\Images\export_.svg" />
+    <Content Include="Content\Images\search-selected.svg" />
+    <Content Include="Content\Images\search.svg" />
+    <Content Include="Content\modal.CSS" />
+    <Content Include="Content\Properties\toolbar.css" />
+    <Content Include="Content\Samples\SamplesApprovedGridView.css">
+      <DependentUpon>SamplesApprovedGridView.scss</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\SamplesApprovedGridView.min.css">
+      <DependentUpon>SamplesApprovedGridView.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\SamplesEditor.css">
+      <DependentUpon>SamplesEditor.scss</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\SamplesEditor.min.css">
+      <DependentUpon>SamplesEditor.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\SamplesGridView.css" />
+    <Content Include="Content\Samples\SamplesWellDiagram.css">
+      <DependentUpon>SamplesWellDiagram.scss</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\SamplesWellDiagram.min.css">
+      <DependentUpon>SamplesWellDiagram.css</DependentUpon>
+    </Content>
+    <Content Include="Content\Site.css" />
+    <Content Include="Content\Sounds\bad-beep.mp3" />
+    <Content Include="Content\Sounds\code-found.mp3" />
+    <Content Include="Content\vueError.css" />
+    <Content Include="favicon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Global.asax" />
+    <Content Include="js\DevextremeDataGrid.js" />
+    <Content Include="js\testData.js" />
+    <Content Include="js\FilterControls.js" />
+    <Content Include="Scripts\bootstrap.bundle.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Areas\Identity\Views\web.config" />
+    <Content Include="Areas\Identity\Views\Admin\Index.cshtml" />
+    <Content Include="Areas\Identity\Views\Login\Index.cshtml" />
+    <Content Include="Areas\Identity\Views\RoleAdmin\Index.cshtml" />
+    <Content Include="Areas\Identity\Views\RoleAdmin\Edit.cshtml" />
+    <Content Include="Scripts\bootstrap.min.js.map" />
+    <Content Include="Scripts\bootstrap.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="Scripts\bootstrap.bundle.js.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.css.map" />
+    <Content Include="Content\bootstrap-grid.min.css.map" />
+    <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="Scripts\components\vueButton.js" />
+    <Content Include="Scripts\components\vueErrorAborder.js" />
+    <Content Include="Scripts\dx.aspnet.data.js" />
+    <Content Include="Scripts\LocationDropdown.js" />
+    <Content Include="Scripts\Properties\commonGridView.js" />
+    <Content Include="Scripts\Properties\DateFormat.js" />
+    <Content Include="Scripts\Properties\FilterControls.js" />
+    <Content Include="Scripts\Properties\filterHelper.js" />
+    <Content Include="Scripts\Properties\FilterItem.js" />
+    <Content Include="Scripts\ReagentsGridview.js" />
+    <Content Include="Scripts\Print\DYMO.Label.Framework.latest.js" />
+    <Content Include="Scripts\Print\label.js" />
+    <Content Include="Scripts\Print\print.js" />
+    <Content Include="Scripts\RunListGridview.js" />
+    <Content Include="Scripts\PatientsGridview.js" />
+    <Content Include="Scripts\ResourceGridview.js" />
+    <Content Include="Scripts\DoctorsGridview.js" />
+    <Content Include="Scripts\esm\popper-utils.js" />
+    <Content Include="Scripts\esm\popper-utils.min.js" />
+    <Content Include="Scripts\esm\popper.js" />
+    <Content Include="Scripts\esm\popper.min.js" />
+    <Content Include="Scripts\esm\popper.min.js.map" />
+    <Content Include="Scripts\esm\popper.js.map" />
+    <Content Include="Scripts\esm\popper-utils.min.js.map" />
+    <Content Include="Scripts\esm\popper-utils.js.map" />
+    <Content Include="Areas\Identity\Views\Admin\_UsersGridViewPartial.cshtml" />
+    <Content Include="Areas\Identity\Views\Admin\_UserEditPartial.cshtml" />
+    <Content Include="Areas\Identity\Views\Admin\_UserNewPartial.cshtml" />
+    <Content Include="Areas\Identity\Views\RoleAdmin\_RolesGridViewPartial.cshtml" />
+    <Content Include="Content\Samples\SamplesApprovedGridView.scss" />
+    <Content Include="Content\bundledSamplesApproved.scss" />
+    <Content Include="Scripts\vue-app-css\chunk-vendors.css" />
+    <Content Include="Scripts\vue-app-css\properties.css" />
+    <Content Include="Scripts\vue-apps\container.js" />
+    <Content Include="Scripts\vue-apps\created.png" />
+    <Content Include="Scripts\vue-apps\css_questios\app.css" />
+    <Content Include="Scripts\vue-apps\css_questios\chunk-vendors.css" />
+    <Content Include="Scripts\vue-apps\css_settings\app.css" />
+    <Content Include="Scripts\vue-apps\css_settings\chunk-vendors.css" />
+    <Content Include="Scripts\vue-apps\custom_css\app.css" />
+    <Content Include="Scripts\vue-apps\custom_css\chunk-vendors.css" />
+    <Content Include="Scripts\vue-apps\css_x\app.css" />
+    <Content Include="Scripts\vue-apps\css_x\chunk-vendors.css" />
+    <Content Include="Scripts\vue-apps\custom-list-edit.js" />
+    <Content Include="Scripts\vue-apps\custom-type-edit.js" />
+    <Content Include="Scripts\vue-apps\custom\js\app.js" />
+    <Content Include="Scripts\vue-apps\custom\js\chunk-vendors.js" />
+    <Content Include="Scripts\vue-apps\custom\tmp.html" />
+    <Content Include="Scripts\vue-apps\discard.png" />
+    <Content Include="Scripts\vue-apps\doctor-edit.js" />
+    <Content Include="Scripts\vue-apps\edit-bill.js" />
+    <Content Include="Scripts\vue-apps\group-edit.js" />
+    <Content Include="Scripts\vue-apps\hospital-edit.js" />
+    <Content Include="Scripts\vue-apps\loading.gif" />
+    <Content Include="Scripts\vue-apps\property-edit.js" />
+    <Content Include="Scripts\vue-apps\questionnaire-edit.js" />
+    <Content Include="Scripts\vue-apps\questios\js\app.js" />
+    <Content Include="Scripts\vue-apps\questios\js\chunk-vendors.js" />
+    <Content Include="Scripts\vue-apps\questios\tmp.html" />
+    <Content Include="Scripts\vue-apps\reagent-edit.js" />
+    <Content Include="Scripts\vue-apps\reagent-type-edit.js" />
+    <Content Include="Scripts\vue-apps\refresh.png" />
+    <Content Include="Scripts\vue-apps\rule-edit.js" />
+    <Content Include="Scripts\vue-apps\selectLocation\css\app.css" />
+    <Content Include="Scripts\vue-apps\selectLocation\css\chunk-vendors.css" />
+    <Content Include="Scripts\vue-apps\selectLocation\js\app.js" />
+    <Content Include="Scripts\vue-apps\selectLocation\js\chunk-vendors.js" />
+    <Content Include="Scripts\vue-apps\selectLocation\tmp.html" />
+    <Content Include="Scripts\vue-apps\manageLocation\css\app.css" />
+    <Content Include="Scripts\vue-apps\manageLocation\css\chunk-vendors.css" />
+    <Content Include="Scripts\vue-apps\manageLocation\js\app.js" />
+    <Content Include="Scripts\vue-apps\manageLocation\js\chunk-vendors.js" />
+    <Content Include="Scripts\vue-apps\manageLocation\tmp.html" />
+    <Content Include="Scripts\vue-apps\patient-edit.js" />
+    <Content Include="Areas\Identity\Views\TablesData\_gridViewPartial.cshtml" />
+    <Content Include="Areas\Identity\Views\TablesData\Index.cshtml" />
+    <Content Include="Areas\Identity\Views\TablesList\_gridViewPartial.cshtml" />
+    <Content Include="Areas\Identity\Views\TablesList\Index.cshtml" />
+    <Content Include="Areas\Identity\Views\TablesData\IndexExt.cshtml" />
+    <Content Include="Content\Icons\dxicons.ttf" />
+    <Content Include="Content\Icons\dxicons.woff" />
+    <Content Include="Content\Icons\dxicons.woff2" />
+    <Content Include="Content\Icons\dxiconsios.ttf" />
+    <Content Include="Content\Icons\dxiconsios.woff" />
+    <Content Include="Content\Icons\dxiconsios.woff2" />
+    <Content Include="Content\Icons\dxiconsmaterial.ttf" />
+    <Content Include="Content\Icons\dxiconsmaterial.woff" />
+    <Content Include="Content\Icons\dxiconsmaterial.woff2" />
+    <Content Include="Scripts\vue-apps\settings\img\rack.png" />
+    <Content Include="Scripts\vue-apps\settings\js\app.js" />
+    <Content Include="Scripts\vue-apps\settings\js\chunk-vendors.js" />
+    <Content Include="Scripts\vue-apps\settings\tmp.html" />
+    <Content Include="Scripts\vue-app\group-input.html" />
+    <Content Include="Scripts\vue-app\help-editor.html" />
+    <Content Include="Scripts\vue-app\help.html" />
+    <Content Include="Scripts\vue-app\img\loading.gif" />
+    <Content Include="Scripts\vue-app\img\rack.png" />
+    <Content Include="Scripts\vue-app\js\chunk-vendors.js" />
+    <Content Include="Scripts\vue-app\js\group-input.js" />
+    <Content Include="Scripts\vue-app\js\help-editor.js" />
+    <Content Include="Scripts\vue-app\js\help.js" />
+    <Content Include="Scripts\vue-app\js\manage-location.js" />
+    <Content Include="Scripts\vue-app\js\properties.js" />
+    <Content Include="Scripts\vue-app\manage-location.html" />
+    <Content Include="Scripts\vue-app\properties.html" />
+    <Content Include="Views\WorkflowRunList\EditItem.cshtml" />
+    <Content Include="Areas\Custom\Views\web.config" />
+    <Content Include="Areas\Custom\Views\CustomTypesJournal\Index.cshtml" />
+    <Content Include="Areas\Custom\Views\CustomTypesJournal\_gridViewPartial.cshtml" />
+    <Content Include="Areas\Custom\Views\EditCustomType\Index.cshtml" />
+    <Content Include="Areas\Custom\Views\CustomJournal\Index.cshtml" />
+    <Content Include="Areas\Custom\Views\CustomJournal\_gridViewPartial.cshtml" />
+    <Content Include="Areas\Custom\Views\EditCustom\Index.cshtml" />
+    <Content Include="Areas\Custom\Views\CustomListJournal\Index.cshtml" />
+    <Content Include="Areas\Custom\Views\CustomListJournal\_gridViewPartial.cshtml" />
+    <Content Include="Areas\Custom\Views\EditList\customListEdit.vue" />
+    <Content Include="Areas\Custom\Views\EditList\Index.cshtml" />
+    <Content Include="Areas\Custom\Views\EditCustomType\main.js" />
+    <Content Include="Vue\BaseMixin.js" />
+    <Content Include="Vue\components\VuetifyRule.js" />
+    <Content Include="Vue\EditModel.js" />
+    <Content Include="Vue\group-edit\main.js" />
+    <Content Include="Vue\vuetify.js" />
+    <Content Include="webpack.config.js" />
+    <EmbeddedResource Include="Reports\BatchSchema\BatchSchemaReport.resx">
+      <DependentUpon>BatchSchemaReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\BatchSchema\BatchSubReport.resx">
+      <DependentUpon>BatchSubReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\StrongTyped\CommentReport.resx">
+      <DependentUpon>CommentReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\StrongTyped\PeregrineBarcode.resx">
+      <DependentUpon>PeregrineBarcode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\StrongTyped\Report1.resx">
+      <DependentUpon>Report1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\StrongTyped\SettingsExport.resx">
+      <DependentUpon>SettingsExport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\StrongTyped\MG16S_Class_Chart.resx">
+      <DependentUpon>MG16S_Class_Chart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\StrongTyped\MG16S_Class_Table.resx">
+      <DependentUpon>MG16S_Class_Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\StrongTyped\MG16S_Stat.resx">
+      <DependentUpon>MG16S_Stat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\StrongTyped\MG16S_Stat3.resx">
+      <DependentUpon>MG16S_Stat3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\StrongTyped\MG16S_Stat_Table.resx">
+      <DependentUpon>MG16S_Stat_Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <Content Include="Areas\Workflow\Views\web.config" />
+    <Content Include="Areas\Workflow\Views\Run\_RunProcessGridPartial.cshtml" />
+    <Content Include="Areas\Workflow\Views\Run\RunProcessView.cshtml" />
+    <Content Include="Areas\Workflow\Views\Process\ProcessViewOld.cshtml" />
+    <Content Include="Areas\Workflow\Views\Process\_ProcessSamplesGridPartial.cshtml" />
+    <Content Include="Areas\Workflow\Views\SelectSamples\_SelectSamplesGridViewPartial.cshtml" />
+    <Content Include="Areas\Workflow\Views\SelectSamples\SelectSamplesView.cshtml" />
+    <Content Include="Areas\Workflow\Views\Process\ProcessSamplesView.cshtml" />
+    <Content Include="Areas\Workflow\Views\Run\RunViewOld.cshtml" />
+    <EmbeddedResource Include="Reports\StrongTyped\PropertyScript.resx">
+      <DependentUpon>PropertyScript.cs</DependentUpon>
+    </EmbeddedResource>
+    <Content Include="Areas\SamplesEdit\Views\GroupInput\Index.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\web.config" />
+    <EmbeddedResource Include="Reports\StrongTyped\TCR_CHARTS.resx">
+      <DependentUpon>TCR_CHARTS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\StrongTyped\TCR_Disclaimer.resx">
+      <DependentUpon>TCR_Disclaimer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\StrongTyped\TCR_History.resx">
+      <DependentUpon>TCR_History.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\StrongTyped\TCR_SampleInformation.resx">
+      <DependentUpon>TCR_SampleInformation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\StrongTyped\TCR_ShannonDiversity.resx">
+      <DependentUpon>TCR_ShannonDiversity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\StrongTyped\TCR_TopClones.resx">
+      <DependentUpon>TCR_TopClones.cs</DependentUpon>
+    </EmbeddedResource>
+    <Content Include="Areas\SamplesEdit\Views\SamplesJournal\SamplesJournal.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\SamplesJournal\_BatchComboBoxPartial.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\SamplesJournal\_GridViewPartial.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\SamplesJournal\Blocks\PanelBatchAddBarcodeAjax.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\SamplesJournal\Blocks\PopupAddSamples.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\SamplesJournal\Blocks\PopupChangeSamplesAliquot.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\SamplesJournal\Blocks\PopupChangeSamplesBatch.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\SamplesJournal\Blocks\PopupChangeSamplesLocation.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\SamplesJournal\Blocks\PopupChangeSamplesSendReport.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\SamplesJournal\Blocks\PopupChangeSamplesStatus.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\EditSample\LocationsTreeList.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\EditSample\NewSample.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\EditSample\SampleEdit.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\EditSample\_BatchComboBoxPartial.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\EditSample\_LocationTreeListPartial.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\EditSample\Edit\PlateDtaftVue.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\EditSample\Edit\SampleDtaft.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\EditSample\Edit\AliquotDtaft.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\EditSample\Edit\PlateDtaft.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\EditSample\Edit\BoxDtaft.cshtml" />
+    <Content Include=".babelrc" />
+    <Content Include="Areas\SamplesEdit\Views\ContainerEdit\Index.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\ContainerJournal\ContainerJournal.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\ContainerJournal\_ContainerDraftPartial.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\ContainerContent\ContainerContentJournal.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\ContainerJournal\_GridViewPartial.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\ContainerContent\_ContainerContentPartial.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\ContainerContent\ContainerDraftContentJournal.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\ContainerContent\_ContainerDraftContentPartial.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\ContainerJournal\Blocks\PopupChangeSamplesSendReport.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\ContainerJournal\Blocks\PopupChangeSamplesStatus.cshtml" />
+    <Content Include="Areas\BillOfMaterial\Views\web.config" />
+    <Content Include="Areas\BillOfMaterial\Views\Bill\old\EditBillOld.cshtml" />
+    <Content Include="Areas\BillOfMaterial\Views\Bill\old\_GridPartial.cshtml" />
+    <Content Include="Areas\BillOfMaterial\Views\Bill\old\EditBillItem.cshtml" />
+    <Content Include="Areas\BillOfMaterial\Views\Bill\old\SelectTemplate.cshtml" />
+    <Content Include="Areas\BillOfMaterial\CancerClones\Views\web.config" />
+    <Content Include="Areas\BillOfMaterial\CancerClones\Views\CancerClones\Index.cshtml" />
+    <Content Include="Areas\BillOfMaterial\CancerClones\Views\CancerClones\_gridViewPartial.cshtml" />
+    <Content Include="Areas\SamplesEdit\Views\GroupEdit\Index.cshtml" />
+    <Content Include="Areas\Common\Views\web.config" />
+    <Content Include="Areas\Common\Views\PatientJournal\Index.cshtml" />
+    <Content Include="Areas\Common\Views\PatientJournal\_gridViewPartial.cshtml" />
+    <Content Include="Areas\Common\Views\HospitalJournal\_gridViewPartial.cshtml" />
+    <Content Include="Areas\Common\Views\HospitalJournal\Index.cshtml" />
+    <Content Include="Areas\Common\Views\DoctorJournal\_gridViewPartial.cshtml" />
+    <Content Include="Areas\Common\Views\DoctorJournal\Index.cshtml" />
+    <Content Include="Areas\Common\Views\CustodyLogJournal\_gridViewPartial.cshtml" />
+    <Content Include="Areas\Common\Views\CustodyLogJournal\Index.cshtml" />
+    <Content Include="Areas\Custom\Views\EditCustom\package.json" />
+    <Content Include="Areas\Custom\Views\EditCustom\src\customEdit.vue" />
+    <Content Include="Areas\Custom\Views\EditCustom\src\components\formColumn.vue" />
+    <Content Include="Areas\Custom\Views\EditCustom\src\components\formField.vue" />
+    <Content Include="Areas\Custom\Views\EditCustom\src\components\formGroup.vue" />
+    <Content Include="Areas\Location\Views\web.config" />
+    <Content Include="Areas\Location\Views\SelectLocation\Index.cshtml" />
+    <Content Include="Areas\Location\Views\SelectLocation\package.json" />
+    <Content Include="Areas\Location\Views\SelectLocation\src\SelectLocation.vue" />
+    <Content Include="Areas\PropertyTree\Views\Properties\Index.cshtml" />
+    <Content Include="Areas\Location\Views\ManageLocation\components\LocationTreeView.vue" />
+    <Content Include="Areas\Location\Views\SelectLocation\src\components\LocationTreeView.vue" />
+    <Content Include="Areas\PropertyTree\Views\web.config" />
+    <Content Include="Areas\PropertyTree\Views\PropertyEdit\Index.cshtml" />
+    <Content Include="Areas\PropertyTree\Views\PropertyEdit\PropertyEdit.vue" />
+    <Content Include="Areas\PropertyTree\Views\RuleEdit\RuleEdit.vue" />
+    <Content Include="Areas\PropertyTree\Views\RuleEdit\Index.cshtml" />
+    <Content Include="Areas\Reagents\Views\web.config" />
+    <Content Include="Areas\Reagents\Views\ReagentJournal\_gridViewPartial.cshtml" />
+    <Content Include="Areas\Reagents\Views\ReagentJournal\Index.cshtml" />
+    <Content Include="Areas\Reagents\Views\ReagentTypeJournal\Index.cshtml" />
+    <Content Include="Areas\Reagents\Views\ReagentTypeJournal\_gridViewPartial.cshtml" />
+    <Content Include="Areas\Reagents\Views\ReagentEdit\Index.cshtml" />
+    <Content Include="Areas\Reagents\Views\ReagentTypeEdit\Index.cshtml" />
+    <Content Include="Areas\Reagents\Views\ReagentEdit\ReagentEdit.vue" />
+    <Content Include="Areas\Reagents\Views\ReagentTypeEdit\ReagentTypeEdit.vue" />
+    <Content Include="Areas\Reagents\Views\ReagentLogJournal\_gridViewPartial.cshtml" />
+    <Content Include="Areas\Reagents\Views\ReagentLogJournal\Index.cshtml" />
+    <Content Include="Areas\Location\Views\ManageLocation\Index.cshtml" />
+    <Content Include="Areas\Location\Views\SelectLocation\src\components\RNode.vue" />
+    <EmbeddedResource Include="Reports\StrongTyped\XtraReport1.resx">
+      <DependentUpon>XtraReport1.cs</DependentUpon>
+    </EmbeddedResource>
+    <Content Include="Areas\BillOfMaterial\Views\Bill\EditBill.vue" />
+    <Content Include="Areas\BillOfMaterial\Views\Bill\EditBill.cshtml" />
+    <Content Include="Areas\BillOfMaterial\Views\Bill\SelectReagent.vue" />
+    <Content Include="Areas\BillOfMaterial\Views\Bill\SelectReagentType.vue" />
+    <Content Include="Areas\Questions\Views\web.config" />
+    <Content Include="Areas\Questions\Views\Questionnaire\package.json" />
+    <Content Include="Areas\Questions\Views\Questionnaire\package-lock.json" />
+    <Content Include="Areas\Questions\Views\Questionnaire\Index.cshtml" />
+    <Content Include="Areas\Questions\Views\Questionnaire\src\Questionnaire.vue" />
+    <Content Include="Areas\Questions\Views\QuestionnaireJournal\_gridViewPartial.cshtml" />
+    <Content Include="Areas\Questions\Views\QuestionnaireJournal\Index.cshtml" />
+    <Content Include="Areas\Help\Views\web.config" />
+    <Content Include="Areas\Help\Views\Help\Help.vue" />
+    <Content Include="Areas\Help\Views\Help\Index.cshtml" />
+    <Content Include="Areas\Help\Views\HelpEditor\HelpEditor.vue" />
+    <Content Include="Areas\Help\Views\HelpEditor\Index.cshtml" />
+    <Content Include="Areas\PropertyTree\Views\Properties\components\BarcodeSettings\BarcodeSettinsNode.vue" />
+    <Content Include="Areas\PropertyTree\Views\Properties\components\BarcodeSettings\EditBarcodeSettins.vue" />
+    <Content Include="Areas\PropertyTree\Views\Properties\components\Common\CommonNode.vue" />
+    <Content Include="Areas\PropertyTree\Views\Properties\components\Common\EditCommonNode.vue" />
+    <Content Include="Areas\PropertyTree\Views\Properties\components\Reagents\EditReagentTemplate.vue" />
+    <Content Include="Areas\PropertyTree\Views\Properties\components\Reagents\ReagentTemplateNode.vue" />
+    <Content Include="Areas\PropertyTree\Views\Properties\components\SettingTreeView.vue" />
+    <Content Include="Areas\PropertyTree\Views\Properties\components\Storage\EditStoragePlaceDescription.vue" />
+    <Content Include="Areas\PropertyTree\Views\Properties\SettingTree.vue" />
+    <Content Include="Areas\package.json" />
+    <Content Include="Areas\Help\Views\Help\components\helpMenu.vue" />
+    <Content Include="Areas\Location\Views\ManageLocation\ManageLocation.vue" />
+    <Content Include="Areas\PropertyTree\Views\Properties\components\Menu\MenuSettinsNode.vue" />
+    <Content Include="Areas\PropertyTree\Views\Properties\components\Menu\EditMenuSettins.vue" />
+    <Content Include="Areas\SamplesEdit\Views\GroupInput\components\CroupColumn.vue" />
+    <Content Include="Areas\SamplesEdit\Views\GroupInput\GroupInput.vue" />
+    <Content Include="Areas\SamplesEdit\Views\EditSample\GroupInput.cshtml" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
+    <None Include="Content\bundledSamplesEditor.scss" />
+    <Content Include="Views\SamplesBook\Index.cshtml" />
+    <Content Include="Content\Samples\SamplesEditor.scss" />
+    <Content Include="Content\Samples\SamplesWellDiagram.scss" />
+    <Content Include="Content\bundledSamplesWellDiagram.scss" />
+    <Content Include="Reports\Book_Label_Dymo_30252.repx" />
+    <Content Include="Reports\Journal_Label_Dymo_30252.repx" />
+    <Content Include="Reports\Custody_Log.repx" />
+    <Content Include="Reports\MG16S_Main.repx" />
+    <Content Include="Reports\MetagenomicsTitleReport.repx" />
+    <Content Include="Reports\Settings_Export.repx" />
+    <Content Include="Reports\Resources_Export.repx" />
+    <Content Include="Reports\Supermix_Calculator.repx" />
+    <Content Include="Reports\storage_browser.repx" />
+    <Content Include="Reports\MG16S_Tax_Chart.repx" />
+    <Content Include="Reports\MG16S_Tax_Table.repx" />
+    <Content Include="Reports\Export_Plate.repx" />
+    <Content Include="Reports\Plate96.repx" />
+    <Content Include="Reports\TCR_CHARTS.repx" />
+    <Content Include="Reports\TCR_MAIN.repx" />
+    <Content Include="Reports\CommentReport.repx" />
+    <Content Include="Reports\TCR_ShannonDiversity.repx" />
+    <Content Include="Reports\TCR_TopClones.repx" />
+    <Content Include="Reports\TCR_SampleInformation.repx" />
+    <Content Include="Reports\TCR_Footer.repx" />
+    <Content Include="Reports\WorkflowStatus.repx" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="fonts\materialdesignicons-webfont.eot" />
+    <Content Include="fonts\materialdesignicons-webfont.ttf" />
+    <Content Include="fonts\materialdesignicons-webfont.woff" />
+    <Content Include="fonts\materialdesignicons-webfont.woff2" />
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="package.json" />
+    <Content Include="Reports\TCR_Disclaimer.repx" />
+    <Content Include="Reports\TCR_History.repx" />
+    <Content Include="Reports\sample_locator.repx" />
+    <Content Include="Reports\Peregrine_Barcode.repx" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <None Include="Scripts\jquery-3.2.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.2.1.js" />
+    <Content Include="Scripts\jquery-3.2.1.min.js" />
+    <Content Include="Scripts\jquery-3.2.1.slim.js" />
+    <Content Include="Scripts\jquery-3.2.1.slim.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\popper-utils.js" />
+    <Content Include="Scripts\popper-utils.min.js" />
+    <Content Include="Scripts\popper.js" />
+    <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\Properties\toolbar.js" />
+    <Content Include="Scripts\Samples\SamplesApprovedGridview.js" />
+    <Content Include="Scripts\ClientsGridview.js" />
+    <Content Include="Scripts\Samples\SamplesBarcodeInput.js" />
+    <Content Include="Scripts\Samples\SamplesEditor.js" />
+    <Content Include="Scripts\Samples\SamplesEditorBox.js" />
+    <Content Include="Scripts\Samples\SamplesEditorPlate.js" />
+    <Content Include="Scripts\Samples\SamplesFileAttachGridview.js" />
+    <Content Include="Scripts\CustodyLogGridview.js" />
+    <Content Include="Scripts\Samples\SamplesGridview.js" />
+    <Content Include="Scripts\Samples\SamplesGroupEditor.js" />
+    <Content Include="Scripts\Samples\SamplesWellDiagram.js" />
+    <Content Include="Scripts\Script.js" />
+    <Content Include="Scripts\umd\popper-utils.js" />
+    <Content Include="Scripts\umd\popper-utils.min.js" />
+    <Content Include="Scripts\umd\popper.js" />
+    <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Scripts\vue.js" />
+    <Content Include="Views\CustodyLog\Index.cshtml" />
+    <Content Include="Views\CustodyLog\_CustodyLogViewPartial.cshtml" />
+    <Content Include="Vue\container\main.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApiControllers\BarcodeController.cs" />
+    <Compile Include="ApiControllers\CustomReportDataController.cs" />
+    <Compile Include="ApiControllers\DataController.cs" />
+    <Compile Include="ApiControllers\FilesController.cs" />
+    <Compile Include="ApiControllers\ImageController.cs" />
+    <Compile Include="ApiControllers\MetaGenomics16SDataController.cs" />
+    <Compile Include="ApiControllers\ProcessResultDataController.cs" />
+    <Compile Include="ApiControllers\SampleApprovedController.cs" />
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\NinjectStandardKernelConfig.cs" />
+    <Compile Include="App_Start\NinjectWebCommon.cs" />
+    <Compile Include="App_Start\ReportConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\BillOfMaterial\BillOfMaterialAreaRegistration.cs" />
+    <Compile Include="Areas\BillOfMaterial\Controllers\BillController.cs" />
+    <Compile Include="Areas\BillOfMaterial\CancerClones\CancerClonesAreaRegistration.cs" />
+    <Compile Include="Areas\BillOfMaterial\CancerClones\Controllers\CancerClonesController.cs" />
+    <Compile Include="Areas\BillOfMaterial\Models\BillModel.cs" />
+    <Compile Include="Areas\Common\CommonAreaRegistration.cs" />
+    <Compile Include="Areas\Common\Controllers\CustodyLogJournalController.cs" />
+    <Compile Include="Areas\Common\Controllers\HospitalEditController.cs" />
+    <Compile Include="Areas\Common\Controllers\DoctorEditController.cs" />
+    <Compile Include="Areas\Common\Controllers\PatientEditController.cs" />
+    <Compile Include="Areas\Common\Controllers\HospitalJournalController.cs" />
+    <Compile Include="Areas\Common\Controllers\DoctorJournalController.cs" />
+    <Compile Include="Areas\Common\Controllers\PatientJournalController.cs" />
+    <Compile Include="Areas\Common\Models\EditModelBase.cs" />
+    <Compile Include="Areas\Common\Models\EditModelEntity.cs" />
+    <Compile Include="Areas\Common\Models\DoctorEditModel.cs" />
+    <Compile Include="Areas\Common\Models\HospitalEditModel.cs" />
+    <Compile Include="Areas\Common\Models\ObjectPropertyVm.cs" />
+    <Compile Include="Areas\Common\Models\PatientEditModel.cs" />
+    <Compile Include="Areas\Custom\Controllers\CustomJournalController.cs" />
+    <Compile Include="Areas\Custom\Controllers\EditListController.cs" />
+    <Compile Include="Areas\Custom\Controllers\CustomListJournalController.cs" />
+    <Compile Include="Areas\Custom\Controllers\CustomTypesJournalController.cs" />
+    <Compile Include="Areas\Custom\Controllers\EditCustomController.cs" />
+    <Compile Include="Areas\Custom\Controllers\EditCustomTypeController.cs" />
+    <Compile Include="Areas\Custom\CustomAreaRegistration.cs" />
+    <Compile Include="Areas\Custom\Models\ListModel.cs" />
+    <Compile Include="Areas\Custom\Models\CustomModel.cs" />
+    <Compile Include="Areas\Custom\Models\CustomTypeModel.cs" />
+    <Compile Include="Areas\Help\Controllers\HelpController.cs" />
+    <Compile Include="Areas\Help\Controllers\HelpControllerBase.cs" />
+    <Compile Include="Areas\Help\Controllers\HelpEditorController.cs" />
+    <Compile Include="Areas\Help\HelpAreaRegistration.cs" />
+    <Compile Include="Areas\Help\Model\HelpModel.cs" />
+    <Compile Include="Areas\Identity\Controllers\DataController.cs" />
+    <Compile Include="Areas\Identity\Controllers\TablesDataController.cs" />
+    <Compile Include="Areas\Identity\Controllers\TablesListController.cs" />
+    <Compile Include="Areas\Identity\Controllers\AdminController.cs" />
+    <Compile Include="Areas\Identity\Controllers\LoginController.cs" />
+    <Compile Include="Areas\Identity\Controllers\LogoutController.cs" />
+    <Compile Include="Areas\Identity\Controllers\RoleAdminController.cs" />
+    <Compile Include="Areas\Identity\IdentityAreaRegistration.cs" />
+    <Compile Include="Areas\Identity\Models\EditUserViewModel.cs" />
+    <Compile Include="Areas\Identity\Models\SqlTableModel.cs" />
+    <Compile Include="Areas\Identity\Models\LoginViewModel.cs" />
+    <Compile Include="Areas\Identity\Models\RoleEditModel.cs" />
+    <Compile Include="Areas\Identity\Models\RoleModificationModel.cs" />
+    <Compile Include="Areas\Identity\Models\RoleViewModel.cs" />
+    <Compile Include="Areas\Identity\Models\TableListModel.cs" />
+    <Compile Include="Areas\Identity\Models\UserRoleViewModel.cs" />
+    <Compile Include="Areas\Identity\Models\UserViewModel.cs" />
+    <Compile Include="Areas\Location\Controllers\SelectLocationController.cs" />
+    <Compile Include="Areas\Location\Controllers\ManageLocationController.cs" />
+    <Compile Include="Areas\Location\LocationAreaRegistration.cs" />
+    <Compile Include="Areas\PropertyTree\Models\SettingsModel.cs" />
+    <Compile Include="Areas\Location\Model\LocationModel.cs" />
+    <Compile Include="Areas\PropertyTree\Controllers\EditSettingItemController.cs" />
+    <Compile Include="Areas\PropertyTree\Controllers\PropertiesController.cs" />
+    <Compile Include="Areas\PropertyTree\Controllers\RuleEditController.cs" />
+    <Compile Include="Areas\PropertyTree\Controllers\PropertyEditController.cs" />
+    <Compile Include="Areas\PropertyTree\Models\EditSettingItemModel.cs" />
+    <Compile Include="Areas\PropertyTree\Models\PropertyModel.cs" />
+    <Compile Include="Areas\PropertyTree\PropertyTreeAreaRegistration.cs" />
+    <Compile Include="Areas\Questions\Controllers\QuestionnaireJournalController.cs" />
+    <Compile Include="Areas\Questions\Controllers\QuestionnaireController.cs" />
+    <Compile Include="Areas\Questions\Models\EditQuestionModel.cs" />
+    <Compile Include="Areas\Questions\Models\EditQuestionnairesModel.cs" />
+    <Compile Include="Areas\Questions\Models\QuestionnaireModel.cs" />
+    <Compile Include="Areas\Questions\QuestionsAreaRegistration.cs" />
+    <Compile Include="Areas\Reagents\Controllers\ReagentEditController.cs" />
+    <Compile Include="Areas\Reagents\Controllers\ReagentLogJournalController.cs" />
+    <Compile Include="Areas\Reagents\Controllers\ReagentTypeEditController.cs" />
+    <Compile Include="Areas\Reagents\Controllers\ReagentTypeJournalController.cs" />
+    <Compile Include="Areas\Reagents\Controllers\ReagentJournalController.cs" />
+    <Compile Include="Areas\Reagents\Models\ReagentTypeEditModel.cs" />
+    <Compile Include="Areas\Reagents\Models\ReagentEditModel.cs" />
+    <Compile Include="Areas\Reagents\ReagentsAreaRegistration.cs" />
+    <Compile Include="Areas\SamplesEdit\Controllers\ContainerContentController.cs" />
+    <Compile Include="Areas\SamplesEdit\Controllers\ContainerJournalController.cs" />
+    <Compile Include="Areas\SamplesEdit\Controllers\ContainerEditController.cs" />
+    <Compile Include="Areas\SamplesEdit\Controllers\GroupInputController.cs" />
+    <Compile Include="Areas\SamplesEdit\Controllers\GroupEditController.cs" />
+    <Compile Include="Areas\SamplesEdit\Controllers\SamplesJournalController.cs" />
+    <Compile Include="Areas\SamplesEdit\Models\GroupEditModel.cs" />
+    <Compile Include="Areas\SamplesEdit\Models\GroupPropertyVm.cs" />
+    <Compile Include="Areas\SamplesEdit\Models\SamplesМodel.cs" />
+    <Compile Include="Areas\SamplesEdit\SamplesEditAreaRegistration.cs" />
+    <Compile Include="Areas\SamplesEdit\Controllers\EditSampleController.cs" />
+    <Compile Include="Areas\Workflow\Controllers\ProcessController.cs" />
+    <Compile Include="Areas\Workflow\Controllers\RunController.cs" />
+    <Compile Include="Areas\Workflow\Controllers\SelectSamplesController.cs" />
+    <Compile Include="Areas\Workflow\Model\RunModel.cs" />
+    <Compile Include="Areas\Workflow\WorkflowAreaRegistration.cs" />
+    <Compile Include="Controllers\BaseAndCore\Category.cs" />
+    <Compile Include="Controllers\BaseAndCore\CheckLicenseController.cs" />
+    <Compile Include="Controllers\BaseAndCore\ErrorController.cs" />
+    <Compile Include="Controllers\BaseAndCore\MenuController.cs" />
+    <Compile Include="Controllers\BaseAndCore\HelpController.cs" />
+    <Compile Include="Controllers\BaseAndCore\CustomFieldsController.cs" />
+    <Compile Include="Controllers\BaseAndCore\IBaseController.cs" />
+    <Compile Include="Controllers\BaseAndCore\SettingsController.cs" />
+    <Compile Include="Controllers\BaseAndCore\UniversalController.cs" />
+    <Compile Include="Controllers\PropertiesController.cs" />
+    <Compile Include="Controllers\Samples\SamplesApprovedController.cs" />
+    <Compile Include="Controllers\Samples\SamplesJournalController.cs" />
+    <Compile Include="Controllers\WorkflowProcessResultController.cs" />
+    <Compile Include="Controllers\WorkflowRunListController.cs" />
+    <Compile Include="Controllers\Samples\SamplesBookController.cs" />
+    <Compile Include="Controllers\BaseAndCore\BaseController.cs" />
+    <Compile Include="Controllers\BaseSamplesController.cs" />
+    <Compile Include="Controllers\CustomReportListController.cs" />
+    <Compile Include="Controllers\BaseAndCore\CommentsController.cs" />
+    <Compile Include="Controllers\BaseAndCore\FilesController.cs" />
+    <Compile Include="Controllers\GridBasedController.cs" />
+    <Compile Include="Controllers\LocationsController.cs" />
+    <Compile Include="Controllers\BaseAndCore\PrintController.cs" />
+    <Compile Include="Controllers\ProcessListController.cs" />
+    <Compile Include="Controllers\ProcessResultController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="Controllers\ReportMenuController.cs" />
+    <Compile Include="Controllers\RunListController.cs" />
+    <Compile Include="Controllers\CustodyLogController.cs" />
+    <Compile Include="Controllers\BaseAndCore\FileManagerController.cs" />
+    <Compile Include="Controllers\PatientsController.cs" />
+    <Compile Include="Controllers\DoctorsController.cs" />
+    <Compile Include="Controllers\ClientsController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ResourcesController.cs" />
+    <Compile Include="Controllers\Samples\SamplesBoxController.cs" />
+    <Compile Include="Controllers\SamplesPlateController.cs" />
+    <Compile Include="Controllers\Samples\SamplesController.cs" />
+    <Compile Include="Controllers\SamplesFileAttachController.cs" />
+    <Compile Include="Controllers\UserFieldsController.cs" />
+    <Compile Include="Controllers\UserFieldTypesController.cs" />
+    <Compile Include="Filters\CultureAttribute.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Infrastructure\Attributes\LimsPropertyAttribute.cs" />
+    <Compile Include="Infrastructure\Attributes\LimsReferenceAttribute.cs" />
+    <Compile Include="Infrastructure\Attributes\LimsReferenceProviderAttribute.cs" />
+    <Compile Include="Infrastructure\PropertyRenameAndIgnoreSerializerContractResolver.cs" />
+    <Compile Include="Infrastructure\Helpers\CustomReportListHelper.cs" />
+    <Compile Include="Infrastructure\Helpers\DynamicContractResolver.cs" />
+    <Compile Include="Infrastructure\NinjectModules\CommonModule.cs" />
+    <Compile Include="Infrastructure\NinjectModules\CustomizationModule.cs" />
+    <Compile Include="Infrastructure\NinjectModules\LaboratoryModule.cs" />
+    <Compile Include="Infrastructure\NinjectModules\LocalizationModule.cs" />
+    <Compile Include="Infrastructure\Report\CustomWebDocumentViewerExceptionHandler.cs" />
+    <Compile Include="Infrastructure\Report\DataSourceWizardJsonConnectionStorage.cs" />
+    <Compile Include="Infrastructure\Report\DocumentViewerJsonDataConnectionProvider.cs" />
+    <Compile Include="Infrastructure\Report\JsonDataConnectionHelper.cs" />
+    <Compile Include="Infrastructure\Report\JsonDataConnectionProviderFactory.cs" />
+    <Compile Include="Infrastructure\ViewModelHelpers\ComboBoxDataProvider.cs" />
+    <Compile Include="Infrastructure\ViewModelHelpers\FormFieldsFromViewModelMetadata.cs" />
+    <Compile Include="Infrastructure\ViewModelHelpers\FormsCommonParts.cs" />
+    <Compile Include="Infrastructure\ViewModelHelpers\GridColumnsFromViewModelMetadata.cs" />
+    <Compile Include="Infrastructure\ViewModelHelpers\LimsReferenceService.cs" />
+    <Compile Include="Infrastructure\ViewModelHelpers\ViewModelFieldMetadata.cs" />
+    <Compile Include="Infrastructure\ViewModelHelpers\ComboBoxColumnCollection.cs" />
+    <Compile Include="Infrastructure\Helpers\LinksHelper.cs" />
+    <Compile Include="Infrastructure\AppSettings.cs" />
+    <Compile Include="Infrastructure\AuthHelper.cs" />
+    <Compile Include="Infrastructure\Binders\MultiFileSelectionBinder.cs" />
+    <Compile Include="Infrastructure\Classes\CriteriaValidator.cs" />
+    <Compile Include="Infrastructure\Classes\WellDataForJSDiagram.cs" />
+    <Compile Include="Infrastructure\Consts\AppConsts.cs" />
+    <Compile Include="Infrastructure\Report\ConnectionProviderFactory.cs" />
+    <Compile Include="Infrastructure\Report\CustomSqlDataSourceWizardCustomizationService.cs" />
+    <Compile Include="Infrastructure\Report\QueryCustomValidator.cs" />
+    <Compile Include="Infrastructure\Report\ConnectionProviderService.cs" />
+    <Compile Include="Infrastructure\Report\ConnectionStringProvider.cs" />
+    <Compile Include="Infrastructure\Report\StorageModule.cs" />
+    <Compile Include="Infrastructure\Extensions\MembershipUserExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\StringExtensions.cs" />
+    <Compile Include="Infrastructure\Helpers\WebContextHelper.cs" />
+    <Compile Include="Localization\HtmlResourceExtensions.cs" />
+    <Compile Include="Infrastructure\Mapping\LocationProfile.cs" />
+    <Compile Include="Infrastructure\Helpers\AppVersionHelper.cs" />
+    <Compile Include="Infrastructure\Extensions\DevExpressExtensions.cs" />
+    <Compile Include="Infrastructure\Helpers\GridViewFilterConditionsHelper.cs" />
+    <Compile Include="Infrastructure\IdentityHelpers.cs" />
+    <Compile Include="Infrastructure\Mapping\IdentityProfile.cs" />
+    <Compile Include="Infrastructure\Mapping\SampleApprovedProfile.cs" />
+    <Compile Include="Infrastructure\Mapping\SamplesProfile.cs" />
+    <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
+    <Compile Include="Infrastructure\ViewModelHelpers\ComboBoxWithReference.cs" />
+    <Compile Include="Infrastructure\NinjectModules\WebApiModule.cs" />
+    <Compile Include="Localization\UI.Designer.cs">
+      <DependentUpon>UI.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Localization\LimsSiteMap.Designer.cs">
+      <DependentUpon>LimsSiteMap.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Localization\ViewModelFields.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ViewModelFields.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BatchReportViewModel.cs" />
+    <Compile Include="Models\BatchWell.cs" />
+    <Compile Include="Models\ClientViewModel.cs" />
+    <Compile Include="Models\CommentViewModel.cs" />
+    <Compile Include="Models\CustomReportListVM.cs" />
+    <Compile Include="Models\ProcessListViewModel.cs" />
+    <Compile Include="Models\ProcessResultViewModel.cs" />
+    <Compile Include="Models\ReagentLedgerViewModel.cs" />
+    <Compile Include="Models\RunListViewModel.cs" />
+    <Compile Include="Models\CustodyLogViewModel.cs" />
+    <Compile Include="Models\DoctorViewModel.cs" />
+    <Compile Include="Models\EquipmentViewModel.cs" />
+    <Compile Include="Models\LocationViewModel.cs" />
+    <Compile Include="Models\PatientViewModel.cs" />
+    <Compile Include="Models\PropertyModel.cs" />
+    <Compile Include="Models\PropertyViewModel.cs" />
+    <Compile Include="Models\ResourceViewModel.cs" />
+    <Compile Include="Models\SampleApprovedViewModel.cs" />
+    <Compile Include="Models\SamplesPlateViewModel.cs" />
+    <Compile Include="Models\SampleViewModel.cs" />
+    <Compile Include="Models\UserFieldTypeViewModel.cs" />
+    <Compile Include="Models\UserFieldViewModel.cs" />
+    <Compile Include="Models\UserViewModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Infrastructure\Report\StorageExtension.cs" />
+    <Compile Include="Reports\BatchSchema\BatchSchemaReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\BatchSchema\BatchSubReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\BatchSchema\SchemaSize.cs" />
+    <Compile Include="Infrastructure\Helpers\SettingHelper.cs" />
+    <Compile Include="Reports\StrongTyped\CommentReport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\StrongTyped\PeregrineBarcode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\StrongTyped\PeregrineBarcode.Designer.cs">
+      <DependentUpon>PeregrineBarcode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\StrongTyped\Report1.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\StrongTyped\Report1.Designer.cs">
+      <DependentUpon>Report1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\StrongTyped\SettingsExport.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\StrongTyped\MG16S_Class_Chart.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\StrongTyped\MG16S_Class_Table.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\StrongTyped\MG16S_Stat.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\StrongTyped\MG16S_Stat3.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\StrongTyped\MG16S_Stat_Table.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\StrongTyped\PropertyScript.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\StrongTyped\TCR_CHARTS.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\StrongTyped\TCR_Disclaimer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\StrongTyped\TCR_History.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\StrongTyped\TCR_History.Designer.cs">
+      <DependentUpon>TCR_History.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\StrongTyped\TCR_SampleInformation.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\StrongTyped\TCR_SampleInformation.Designer.cs">
+      <DependentUpon>TCR_SampleInformation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\StrongTyped\TCR_ShannonDiversity.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\StrongTyped\TCR_TopClones.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\StrongTyped\XtraReport1.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\StrongTyped\XtraReport1.Designer.cs">
+      <DependentUpon>XtraReport1.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\web.config" />
+    <None Include="packages.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Samples\Index.cshtml" />
+    <Content Include="Views\Samples\GridViewPartial.cshtml" />
+    <Content Include="Scripts\umd\popper.min.js.map" />
+    <Content Include="Scripts\umd\popper.js.map" />
+    <Content Include="Scripts\umd\popper-utils.min.js.map" />
+    <Content Include="Scripts\umd\popper-utils.js.map" />
+    <Content Include="Scripts\README.md" />
+    <Content Include="Scripts\popper.min.js.map" />
+    <Content Include="Scripts\popper.js.map" />
+    <Content Include="Scripts\popper-utils.min.js.map" />
+    <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Scripts\jquery-3.2.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.2.1.min.map" />
+    <Content Include="Views\Shared\_SamplesLayout.cshtml" />
+    <Content Include="Views\Samples\_EditSamplePartial.cshtml" />
+    <Content Include="Views\Samples\_NewSamplePartial.cshtml" />
+    <Content Include="Views\Shared\_MainMenu.cshtml" />
+    <Content Include="Views\Samples\_LocationTreeListPartial.cshtml" />
+    <Content Include="Views\SamplesFileAttach\Index.cshtml" />
+    <Content Include="Views\SamplesFileAttach\_UploadFilesSamplesFileAttachDetailPartial.cshtml" />
+    <Content Include="Views\SamplesFileAttach\_SamplesFileAttachGridViewPartial.cshtml" />
+    <Content Include="Views\SamplesFileAttach\_SampleFilesAttachedCardViewPartial.cshtml" />
+    <Content Include="Views\Shared\_ConfirmPopup.cshtml" />
+    <Content Include="Views\CustodyLog\Index.GridView.cshtml" />
+    <Content Include="Views\CustodyLog\_CustodyLogGridViewPartial.cshtml" />
+    <Content Include="Views\Resources\Index.cshtml" />
+    <Content Include="Views\Resources\_ResourcesGridViewPartial.cshtml" />
+    <Content Include="Views\Resources\_EditResourcePartial.cshtml" />
+    <Content Include="Views\Resources\_NewResourcePartial.cshtml" />
+    <Content Include="Views\RunList\Index.cshtml" />
+    <Content Include="Views\RunList\_RunListGridViewPartial.cshtml" />
+    <Content Include="Views\RunList\_NewRunListPartial.cshtml" />
+    <Content Include="Views\ProcessList\Index.cshtml" />
+    <Content Include="Views\ProcessList\_GridViewPartial.cshtml" />
+    <Content Include="Views\ProcessList\_DetailsPartial.cshtml" />
+    <Content Include="Views\SamplesPlate\_LocationTreeListPartial.cshtml" />
+    <Content Include="Views\SamplesPlate\_SamplesGridViewBatchEditingPartial.cshtml" />
+    <Content Include="Views\SamplesPlate\Index.cshtml" />
+    <Content Include="Views\SamplesPlate\_EditSamplePartial.cshtml" />
+    <Content Include="Views\SamplesBox\_BoxPanelEditingPartial.cshtml" />
+    <Content Include="Views\SamplesBox\_LocationTreeListPartial.cshtml" />
+    <Content Include="Views\SamplesBox\_SamplesGridViewBatchEditingPartial.cshtml" />
+    <Content Include="Views\SamplesBox\Index.cshtml" />
+    <Content Include="Views\SamplesPlate\_WellsDiagramPartial.cshtml" />
+    <Content Include="Views\SamplesPlate\_PlatePanelEditingPartial.cshtml" />
+    <Content Include="Views\SamplesPlate\WellsDiagram.cshtml" />
+    <Content Include="Views\Shared\_LayoutEmpty.cshtml" />
+    <Content Include="Views\Samples\_GroupEditingPanelPartial.cshtml" />
+    <Content Include="Views\Shared\_GpLocationTreeListPartial.cshtml" />
+    <Content Include="Views\SamplesPlate\_SamplesGridViewEditingPartial.cshtml" />
+    <Content Include="Views\Samples\Blocks\PopupAddSamples.cshtml" />
+    <Content Include="Views\Samples\Blocks\ToolbarSamplesEdit.cshtml" />
+    <Content Include="Views\Samples\Blocks\PopupChangeSamplesStatus.cshtml" />
+    <Content Include="Views\Samples\Blocks\PopupChangeSamplesLocation.cshtml" />
+    <Content Include="Views\Samples\Blocks\PanelDispose.cshtml" />
+    <Content Include="Views\Samples\Blocks\PanelCheckIn.cshtml" />
+    <Content Include="Views\Samples\Blocks\PanelMove.cshtml" />
+    <Content Include="Views\Samples\Blocks\PanelCheckOut.cshtml" />
+    <Content Include="Views\SamplesBox\WellsDiagram.cshtml" />
+    <Content Include="Views\Samples\_BatchComboBoxPartial.cshtml" />
+    <Content Include="Views\Samples\Blocks\PopupChangeSamplesBatch.cshtml" />
+    <Content Include="Views\Samples\Blocks\PanelBatchAddBarcodeAjax.cshtml" />
+    <Content Include="Views\Samples\Blocks\PopupChangeSamplesAliquot.cshtml" />
+    <Content Include="Views\Samples\Blocks\PopupChangeSamplesSendReport.cshtml" />
+    <Content Include="Views\ReportMenu\Index.cshtml" />
+    <Content Include="Views\Reagents\Index.cshtml" />
+    <Content Include="Views\Reagents\GridViewPartial.cshtml" />
+    <Content Include="Views\Reagents\Toolbar.cshtml" />
+    <Content Include="Views\Reagents\_DetailsPartial.cshtml" />
+    <Content Include="Views\ReagentsJournal\Index.cshtml" />
+    <Content Include="Views\ReagentsJournal\Toolbar.cshtml" />
+    <Content Include="Views\Print\Book.cshtml" />
+    <Content Include="Views\Print\Blocks\Toolbar.cshtml" />
+    <Content Include="Views\Print\Journal.cshtml" />
+    <Content Include="Views\Report\Viewer.cshtml" />
+    <Content Include="Views\Report\Blocks\Toolbar.cshtml" />
+    <Content Include="Views\Report\Designer.cshtml" />
+    <Content Include="Views\Print\Custody.cshtml" />
+    <Content Include="Views\ReagentsJournal\GridViewPartial.cshtml" />
+    <Content Include="Views\ReagentsJournal\_DetailsPartial.cshtml" />
+    <Content Include="Views\Reagents\_ComboBoxPartial.cshtml" />
+    <Content Include="Views\ProcessList\_ComboBoxPartial.cshtml" />
+    <Content Include="Views\ReagentsLedger\Index.cshtml" />
+    <Content Include="Views\ReagentsLedger\Toolbar.cshtml" />
+    <Content Include="Views\ReagentsLedger\GridViewPartial.cshtml" />
+    <Content Include="Views\ReagentsLedger\_ComboBoxPartial.cshtml" />
+    <Content Include="Views\UserFields\Index.cshtml" />
+    <Content Include="Views\UserFieldTypes\Index.cshtml" />
+    <Content Include="Views\UserFields\_DetailsPartial.cshtml" />
+    <Content Include="Views\UserFields\GridViewPartial.cshtml" />
+    <Content Include="Views\UserFields\Toolbar.cshtml" />
+    <Content Include="Views\UserFieldTypes\_DetailsPartial.cshtml" />
+    <Content Include="Views\UserFieldTypes\GridViewPartial.cshtml" />
+    <Content Include="Views\UserFieldTypes\Toolbar.cshtml" />
+    <Content Include="Views\UserFieldTypes\_ComboBoxPartial.cshtml" />
+    <Content Include="Views\Print\Batch.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\ProcessResult\Index.cshtml" />
+    <Content Include="Views\ProcessResult\_CommentPartial.cshtml" />
+    <Content Include="Views\Print\ProcessResult.cshtml" />
+    <Content Include="Views\Print\CustomReport.cshtml" />
+    <Content Include="Views\CustomReportList\Index.cshtml" />
+    <Content Include="Views\Shared\_UrlPopup.cshtml" />
+    <Content Include="Views\FileManager\_FileManagerPartial.cshtml" />
+    <Content Include="Views\FileManager\FileManager.cshtml" />
+    <Content Include="Views\SamplesBook\_GridViewPartial.cshtml" />
+    <Content Include="Views\SamplesBook\ToolbarSamplesGrid.cshtml" />
+    <Content Include="Views\SamplesBook\GridRowDetails.cshtml" />
+    <Content Include="Views\WorkflowRunList\_NewRunListPartial.cshtml" />
+    <Content Include="Views\WorkflowRunList\_RunListGridViewPartial.cshtml" />
+    <Content Include="Views\WorkflowRunList\Index.cshtml" />
+    <Content Include="Views\WorkflowRunList\_GridViewPartial.cshtml" />
+    <Content Include="Scripts\Properties\FilterControls.js.bak" />
+    <Content Include="Views\WorkflowProcessResult\_GridViewPartial.cshtml" />
+    <Content Include="Views\WorkflowProcessResult\ProcessResultView.cshtml" />
+    <Content Include="Views\Print\ExportSettings.cshtml" />
+    <Content Include="Views\Print\_ExportSettingsPartial.cshtml" />
+    <Content Include="Views\SamplesJournal\Index.cshtml" />
+    <Content Include="Views\SamplesJournal\GridViewPartial.cshtml" />
+    <Content Include="Views\Comments\CommentForm.cshtml" />
+    <Content Include="Views\ReportMenu\ReportListPopup.cshtml" />
+    <Content Include="Views\ReportMenu\_DataView.cshtml" />
+    <Content Include="Views\Shared\_UrlPopupAbout.cshtml" />
+    <Content Include="Areas\Help\Views\Help\About.cshtml" />
+    <Content Include="Vue\container\container.vue" />
+    <Content Include="Views\Shared\_AlertPopup.cshtml" />
+    <Content Include="Views\CheckLicense\Index.cshtml" />
+    <Content Include="Views\Shared\_MainMenuAdv.cshtml" />
+    <Content Include="Views\Error\Index.cshtml" />
+    <Content Include="Views\Error\BedLicense.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Shared\BedLicense.cshtml" />
+    <Content Include="Views\Shared\GeneralError.cshtml" />
+    <Content Include="Views\Shared\NotFound.cshtml" />
+    <Content Include="Views\Error\GeneralError.cshtml" />
+    <Content Include="Views\Error\Error.cshtml" />
+    <Content Include="Vue\group-edit\GroupEdit.vue" />
+    <Content Include="Areas\Custom\Views\EditCustomType\customTypeEdit.vue" />
+    <Content Include="Scripts\vue-apps\manageLocation\fonts\materialdesignicons-webfont.eot" />
+    <Content Include="Scripts\vue-apps\manageLocation\fonts\materialdesignicons-webfont.ttf" />
+    <Content Include="Scripts\vue-apps\manageLocation\fonts\materialdesignicons-webfont.woff" />
+    <Content Include="Scripts\vue-apps\manageLocation\fonts\materialdesignicons-webfont.woff2" />
+    <Content Include="Scripts\vue-apps\selectLocation\fonts\materialdesignicons-webfont.eot" />
+    <Content Include="Scripts\vue-apps\selectLocation\fonts\materialdesignicons-webfont.ttf" />
+    <Content Include="Scripts\vue-apps\selectLocation\fonts\materialdesignicons-webfont.woff" />
+    <Content Include="Scripts\vue-apps\selectLocation\fonts\materialdesignicons-webfont.woff2" />
+    <Content Include="Views\Settings\Index.cshtml" />
+    <Content Include="Views\Settings\editNode.cshtml" />
+    <Content Include="Views\Settings\_TreeListPartial.cshtml" />
+    <Content Include="Vue\components\EditRules.vue" />
+    <Content Include="Vue\components\formField.vue" />
+    <Content Include="Scripts\vue-apps\settings\fonts\materialdesignicons-webfont.eot" />
+    <Content Include="Scripts\vue-apps\settings\fonts\materialdesignicons-webfont.ttf" />
+    <Content Include="Scripts\vue-apps\settings\fonts\materialdesignicons-webfont.woff" />
+    <Content Include="Scripts\vue-apps\settings\fonts\materialdesignicons-webfont.woff2" />
+    <Content Include="Scripts\vue-apps\fonts\materialdesignicons-webfont.eot" />
+    <Content Include="Scripts\vue-apps\fonts\materialdesignicons-webfont.ttf" />
+    <Content Include="Scripts\vue-apps\fonts\materialdesignicons-webfont.woff" />
+    <Content Include="Scripts\vue-apps\fonts\materialdesignicons-webfont.woff2" />
+    <Content Include="Scripts\vue-apps\questios\fonts\materialdesignicons-webfont.eot" />
+    <Content Include="Scripts\vue-apps\questios\fonts\materialdesignicons-webfont.ttf" />
+    <Content Include="Scripts\vue-apps\questios\fonts\materialdesignicons-webfont.woff" />
+    <Content Include="Scripts\vue-apps\questios\fonts\materialdesignicons-webfont.woff2" />
+    <Content Include="Scripts\vue-app\fonts\materialdesignicons-webfont.eot" />
+    <Content Include="Scripts\vue-app\fonts\materialdesignicons-webfont.ttf" />
+    <Content Include="Scripts\vue-app\fonts\materialdesignicons-webfont.woff" />
+    <Content Include="Scripts\vue-app\fonts\materialdesignicons-webfont.woff2" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Areas\BillOfMaterial\CancerClones\Data\" />
+    <Folder Include="Areas\BillOfMaterial\CancerClones\Views\Shared\" />
+    <Folder Include="Areas\BillOfMaterial\Data\" />
+    <Folder Include="Areas\BillOfMaterial\Views\Shared\" />
+    <Folder Include="Areas\Common\Data\" />
+    <Folder Include="Areas\Custom\Views\Shared\" />
+    <Folder Include="Areas\Help\Views\Shared\" />
+    <Folder Include="Areas\Identity\Views\Logout\" />
+    <Folder Include="Areas\Identity\Views\Shared\" />
+    <Folder Include="Areas\Location\Views\Shared\" />
+    <Folder Include="Areas\PropertyTree\Views\Shared\" />
+    <Folder Include="Areas\Questions\Data\" />
+    <Folder Include="Areas\Questions\Views\Questionnaire\src\components\" />
+    <Folder Include="Areas\Questions\Views\Shared\" />
+    <Folder Include="Areas\Reagents\Views\Shared\" />
+    <Folder Include="Areas\SamplesEdit\Data\" />
+    <Folder Include="Areas\SamplesEdit\Views\Shared\" />
+    <Folder Include="Areas\Workflow\Views\Shared\" />
+    <Folder Include="Content\UploadControl\UploadFolder\" />
+    <Folder Include="Controllers\Reagents\" />
+    <Folder Include="Controllers\Reports\" />
+    <Folder Include="Controllers\Workflow\" />
+    <Folder Include="Views\Help\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Scripts\index.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccessLayer\Sasha.Lims.DataAccess.Entities\Sasha.Lims.DataAccess.Entities.csproj">
+      <Project>{8F1B592F-14DA-46F8-A414-DAAD524D65BC}</Project>
+      <Name>Sasha.Lims.DataAccess.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccessLayer\Sasha.Lims.DataAccess\Sasha.Lims.DataAccess.csproj">
+      <Project>{C7677AFD-3117-4040-B1D8-3B480BFD0252}</Project>
+      <Name>Sasha.Lims.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Resources\Resources.csproj">
+      <Project>{ce78b28d-6521-4d7c-b337-c76ae53f8e8b}</Project>
+      <Name>Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sasha.Lims.Core\Sasha.Lims.Core.csproj">
+      <Project>{2977fdbe-2d75-4a6a-911d-9914e90dda64}</Project>
+      <Name>Sasha.Lims.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sasha.Lims.Exceptions\Sasha.Lims.Exceptions.csproj">
+      <Project>{EC9B7471-4A3E-4A98-8437-B3BED8DA19E2}</Project>
+      <Name>Sasha.Lims.Exceptions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Localization\UI.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>UI.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localization\LimsSiteMap.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LimsSiteMap.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localization\ViewModelFields.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ViewModelFields.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" /> -->
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>2069</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>https://localhost:44363/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.3.0\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.3.0\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.1.10.13\build\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.1.10.13\build\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.1.10.13\build\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.1.10.13\build\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.3.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" />
+  <Import Project="..\packages\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.1.10.13\build\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.targets" Condition="Exists('..\packages\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.1.10.13\build\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  <Target Name="CopyRoslynFiles" AfterTargets="AfterBuild" Condition="!$(Disable_CopyWebApplication) And '$(OutDir)' != '$(OutputPath)'">
+    <ItemGroup>
+      <RoslynFiles Include="$(CscToolPath)\*" />
+    </ItemGroup>
+    <MakeDir Directories="$(WebProjectOutputDir)\bin\roslyn" />
+    <Copy SourceFiles="@(RoslynFiles)" DestinationFolder="$(WebProjectOutputDir)\bin\roslyn" SkipUnchangedFiles="true" Retries="$(CopyRetryCount)" RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)" />
+</Target>
+  -->
+</Project>

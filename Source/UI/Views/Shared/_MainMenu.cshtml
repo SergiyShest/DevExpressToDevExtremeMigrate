@@ -1,0 +1,186 @@
+@using Sasha.Lims.Core.Helpers
+@using Sasha.Lims.Core.Helpers
+@using Sasha.Lims.WebUI.Localization
+@using Sasha.Lims.WebUI.Infrastructure.Consts
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@using Sasha.Lims.WebUI.Controllers
+@using Sasha.Lims.DataAccess.Entities.Constants
+@using Sasha.Lims.WebUI.Areas.SamplesEdit.Controllers
+@{
+	var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
+
+	var user = ViewBag.getUser();
+	IEnumerable<string> role = user.Roles;
+	bool vAdm = role.Any(value => value.ToUpper().Trim() == AppConsts.ROLE_ADMIN.ToUpper());
+}
+<script type="text/javascript">
+	function ShowReportList() {
+		ShowUrlPopup("Report List on LIMS System", '@Url.Action("ReportListPopup", "ReportMenu")', 980, 630);
+	}
+
+	function ShowAbout() {
+		ShowUrlPopupAbout("About", '@Url.Action("About", "Help",new { Area = "Help"} )', 400, 350);
+	}
+</script>
+<nav class="navbar fixed-top navbar-expand-lg @DataHelper.Current.MainMenuClass" style="@DataHelper.Current.MainMenuStyle">
+	<img src="~/Content/Images/logos/logo_1.svg" style="width: 20px; margin-right: 20px" />
+	@Html.ActionLink(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.MainTitle)), "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar1" aria-controls="navbar1" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse" id="navbar1">
+
+
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item dropdown">
+				@*<a class="nav-link dropdown-toggle @Html.Raw(new string[] {"Samples", "SamplesFileAttach", "SamplesPlate", "SamplesBox", "SamplesApproved"}.Contains(controllerName) ? "active" : string.Empty)" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">*@
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					@*todo: сделать другой ресурс*@
+					@(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Samples)))
+				</a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					@Html.ActionLink("Containers", "ContainerJournal", "ContainerJournal", new { area = "SamplesEdit" }, new { @class = "dropdown-item" })
+					@(Html.MainMenuLink<SamplesBookController>(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Samples))))
+					<div class="dropdown-divider"></div>
+					@(Html.MainMenuLink<SamplesController, JournalType>(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Reception)), JournalType.Receiving))
+					@(Html.MainMenuLink<SamplesController, JournalType>(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Management)), JournalType.Management))
+					@(Html.MainMenuLink<SamplesController, JournalType>(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Aliquoting)), JournalType.Aliquoting))
+					@*@(Html.MainMenuLink<SamplesPlateController, JournalType>(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Plate)), JournalType.Plate))
+						@(Html.MainMenuLink<SamplesBoxController, JournalType>(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Box)), JournalType.Box))*@
+				</div>
+			</li>
+			@*Samples*@
+			<li class="nav-item dropdown">
+				@*<a class="nav-link dropdown-toggle @Html.Raw(new string[] {"Samples", "Report"}.Contains(controllerName) ? "active" : string.Empty)" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">*@
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Storage
+				</a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					@Html.ActionLink("Storage Browser", "Viewer", "Report",
+						new { area = "", url = "storage_browser" },
+						new { @class = "dropdown-item" })
+					<div class="dropdown-divider"></div>
+					@(Html.MainMenuLink<SamplesController, JournalType>(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.CheckOut)), JournalType.MassCheckOut))
+					@(Html.MainMenuLink<SamplesController, JournalType>(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.CheckIn)), JournalType.MassCheckIn))
+					@(Html.MainMenuLink<SamplesController, JournalType>(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Move)), JournalType.MassMove))
+					@(Html.MainMenuLink<SamplesController, JournalType>(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Dispose)), JournalType.MassDispose))
+					<div class="dropdown-divider"></div>
+					@Html.ActionLink(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.CustodyLog)), "Index", "CustodyLog", new { area = "" }, new { @class = "dropdown-item" + (controllerName.Equals("CustodyLog") ? " active" : string.Empty) })
+				</div>
+			</li>
+			@*Storage*@
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle @Html.Raw(new string[]{ "WorkflowRunList", "WorkflowProcessResult" }.Contains(controllerName) ? "active" : string.Empty)" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Workflows
+				</a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					@(Html.MainMenuLink<WorkflowRunListController>("Runs"))
+					@(Html.MainMenuLink<WorkflowProcessResultController>("Processes", "ProcessResultView"))
+					<div class="dropdown-divider"></div>
+					@Html.ActionLink("Workflow Browser", "Viewer", "Report",
+						new { area = "", url = "WorkflowStatus" },
+						new { @class = "dropdown-item" })
+				</div>
+			</li>
+			@*Workflows*@
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle @Html.Raw(new string[] {"Clients", "Doctors", "Patients"}.Contains(controllerName) ? "active" : string.Empty)" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					@(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Clients)))
+				</a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					@(Html.MainMenuLink<ClientsController>(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Hospitals))))
+					@(Html.MainMenuLink<DoctorsController>(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Doctors))))
+					@(Html.MainMenuLink<PatientsController>(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Patients))))
+				</div>
+			</li>
+			@*Clients*@
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle @Html.Raw(new string[] {"Reagents", "ReagentsJournal", "ReagentsLedger"}.Contains(controllerName) ? "active" : string.Empty)" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Inventory
+				</a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					@*<a class="dropdown-item" style="color: lightgray" href="javascript:void(0)">Equipment</a>
+						<a class="dropdown-item" style="color: lightgray" href="javascript:void(0)">Reagents</a>*@
+
+
+
+					@(Html.MainMenuLink<ReagentsLedgerController>(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.ReagentsLedger))))
+					<!--<div class="dropdown-divider"></div>-->
+					@(Html.MainMenuLink<ReagentsJournalController, ReagentJournalType>(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.ReagentsReceiving)), ReagentJournalType.Receiving))
+					@(Html.MainMenuLink<ReagentsJournalController, ReagentJournalType>(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.ReagentsUsage)), ReagentJournalType.Spending))
+					@*@(Html.MainMenuLink<ReagentsJournalController, ReagentJournalType>(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.ReagentsCorrection)), ReagentJournalType.Correction))*@
+					<!--<div class="dropdown-divider"></div>-->
+					@(Html.MainMenuLink<ReagentsController>(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.ReagentsCatalog))))
+				</div>
+
+			</li>
+			@*Inventory*@
+			<li class="nav-item dropdown">
+				@*<a class="nav-link dropdown-toggle @Html.Raw(new string[] {"Report"}.Contains(controllerName) ? "active" : string.Empty)" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">*@
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Utils
+				</a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					@Html.ActionLink("Supermix Calculator", "Viewer", "Report",
+						new { area = "", url = "Supermix_Calculator" },
+						new { @class = "dropdown-item" })
+				</div>
+			</li>
+			@*Utils*@
+			@if (vAdm && (User?.Identity?.IsAuthenticated ?? false))
+			{
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle @Html.Raw(new string[] {"UserFieldTypes", "UserFields", "Resources", "Properties"}.Contains(controllerName) ? "active" : string.Empty)" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Settings
+					</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						@Html.ActionLink("Users", "Index", "Admin", new { area = "Identity" }, new { @class = "dropdown-item" })
+						@(Html.MainMenuLink<PropertiesController>("Configuration"))
+						@(Html.MainMenuLink<ResourcesController>("Language"))
+						<a class="dropdown-item" href="javascript:ShowReportList();">Reports...</a>
+						@(Html.MainMenuLink<ReportController>("Report designer", "Designer"))
+						@Html.ActionLink("Export Resources", "Viewer", "Report",
+							new { area = "", url = "Resources_Export" },
+							new { @class = "dropdown-item" })
+						@(Html.MainMenuLink<UserFieldsController>(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.UserFields))))
+						@(Html.MainMenuLink<UserFieldTypesController>(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.UserFieldTypes))))
+					</div>
+				</li>
+				@*Settings*@
+			}
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Help
+				</a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					<a class="dropdown-item" href="javascript:ShowAbout()">About</a>
+				</div>
+			</li>
+			@*About*@
+
+		</ul>
+		<div class="nav-item navbar-nav">
+			@if (vAdm && (User?.Identity?.IsAuthenticated ?? false))
+			{
+				<li class="nav-item dropdown">
+					@*<a class="nav-link dropdown-toggle @Html.Raw(new string[] {"Report"}.Contains(controllerName) ? "active" : string.Empty)" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">*@
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Admin
+					</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						@Html.ActionLink("Users", "Index", "Admin", new { area = "Identity" }, new { @class = "dropdown-item" })
+						@Html.ActionLink("Users", "Index", "RoleAdmin", new { area = "Identity" }, new { @class = "dropdown-item" })
+					</div>
+				</li>
+			}
+		</div>
+		<div class="nav-item navbar-nav">
+			@{
+				bool isAuthenticated = User?.Identity?.IsAuthenticated ?? false;
+				string caption = isAuthenticated ? Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Logout)) + " " + User.Identity.Name : Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Login));
+			}
+			@Html.ActionLink(caption, "Index", isAuthenticated ? "Logout" : "Login", new { area = "Identity" }, new { @class = "nav-link" })
+		</div>
+	</div>
+</nav>
+@Html.Action("Index", "CheckLicense", new { area = "" })

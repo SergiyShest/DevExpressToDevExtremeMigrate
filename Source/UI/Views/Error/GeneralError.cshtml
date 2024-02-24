@@ -1,0 +1,20 @@
+@using Sasha.Lims.WebUI.Localization
+@using Sasha.Lims.Core.Helpers
+
+@{
+	ViewBag.Title = "Error Page";
+	Layout = null;
+}
+
+<div>
+	<h3 style=" padding:20px; color:red">
+		An Error Occurred:	@Html.Raw(ViewBag.message)
+	</h3>
+	<h5>
+		@Html.Raw(ViewBag.error)
+	</h5>
+	<h6>@Html.ActionLink("Go Back To Home Page", "Index", "Home")</h6>
+	<br />
+	<br />
+</div>
+

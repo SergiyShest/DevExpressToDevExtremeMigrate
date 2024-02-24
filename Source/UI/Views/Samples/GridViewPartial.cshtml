@@ -1,0 +1,223 @@
+@model GridViewModel
+@using System.Web.UI.WebControls;
+@using Sasha.Lims.WebUI.Controllers;
+@using Sasha.Lims.WebUI.Models
+@using Sasha.Lims.WebUI.Infrastructure.ViewModelHelpers
+@using Sasha.Lims.WebUI.Localization
+@using Sasha.Lims.WebUI.Infrastructure.Helpers;
+
+@{
+	bool allowEdit = ViewBag.CanEditSamples;
+	var gridView = Html.DevExpress().GridView(gridViewSettings =>
+	{
+		SamplesController controller = (SamplesController)ViewContext.Controller;
+		const string ControllerName = "Samples";
+		gridViewSettings.Name = controller.GetGridViewName();
+		gridViewSettings.KeyFieldName = "Id";
+
+		gridViewSettings.CallbackRouteValues = new { Controller = ControllerName, Action = "GridViewPartial" };
+
+		gridViewSettings.CustomActionRouteValues = new { Controller = ControllerName, Action = "CustomActionPartial" };
+		gridViewSettings.SettingsEditing.AddNewRowRouteValues = new { Controller = ControllerName, Action = "GridViewPartialAddNew" };
+		gridViewSettings.SettingsEditing.UpdateRowRouteValues = new { Controller = ControllerName, Action = "GridViewPartialUpdate" };
+		//gridViewSettings.SettingsEditing.DeleteRowRouteValues = new { Controller = ControllerName, Action = "SamplesGridViewPartialDelete" };
+
+
+		gridViewSettings.SettingsPager.Visible = true;
+		gridViewSettings.Styles.PagerBottomPanel.HorizontalAlign = HorizontalAlign.Right;
+		gridViewSettings.SettingsPager.Position = PagerPosition.Bottom;
+		gridViewSettings.SettingsPager.Summary.Visible = false;
+
+		gridViewSettings.SettingsDataSecurity.AllowReadUnlistedFieldsFromClientApi = DefaultBoolean.True;
+
+		//
+		gridViewSettings.SettingsResizing.ColumnResizeMode = ColumnResizeMode.Control;
+		gridViewSettings.SettingsResizing.Visualization = ResizingMode.Postponed;
+		gridViewSettings.SettingsBehavior.ProcessColumnMoveOnClient = false;
+		gridViewSettings.SettingsBehavior.ColumnMoveMode = GridColumnMoveMode.AmongSiblings;
+		gridViewSettings.SettingsBehavior.EnableCustomizationWindow = true;
+		gridViewSettings.SettingsCookies.Enabled = true;
+		gridViewSettings.SettingsCookies.StoreColumnsVisiblePosition = true;
+		gridViewSettings.SettingsCookies.StoreColumnsWidth = true;
+		gridViewSettings.SettingsCookies.StoreControlWidth = false;
+		gridViewSettings.Settings.ShowGroupPanel = false;
+
+		gridViewSettings.ControlStyle.CssClass = "grid-view";
+		gridViewSettings.Width = Unit.Percentage(100);
+		// to set 100% height https://www.devexpress.com/Support/Center/Example/Details/E3958/how-to-use-the-gridview-extension-in-a-full-screen-mode-100-browser-width-and-height
+
+		gridViewSettings.SettingsBehavior.AllowFocusedRow = true;
+		gridViewSettings.SettingsBehavior.AllowSelectByRowClick = true;
+		gridViewSettings.SettingsBehavior.AllowEllipsisInText = true;
+		gridViewSettings.SettingsBehavior.AllowDragDrop = true;
+
+		gridViewSettings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCellsWindowLimit;
+
+		gridViewSettings.SettingsSearchPanel.CustomEditorName = "searchButtonEdit";
+
+		gridViewSettings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+		gridViewSettings.SettingsEditing.EditFormColumnCount = 2;
+
+		//gridViewSettings.SettingsSearchPanel.CustomEditorName = "searchButtonEdit";
+
+		gridViewSettings.Settings.VerticalScrollBarMode = ScrollBarMode.Hidden;
+		gridViewSettings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
+		//gridViewSettings.Settings.ShowHeaderFilterButton = true;
+
+		gridViewSettings.SettingsPopup.EditForm.SettingsAdaptivity.MaxWidth = 800;
+		gridViewSettings.SettingsPopup.EditForm.SettingsAdaptivity.Mode = PopupControlAdaptivityMode.Always;
+		gridViewSettings.SettingsPopup.EditForm.SettingsAdaptivity.VerticalAlign = PopupAdaptiveVerticalAlign.WindowCenter;
+
+		gridViewSettings.EditFormLayoutProperties.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+		gridViewSettings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 600;
+
+	//	gridViewSettings.SetEditFormTemplateContent(c => Html.RenderAction("SamplePartial", ControllerName, new { id = DataBinder.Eval(c.DataItem, "Id") }) );
+
+		gridViewSettings.CommandColumn.Visible = true;
+		gridViewSettings.CommandColumn.ShowSelectCheckbox = false;
+		gridViewSettings.CommandColumn.SelectAllCheckboxMode = GridViewSelectAllCheckBoxMode.None;
+		gridViewSettings.CommandColumn.VisibleIndex = 0;
+		gridViewSettings.CommandColumn.Width = Unit.Pixel(52);
+
+		gridViewSettings.SettingsContextMenu.EnableRowMenu = DefaultBoolean.False;
+		gridViewSettings.Styles.Header.Wrap = DefaultBoolean.True;
+		SampleViewModel vm = null;
+
+		gridViewSettings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Barcode";
+			columnSettings.Caption = "Barcode";
+			columnSettings.Width = Unit.Pixel(150);
+			columnSettings.ExportWidth = 100;
+
+			columnSettings.SetDataItemTemplateContent(container =>
+			{
+				if (container.KeyValue != null)
+					Html.DevExpress().Button(button =>
+					{
+						var keyValue = container.KeyValue;
+						var barcode = (DataBinder.Eval(container.DataItem, "Barcode") as string) ?? "";
+
+						button.UseSubmitBehavior = true;
+						button.CausesValidation = false;
+						button.RenderMode = ButtonRenderMode.Link;
+						button.Enabled = barcode != "";
+						button.Name = "btn_barcode_" + keyValue;
+						button.Text = barcode;
+
+						button.RouteValues = new { Controller = "Print", Action = "Journal", ids = keyValue.ToString() };
+					}).Render();
+			});
+		});
+
+		gridViewSettings.Columns.AddColumnForVmField(vm, m => m.Name);
+		gridViewSettings.Columns.AddColumnForVmField(vm, m => m.CollectedDateTime);
+		gridViewSettings.Columns.AddColumnForVmField(vm, m => m.TubeTypeId);
+		gridViewSettings.Columns.AddColumnForVmField(vm, m => m.SampleTypeId);
+		gridViewSettings.Columns.AddColumnForVmField(vm, m => m.SampleStatusId);
+
+		Html.AddColmmentCountColumn(gridViewSettings,true);
+		gridViewSettings.Columns.AddColumnForVmField(vm, m => m.LocationId);
+		gridViewSettings.Columns.AddColumnForVmField(vm, m => m.BatchId);
+		gridViewSettings.Columns.AddColumnForVmField(vm, m => m.ClientId);
+		gridViewSettings.Columns.AddColumnForVmField(vm, m => m.DoctorId);
+
+		gridViewSettings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "PatientFirstName";//"FullNamePatients";
+			columnSettings.SetDataItemTemplateContent(container =>
+			{
+				Html.DevExpress().Label(l =>
+				{
+					object firstName = DataBinder.Eval(container.DataItem, "PatientFirstName");
+					object lastName = DataBinder.Eval(container.DataItem, "PatientLastName");
+					l.Text = (firstName == null ? "" : firstName.ToString()) + " " + (lastName == null ? "" : lastName.ToString());
+				}).Render();
+			});                               //columnSettings.Columns.Add("LastName"); // = "{Title} {FirstName} {LastName}";
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Patient));
+			columnSettings.Width = Unit.Pixel(150);
+			//columnSettings.ExportWidth = 100;
+		});
+
+		gridViewSettings.Columns.AddColumnForVmField(vm, m => m.ModelId);
+		gridViewSettings.Columns.AddColumnForVmField(vm, m => m.MakeAliquot);
+		gridViewSettings.Columns.AddColumnForVmField(vm, m => m.SendReport);
+
+		gridViewSettings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Well";
+			columnSettings.Caption = "Well";
+			columnSettings.Visible = false;
+		});
+
+		foreach (var c in controller.CustomFields)
+			gridViewSettings.Columns.AddColumnForMetadata(c);
+
+		//Command columns settings
+		SettingHelper.AddCommandColumn(gridViewSettings);
+
+
+		gridViewSettings.ClientSideEvents.Init = "onGridViewInit";
+		gridViewSettings.ClientSideEvents.SelectionChanged = "onGridViewSelectionChanged";
+		gridViewSettings.ClientSideEvents.BeginCallback = "onGridViewBeginCallback";
+		gridViewSettings.ClientSideEvents.EndCallback = "onGridViewEndCallback";
+		if (allowEdit)
+			gridViewSettings.ClientSideEvents.RowDblClick = "onRowDblClick";
+		gridViewSettings.ClientSideEvents.ColumnResized = "function(s, e) {	e.processOnServer = true; }"; // force event to save cookie
+		gridViewSettings.ClientSideEvents.CustomizationWindowCloseUp = "onGridCustomizationWindowCloseUp";
+
+
+
+		//menuSettings
+
+		gridViewSettings.CellEditorInitialize = (s, e) =>
+		{
+			((ASPxEdit)e.Editor).ValidationSettings.Display = Display.Dynamic;
+		};
+
+		gridViewSettings.CustomBindingRouteValuesCollection.Add(GridViewOperationType.Paging, new { Controller = ControllerName, Action = "GridViewPagingAction" });
+		gridViewSettings.CustomBindingRouteValuesCollection.Add(GridViewOperationType.Sorting, new { Controller = ControllerName, Action = "GridViewSortingAction" });
+		gridViewSettings.CustomBindingRouteValuesCollection.Add(GridViewOperationType.Filtering, new { Controller = ControllerName, Action = "GridViewFilteringAction" });
+
+		if (ViewBag.GeneralError != null)
+		{
+			gridViewSettings.Settings.ShowFooter = true;
+			gridViewSettings.SetFooterRowTemplateContent(c => { Html.ViewContext.Writer.Write(@"<div style=""color:red"">" + ViewBag.GeneralError+"</div>"); });
+		}
+
+		gridViewSettings.BeforeGetCallbackResult = (s, e) =>
+		{
+			if (ViewBag.GeneralError != null)
+			{
+				MVCxGridView gridView1 = (MVCxGridView)s;
+				gridView1.Settings.ShowFooter = true;
+			}
+		};
+
+		gridViewSettings.CustomJSProperties = (s, e) =>
+		{
+			var Grid = s as MVCxGridView;
+			var sortedColumns = new List<object>();
+			foreach (var col in Grid.AllColumns)
+			{
+				var dataCol = col as GridViewDataColumn;
+				if (dataCol != null && dataCol.SortOrder != DevExpress.Data.ColumnSortOrder.None)
+				{
+					sortedColumns.Add(dataCol.FieldName);
+					sortedColumns.Add(dataCol.SortOrder);
+				}
+			}
+			e.Properties["cpSortedColumns"] = sortedColumns;
+			// e.Properties["cpFilterExpression"] = Grid.FilterExpression;
+			e.Properties["cpRowCount"] = Grid.VisibleRowCount;
+		};
+	});
+
+
+	if (ViewBag.GeneralError != null)
+	{
+		gridView.SetEditErrorText(ViewBag.GeneralError);
+	}
+}
+
+@gridView.BindToCustomData(Model).GetHtml()

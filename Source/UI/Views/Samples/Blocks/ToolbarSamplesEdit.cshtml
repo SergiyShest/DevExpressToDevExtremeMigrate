@@ -1,0 +1,293 @@
+@model string
+@using System.Web.UI.WebControls
+@using Sasha.Lims.WebUI.Localization
+@using Sasha.Lims.DataAccess.Entities.Constants
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+
+
+@{
+	string titlePage = Model;
+	JournalType editMode = ViewBag.EditMode;
+}
+
+@Html.DevExpress().Menu(menuSettings =>
+{
+	var unit16px = System.Web.UI.WebControls.Unit.Pixel(16);
+
+	menuSettings.Name = "pageToolbar";
+
+	menuSettings.ItemAutoWidth = false;
+	menuSettings.AllowSelectItem = false;
+	menuSettings.ApplyItemStyleToTemplates = true;
+
+	menuSettings.SettingsAdaptivity.Enabled = true;
+	menuSettings.SettingsAdaptivity.EnableAutoHideRootItems = true;
+	menuSettings.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+	menuSettings.SettingsAdaptivity.CollapseRootItemsToIconsAtWindowInnerWidth = 600;
+
+	menuSettings.Width = Unit.Percentage(100);
+	menuSettings.ControlStyle.SeparatorWidth = Unit.Pixel(0);
+	menuSettings.ControlStyle.CssClass = "page-toolbar";
+
+	menuSettings.Styles.Item.CssClass = "item";
+	menuSettings.Styles.Item.VerticalAlign = VerticalAlign.Middle;
+
+	menuSettings.Images.Item.Width = unit16px;
+	menuSettings.Images.Item.Height = unit16px;
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Title";
+		item.Text = titlePage;
+		item.ClientEnabled = false;
+		item.ItemStyle.Font.Bold = true;
+		item.Alignment = MenuItemAlignment.Left;
+		item.ItemStyle.CssClass = "titleMenuItemStyle";
+	});
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Amount";
+		item.Text = "";
+		item.ItemStyle.Font.Bold = true;
+		item.Alignment = MenuItemAlignment.Left;
+	});
+	if (JournalType.Receiving.Equals(editMode))
+		menuSettings.Items.Add(item => {
+			item.SetTemplateContent(@Html.Partial("Blocks/PanelBatchAddBarcodeAjax", editMode).ToString());
+			item.Alignment = MenuItemAlignment.Left;
+		});
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "btShowColumnChooser";
+		item.Text = "Columns";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 2;
+		item.Image.Url = "~/Content/Images/table_v2.svg";
+	});
+
+	Html.AddReportMenuForTable(menuSettings.Items, "s_jourLine",false);
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "btCommentSample";
+		item.Text = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Comment_Comments));
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 1;
+		item.Image.Url = "~/Content/Images/comment_v2.svg";
+		item.Image.Width = unit16px;
+		item.Image.Height = unit16px;
+	});
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "AddSamples";
+		item.Text = Html.GetLocalizedText<UI>(nameof(UI.ButtonBatchAdd));
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 7;
+		item.Image.Url = "~/Content/Images/batch_add.svg";
+	});
+
+	if(ViewBag.CanEditSamples) {
+		if( JournalType.Receiving.Equals(editMode) ) {
+			menuSettings.Items.Add(item =>
+			{
+				item.Name = "New";
+				item.Text = Html.GetLocalizedText<UI>(nameof(UI.ButtonAdd));
+				item.Alignment = MenuItemAlignment.Right;
+				item.AdaptivePriority = 2;
+				item.Image.Url = "~/Content/Images/add.svg";
+			});
+		}
+		menuSettings.Items.Add(item =>
+		{
+			item.Name = "GroupInput";
+			item.Text = "Group change";
+			item.Alignment = MenuItemAlignment.Right;
+			item.AdaptivePriority = 2;
+			item.Image.Url = "~/Content/Images/group_edit.svg";
+		});
+		menuSettings.Items.Add(item =>
+		{
+			item.Name = "GroupEdit";
+			item.Text = "Group edit";
+			item.Alignment = MenuItemAlignment.Right;
+			item.AdaptivePriority = 6;
+			item.Image.Url = "~/Content/Images/group_edit.svg";
+			item.Items.Add(subMenu =>
+			{
+				subMenu.Name = "StatusEdit";
+				subMenu.Text = "Status";
+				subMenu.Alignment = MenuItemAlignment.Right;
+				subMenu.AdaptivePriority = 6;
+				subMenu.Image.Url = "~/Content/Images/edit.svg";
+				subMenu.Image.Width = unit16px;
+				subMenu.Image.Height = unit16px;
+			});
+			item.Items.Add(subMenu =>
+			{
+				subMenu.Name = "LocationEdit";
+				subMenu.Text = "Location";
+				subMenu.Alignment = MenuItemAlignment.Right;
+				subMenu.AdaptivePriority = 6;
+				subMenu.Image.Url = "~/Content/Images/edit.svg";
+				subMenu.Image.Width = unit16px;
+				subMenu.Image.Height = unit16px;
+			});
+
+			if (!JournalType.Aliquoting.Equals(editMode))
+			{
+				item.Items.Add(subMenu =>
+				{
+					subMenu.Name = "BatchEdit";
+					subMenu.Text = "Batch";
+					subMenu.Alignment = MenuItemAlignment.Right;
+					subMenu.AdaptivePriority = 6;
+					subMenu.Image.Url = "~/Content/Images/move_to_box.svg";
+					subMenu.Image.Width = unit16px;
+					subMenu.Image.Height = unit16px;
+				});
+				if (JournalType.Management.Equals(editMode))//Make Aliquot имеет смысл только в журнале Management
+				{
+					item.Items.Add(subMenu =>
+					{
+						subMenu.Name = "AliquotEdit";
+						subMenu.Text = "Make Aliquot";
+						subMenu.Alignment = MenuItemAlignment.Right;
+						subMenu.AdaptivePriority = 6;
+						subMenu.Image.Url = "~/Content/Images/aliquoting.svg";
+						subMenu.Image.Width = unit16px;
+						subMenu.Image.Height = unit16px;
+					});
+
+				}
+			}
+			item.Items.Add(subMenu =>
+			{
+				subMenu.Name = "AssignWells";
+				subMenu.Text = "Assign Wells";
+				subMenu.Alignment = MenuItemAlignment.Right;
+				subMenu.AdaptivePriority = 6;
+				subMenu.Image.Url = "~/Content/Images/cell.svg";
+				subMenu.Image.Width = unit16px;
+				subMenu.Image.Height = unit16px;
+			});
+			item.Items.Add(subMenu =>
+			{
+				subMenu.Name = "GroupSendReport";
+				subMenu.Text = "Send Reports";
+				subMenu.Alignment = MenuItemAlignment.Right;
+				subMenu.AdaptivePriority = 6;
+				subMenu.Image.Url = "~/Content/Images/report.svg";
+				subMenu.Image.Width = unit16px;
+				subMenu.Image.Height = unit16px;
+			});
+			item.Items.Add(subMenu =>
+			{
+				subMenu.Name = "Clear";
+				subMenu.Text = "Clear";
+				subMenu.Alignment = MenuItemAlignment.Right;
+				subMenu.AdaptivePriority = 6;
+				subMenu.Image.Url = "~/Content/Images/delete_v2.svg";
+				subMenu.Image.Width = unit16px;
+				subMenu.Image.Height = unit16px;
+			});
+
+		});
+		menuSettings.Items.Add(item =>
+		{
+			item.Name = "Edit";
+			item.Text = Html.GetLocalizedText<UI>(nameof(UI.ButtonEdit));
+			item.Alignment = MenuItemAlignment.Right;
+			item.AdaptivePriority = 3;
+			item.Image.Url = "~/Content/Images/edit.svg";
+		});
+	}
+	else
+	{
+		// If group operations are not available, you can still clear the journal
+		menuSettings.Items.Add(subMenu =>
+		{
+			subMenu.Name = "Clear";
+			subMenu.Text = "Clear";
+			subMenu.Alignment = MenuItemAlignment.Right;
+			subMenu.AdaptivePriority = 6;
+			subMenu.Image.Url = "~/Content/Images/delete_v2.svg";
+			subMenu.Image.Width = unit16px;
+			subMenu.Image.Height = unit16px;
+		});
+	}
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Delete";
+		item.Text = Html.GetLocalizedText<UI>(nameof(UI.ButtonDelete));
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 4;
+		item.Image.Url = "~/Content/Images/delete_v2.svg";
+		item.Image.Width = unit16px;
+		item.Image.Height = unit16px;
+	});
+
+	#region Закрыто по задаче LIMS-300
+	//menuSettings.Items.Add(item =>
+	//{
+	//	item.Name = "Export";
+	//	item.Text = "Export";
+	//	item.Alignment = MenuItemAlignment.Right;
+	//	item.AdaptivePriority = 5;
+	//	item.Image.Url = "~/Content/Images/export.svg";
+	//});
+	#endregion
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Process";
+		item.Text = Html.GetLocalizedText<UI>(nameof(UI.ButtonPost));
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 7;
+		item.Image.Url = "~/Content/Images/save.svg";
+	});
+	//menuSettings.Items.Add(item =>
+	//{
+	//	item.Name = "ToggleFilterPanel";
+	//	item.Text = "";
+	//	item.GroupName = "Filter";
+	//	item.Alignment = MenuItemAlignment.Right;
+	//	item.AdaptivePriority = 1;
+	//	item.Image.Url = "~/Content/Images/search.svg";
+	//	item.Image.UrlChecked = "~/Content/Images/search-selected.svg";
+	//});
+
+	menuSettings.ClientSideEvents.ItemClick = "onPageToolbarItemClick";
+	menuSettings.CustomJSProperties = (s, e) =>
+	{
+		e.Properties["cpBarcodeApiUrl"] = Url.HttpRouteUrl("DefaultApi", new { controller = "Barcode"});
+		e.Properties["cpGetSamplesUrl"] = Url.Action("GetSamples");
+	};
+}).GetHtml()
+
+@*@Html.DevExpress().Panel(panelSettings =>
+	{
+				panelSettings.Name = "filterPanel";
+				panelSettings.Collapsible = true;
+				panelSettings.ControlStyle.CssClass = "filter-panel";
+
+				panelSettings.SettingsCollapsing.ExpandEffect = PanelExpandEffect.Slide;
+				panelSettings.SettingsCollapsing.AnimationType = AnimationType.None;
+				panelSettings.SettingsCollapsing.ExpandButton.Visible = false;
+
+				panelSettings.SetContent(() =>
+				{
+					Html.DevExpress().ButtonEdit(buttonEditSettings =>
+					{
+						buttonEditSettings.Name = "searchButtonEdit";
+						buttonEditSettings.Properties.ClearButton.DisplayMode = ClearButtonDisplayMode.Always;
+						buttonEditSettings.Properties.Caption = "Search";
+						buttonEditSettings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+					}).GetHtml();
+				});
+
+				panelSettings.ClientSideEvents.Expanded = "onFilterPanelExpanded";
+				panelSettings.ClientSideEvents.Collapsed = "adjustPageControls";
+			}).GetHtml()*@

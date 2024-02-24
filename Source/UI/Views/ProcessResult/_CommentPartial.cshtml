@@ -1,0 +1,54 @@
+@using System.Web.UI.WebControls
+@model Sasha.Lims.WebUI.Models.ProcessResultViewModel
+@Html.DevExpress().FormLayout(settings =>
+{
+	var gridName = $"ProcessResultGridView_{ViewBag.RunId}";
+
+	settings.Name = "CommentForm";
+	settings.SettingsItems.ShowCaption = DefaultBoolean.True;
+	settings.SettingsItemCaptions.Location = LayoutItemCaptionLocation.Left;
+	settings.Width = Unit.Percentage(100);
+
+	settings.Items.AddGroupItem(group =>
+	{
+		group.GroupBoxDecoration = GroupBoxDecoration.None;
+		group.Items.Add(m => m.Comment, s =>
+		{
+			s.HelpText = "Enter comment here";
+			s.NestedExtensionType = FormLayoutNestedExtensionItemType.Memo;
+			s.NestedExtensionSettings.Width = Unit.Percentage(100);
+			s.NestedExtensionSettings.Height = Unit.Pixel(300);
+			s.Width = Unit.Percentage(100);
+			s.Caption = "Comment";
+		});
+	});
+
+	settings.Items.AddGroupItem(group =>
+	{
+		group.GroupBoxDecoration = GroupBoxDecoration.None;
+		group.ColCount = 2;
+		group.Items.Add(i =>
+		{
+			i.ShowCaption = DefaultBoolean.False;
+			i.NestedExtensionType = FormLayoutNestedExtensionItemType.Button;
+			var button = (ButtonSettings)i.NestedExtensionSettings;
+			button.Name = "cancel";
+			button.Text = "Cancel";
+			button.ClientSideEvents.Click = "function (s,e) {" + gridName + ".CancelEdit();}";
+		});
+		group.Items.Add(i =>
+		{
+			i.ShowCaption = DefaultBoolean.False;
+			i.NestedExtensionType = FormLayoutNestedExtensionItemType.Button;
+			var button = (ButtonSettings)i.NestedExtensionSettings;
+			button.Name = "update";
+			button.Text = "Ok";
+			button.ClientSideEvents.Click = "function (s,e) {" + gridName + ".UpdateEdit();}";
+		});
+	});
+}).GetHtml()
+@Html.HiddenFor(model => model.ProcessId)
+@Html.HiddenFor(model => model.SampleId)
+@Html.HiddenFor(model => model.ResultId)
+@Html.HiddenFor(model => model.Value)
+@Html.HiddenFor(model => model.FilePath)

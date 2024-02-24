@@ -1,0 +1,168 @@
+@using System.Web.UI.WebControls
+@using DevExpress.Web.Mvc.UI
+@using DevExpress.XtraGrid
+@using Sasha.Lims.Core.Helpers
+@using Sasha.Lims.DataAccess.Entities.Constants
+@using Sasha.Lims.WebUI.Controllers
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@using Sasha.Lims.WebUI.Infrastructure.ViewModelHelpers
+@using Sasha.Lims.WebUI.Localization
+@using Sasha.Lims.WebUI.Models
+@using ProcessStatus = Sasha.Lims.DataAccess.Entities.Constants.ProcessStatus
+@model IQueryable<Sasha.Lims.DataAccess.Entities.Entity.vWorkflowRunList>
+@functions {
+	private void FillContextMenuItems(object sender, ASPxGridViewContextMenuEventArgs e)
+	{
+		if (e.MenuType == GridViewContextMenuType.Rows)
+		{
+			var item = e.Items.FindByCommand(GridViewContextMenuCommand.DeleteRow);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.NewRow);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.Refresh);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.EditRow);
+			e.Items.Remove(item);
+
+			item = e.Items.Add("Edit", "Edit");
+			item.Image.Url = "~/Content/Images/edit.svg";
+
+			item = e.Items.Add("Edit Process", "EditProcess");
+			item.Image.Url = "~/Content/Images/edit.svg";
+
+			item = e.Items.Add( "Bill of Material","EditBOM");
+			item.Image.Url = "~/Content/Images/sample-tube.svg";
+			item.Image.Width = 16;
+
+			SettingHelper.AddChangeStatusContextMenuItems(e,DataHelper.GetAvailableStatuses(TableType.WorkflowRun));//создание меню для изменения статуса
+
+		}
+	}
+}
+
+@{
+
+	var gridView = Html.DevExpress().GridView(settings =>
+	{
+
+		SettingHelper.InitAdvancedGridSettings(settings,"WorkflowRunList",ViewContext);
+		settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "WorkflowRunList", Action = "RunListGridViewPartialAddNew" };
+
+		settings.SettingsContextMenu.EnableRowMenu = DefaultBoolean.True;
+		settings.FillContextMenuItems = FillContextMenuItems;
+		settings.ClientSideEvents.ContextMenuItemClick = "onContextMenuItemClick";
+
+
+		SampleApprovedViewModel vm = null;
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Id";
+			columnSettings.Caption = "Id";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 50;
+			columnSettings.Visible = false;
+		}); //Id
+		SettingHelper.AddStatusImageColumn(settings,ViewContext);
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Code";
+			columnSettings.Caption = "Code";
+			columnSettings.MinWidth = 100;
+
+
+		}); //Code
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "WfType";
+			columnSettings.Caption = "Type Name";
+			columnSettings.MinWidth = 100;
+
+
+		}); //WfType
+			//settings.Columns.Add(columnSettings =>
+			//{
+			//	columnSettings.FieldName = "Status";
+			//	columnSettings.Caption = "Status";
+			//	columnSettings.MinWidth = 100;
+
+
+		//}); //WfStatus
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "DateCompleted";
+			columnSettings.Caption = "Date Completed";
+			columnSettings.MinWidth = 100;
+
+
+		}); //DateCompleted
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "DateCreated";
+			columnSettings.Caption = "Date Created";
+			columnSettings.MinWidth = 100;
+
+
+		}); //DateCreated
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "CreatedUserName";
+			columnSettings.Caption = "Created User Name";
+			columnSettings.MinWidth = 100;
+
+		}); //CreatedUserName
+		Html.AddColmmentCountColumn(settings, false); //Comment
+		Html.AddFilesCountColumn(settings, false);//FilesCount
+
+		SettingHelper.AddCustomColumns(settings, ViewContext.Controller);
+
+		settings.SetEditFormTemplateContent(c =>
+		{
+			Html.RenderAction("RunListPartial", "RunList", new
+			{
+				id = DataBinder.Eval(c.DataItem, "Id")
+			});
+		});
+
+		settings.SettingsDataSecurity.AllowReadUnlistedFieldsFromClientApi = DefaultBoolean.True;
+
+		settings.CustomJSProperties = (sender, e) =>
+		{
+			var Grid = sender as MVCxGridView;
+			var dictionary = new System.Collections.Generic.Dictionary<object, string>();
+
+			for (int i = 0; i < Grid.SettingsPager.PageSize; i++)
+			{
+				var visibleIndex = i + Grid.VisibleStartIndex;
+				if (visibleIndex >= Grid.VisibleRowCount)
+					break;
+
+				object[] rowValues = (object[])Grid.GetRowValues(visibleIndex, Grid.KeyFieldName, "RowVersion");
+				dictionary[(rowValues[0] ?? 0).ToString()] = Convert.ToBase64String((byte[])(rowValues[1] ?? new byte[] { }));
+			}
+
+			e.Properties["cpRowVersions"] = new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(dictionary);
+			e.Properties["cpRowCount"] = Grid.VisibleRowCount;
+
+			if (ViewData["EditError"] != null)
+				e.Properties["cpEditError"] = ViewData["EditError"];
+		};
+
+		settings.ClientSideEvents.SelectionChanged = "onGridViewSelectionChanged";
+		settings.ClientSideEvents.BeginCallback = "onGridViewBeginCallback";
+		settings.ClientSideEvents.CustomizationWindowCloseUp = "onGridCustomizationWindowCloseUp";
+		settings.ClientSideEvents.RowDblClick = "onRowDblClick";
+
+	});
+
+	@gridView.BindToEF(string.Empty, string.Empty, (s, e) =>
+{
+	e.QueryableSource = Model;
+	e.KeyExpression = "Id";
+}, (s, e) =>
+{
+	// Handle internal exception
+	var mess = e.Exception?.InnerException.Message ?? e.Exception.Message;
+	mess = "<div style='color:red'>" + mess + "</div>";
+					 ViewContext.Writer.Write(mess);//пишу ошибку прямо на экран
+}).GetHtml()
+}

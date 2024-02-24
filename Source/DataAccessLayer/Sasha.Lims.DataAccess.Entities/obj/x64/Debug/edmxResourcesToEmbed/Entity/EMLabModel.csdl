@@ -1,0 +1,1972 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EMLabModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="EMLabEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="a_prop" EntityType="EMLabModel.a_prop" />
+    <EntitySet Name="c_client" EntityType="EMLabModel.c_client" />
+    <EntitySet Name="c_doctor" EntityType="EMLabModel.c_doctor" />
+    <EntitySet Name="c_patient" EntityType="EMLabModel.c_patient" />
+    <EntitySet Name="s_custodyLog" EntityType="EMLabModel.s_custodyLog" />
+    <EntitySet Name="a_file" EntityType="EMLabModel.a_file" />
+    <EntitySet Name="a_tableLink" EntityType="EMLabModel.a_tableLink" />
+    <EntitySet Name="vJourLineFiles" EntityType="EMLabModel.vJourLineFile" />
+    <EntitySet Name="vSampleFiles" EntityType="EMLabModel.vSampleFile" />
+    <EntitySet Name="s_jourLine" EntityType="EMLabModel.s_jourLine" />
+    <EntitySet Name="s_sample" EntityType="EMLabModel.s_sample" />
+    <EntitySet Name="vPropLocations" EntityType="EMLabModel.vPropLocation" />
+    <AssociationSet Name="vPropLocations_sample" Association="EMLabModel.vPropLocations_sample">
+      <End Role="vPropLocation" EntitySet="vPropLocations" />
+      <End Role="s_sample" EntitySet="s_sample" />
+    </AssociationSet>
+    <EntitySet Name="a_comment" EntityType="EMLabModel.a_comment" />
+    <AssociationSet Name="s_custodyLogs_sample" Association="EMLabModel.s_custodyLogs_sample">
+      <End Role="s_custodyLog" EntitySet="s_custodyLog" />
+      <End Role="s_sample" EntitySet="s_sample" />
+    </AssociationSet>
+    <EntitySet Name="wf_process" EntityType="EMLabModel.wf_process" />
+    <EntitySet Name="wf_run" EntityType="EMLabModel.wf_run" />
+    <AssociationSet Name="wf_processa_prop" Association="EMLabModel.wf_processa_prop">
+      <End Role="wf_process" EntitySet="wf_process" />
+      <End Role="a_prop" EntitySet="a_prop" />
+    </AssociationSet>
+    <AssociationSet Name="wf_processwf_run" Association="EMLabModel.wf_processwf_run">
+      <End Role="wf_process" EntitySet="wf_process" />
+      <End Role="wf_run" EntitySet="wf_run" />
+    </AssociationSet>
+    <EntitySet Name="srv_request" EntityType="EMLabModel.srv_request" />
+    <EntitySet Name="r_reagent" EntityType="EMLabModel.r_reagent" />
+    <EntitySet Name="r_reagentJournal" EntityType="EMLabModel.r_reagentJournal" />
+    <EntitySet Name="r_reagentLedger" EntityType="EMLabModel.r_reagentLedger" />
+    <EntitySet Name="wf_result" EntityType="EMLabModel.wf_result" />
+    <EntitySet Name="a_userField" EntityType="EMLabModel.a_userField" />
+    <EntitySet Name="vClientDoctors" EntityType="EMLabModel.vClientDoctor" />
+    <EntitySet Name="vClientDoctorPatients" EntityType="EMLabModel.vClientDoctorPatient" />
+    <EntitySet Name="vSamplesBooks" EntityType="EMLabModel.vSamplesBook" />
+    <EntitySet Name="vWorkflowRunLists" EntityType="EMLabModel.vWorkflowRunList" />
+    <EntitySet Name="vWfWorks" EntityType="EMLabModel.vWfWork" />
+    <EntitySet Name="a_userLayout" EntityType="EMLabModel.a_userLayout" />
+    <EntitySet Name="vProcessResults" EntityType="EMLabModel.vProcessResult" />
+    <EntitySet Name="C__MigrationHistory" EntityType="EMLabModel.C__MigrationHistory" />
+    <EntitySet Name="AspNetRoles" EntityType="EMLabModel.AspNetRole" />
+    <EntitySet Name="AspNetUserClaims" EntityType="EMLabModel.AspNetUserClaim" />
+    <EntitySet Name="AspNetUserLogins" EntityType="EMLabModel.AspNetUserLogin" />
+    <EntitySet Name="AspNetUserRoles" EntityType="EMLabModel.AspNetUserRole" />
+    <EntitySet Name="AspNetUsers" EntityType="EMLabModel.AspNetUser" />
+    <EntitySet Name="mb_report" EntityType="EMLabModel.mb_report" />
+    <EntitySet Name="mb_reportField" EntityType="EMLabModel.mb_reportField" />
+    <EntitySet Name="mb_taxonomy" EntityType="EMLabModel.mb_taxonomy" />
+    <EntitySet Name="C__MigrationHistory1" EntityType="EMLabModel.C__MigrationHistory1" />
+    <EntitySet Name="Resources" EntityType="EMLabModel.Resource" />
+    <EntitySet Name="mb_data" EntityType="EMLabModel.mb_data" />
+    <EntitySet Name="vBioinformaticsRunLists" EntityType="EMLabModel.vBioinformaticsRunList" />
+    <EntitySet Name="vJourLines" EntityType="EMLabModel.vJourLine" />
+    <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="EMLabModel.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+      <End Role="AspNetRole" EntitySet="AspNetRoles" />
+      <End Role="AspNetUserRole" EntitySet="AspNetUserRoles" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="EMLabModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+      <End Role="AspNetUserClaim" EntitySet="AspNetUserClaims" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="EMLabModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+      <End Role="AspNetUserLogin" EntitySet="AspNetUserLogins" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="EMLabModel.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+      <End Role="AspNetUser" EntitySet="AspNetUsers" />
+      <End Role="AspNetUserRole" EntitySet="AspNetUserRoles" />
+    </AssociationSet>
+    <FunctionImport Name="CreateBarcode">
+      <Parameter Name="userId" Mode="In" Type="Int32" />
+      <Parameter Name="hospital_Id" Mode="In" Type="Int32" />
+      <Parameter Name="model_id" Mode="In" Type="Int32" />
+      <Parameter Name="sample_type_id" Mode="In" Type="Int32" />
+      <Parameter Name="table_Id" Mode="In" Type="Int32" />
+      <Parameter Name="barcode" Mode="InOut" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="UpdateSample">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+      <Parameter Name="Barcode" Mode="In" Type="String" />
+      <Parameter Name="Name" Mode="In" Type="String" />
+      <Parameter Name="ProcessId" Mode="In" Type="Int32" />
+      <Parameter Name="CollectedDate" Mode="In" Type="DateTime" />
+      <Parameter Name="StatusId" Mode="In" Type="Int32" />
+      <Parameter Name="DoctorId" Mode="In" Type="Int32" />
+      <Parameter Name="ParentId" Mode="In" Type="Int32" />
+      <Parameter Name="UserId" Mode="In" Type="Int32" />
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+      <Parameter Name="DateCreate" Mode="In" Type="DateTime" />
+      <Parameter Name="ModDate" Mode="In" Type="DateTime" />
+      <Parameter Name="BatchId" Mode="In" Type="Int32" />
+      <Parameter Name="HospitalId" Mode="In" Type="Int32" />
+      <Parameter Name="LocationId" Mode="In" Type="Int32" />
+      <Parameter Name="SampleTypeId" Mode="In" Type="Int32" />
+      <Parameter Name="AcceptedDate" Mode="In" Type="DateTime" />
+      <Parameter Name="prop1" Mode="In" Type="Int32" />
+      <Parameter Name="prop2" Mode="In" Type="Int32" />
+      <Parameter Name="prop3" Mode="In" Type="Int32" />
+      <Parameter Name="prop4" Mode="In" Type="Int32" />
+      <Parameter Name="prop5" Mode="In" Type="Int32" />
+      <Parameter Name="prop6" Mode="In" Type="Int32" />
+      <Parameter Name="prop7" Mode="In" Type="Int32" />
+      <Parameter Name="prop8" Mode="In" Type="Int32" />
+      <Parameter Name="prop9" Mode="In" Type="Int32" />
+      <Parameter Name="prop10" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="ChangeSample">
+      <Parameter Name="Id" Mode="InOut" Type="Int32" />
+      <Parameter Name="Name" Mode="In" Type="String" />
+      <Parameter Name="ProcessId" Mode="In" Type="Int32" />
+      <Parameter Name="CollectedDateTime" Mode="In" Type="DateTime" />
+      <Parameter Name="StatusId" Mode="In" Type="Int32" />
+      <Parameter Name="HospitalId" Mode="In" Type="Int32" />
+      <Parameter Name="DoctorId" Mode="In" Type="Int32" />
+      <Parameter Name="LocationId" Mode="In" Type="Int32" />
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+      <Parameter Name="UserId" Mode="In" Type="Int32" />
+      <Parameter Name="DateCreate" Mode="In" Type="DateTime" />
+      <Parameter Name="ModDate" Mode="In" Type="DateTime" />
+      <Parameter Name="BatchId" Mode="In" Type="Int32" />
+      <Parameter Name="Barcode" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="InsertSample" ReturnType="Collection(Decimal)">
+      <Parameter Name="Barcode" Mode="In" Type="String" />
+      <Parameter Name="Name" Mode="In" Type="String" />
+      <Parameter Name="ProcessId" Mode="In" Type="Int32" />
+      <Parameter Name="CollectedDate" Mode="In" Type="DateTime" />
+      <Parameter Name="StatusId" Mode="In" Type="Int32" />
+      <Parameter Name="DoctorId" Mode="In" Type="Int32" />
+      <Parameter Name="ParentId" Mode="In" Type="Int32" />
+      <Parameter Name="UserId" Mode="In" Type="Int32" />
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+      <Parameter Name="DateCreate" Mode="In" Type="DateTime" />
+      <Parameter Name="ModDate" Mode="In" Type="DateTime" />
+      <Parameter Name="BatchId" Mode="In" Type="Int32" />
+      <Parameter Name="HospitalId" Mode="In" Type="Int32" />
+      <Parameter Name="LocationId" Mode="In" Type="Int32" />
+      <Parameter Name="SampleTypeId" Mode="In" Type="Int32" />
+      <Parameter Name="AcceptedDate" Mode="In" Type="DateTime" />
+      <Parameter Name="prop1" Mode="In" Type="Int32" />
+      <Parameter Name="prop2" Mode="In" Type="Int32" />
+      <Parameter Name="prop3" Mode="In" Type="Int32" />
+      <Parameter Name="prop4" Mode="In" Type="Int32" />
+      <Parameter Name="prop5" Mode="In" Type="Int32" />
+      <Parameter Name="prop6" Mode="In" Type="Int32" />
+      <Parameter Name="prop7" Mode="In" Type="Int32" />
+      <Parameter Name="prop8" Mode="In" Type="Int32" />
+      <Parameter Name="prop9" Mode="In" Type="Int32" />
+      <Parameter Name="prop10" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="DeleteSample">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="prepare_mb_report_data">
+      <Parameter Name="sample_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="send_email">
+      <Parameter Name="sample_id" Mode="In" Type="Int32" />
+      <Parameter Name="attach_file_name" Mode="In" Type="String" />
+      <Parameter Name="recipients" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="InsertAliquote" ReturnType="Collection(EMLabModel.InsertAliquote_Result)">
+      <Parameter Name="Well" Mode="In" Type="String" />
+      <Parameter Name="Barcode" Mode="In" Type="String" />
+      <Parameter Name="SourceId" Mode="In" Type="Int32" />
+      <Parameter Name="Name" Mode="In" Type="String" />
+      <Parameter Name="ProcessId" Mode="In" Type="Int32" />
+      <Parameter Name="CollectedDate" Mode="In" Type="DateTime" />
+      <Parameter Name="StatusId" Mode="In" Type="Int32" />
+      <Parameter Name="DoctorId" Mode="In" Type="Int32" />
+      <Parameter Name="ParentId" Mode="In" Type="Int32" />
+      <Parameter Name="UserId" Mode="In" Type="Int32" />
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+      <Parameter Name="DateCreate" Mode="In" Type="DateTime" />
+      <Parameter Name="ModDate" Mode="In" Type="DateTime" />
+      <Parameter Name="BatchId" Mode="In" Type="Int32" />
+      <Parameter Name="HospitalId" Mode="In" Type="Int32" />
+      <Parameter Name="LocationId" Mode="In" Type="Int32" />
+      <Parameter Name="SampleTypeId" Mode="In" Type="Int32" />
+      <Parameter Name="AcceptedDate" Mode="In" Type="DateTime" />
+      <Parameter Name="prop1" Mode="In" Type="Int32" />
+      <Parameter Name="prop2" Mode="In" Type="Int32" />
+      <Parameter Name="prop3" Mode="In" Type="Int32" />
+      <Parameter Name="prop4" Mode="In" Type="Int32" />
+      <Parameter Name="prop5" Mode="In" Type="Int32" />
+      <Parameter Name="prop6" Mode="In" Type="Int32" />
+      <Parameter Name="prop7" Mode="In" Type="Int32" />
+      <Parameter Name="prop8" Mode="In" Type="Int32" />
+      <Parameter Name="prop9" Mode="In" Type="Int32" />
+      <Parameter Name="prop10" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="UpdateAliquote" ReturnType="Collection(Binary)">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+      <Parameter Name="Well" Mode="In" Type="String" />
+      <Parameter Name="Barcode" Mode="In" Type="String" />
+      <Parameter Name="SourceId" Mode="In" Type="Int32" />
+      <Parameter Name="Name" Mode="In" Type="String" />
+      <Parameter Name="ProcessId" Mode="In" Type="Int32" />
+      <Parameter Name="CollectedDate" Mode="In" Type="DateTime" />
+      <Parameter Name="StatusId" Mode="In" Type="Int32" />
+      <Parameter Name="DoctorId" Mode="In" Type="Int32" />
+      <Parameter Name="ParentId" Mode="In" Type="Int32" />
+      <Parameter Name="UserId" Mode="In" Type="Int32" />
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+      <Parameter Name="DateCreate" Mode="In" Type="DateTime" />
+      <Parameter Name="ModDate" Mode="In" Type="DateTime" />
+      <Parameter Name="BatchId" Mode="In" Type="Int32" />
+      <Parameter Name="HospitalId" Mode="In" Type="Int32" />
+      <Parameter Name="LocationId" Mode="In" Type="Int32" />
+      <Parameter Name="SampleTypeId" Mode="In" Type="Int32" />
+      <Parameter Name="AcceptedDate" Mode="In" Type="DateTime" />
+      <Parameter Name="prop1" Mode="In" Type="Int32" />
+      <Parameter Name="prop2" Mode="In" Type="Int32" />
+      <Parameter Name="prop3" Mode="In" Type="Int32" />
+      <Parameter Name="prop4" Mode="In" Type="Int32" />
+      <Parameter Name="prop5" Mode="In" Type="Int32" />
+      <Parameter Name="prop6" Mode="In" Type="Int32" />
+      <Parameter Name="prop7" Mode="In" Type="Int32" />
+      <Parameter Name="prop8" Mode="In" Type="Int32" />
+      <Parameter Name="prop9" Mode="In" Type="Int32" />
+      <Parameter Name="prop10" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="InsertPlate" ReturnType="Collection(EMLabModel.InsertPlate_Result)">
+      <Parameter Name="Barcode" Mode="In" Type="String" />
+      <Parameter Name="ParentId" Mode="In" Type="Int32" />
+      <Parameter Name="Name" Mode="In" Type="String" />
+      <Parameter Name="ProcessId" Mode="In" Type="Int32" />
+      <Parameter Name="CollectedDate" Mode="In" Type="DateTime" />
+      <Parameter Name="StatusId" Mode="In" Type="Int32" />
+      <Parameter Name="HospitalId" Mode="In" Type="Int32" />
+      <Parameter Name="Volume" Mode="In" Type="Double" />
+      <Parameter Name="SampleTypeId" Mode="In" Type="Int32" />
+      <Parameter Name="TubeTypeId" Mode="In" Type="Int32" />
+      <Parameter Name="UserId" Mode="In" Type="Int32" />
+      <Parameter Name="EquipmentId" Mode="In" Type="Int32" />
+      <Parameter Name="LocationId" Mode="In" Type="Int32" />
+      <Parameter Name="VolumeUnitId" Mode="In" Type="Int32" />
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+      <Parameter Name="DateCreate" Mode="In" Type="DateTime" />
+      <Parameter Name="ModDate" Mode="In" Type="DateTime" />
+      <Parameter Name="AcceptedDate" Mode="In" Type="DateTime" />
+      <Parameter Name="BatchId" Mode="In" Type="Int32" />
+      <Parameter Name="prop1" Mode="In" Type="Int32" />
+      <Parameter Name="prop2" Mode="In" Type="Int32" />
+      <Parameter Name="prop3" Mode="In" Type="Int32" />
+      <Parameter Name="prop5" Mode="In" Type="Int32" />
+      <Parameter Name="prop6" Mode="In" Type="Int32" />
+      <Parameter Name="prop7" Mode="In" Type="Int32" />
+      <Parameter Name="prop8" Mode="In" Type="Int32" />
+      <Parameter Name="prop9" Mode="In" Type="Int32" />
+      <Parameter Name="prop10" Mode="In" Type="Int32" />
+      <Parameter Name="SourceId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="UpdateBox" ReturnType="Collection(Binary)">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+      <Parameter Name="Barcode" Mode="In" Type="String" />
+      <Parameter Name="ModelId" Mode="In" Type="Int32" />
+      <Parameter Name="ParentId" Mode="In" Type="Int32" />
+      <Parameter Name="Name" Mode="In" Type="String" />
+      <Parameter Name="ProcessId" Mode="In" Type="Int32" />
+      <Parameter Name="CollectedDate" Mode="In" Type="DateTime" />
+      <Parameter Name="StatusId" Mode="In" Type="Int32" />
+      <Parameter Name="HospitalId" Mode="In" Type="Int32" />
+      <Parameter Name="Volume" Mode="In" Type="Double" />
+      <Parameter Name="SampleTypeId" Mode="In" Type="Int32" />
+      <Parameter Name="TubeTypeId" Mode="In" Type="Int32" />
+      <Parameter Name="UserId" Mode="In" Type="Int32" />
+      <Parameter Name="EquipmentId" Mode="In" Type="Int32" />
+      <Parameter Name="LocationId" Mode="In" Type="Int32" />
+      <Parameter Name="VolumeUnitId" Mode="In" Type="Int32" />
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+      <Parameter Name="DateCreate" Mode="In" Type="DateTime" />
+      <Parameter Name="ModDate" Mode="In" Type="DateTime" />
+      <Parameter Name="AcceptedDate" Mode="In" Type="DateTime" />
+      <Parameter Name="BatchId" Mode="In" Type="Int32" />
+      <Parameter Name="prop1" Mode="In" Type="Int32" />
+      <Parameter Name="prop2" Mode="In" Type="Int32" />
+      <Parameter Name="prop3" Mode="In" Type="Int32" />
+      <Parameter Name="prop5" Mode="In" Type="Int32" />
+      <Parameter Name="prop6" Mode="In" Type="Int32" />
+      <Parameter Name="prop7" Mode="In" Type="Int32" />
+      <Parameter Name="prop8" Mode="In" Type="Int32" />
+      <Parameter Name="prop9" Mode="In" Type="Int32" />
+      <Parameter Name="prop10" Mode="In" Type="Int32" />
+      <Parameter Name="SourceId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="UpdatePlate" ReturnType="Collection(Binary)">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+      <Parameter Name="Barcode" Mode="In" Type="String" />
+      <Parameter Name="ModelId" Mode="In" Type="Int32" />
+      <Parameter Name="ParentId" Mode="In" Type="Int32" />
+      <Parameter Name="Name" Mode="In" Type="String" />
+      <Parameter Name="ProcessId" Mode="In" Type="Int32" />
+      <Parameter Name="CollectedDate" Mode="In" Type="DateTime" />
+      <Parameter Name="StatusId" Mode="In" Type="Int32" />
+      <Parameter Name="HospitalId" Mode="In" Type="Int32" />
+      <Parameter Name="Volume" Mode="In" Type="Int32" />
+      <Parameter Name="SampleTypeId" Mode="In" Type="Int32" />
+      <Parameter Name="TubeTypeId" Mode="In" Type="Int32" />
+      <Parameter Name="UserId" Mode="In" Type="Int32" />
+      <Parameter Name="EquipmentId" Mode="In" Type="Int32" />
+      <Parameter Name="LocationId" Mode="In" Type="Int32" />
+      <Parameter Name="VolumeUnitId" Mode="In" Type="Int32" />
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+      <Parameter Name="DateCreate" Mode="In" Type="DateTime" />
+      <Parameter Name="ModDate" Mode="In" Type="DateTime" />
+      <Parameter Name="AcceptedDate" Mode="In" Type="DateTime" />
+      <Parameter Name="BatchId" Mode="In" Type="Int32" />
+      <Parameter Name="prop1" Mode="In" Type="Int32" />
+      <Parameter Name="prop2" Mode="In" Type="Int32" />
+      <Parameter Name="prop3" Mode="In" Type="Int32" />
+      <Parameter Name="prop5" Mode="In" Type="Int32" />
+      <Parameter Name="prop6" Mode="In" Type="Int32" />
+      <Parameter Name="prop7" Mode="In" Type="Int32" />
+      <Parameter Name="prop8" Mode="In" Type="Int32" />
+      <Parameter Name="prop9" Mode="In" Type="Int32" />
+      <Parameter Name="prop10" Mode="In" Type="Int32" />
+      <Parameter Name="SourceId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="InsertBox" ReturnType="Collection(EMLabModel.InsertBox_Result)">
+      <Parameter Name="Barcode" Mode="In" Type="String" />
+      <Parameter Name="ModelId" Mode="In" Type="Int32" />
+      <Parameter Name="ParentId" Mode="In" Type="Int32" />
+      <Parameter Name="Name" Mode="In" Type="String" />
+      <Parameter Name="ProcessId" Mode="In" Type="Int32" />
+      <Parameter Name="CollectedDate" Mode="In" Type="DateTime" />
+      <Parameter Name="StatusId" Mode="In" Type="Int32" />
+      <Parameter Name="HospitalId" Mode="In" Type="Int32" />
+      <Parameter Name="Volume" Mode="In" Type="Double" />
+      <Parameter Name="SampleTypeId" Mode="In" Type="Int32" />
+      <Parameter Name="TubeTypeId" Mode="In" Type="Int32" />
+      <Parameter Name="UserId" Mode="In" Type="Int32" />
+      <Parameter Name="EquipmentId" Mode="In" Type="Int32" />
+      <Parameter Name="LocationId" Mode="In" Type="Int32" />
+      <Parameter Name="VolumeUnitId" Mode="In" Type="Int32" />
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+      <Parameter Name="DateCreate" Mode="In" Type="DateTime" />
+      <Parameter Name="ModDate" Mode="In" Type="DateTime" />
+      <Parameter Name="AcceptedDate" Mode="In" Type="DateTime" />
+      <Parameter Name="BatchId" Mode="In" Type="Int32" />
+      <Parameter Name="prop1" Mode="In" Type="Int32" />
+      <Parameter Name="prop2" Mode="In" Type="Int32" />
+      <Parameter Name="prop3" Mode="In" Type="Int32" />
+      <Parameter Name="prop5" Mode="In" Type="Int32" />
+      <Parameter Name="prop6" Mode="In" Type="Int32" />
+      <Parameter Name="prop7" Mode="In" Type="Int32" />
+      <Parameter Name="prop8" Mode="In" Type="Int32" />
+      <Parameter Name="prop9" Mode="In" Type="Int32" />
+      <Parameter Name="prop10" Mode="In" Type="Int32" />
+      <Parameter Name="SourceId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="InsertBox1" ReturnType="Collection(EMLabModel.InsertBox1_Result)">
+      <Parameter Name="Barcode" Mode="In" Type="String" />
+      <Parameter Name="ModelId" Mode="In" Type="Int32" />
+      <Parameter Name="ParentId" Mode="In" Type="Int32" />
+      <Parameter Name="Name" Mode="In" Type="String" />
+      <Parameter Name="ProcessId" Mode="In" Type="Int32" />
+      <Parameter Name="CollectedDate" Mode="In" Type="DateTime" />
+      <Parameter Name="StatusId" Mode="In" Type="Int32" />
+      <Parameter Name="HospitalId" Mode="In" Type="Int32" />
+      <Parameter Name="Volume" Mode="In" Type="Double" />
+      <Parameter Name="SampleTypeId" Mode="In" Type="Int32" />
+      <Parameter Name="TubeTypeId" Mode="In" Type="Int32" />
+      <Parameter Name="UserId" Mode="In" Type="Int32" />
+      <Parameter Name="EquipmentId" Mode="In" Type="Int32" />
+      <Parameter Name="LocationId" Mode="In" Type="Int32" />
+      <Parameter Name="VolumeUnitId" Mode="In" Type="Int32" />
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+      <Parameter Name="DateCreate" Mode="In" Type="DateTime" />
+      <Parameter Name="ModDate" Mode="In" Type="DateTime" />
+      <Parameter Name="AcceptedDate" Mode="In" Type="DateTime" />
+      <Parameter Name="BatchId" Mode="In" Type="Int32" />
+      <Parameter Name="prop1" Mode="In" Type="Int32" />
+      <Parameter Name="prop2" Mode="In" Type="Int32" />
+      <Parameter Name="prop3" Mode="In" Type="Int32" />
+      <Parameter Name="prop5" Mode="In" Type="Int32" />
+      <Parameter Name="prop6" Mode="In" Type="Int32" />
+      <Parameter Name="prop7" Mode="In" Type="Int32" />
+      <Parameter Name="prop8" Mode="In" Type="Int32" />
+      <Parameter Name="prop9" Mode="In" Type="Int32" />
+      <Parameter Name="prop10" Mode="In" Type="Int32" />
+      <Parameter Name="SourceId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="InsertPlate1" ReturnType="Collection(EMLabModel.InsertPlate1_Result)">
+      <Parameter Name="Barcode" Mode="In" Type="String" />
+      <Parameter Name="ParentId" Mode="In" Type="Int32" />
+      <Parameter Name="Name" Mode="In" Type="String" />
+      <Parameter Name="ProcessId" Mode="In" Type="Int32" />
+      <Parameter Name="CollectedDate" Mode="In" Type="DateTime" />
+      <Parameter Name="StatusId" Mode="In" Type="Int32" />
+      <Parameter Name="HospitalId" Mode="In" Type="Int32" />
+      <Parameter Name="Volume" Mode="In" Type="Double" />
+      <Parameter Name="SampleTypeId" Mode="In" Type="Int32" />
+      <Parameter Name="TubeTypeId" Mode="In" Type="Int32" />
+      <Parameter Name="UserId" Mode="In" Type="Int32" />
+      <Parameter Name="EquipmentId" Mode="In" Type="Int32" />
+      <Parameter Name="LocationId" Mode="In" Type="Int32" />
+      <Parameter Name="VolumeUnitId" Mode="In" Type="Int32" />
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+      <Parameter Name="DateCreate" Mode="In" Type="DateTime" />
+      <Parameter Name="ModDate" Mode="In" Type="DateTime" />
+      <Parameter Name="AcceptedDate" Mode="In" Type="DateTime" />
+      <Parameter Name="BatchId" Mode="In" Type="Int32" />
+      <Parameter Name="prop1" Mode="In" Type="Int32" />
+      <Parameter Name="prop2" Mode="In" Type="Int32" />
+      <Parameter Name="prop3" Mode="In" Type="Int32" />
+      <Parameter Name="prop5" Mode="In" Type="Int32" />
+      <Parameter Name="prop6" Mode="In" Type="Int32" />
+      <Parameter Name="prop7" Mode="In" Type="Int32" />
+      <Parameter Name="prop8" Mode="In" Type="Int32" />
+      <Parameter Name="prop9" Mode="In" Type="Int32" />
+      <Parameter Name="prop10" Mode="In" Type="Int32" />
+      <Parameter Name="SourceId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="UpdateBox1" ReturnType="Collection(Binary)">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+      <Parameter Name="Barcode" Mode="In" Type="String" />
+      <Parameter Name="ModelId" Mode="In" Type="Int32" />
+      <Parameter Name="ParentId" Mode="In" Type="Int32" />
+      <Parameter Name="Name" Mode="In" Type="String" />
+      <Parameter Name="ProcessId" Mode="In" Type="Int32" />
+      <Parameter Name="CollectedDate" Mode="In" Type="DateTime" />
+      <Parameter Name="StatusId" Mode="In" Type="Int32" />
+      <Parameter Name="HospitalId" Mode="In" Type="Int32" />
+      <Parameter Name="Volume" Mode="In" Type="Double" />
+      <Parameter Name="SampleTypeId" Mode="In" Type="Int32" />
+      <Parameter Name="TubeTypeId" Mode="In" Type="Int32" />
+      <Parameter Name="UserId" Mode="In" Type="Int32" />
+      <Parameter Name="EquipmentId" Mode="In" Type="Int32" />
+      <Parameter Name="LocationId" Mode="In" Type="Int32" />
+      <Parameter Name="VolumeUnitId" Mode="In" Type="Int32" />
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+      <Parameter Name="DateCreate" Mode="In" Type="DateTime" />
+      <Parameter Name="ModDate" Mode="In" Type="DateTime" />
+      <Parameter Name="AcceptedDate" Mode="In" Type="DateTime" />
+      <Parameter Name="BatchId" Mode="In" Type="Int32" />
+      <Parameter Name="prop1" Mode="In" Type="Int32" />
+      <Parameter Name="prop2" Mode="In" Type="Int32" />
+      <Parameter Name="prop3" Mode="In" Type="Int32" />
+      <Parameter Name="prop5" Mode="In" Type="Int32" />
+      <Parameter Name="prop6" Mode="In" Type="Int32" />
+      <Parameter Name="prop7" Mode="In" Type="Int32" />
+      <Parameter Name="prop8" Mode="In" Type="Int32" />
+      <Parameter Name="prop9" Mode="In" Type="Int32" />
+      <Parameter Name="prop10" Mode="In" Type="Int32" />
+      <Parameter Name="SourceId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="UpdatePlate1" ReturnType="Collection(Binary)">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+      <Parameter Name="Barcode" Mode="In" Type="String" />
+      <Parameter Name="ModelId" Mode="In" Type="Int32" />
+      <Parameter Name="ParentId" Mode="In" Type="Int32" />
+      <Parameter Name="Name" Mode="In" Type="String" />
+      <Parameter Name="ProcessId" Mode="In" Type="Int32" />
+      <Parameter Name="CollectedDate" Mode="In" Type="DateTime" />
+      <Parameter Name="StatusId" Mode="In" Type="Int32" />
+      <Parameter Name="HospitalId" Mode="In" Type="Int32" />
+      <Parameter Name="Volume" Mode="In" Type="Double" />
+      <Parameter Name="SampleTypeId" Mode="In" Type="Int32" />
+      <Parameter Name="TubeTypeId" Mode="In" Type="Int32" />
+      <Parameter Name="UserId" Mode="In" Type="Int32" />
+      <Parameter Name="EquipmentId" Mode="In" Type="Int32" />
+      <Parameter Name="LocationId" Mode="In" Type="Int32" />
+      <Parameter Name="VolumeUnitId" Mode="In" Type="Int32" />
+      <Parameter Name="AspNetUserId" Mode="In" Type="String" />
+      <Parameter Name="DateCreate" Mode="In" Type="DateTime" />
+      <Parameter Name="ModDate" Mode="In" Type="DateTime" />
+      <Parameter Name="AcceptedDate" Mode="In" Type="DateTime" />
+      <Parameter Name="BatchId" Mode="In" Type="Int32" />
+      <Parameter Name="prop1" Mode="In" Type="Int32" />
+      <Parameter Name="prop2" Mode="In" Type="Int32" />
+      <Parameter Name="prop3" Mode="In" Type="Int32" />
+      <Parameter Name="prop5" Mode="In" Type="Int32" />
+      <Parameter Name="prop6" Mode="In" Type="Int32" />
+      <Parameter Name="prop7" Mode="In" Type="Int32" />
+      <Parameter Name="prop8" Mode="In" Type="Int32" />
+      <Parameter Name="prop9" Mode="In" Type="Int32" />
+      <Parameter Name="prop10" Mode="In" Type="Int32" />
+      <Parameter Name="SourceId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <EntitySet Name="vContaiterDrafts" EntityType="EMLabModel.vContaiterDraft" />
+    <FunctionImport Name="ChangeStatus">
+      <Parameter Name="List" Mode="In" Type="String" />
+      <Parameter Name="status" Mode="In" Type="Int32" />
+      <Parameter Name="tableId" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <EntitySet Name="vContaiters" EntityType="EMLabModel.vContaiter" />
+    <EntitySet Name="wf_bom" EntityType="EMLabModel.wf_bom" />
+    <EntitySet Name="vBillOfMaterials" EntityType="EMLabModel.vBillOfMaterial" />
+    <EntitySet Name="vReagents" EntityType="EMLabModel.vReagent" />
+    <EntitySet Name="vSamplesBookInProcesses" EntityType="EMLabModel.vSamplesBookInProcess" />
+    <EntitySet Name="vPatients" EntityType="EMLabModel.vPatient" />
+    <EntitySet Name="vProperties" EntityType="EMLabModel.vProperty" />
+    <EntitySet Name="vHospitals" EntityType="EMLabModel.vHospital" />
+    <EntitySet Name="vDoctors" EntityType="EMLabModel.vDoctor" />
+    <EntitySet Name="vCustodyLogs" EntityType="EMLabModel.vCustodyLog" />
+    <EntitySet Name="C__EFMigrationsHistory" EntityType="EMLabModel.C__EFMigrationsHistory" />
+    <EntitySet Name="s_clones" EntityType="EMLabModel.s_clones" />
+    <EntitySet Name="Users" EntityType="EMLabModel.User" />
+    <EntitySet Name="a_userData" EntityType="EMLabModel.a_userData" />
+    <EntitySet Name="a_userFieldList" EntityType="EMLabModel.a_userFieldList" />
+    <EntitySet Name="vCustomDatas" EntityType="EMLabModel.vCustomData" />
+  </EntityContainer>
+  <EntityType Name="a_prop">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="None" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="prop_id" Type="Int32" />
+    <Property Name="code" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+    <Property Name="value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="num" Type="Int32" />
+    <Property Name="name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="path" Type="String" MaxLength="500" FixedLength="false" Unicode="true" annotation:StoreGeneratedPattern="Computed" />
+    <NavigationProperty Name="wf_process" Relationship="EMLabModel.wf_processa_prop" FromRole="a_prop" ToRole="wf_process" />
+  </EntityType>
+  <EntityType Name="c_client">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="prop1" Type="Int32" />
+    <Property Name="prop2" Type="Int32" />
+    <Property Name="prop3" Type="Int32" />
+    <Property Name="prop4" Type="Int32" />
+    <Property Name="prop5" Type="Int32" />
+    <Property Name="prop6" Type="Int32" />
+    <Property Name="prop7" Type="Int32" />
+    <Property Name="prop8" Type="Int32" />
+    <Property Name="prop9" Type="Int32" />
+    <Property Name="prop10" Type="Int32" />
+  </EntityType>
+  <EntityType Name="c_doctor">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="client_id" Type="Int32" />
+    <Property Name="firstName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="lastName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="title" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="email" Type="String" Nullable="true" MaxLength="255" Unicode="false" FixedLength="false" />
+    <Property Name="sendEmail" Type="Int16" DefaultValue="0" Nullable="true" />
+    <Property Name="prop1" Type="Int32" />
+    <Property Name="prop2" Type="Int32" />
+    <Property Name="prop3" Type="Int32" />
+    <Property Name="prop4" Type="Int32" />
+    <Property Name="prop5" Type="Int32" />
+    <Property Name="prop6" Type="Int32" />
+    <Property Name="prop7" Type="Int32" />
+    <Property Name="prop8" Type="Int32" />
+    <Property Name="prop9" Type="Int32" />
+    <Property Name="prop10" Type="Int32" />
+  </EntityType>
+  <EntityType Name="c_patient">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="client_id" Type="Int32" />
+    <Property Name="doctor_id" Type="Int32" />
+    <Property Name="no" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="firstName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="lastName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="dob" Type="DateTime" Precision="3" />
+    <Property Name="email" Type="String" Nullable="true" MaxLength="255" Unicode="false" FixedLength="false" />
+    <Property Name="sendEmail" Type="Int16" DefaultValue="0" Nullable="true" />
+    <Property Name="prop1" Type="Int32" />
+    <Property Name="prop2" Type="Int32" />
+    <Property Name="prop3" Type="Int32" />
+    <Property Name="prop4" Type="Int32" />
+    <Property Name="prop5" Type="Int32" />
+    <Property Name="prop6" Type="Int32" />
+    <Property Name="prop7" Type="Int32" />
+    <Property Name="prop8" Type="Int32" />
+    <Property Name="prop9" Type="Int32" />
+    <Property Name="prop10" Type="Int32" />
+    <Property Name="Sended" Type="Int16" />
+  </EntityType>
+  <EntityType Name="s_custodyLog">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="logDateTime" Type="DateTime" Precision="3" />
+    <Property Name="sample_id" Type="Int32" />
+    <Property Name="status_id" Type="EMLabModel.SampleStatus" />
+    <Property Name="location_id" Type="Int32" />
+    <Property Name="aspNetUser_Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="user_id" Type="Int32" />
+    <NavigationProperty Name="s_sample" Relationship="EMLabModel.s_custodyLogs_sample" FromRole="s_custodyLog" ToRole="s_sample" />
+    <Property Name="singature" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="a_file">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="table_id" Type="Int32" />
+    <Property Name="row_id" Type="Int32" />
+    <Property Name="createdDateTime" Type="DateTime" Precision="3" />
+    <Property Name="createdByUser_id" Type="Int32" />
+    <Property Name="type_id" Type="Int32" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="data" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="aspNetUser_Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="path" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="a_tableLink">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="tableFrom_id" Type="Int32" />
+    <Property Name="rowFrom_id" Type="Int32" />
+    <Property Name="tableTo_id" Type="Int32" />
+    <Property Name="rowTo_id" Type="Int32" />
+  </EntityType>
+  <EntityType Name="vJourLineFile">
+    <Key>
+      <PropertyRef Name="jourLine_id" />
+      <PropertyRef Name="file_id" />
+      <PropertyRef Name="aspNetUser_Id" />
+    </Key>
+    <Property Name="jourLine_id" Type="Int32" Nullable="false" />
+    <Property Name="sample_id" Type="Int32" />
+    <Property Name="file_id" Type="Int32" Nullable="false" />
+    <Property Name="createdDateTime" Type="DateTime" Precision="3" />
+    <Property Name="type_id" Type="Int32" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="data" Type="Binary" MaxLength="30" FixedLength="true" />
+    <Property Name="aspNetUser_Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="vSampleFile">
+    <Key>
+      <PropertyRef Name="sample_id" />
+      <PropertyRef Name="file_id" />
+      <PropertyRef Name="aspNetUser_Id" />
+    </Key>
+    <Property Name="sample_id" Type="Int32" Nullable="false" />
+    <Property Name="file_id" Type="Int32" Nullable="false" />
+    <Property Name="createdDateTime" Type="DateTime" Precision="3" />
+    <Property Name="type_id" Type="Int32" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="data" Type="Binary" MaxLength="30" FixedLength="true" />
+    <Property Name="aspNetUser_Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="s_jourLine">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="jourType_id" Type="EMLabModel.JournalType" />
+    <Property Name="documentNo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="sample_id" Type="Int32" />
+    <Property Name="barcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="well" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="workflow_id" Type="Int32" />
+    <Property Name="collectedDate" Type="DateTime" Precision="3" />
+    <Property Name="status_id" Type="EMLabModel.SampleStatus" />
+    <Property Name="client_id" Type="Int32" />
+    <Property Name="doctor_id" Type="Int32" />
+    <Property Name="patient_id" Type="Int32" />
+    <Property Name="location_id" Type="Int32" />
+    <Property Name="equipment_id" Type="Int32" />
+    <Property Name="user_id" Type="Int32" />
+    <Property Name="sampleType_id" Type="Int32" />
+    <Property Name="volume" Type="Double" />
+    <Property Name="volumeUnit_id" Type="Int32" />
+    <Property Name="tubeType_id" Type="Int32" />
+    <Property Name="aspNetUser_Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="DateCreate" Type="DateTime" Precision="3" />
+    <Property Name="ModDate" Type="DateTime" Precision="3" />
+    <Property Name="patientNo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="patientFirstName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="patientLastName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="patientDateOfBirth" Type="DateTime" Precision="3" />
+    <Property Name="workflowStatus_id" Type="Int32" />
+    <Property Name="sample_version" Type="Binary" MaxLength="8" FixedLength="false" />
+    <Property Name="acceptedDate" Type="DateTime" Precision="3" />
+    <Property Name="parent_id" Type="Int32" />
+    <Property Name="batch_id" Type="Int32" />
+    <Property Name="model_id" Type="EMLabModel.SampleModel" />
+    <Property Name="makeAliquot" Type="Boolean" />
+    <Property Name="patientEmail" Type="String" Nullable="true" MaxLength="255" Unicode="true" FixedLength="false" />
+    <Property Name="patientSendEmail" Type="Boolean" Nullable="true" />
+    <Property Name="emailReport" Type="Boolean" />
+    <Property Name="prop1" Type="Int32" />
+    <Property Name="prop2" Type="Int32" />
+    <Property Name="prop3" Type="Int32" />
+    <Property Name="prop4" Type="Int32" />
+    <Property Name="prop5" Type="Int32" />
+    <Property Name="prop6" Type="Int32" />
+    <Property Name="prop7" Type="Int32" />
+    <Property Name="prop8" Type="Int32" />
+    <Property Name="prop9" Type="Int32" />
+    <Property Name="prop10" Type="Int32" />
+    <Property Name="source_id" Type="Int32" />
+    <Property Name="process_id" Type="Int32" />
+    <Property Name="Discriminator" Type="String" MaxLength="8" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="draft_bathId" Type="Int32" />
+    <Property Name="flags" Type="Int32" />
+    <Property Name="props1" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="props2" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="props3" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="props4" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="props5" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="propn1" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="propn2" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="propn3" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="propn4" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="propn5" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="propd1" Type="DateTime" Precision="3" />
+    <Property Name="propd2" Type="DateTime" Precision="3" />
+    <Property Name="propd3" Type="DateTime" Precision="3" />
+    <Property Name="propd4" Type="DateTime" Precision="3" />
+    <Property Name="propd5" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="s_sample">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" ConcurrencyMode="Fixed" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="barcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="tubeType_id" Type="Int32" />
+    <Property Name="well" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="workflow_id" Type="Int32" />
+    <Property Name="collectedDateTime" Type="DateTime" Precision="3" />
+    <Property Name="status_id" Type="EMLabModel.SampleStatus" />
+    <Property Name="client_id" Type="Int32" />
+    <Property Name="doctor_id" Type="Int32" />
+    <Property Name="patient_id" Type="Int32" />
+    <Property Name="location_id" Type="Int32" />
+    <Property Name="equipment_id" Type="Int32" />
+    <Property Name="user_id" Type="Int32" />
+    <Property Name="sampleType_id" Type="Int32" />
+    <Property Name="volume" Type="Double" />
+    <Property Name="volumeUnit_id" Type="Int32" />
+    <Property Name="aspNetUser_Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="DateCreate" Type="DateTime" Precision="3" />
+    <Property Name="ModDate" Type="DateTime" Precision="3" />
+    <!--<Property Name="PacientNo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PacientFirstName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="PacientLastName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="PacientDateOfBirth" Type="DateTime" Precision="3" /> -->
+    <Property Name="workflowStatus_id" Type="Int32" />
+    <Property Name="process_id" Type="Int32" />
+    <Property Name="model_id" Type="EMLabModel.SampleModel" />
+    <Property Name="parent_id" Type="Int32" />
+    <Property Name="acceptedDate" Type="DateTime" Precision="3" />
+    <Property Name="isChild" Type="Boolean" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="batch_id" Type="Int32" />
+    <Property Name="prop1" Type="Int32" />
+    <Property Name="prop2" Type="Int32" />
+    <Property Name="prop3" Type="Int32" />
+    <Property Name="prop4" Type="Int32" />
+    <Property Name="prop5" Type="Int32" />
+    <Property Name="prop6" Type="Int32" />
+    <Property Name="prop7" Type="Int32" />
+    <Property Name="prop8" Type="Int32" />
+    <Property Name="prop9" Type="Int32" />
+    <Property Name="prop10" Type="Int32" />
+    <Property Name="source_id" Type="Int32" />
+    <Property Name="Discriminator" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+    <Property Name="flags" Type="Int32" />
+    <Property Name="props1" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="props2" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="props3" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="props4" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="props5" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="propn1" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="propn2" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="propn3" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="propn4" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="propn5" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="propd1" Type="DateTime" Precision="3" />
+    <Property Name="propd2" Type="DateTime" Precision="3" />
+    <Property Name="propd3" Type="DateTime" Precision="3" />
+    <Property Name="propd4" Type="DateTime" Precision="3" />
+    <Property Name="propd5" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="vPropLocation">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="prop_id" Type="Int32" />
+    <Property Name="LEVEL" Type="Int32" />
+    <Property Name="treepath" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+    <Property Name="limited_level" Type="Int32" />
+    <Property Name="limited_id" Type="Int32" />
+    <Property Name="limited_path" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <Association Name="vPropLocations_sample">
+    <End Type="EMLabModel.vPropLocation" Role="vPropLocation" Multiplicity="0..1" />
+    <End Type="EMLabModel.s_sample" Role="s_sample" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="vPropLocation">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="s_sample">
+        <PropertyRef Name="location_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="a_comment">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="table_id" Type="Int32" />
+    <Property Name="row_id" Type="Int32" />
+    <Property Name="createdDateTime" Type="DateTime" Precision="3" />
+    <Property Name="createdByUser_id" Type="Int32" />
+    <Property Name="comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="commentType_id" Type="Int32" />
+  </EntityType>
+  <Association Name="s_custodyLogs_sample">
+    <End Type="EMLabModel.s_custodyLog" Role="s_custodyLog" Multiplicity="*" />
+    <End Type="EMLabModel.s_sample" Role="s_sample" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="s_sample">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="s_custodyLog">
+        <PropertyRef Name="sample_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="wf_process">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="run_id" Type="Int32" />
+    <Property Name="type_id" Type="Int32" />
+    <Property Name="status_id" Type="Int32" />
+    <Property Name="dateStarted" Type="DateTime" Precision="3" />
+    <Property Name="dateCompleted" Type="DateTime" Precision="3" />
+    <Property Name="startedBy_id" Type="Int32" />
+    <Property Name="completedBy_id" Type="Int32" />
+    <NavigationProperty Name="a_prop" Relationship="EMLabModel.wf_processa_prop" FromRole="wf_process" ToRole="a_prop" />
+    <NavigationProperty Name="wf_run" Relationship="EMLabModel.wf_processwf_run" FromRole="wf_process" ToRole="wf_run" />
+    <Property Name="dateCreated" Type="DateTime" Precision="3" />
+    <Property Name="createdBy_id" Type="Int32" />
+    <Property Name="updatedBy_id" Type="Int32" />
+    <Property Name="dateUpdated" Type="DateTime" Precision="3" />
+    <Property Name="result_path" Type="String" MaxLength="255" FixedLength="true" Unicode="true" />
+    <Property Name="flags" Type="Int32" />
+  </EntityType>
+  <EntityType Name="wf_run">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="type_id" Type="Int32" />
+    <Property Name="code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="curProcess_id" Type="Int32" />
+    <Property Name="status_id" Type="Int32" />
+    <Property Name="dateStarted" Type="DateTime" Precision="3" />
+    <Property Name="dateUpdated" Type="DateTime" Precision="3" />
+    <Property Name="dateCompleted" Type="DateTime" Precision="3" />
+    <Property Name="startedBy_id" Type="Int32" />
+    <Property Name="updatedBy_id" Type="Int32" />
+    <Property Name="dateCreated" Type="DateTime" Precision="3" />
+    <Property Name="createdBy_id" Type="Int32" />
+    <Property Name="completedBy_id" Type="Int32" />
+  </EntityType>
+  <Association Name="wf_processa_prop">
+    <End Type="EMLabModel.wf_process" Role="wf_process" Multiplicity="*" />
+    <End Type="EMLabModel.a_prop" Role="a_prop" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="a_prop">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="wf_process">
+        <PropertyRef Name="type_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="wf_processwf_run">
+    <End Type="EMLabModel.wf_process" Role="wf_process" Multiplicity="*" />
+    <End Type="EMLabModel.wf_run" Role="wf_run" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="wf_run">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="wf_process">
+        <PropertyRef Name="run_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="srv_request">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="dateTimeRequested" Type="DateTime" Precision="3" Nullable="true" />
+    <Property Name="data_id" Type="Int32" Nullable="true" />
+    <Property Name="prop_id" Type="Int32" Nullable="true" />
+  </EntityType>
+  <EntityType Name="r_reagent">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="barcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="kitType_id" Type="Int32" />
+    <Property Name="unit_id" Type="Int32" Nullable="false" />
+    <Property Name="quantity" Type="Decimal" Nullable="false" Precision="19" Scale="6" />
+    <Property Name="catalogNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="storageTemp_id" Type="Int32" />
+    <Property Name="vendor_id" Type="Int32" />
+    <Property Name="prop1" Type="Int32" />
+    <Property Name="prop2" Type="Int32" />
+    <Property Name="prop3" Type="Int32" />
+    <Property Name="prop4" Type="Int32" />
+    <Property Name="prop5" Type="Int32" />
+    <Property Name="prop6" Type="Int32" />
+    <Property Name="prop7" Type="Int32" />
+    <Property Name="prop8" Type="Int32" />
+    <Property Name="prop9" Type="Int32" />
+    <Property Name="prop10" Type="Int32" />
+  </EntityType>
+  <EntityType Name="r_reagentJournal">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="jourType_id" Type="EMLabModel.ReagentJournalType" Nullable="false" />
+    <Property Name="user_id" Type="Int32" Nullable="false" />
+    <Property Name="reagent_id" Type="Int32" Nullable="false" />
+    <Property Name="quantity" Type="Decimal" Nullable="false" Precision="19" Scale="6" />
+    <Property Name="lotNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="expirationDate" Type="DateTime" Precision="3" />
+    <Property Name="location_id" Type="Int32" />
+    <Property Name="process_id" Type="Int32" />
+    <Property Name="parent_id" Type="Int32" />
+    <Property Name="prop1" Type="Int32" />
+    <Property Name="prop2" Type="Int32" />
+    <Property Name="prop3" Type="Int32" />
+    <Property Name="prop4" Type="Int32" />
+    <Property Name="prop5" Type="Int32" />
+    <Property Name="prop6" Type="Int32" />
+    <Property Name="prop7" Type="Int32" />
+    <Property Name="prop8" Type="Int32" />
+    <Property Name="prop9" Type="Int32" />
+    <Property Name="prop10" Type="Int32" />
+  </EntityType>
+  <EntityType Name="r_reagentLedger">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="reagent_id" Type="Int32" Nullable="false" />
+    <Property Name="quantity" Type="Decimal" Nullable="false" Precision="19" Scale="6" />
+    <Property Name="lotNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="expirationDate" Type="DateTime" Precision="3" />
+    <Property Name="location_id" Type="Int32" />
+    <Property Name="process_id" Type="Int32" />
+    <Property Name="user_id" Type="Int32" Nullable="false" />
+    <Property Name="operation_id" Type="EMLabModel.ReagentJournalType" Nullable="false" />
+    <Property Name="operationDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="parent_id" Type="Int32" />
+    <Property Name="prop1" Type="Int32" />
+    <Property Name="prop2" Type="Int32" />
+    <Property Name="prop3" Type="Int32" />
+    <Property Name="prop4" Type="Int32" />
+    <Property Name="prop5" Type="Int32" />
+    <Property Name="prop6" Type="Int32" />
+    <Property Name="prop7" Type="Int32" />
+    <Property Name="prop8" Type="Int32" />
+    <Property Name="prop9" Type="Int32" />
+    <Property Name="prop10" Type="Int32" />
+  </EntityType>
+  <EnumType Name="ReagentJournalType" a:ExternalTypeName="Sasha.Lims.DataAccess.Entities.Constants.ReagentJournalType" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+  <EnumType Name="SampleStatus" a:ExternalTypeName="Sasha.Lims.DataAccess.Entities.Constants.SampleStatus" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+  <EnumType Name="SampleModel" a:ExternalTypeName="Sasha.Lims.DataAccess.Entities.Constants.SampleModel" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+  <EnumType Name="JournalType" a:ExternalTypeName="Sasha.Lims.DataAccess.Entities.Constants.JournalType" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+  <EnumType Name="CustomizableEntity" a:ExternalTypeName="Sasha.Lims.DataAccess.Entities.Constants.CustomizableEntity" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+  <EntityType Name="a_userField">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="fieldNumber" Type="Int32" Nullable="false" />
+    <Property Name="fieldList_id" Type="Int32" />
+    <Property Name="caption" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="table_id" Type="Int32" Nullable="false" />
+    <Property Name="dataType" Type="EMLabModel.UserFieldDataType" />
+    <Property Name="column" Type="Int32" />
+    <Property Name="groupName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="order" Type="Int32" />
+    <Property Name="dopAttr" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="wf_result">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="process_id" Type="Int32" />
+    <Property Name="sample_id" Type="Int32" />
+    <Property Name="result_id" Type="Int32" />
+    <Property Name="value" Type="Double" />
+    <Property Name="filePath" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Sended" Type="Int16" />
+    <Property Name="jsonData" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="vClientDoctor">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="client_id" Type="Int32" />
+    <Property Name="firstName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="lastName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="title" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="clientName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="vClientDoctorPatient">
+    <Key>
+      <PropertyRef Name="client_id" />
+      <PropertyRef Name="doctor_id" />
+      <PropertyRef Name="patient_id" />
+    </Key>
+    <Property Name="client_id" Type="Int32" Nullable="false" />
+    <Property Name="client_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="doctor_id" Type="Int32" Nullable="false" />
+    <Property Name="doctor_title" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="doctor_firstName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="doctor_lastName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="patient_id" Type="Int32" Nullable="false" />
+    <Property Name="patient_firstName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="patient_lastName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="vSamplesBook">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Barcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Location" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Well" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Doctor" Type="String" MaxLength="61" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Patient" Type="String" MaxLength="82" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserId" Type="Int32" />
+    <Property Name="DateCreate" Type="DateTime" Precision="3" />
+    <Property Name="Volume" Type="Double" />
+    <Property Name="BatchId" Type="Int32" />
+    <Property Name="ModelId" Type="Int32" />
+    <Property Name="EquipmentId" Type="Int32" />
+    <Property Name="TubeTypeId" Type="Int32" />
+    <Property Name="CommentsCount" Type="Int32" />
+    <Property Name="ModDate" Type="DateTime" Precision="3" />
+    <Property Name="CollectedDateTime" Type="DateTime" Precision="3" />
+    <Property Name="AcceptedDate" Type="DateTime" Precision="3" />
+    <Property Name="IsChild" Type="Boolean" />
+    <Property Name="ProcessId" Type="Int32" />
+    <Property Name="SampleWorkflowStatusId" Type="Int32" />
+    <Property Name="SampleStatusId" Type="Int32" />
+    <Property Name="ParentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProcessName" Type="String" MaxLength="521" FixedLength="false" Unicode="true" />
+    <Property Name="Prop1" Type="Int32" />
+    <Property Name="Prop2" Type="Int32" />
+    <Property Name="Prop3" Type="Int32" />
+    <Property Name="Prop4" Type="Int32" />
+    <Property Name="Prop5" Type="Int32" />
+    <Property Name="Prop6" Type="Int32" />
+    <Property Name="Prop7" Type="Int32" />
+    <Property Name="Prop8" Type="Int32" />
+    <Property Name="Prop9" Type="Int32" />
+    <Property Name="Prop10" Type="Int32" />
+    <Property Name="UserName" Type="String" MaxLength="513" FixedLength="false" Unicode="true" />
+    <Property Name="SampleTypeId" Type="Int32" />
+    <Property Name="VolumeUnitId" Type="Int32" />
+    <Property Name="HospitalName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="BatchName" Type="String" MaxLength="71" FixedLength="false" Unicode="true" />
+    <Property Name="Model" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Result" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="ContentListCount" Type="Int32" />
+    <Property Name="FilesCount" Type="Int32" />
+    <Property Name="Files" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Sended_Id" Type="Int16" />
+    <Property Name="Sended" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Clones" Type="Int32" />
+    <Property Name="PatientId" Type="Int32" />
+    <Property Name="DoctorId" Type="Int32" />
+    <Property Name="HospitalId" Type="Int32" />
+    <Property Name="PropS1" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="PropS2" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="PropS3" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="PropS4" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="PropS5" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="PropN1" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="PropN2" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="PropN3" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="PropN4" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="PropN5" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="PropD1" Type="DateTime" Precision="3" />
+    <Property Name="PropD2" Type="DateTime" Precision="3" />
+    <Property Name="PropD3" Type="DateTime" Precision="3" />
+    <Property Name="PropD4" Type="DateTime" Precision="3" />
+    <Property Name="PropD5" Type="DateTime" Precision="3" />
+    <Property Name="LocationId" Type="Int32" />
+  </EntityType>
+  <EntityType Name="vWorkflowRunList">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="TypeZId" Type="Int32" />
+    <Property Name="WfType" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="CurProcessId" Type="Int32" />
+    <Property Name="DateStarted" Type="DateTime" Precision="3" />
+    <Property Name="DateUpdated" Type="DateTime" Precision="3" />
+    <Property Name="DateCompleted" Type="DateTime" Precision="3" />
+    <Property Name="DateCreated" Type="DateTime" Precision="3" />
+    <Property Name="CreatedUserName" Type="String" MaxLength="513" FixedLength="false" Unicode="true" />
+    <Property Name="UpdatedUserName" Type="String" MaxLength="513" FixedLength="false" Unicode="true" />
+    <Property Name="CompletedUserName" Type="String" MaxLength="513" FixedLength="false" Unicode="true" />
+    <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="CommentsCount" Type="Int32" />
+    <Property Name="StatusId" Type="Int32" />
+    <Property Name="Status" Type="String" Unicode="true" FixedLength="false" MaxLength="30" />
+    <Property Name="FilesCount" Type="Int32" />
+    <Property Name="Files" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="vWfWork">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="WfType" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="WfCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="StepName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="ResStatus" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="SampleName" Type="String" MaxLength="71" FixedLength="false" Unicode="true" />
+    <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="a_userLayout">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="user_id" Type="Int32" />
+    <Property Name="layout_id" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="userData" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="user_name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="vProcessResult">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="SampleId" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Result" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Run" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="RunDateStarted" Type="DateTime" Precision="3" />
+    <Property Name="RunDateCompleted" Type="DateTime" Precision="3" />
+    <Property Name="RunCreatedUserName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="RunCompletedUserName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Process" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="ProcessDateStarted" Type="DateTime" Precision="3" />
+    <Property Name="ProcessDateCompleted" Type="DateTime" Precision="3" />
+    <Property Name="ProcessCreatedUserName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="ProcessCompletedUserName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="SampleId" Type="Int32" Nullable="false" />
+    <Property Name="Barcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Location" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Well" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Doctor" Type="String" MaxLength="61" FixedLength="false" Unicode="true" />
+    <Property Name="Patient" Type="String" MaxLength="82" FixedLength="false" Unicode="true" />
+    <Property Name="IsChild" Type="Boolean" />
+    <Property Name="UserName" Type="String" MaxLength="513" FixedLength="false" Unicode="true" />
+    <Property Name="BatchId" Type="Int32" />
+    <Property Name="Model" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="EquipmentId" Type="Int32" />
+    <Property Name="TubeTypeId" Type="Int32" />
+    <Property Name="HospitalName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SampleTypeId" Type="Int32" />
+    <Property Name="VolumeUnitId" Type="Int32" />
+    <Property Name="SampleWorkflowStatusId" Type="Int32" />
+    <Property Name="SampleStatusId" Type="Int32" />
+    <Property Name="ParentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SampleCurrentProcessName" Type="String" MaxLength="51" FixedLength="false" Unicode="true" />
+    <Property Name="CommentsCount" Type="Int32" />
+    <Property Name="ModDate" Type="DateTime" Precision="3" />
+    <Property Name="CollectedDateTime" Type="DateTime" Precision="3" />
+    <Property Name="AcceptedDate" Type="DateTime" Precision="3" />
+    <Property Name="DateCreate" Type="DateTime" Precision="3" />
+    <Property Name="Volume" Type="Double" />
+    <Property Name="BatchName" Type="String" MaxLength="71" FixedLength="false" Unicode="true" />
+    <Property Name="Prop1" Type="Int32" />
+    <Property Name="Prop2" Type="Int32" />
+    <Property Name="Prop3" Type="Int32" />
+    <Property Name="Prop4" Type="Int32" />
+    <Property Name="Prop5" Type="Int32" />
+    <Property Name="Prop6" Type="Int32" />
+    <Property Name="Prop7" Type="Int32" />
+    <Property Name="Prop8" Type="Int32" />
+    <Property Name="Prop9" Type="Int32" />
+    <Property Name="Prop10" Type="Int32" />
+    <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="Workflow" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="ProcessTypeCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="ProcessStatus" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="SampleCommentsCount" Type="Int32" />
+    <Property Name="ResultId" Type="Int32" />
+    <Property Name="ProcessStatusId" Type="Int32" />
+    <Property Name="ModelId" Type="Int32" />
+    <Property Name="FilesCount" Type="Int32" />
+  </EntityType>
+  <EntityType Name="C__MigrationHistory">
+    <Key>
+      <PropertyRef Name="MigrationId" />
+      <PropertyRef Name="ContextKey" />
+    </Key>
+    <Property Name="MigrationId" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="ContextKey" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="Model" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+    <Property Name="ProductVersion" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="AspNetRole">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="Discriminator" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUserRoles" Relationship="EMLabModel.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" FromRole="AspNetRole" ToRole="AspNetUserRole" />
+  </EntityType>
+  <EntityType Name="AspNetUserClaim">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUser" Relationship="EMLabModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaim" ToRole="AspNetUser" />
+  </EntityType>
+  <EntityType Name="AspNetUserLogin">
+    <Key>
+      <PropertyRef Name="LoginProvider" />
+      <PropertyRef Name="ProviderKey" />
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUser" Relationship="EMLabModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogin" ToRole="AspNetUser" />
+  </EntityType>
+  <EntityType Name="AspNetUserRole">
+    <Key>
+      <PropertyRef Name="UserId" />
+      <PropertyRef Name="RoleId" />
+    </Key>
+    <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="RoleId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="user_id" Type="Int32" />
+    <NavigationProperty Name="AspNetRole" Relationship="EMLabModel.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" FromRole="AspNetUserRole" ToRole="AspNetRole" />
+    <NavigationProperty Name="AspNetUser" Relationship="EMLabModel.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" FromRole="AspNetUserRole" ToRole="AspNetUser" />
+  </EntityType>
+  <EntityType Name="AspNetUser">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="FirstName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+    <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+    <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+    <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+    <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+    <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+    <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="user_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="AspNetUserClaims" Relationship="EMLabModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
+    <NavigationProperty Name="AspNetUserLogins" Relationship="EMLabModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
+    <NavigationProperty Name="AspNetUserRoles" Relationship="EMLabModel.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserRole" />
+  </EntityType>
+  <EntityType Name="mb_report">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="sample_id" Type="Int32" />
+    <Property Name="reportField_id" Type="Int32" />
+    <Property Name="taxon_id" Type="Int32" />
+    <Property Name="value_id" Type="Int32" />
+  </EntityType>
+  <EntityType Name="mb_reportField">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="sectionCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="fieldCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="name" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
+    <Property Name="lineNum" Type="Int32" />
+    <Property Name="ruleCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="taxon_id" Type="Int32" />
+    <Property Name="refLowValue" Type="Double" />
+    <Property Name="refHighValue" Type="Double" />
+  </EntityType>
+  <EntityType Name="mb_taxonomy">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="k" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="p" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="c" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="o" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="f" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="g" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="s" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="C__MigrationHistory1">
+    <Key>
+      <PropertyRef Name="MigrationId" />
+      <PropertyRef Name="ContextKey" />
+    </Key>
+    <Property Name="MigrationId" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="ContextKey" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="Model" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+    <Property Name="ProductVersion" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Resource">
+    <Key>
+      <PropertyRef Name="ResourceId" />
+    </Key>
+    <Property Name="ResourceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Culture" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Value" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+    <Property Name="NameSpace" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="mb_data">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="sample_id" Type="Int32" />
+    <Property Name="taxonomy_id" Type="Int32" />
+    <Property Name="count" Type="Int32" />
+    <Property Name="proportion" Type="Single" />
+  </EntityType>
+  <EntityType Name="vBioinformaticsRunList">
+    <Key>
+      <PropertyRef Name="cmd" />
+      <PropertyRef Name="sqlCompleted" />
+      <PropertyRef Name="sqlFail" />
+      <PropertyRef Name="task_id" />
+    </Key>
+    <Property Name="cmd" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="sqlCompleted" Type="String" Nullable="false" MaxLength="58" FixedLength="false" Unicode="false" />
+    <Property Name="sqlFail" Type="String" Nullable="false" MaxLength="58" FixedLength="false" Unicode="false" />
+    <Property Name="task_id" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="vJourLine">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="DoubleBarcodeValidation" />
+      <PropertyRef Name="DoubleBarcodeJourLineValidation" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Type" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="TypeId" Type="Int32" />
+    <Property Name="SampleId" Type="Int32" />
+    <Property Name="Barcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Well" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="WorkflowId" Type="Int32" />
+    <Property Name="CollectedDate" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Doctor" Type="String" MaxLength="61" FixedLength="false" Unicode="true" />
+    <Property Name="Patient" Type="String" MaxLength="61" FixedLength="false" Unicode="true" />
+    <Property Name="Location" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="LocationId" Type="Int32" />
+    <Property Name="UserId" Type="Int32" />
+    <Property Name="BatchId" Type="Int32" />
+    <Property Name="BatchName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ModelId" Type="Int32" />
+    <Property Name="Model" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="CommentsCount" Type="Int32" />
+    <Property Name="HospitalName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="BatchBarcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Prop1" Type="Int32" />
+    <Property Name="Prop2" Type="Int32" />
+    <Property Name="Prop3" Type="Int32" />
+    <Property Name="Prop4" Type="Int32" />
+    <Property Name="Prop5" Type="Int32" />
+    <Property Name="Prop6" Type="Int32" />
+    <Property Name="Prop7" Type="Int32" />
+    <Property Name="Prop8" Type="Int32" />
+    <Property Name="Prop9" Type="Int32" />
+    <Property Name="Prop10" Type="Int32" />
+    <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="DoubleBarcodeValidation" Type="Int32" Nullable="false" />
+    <Property Name="DoubleBarcodeJourLineValidation" Type="Int32" Nullable="false" />
+    <Property Name="MakeAliquot" Type="Boolean" />
+    <Property Name="FilesCount" Type="Int32" />
+  </EntityType>
+  <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+    <End Type="EMLabModel.AspNetRole" Role="AspNetRole" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="EMLabModel.AspNetUserRole" Role="AspNetUserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetRole">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserRole">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+    <End Type="EMLabModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="EMLabModel.AspNetUserClaim" Role="AspNetUserClaim" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserClaim">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+    <End Type="EMLabModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="EMLabModel.AspNetUserLogin" Role="AspNetUserLogin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserLogin">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+    <End Type="EMLabModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="EMLabModel.AspNetUserRole" Role="AspNetUserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserRole">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="InsertAliquote_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="Binary" Name="RowVersion" Nullable="true" MaxLength="8" />
+  </ComplexType>
+  <ComplexType Name="InsertPlate_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="Binary" Name="RowVersion" Nullable="true" MaxLength="8" />
+  </ComplexType>
+  <ComplexType Name="InsertBox_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="Binary" Name="RowVersion" Nullable="true" MaxLength="8" />
+  </ComplexType>
+  <ComplexType Name="InsertBox1_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="Binary" Name="RowVersion" Nullable="true" MaxLength="8" />
+  </ComplexType>
+  <ComplexType Name="InsertPlate1_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="Binary" Name="RowVersion" Nullable="true" MaxLength="8" />
+  </ComplexType>
+  <EntityType Name="vContaiterDraft">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="DoubleBarcodeValidation" />
+      <PropertyRef Name="DoubleBarcodeJourLineValidation" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Type" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="TypeId" Type="Int32" />
+    <Property Name="SampleId" Type="Int32" />
+    <Property Name="Barcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="WorkflowId" Type="Int32" />
+    <Property Name="CollectedDate" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Location" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="LocationId" Type="Int32" />
+    <Property Name="UserId" Type="Int32" />
+    <Property Name="BatchId" Type="Int32" />
+    <Property Name="BatchName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="BatchBarcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="ModelId" Type="Int32" />
+    <Property Name="Model" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="ContentListCount" Type="Int32" />
+    <Property Name="CommentsCount" Type="Int32" />
+    <Property Name="MakeAliquot" Type="Boolean" />
+    <Property Name="Prop1" Type="Int32" />
+    <Property Name="Prop2" Type="Int32" />
+    <Property Name="Prop3" Type="Int32" />
+    <Property Name="Prop4" Type="Int32" />
+    <Property Name="Prop5" Type="Int32" />
+    <Property Name="Prop6" Type="Int32" />
+    <Property Name="Prop7" Type="Int32" />
+    <Property Name="Prop8" Type="Int32" />
+    <Property Name="Prop9" Type="Int32" />
+    <Property Name="Prop10" Type="Int32" />
+    <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="DoubleBarcodeValidation" Type="Int32" Nullable="false" />
+    <Property Name="DoubleBarcodeJourLineValidation" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="vContaiter">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="DoubleBarcodeValidation" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Barcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="WorkflowId" Type="Int32" />
+    <Property Name="CollectedDate" Type="DateTime" Precision="3" />
+    <Property Name="Status" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Location" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="LocationId" Type="Int32" />
+    <Property Name="UserId" Type="Int32" />
+    <Property Name="BatchId" Type="Int32" />
+    <Property Name="BatchName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="BatchBarcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="ModelId" Type="Int32" />
+    <Property Name="Model" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="ContentListCount" Type="Int32" />
+    <Property Name="CommentsCount" Type="Int32" />
+    <Property Name="DraftCount" Type="Int32" />
+    <Property Name="Prop1" Type="Int32" />
+    <Property Name="Prop2" Type="Int32" />
+    <Property Name="Prop3" Type="Int32" />
+    <Property Name="Prop4" Type="Int32" />
+    <Property Name="Prop5" Type="Int32" />
+    <Property Name="Prop6" Type="Int32" />
+    <Property Name="Prop7" Type="Int32" />
+    <Property Name="Prop8" Type="Int32" />
+    <Property Name="Prop9" Type="Int32" />
+    <Property Name="Prop10" Type="Int32" />
+    <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="DoubleBarcodeValidation" Type="Int32" Nullable="false" />
+    <Property Name="ContainerType" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="ContainerTypeDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="FilesCount" Type="Int32" />
+  </EntityType>
+  <EntityType Name="wf_bom">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="lot_number" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="expirationDate" Type="DateTime" Precision="0" />
+    <Property Name="barcode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="run_id" Type="Int32" />
+    <Property Name="catalog_number" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="dateCreated" Type="DateTime" Precision="3" />
+    <Property Name="dateUpdated" Type="DateTime" Precision="3" />
+    <Property Name="createdBy_id" Type="Int32" />
+    <Property Name="updatedBy_id" Type="Int32" />
+  </EntityType>
+  <EntityType Name="vBillOfMaterial">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="RunId" Type="Int32" />
+    <Property Name="ReagentName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="LotNumber" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Barcode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="ExpirationDate" Type="DateTime" Precision="0" />
+    <Property Name="CommentsCount" Type="Int32" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CatalogNumber" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="UpdatedUser" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+    <Property Name="FilesCount" Type="Int32" />
+    <Property Name="Files" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="vReagent">
+    <Key>
+      <PropertyRef Name="Name" />
+      <PropertyRef Name="Quantity" />
+      <PropertyRef Name="Unit_id" />
+    </Key>
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Barcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="KitType_id" Type="Int32" />
+    <Property Name="KitName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Quantity" Type="Decimal" Nullable="false" Precision="19" Scale="6" />
+    <Property Name="Unit_id" Type="Int32" Nullable="false" />
+    <Property Name="UnitName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="CatalogNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="StorageTemp_id" Type="Int32" />
+    <Property Name="StorageTemp" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Vendor_id" Type="Int32" />
+    <Property Name="VendorName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="vSamplesBookInProcess">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Barcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Location" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Well" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Doctor" Type="String" MaxLength="61" FixedLength="false" Unicode="true" />
+    <Property Name="Patient" Type="String" MaxLength="82" FixedLength="false" Unicode="true" />
+    <Property Name="IsChild" Type="Boolean" />
+    <Property Name="UserId" Type="Int32" />
+    <Property Name="UserName" Type="String" MaxLength="513" FixedLength="false" Unicode="true" />
+    <Property Name="BatchId" Type="Int32" />
+    <Property Name="ModelId" Type="Int32" />
+    <Property Name="Model" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="EquipmentId" Type="Int32" />
+    <Property Name="TubeTypeId" Type="Int32" />
+    <Property Name="ProcessId" Type="Int32" />
+    <Property Name="HospitalName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SampleTypeId" Type="Int32" />
+    <Property Name="VolumeUnitId" Type="Int32" />
+    <Property Name="SampleWorkflowStatusId" Type="Int32" />
+    <Property Name="SampleStatusId" Type="Int32" />
+    <Property Name="ParentName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProcessName" Type="String" MaxLength="521" FixedLength="false" Unicode="true" />
+    <Property Name="ContentListCount" Type="Int32" />
+    <Property Name="CommentsCount" Type="Int32" />
+    <Property Name="FilesCount" Type="Int32" />
+    <Property Name="Files" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ModDate" Type="DateTime" Precision="3" />
+    <Property Name="CollectedDateTime" Type="DateTime" Precision="3" />
+    <Property Name="AcceptedDate" Type="DateTime" Precision="3" />
+    <Property Name="DateCreate" Type="DateTime" Precision="3" />
+    <Property Name="Volume" Type="Double" />
+    <Property Name="BatchName" Type="String" MaxLength="71" FixedLength="false" Unicode="true" />
+    <Property Name="Result" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="sended_id" Type="Int16" />
+    <Property Name="Sended" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="Prop1" Type="Int32" />
+    <Property Name="Prop2" Type="Int32" />
+    <Property Name="Prop3" Type="Int32" />
+    <Property Name="Prop4" Type="Int32" />
+    <Property Name="Prop5" Type="Int32" />
+    <Property Name="Prop6" Type="Int32" />
+    <Property Name="Prop7" Type="Int32" />
+    <Property Name="Prop8" Type="Int32" />
+    <Property Name="Prop9" Type="Int32" />
+    <Property Name="Prop10" Type="Int32" />
+    <Property Name="RowVersion" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="wf_result_id" Type="Int32" />
+  </EntityType>
+  <EntityType Name="vPatient">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="no" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="firstName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="lastName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="dob" Type="DateTime" Precision="3" />
+    <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="sendEmail" Type="Int16" />
+    <Property Name="hospital" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="doctor" Type="String" MaxLength="61" FixedLength="false" Unicode="true" />
+    <Property Name="SampleCount" Type="Int32" />
+    <Property Name="CommentsCount" Type="Int32" />
+    <Property Name="FilesCount" Type="Int32" />
+    <Property Name="Prop1" Type="Int32" />
+    <Property Name="Prop2" Type="Int32" />
+    <Property Name="Prop3" Type="Int32" />
+    <Property Name="Prop4" Type="Int32" />
+    <Property Name="Prop5" Type="Int32" />
+    <Property Name="Prop6" Type="Int32" />
+    <Property Name="Prop7" Type="Int32" />
+    <Property Name="Prop8" Type="Int32" />
+    <Property Name="Prop9" Type="Int32" />
+    <Property Name="Prop10" Type="Int32" />
+    <Property Name="PropS1" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="PropS2" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="PropS3" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="PropS4" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="PropS5" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="PropN1" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="PropN2" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="PropN3" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="PropN4" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="PropN5" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="PropD1" Type="DateTime" Precision="3" />
+    <Property Name="PropD2" Type="DateTime" Precision="3" />
+    <Property Name="PropD3" Type="DateTime" Precision="3" />
+    <Property Name="PropD4" Type="DateTime" Precision="3" />
+    <Property Name="PropD5" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="vProperty">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="Code" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+    <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Number" Type="Int32" />
+    <Property Name="Type" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+    <Property Name="CommentsCount" Type="Int32" />
+    <Property Name="FilesCount" Type="Int32" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="vHospital">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SampleCount" Type="Int32" />
+    <Property Name="CommentsCount" Type="Int32" />
+    <Property Name="FilesCount" Type="Int32" />
+    <Property Name="Prop1" Type="Int32" />
+    <Property Name="Prop2" Type="Int32" />
+    <Property Name="Prop3" Type="Int32" />
+    <Property Name="Prop4" Type="Int32" />
+    <Property Name="Prop5" Type="Int32" />
+    <Property Name="Prop6" Type="Int32" />
+    <Property Name="Prop7" Type="Int32" />
+    <Property Name="Prop8" Type="Int32" />
+    <Property Name="Prop9" Type="Int32" />
+    <Property Name="Prop10" Type="Int32" />
+    <Property Name="PropS1" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="PropS2" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="PropS3" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="PropS4" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="PropS5" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="PropN1" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="PropN2" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="PropN3" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="PropN4" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="PropN5" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="PropD1" Type="DateTime" Precision="3" />
+    <Property Name="PropD2" Type="DateTime" Precision="3" />
+    <Property Name="PropD3" Type="DateTime" Precision="3" />
+    <Property Name="PropD4" Type="DateTime" Precision="3" />
+    <Property Name="PropD5" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="vDoctor">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="SendEmail" Type="Int16" />
+    <Property Name="Hospital" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="HospitalId" Type="Int32" />
+    <Property Name="SampleCount" Type="Int32" />
+    <Property Name="CommentsCount" Type="Int32" />
+    <Property Name="FilesCount" Type="Int32" />
+    <Property Name="Prop1" Type="Int32" />
+    <Property Name="Prop2" Type="Int32" />
+    <Property Name="Prop3" Type="Int32" />
+    <Property Name="Prop4" Type="Int32" />
+    <Property Name="Prop5" Type="Int32" />
+    <Property Name="Prop6" Type="Int32" />
+    <Property Name="Prop7" Type="Int32" />
+    <Property Name="Prop8" Type="Int32" />
+    <Property Name="Prop9" Type="Int32" />
+    <Property Name="Prop10" Type="Int32" />
+    <Property Name="PropS1" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="PropS2" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="PropS3" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="PropS4" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="PropS5" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="PropN1" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="PropN2" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="PropN3" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="PropN4" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="PropN5" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="PropD1" Type="DateTime" Precision="3" />
+    <Property Name="PropD2" Type="DateTime" Precision="3" />
+    <Property Name="PropD3" Type="DateTime" Precision="3" />
+    <Property Name="PropD4" Type="DateTime" Precision="3" />
+    <Property Name="PropD5" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="vCustodyLog">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="SampleId" Type="Int32" />
+    <Property Name="Barcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="SampleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Status" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="StatusId" Type="Int32" />
+    <Property Name="DateTime" Type="DateTime" Precision="3" />
+    <Property Name="Location" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="LocationId" Type="Int32" />
+    <Property Name="StoredAt" Type="DateTime" Precision="3" />
+    <Property Name="AmountInOut" Type="String" MaxLength="126" FixedLength="false" Unicode="true" />
+    <Property Name="Signature" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="UserName" Type="String" MaxLength="513" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="C__EFMigrationsHistory">
+    <Key>
+      <PropertyRef Name="MigrationId" />
+    </Key>
+    <Property Name="MigrationId" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="ProductVersion" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="s_clones">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="sampleBarcode" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="patientId" Type="Int32" Nullable="false" />
+    <Property Name="v" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="j" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="cdr3" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Count" Type="Int32" Nullable="false" />
+    <Property Name="fraction" Type="Single" Nullable="false" />
+    <Property Name="flags" Type="Int32" />
+    <Property Name="createdDateTime" Type="DateTime" Precision="3" />
+    <Property Name="type" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Logon" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Sex" Type="Int32" />
+    <Property Name="BirthDay" Type="DateTime" Precision="0" />
+    <Property Name="RegisterDate" Type="DateTime" Precision="3" />
+    <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PasswordHash" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="PasswordSalt" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="Auth" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="Guid" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="a_userData">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="table_id" Type="Int32" />
+    <Property Name="row_id" Type="Int32" />
+    <Property Name="props1" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="props2" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="props3" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="props4" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="props5" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="propn1" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="propn2" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="propn3" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="propn4" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="propn5" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="propd1" Type="DateTime" Precision="3" />
+    <Property Name="propd2" Type="DateTime" Precision="3" />
+    <Property Name="propd3" Type="DateTime" Precision="3" />
+    <Property Name="propd4" Type="DateTime" Precision="3" />
+    <Property Name="propd5" Type="DateTime" Precision="3" />
+    <Property Name="createdDateTime" Type="DateTime" Precision="3" />
+    <Property Name="createdByUser_id" Type="Int32" />
+    <Property Name="aspNetUser_Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="prop1" Type="Int32" />
+    <Property Name="prop2" Type="Int32" />
+    <Property Name="prop3" Type="Int32" />
+    <Property Name="prop4" Type="Int32" />
+    <Property Name="prop5" Type="Int32" />
+  </EntityType>
+  <EnumType Name="UserFieldDataType" a:ExternalTypeName="Sasha.Lims.DataAccess.Entities.Constants.UserFieldDataType" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+  <EntityType Name="a_userFieldList">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="linkedTable_id" Type="Int32" />
+    <Property Name="branchRoot" Type="Int32" />
+    <Property Name="isHierarchy" Type="Boolean" />
+    <Property Name="sqlQuery" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="vCustomData">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Prop1" Type="Int32" />
+    <Property Name="Prop2" Type="Int32" />
+    <Property Name="Prop3" Type="Int32" />
+    <Property Name="Prop4" Type="Int32" />
+    <Property Name="Prop5" Type="Int32" />
+    <Property Name="PropS1" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="PropS2" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="PropS3" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="PropS4" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="PropS5" Type="String" MaxLength="850" FixedLength="false" Unicode="true" />
+    <Property Name="PropN1" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="PropN2" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="PropN3" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="PropN4" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="PropN5" Type="Decimal" Precision="18" Scale="5" />
+    <Property Name="PropD1" Type="DateTime" Precision="3" />
+    <Property Name="PropD2" Type="DateTime" Precision="3" />
+    <Property Name="PropD3" Type="DateTime" Precision="3" />
+    <Property Name="PropD4" Type="DateTime" Precision="3" />
+    <Property Name="PropD5" Type="DateTime" Precision="3" />
+    <Property Name="CommentsCount" Type="Int32" />
+    <Property Name="FilesCount" Type="Int32" />
+    <Property Name="TypeName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="TypeId" Type="Int32" />
+  </EntityType>
+</Schema>

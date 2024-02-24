@@ -1,0 +1,310 @@
+
+@using DevExpress.Utils
+@using DevExpress.Web
+@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@using DevExpress.Web.Rendering
+@using Sasha.Lims.WebUI.Controllers
+@using Sasha.Lims.DataAccess.Entities.Constants
+@using Sasha.Lims.WebUI.Areas.SamplesEdit.Controllers
+@using Sasha.Lims.WebUI.Infrastructure.ViewModelHelpers
+@using Sasha.Lims.WebUI.Localization
+@using Sasha.Lims.WebUI.Models
+
+@model Sasha.Lims.WebUI.Models.SampleViewModel
+@{
+	ViewBag.Title = "Edit sample";
+	Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+<script>
+	window.addEventListener("load", init);
+
+		function init() {
+			var error = '@MvcHtmlString.Create(ViewBag.GeneralError?.Replace("\r\n", "</br>"))';
+			if (error != '') {
+			var errorDiv = document.getElementById('errors');
+				errorDiv.innerHTML = error;
+
+		} else {
+		var close = '@ViewBag.Close';
+		if (close == 'True') {
+			cancelForm();
+		}
+		}
+	}
+
+	function cancelForm() {
+		window.parent.postMessage("CloseUrlForm", '*');//send message parent window for  close this form
+	}
+
+	function save() {
+		var form = document.getElementById('form');
+		form.submit();
+	}
+</script>
+
+
+@{
+	JournalType editMode = (JournalType)ViewBag.EditMode;
+	bool existsSample = ViewBag.ExistsSample;
+	bool canEditPatient = !existsSample;
+	bool canEditSample = !existsSample;
+	bool canEditModel = canEditSample && editMode == JournalType.Receiving;
+	bool canSendReport = editMode == JournalType.Management;
+	bool canMakeAliquot = editMode == JournalType.Management && Model.ModelId != SampleModel.Box;
+	bool isAliquotMode = editMode == JournalType.Aliquoting;
+	SampleModel? containerModel = (SampleModel?)ViewBag?.ContainerModel;
+	bool isAliquotOnPlate = Model?.ModelId == SampleModel.Aliquot && SampleModel.Plate.Equals(containerModel);
+
+	EditSampleController controller = (EditSampleController)ViewContext.Controller;
+}
+
+<form id="form" method="post" action="@Url.Action("SampleSave","EditSample")">
+
+	@Html.DevExpress().FormLayout(settings =>
+{
+
+	settings.Name = "FormNewSample";
+
+	settings.SettingsItems.ShowCaption = DefaultBoolean.True;
+	settings.SettingsItemCaptions.Location = LayoutItemCaptionLocation.Left;
+
+	Action<MVCxFormLayoutGroup<SampleViewModel>> fnAddFields = group =>
+	{
+		group.GroupBoxDecoration = GroupBoxDecoration.None;
+		group.ColCount = 2;
+
+		group.Items.AddGroupItemForVmField(m => m.Barcode, canEditSample);
+		group.Items.AddGroupItemForVmField(m => m.Name, canEditSample);
+		group.Items.AddGroupItemForVmField(m => m.CollectedDateTime, canEditSample);
+		group.Items.AddGroupItemForVmField(m => m.TubeTypeId, canEditSample);
+		group.Items.AddGroupItemForVmField(m => m.SampleTypeId, canEditSample);
+		group.Items.AddGroupItemForVmField(m => m.ModelId, canEditModel);
+
+		group.Items.AddGroupItemForVmField(m => m.SampleStatusId);
+		//group.Items.AddGroupItemForVmField(m => m.SampleWorkflowStatusId);
+
+		group.Items.Add(i =>
+		{
+			////
+			i.Caption = "Location:";
+			//i.FieldName = "LocationId";
+			i.Name = "EditingLocation";
+			if (isAliquotOnPlate)
+			{
+				i.Name += "_Disabled";
+				i.NestedExtension().TextBox(c => c.Text = controller.GetLocations(Model.LocationId).FirstOrDefault().ShortPath);
+				i.NestedExtensionSettings.Enabled = false;
+			}
+			else
+			{
+				i.SetNestedContent(() => {
+					Html.DevExpress().TextBox(bs =>
+					{
+						bs.Name += "_Disabled";
+						bs.Width = 80;
+						bs.Text = controller.GetLocations(Model.LocationId).FirstOrDefault().ShortPath;
+						bs.ReadOnly = true;
+
+					}).Render();
+					Html.DevExpress().Button(bs =>
+					{
+						bs.Name = "ShangeLocationButton";
+						bs.ControlStyle.CssClass = "button";
+						bs.Text = "..." ;
+						bs.Style[HtmlTextWriterStyle.MarginLeft] = "5px";
+						bs.UseSubmitBehavior = false;
+					}).Render();
+
+				});
+
+			}
+
+		});
+
+
+
+		group.Items.Add(i =>
+		{
+			i.Caption = "Conained in";
+			i.Name = "BatchLocation";
+
+			if (isAliquotOnPlate)
+			{
+				i.Name += "_Disabled";
+				i.NestedExtension().TextBox(c => c.Text = controller.GetBatchById(new ListEditItemRequestedByValueEventArgs(Model.BatchId, "")).Name);
+				i.NestedExtensionSettings.Enabled = false;
+			}
+			else
+			{
+				ViewBag.IsBox = Model.ModelId == SampleModel.Box && !canEditModel;
+				i.SetNestedContent(() => { Html.RenderPartial("_BatchComboBoxPartial", Model); });
+			}
+		});
+
+		if (containerModel == SampleModel.Sample || containerModel == SampleModel.Aliquot || canEditModel)
+			group.Items.AddEmptyItem();
+		else
+		{
+			group.Items.AddGroupItemForVmField(m => m.Well);
+		}
+
+		group.Items.AddEmptyItem();
+
+		group.Items.Add(m => m.MakeAliquot, i =>
+		{
+			i.Caption = "Make Aliquot:";
+			i.NestedExtension().CheckBox(cb => { });
+			i.NestedExtensionSettings.Enabled = canMakeAliquot;
+			if (!canMakeAliquot || isAliquotMode)
+				i.Name += "_Disabled";
+		});
+		//group.Items.AddGroupItemForVmField(m => m.ProcessId).SetNestedContent(() => Html.RenderPartial("~/Views/ProcessList/_ComboBoxPartial.cshtml", new ViewDataDictionary(Model?.ProcessId)));
+
+		//group.Items.AddGroupItemForVmField(m => m.DoctorId).SetNestedContent(() => Html.RenderPartial("~/Views/Doctors/_ComboBoxPartial.cshtml", new ViewDataDictionary(Model?.DoctorId)));
+		// group.Items.AddEmptyItem(); // to align patient on new line
+
+		group.Items.Add(m => m.PatientNo, i =>
+		{
+			i.Caption = "Patient Number";
+			i.NestedExtensionSettings.Enabled = canEditPatient;
+			if (!canEditPatient)
+				i.Name += "_Disabled";
+		});
+
+		group.Items.Add(m => m.PatientFirstName, i =>
+		{
+			i.Caption = "Patient First Name";
+			i.NestedExtensionSettings.Enabled = canEditPatient;
+			if (!canEditPatient)
+				i.Name += "_Disabled";
+		});
+
+		group.Items.Add(m => m.PatientLastName, i =>
+		{
+			i.Caption = "Patient Last Name";
+			i.NestedExtensionSettings.Enabled = canEditPatient;
+			if (!canEditPatient)
+				i.Name += "_Disabled";
+		});
+
+		group.Items.Add(m => m.PatientDateOfBirth, i =>
+		{
+			i.Caption = "Patient Date Of Birth:";
+			i.NestedExtensionSettings.Enabled = canEditPatient;
+			if (!canEditPatient)
+				i.Name += "_Disabled";
+		});
+
+		group.Items.Add(m => m.PatientEmail, i =>
+		{
+			i.Caption = "Patient Email:";
+			i.NestedExtensionSettings.Enabled = canEditPatient;
+			if (!canEditPatient)
+				i.Name += "_Disabled";
+		});
+
+		group.Items.Add(m => m.PatientSendEmail, i =>
+		{
+			i.Caption = "Patient Send Email:";
+			i.NestedExtensionSettings.Enabled = canEditPatient;
+			if (!canEditPatient)
+				i.Name += "_Disabled";
+			i.NestedExtension().CheckBox(s => { });
+		});
+
+		if (canSendReport)
+		{
+			group.Items.Add(m => m.SendReport, i =>
+			{
+				i.Caption = "Send Report:";
+				i.NestedExtension().CheckBox(s => { });
+			});
+		}
+
+		//foreach (var c in controller.CustomFields)
+		//	group.Items.AddGroupItemForMetadata(c);
+	};
+
+	settings.Items.AddGroupItem(fnAddFields);
+	// fields for the case when edit boxes are disabled
+	settings.Items.AddGroupItem(group =>
+	{
+		group.ClientVisible = false;
+		//	group.Items.Add(m => m.LocationId, i => { });
+		if (!canEditSample)
+		{
+			group.Items.Add(m => m.Barcode, i => { });
+			group.Items.Add(m => m.Name, i => { });
+			group.Items.Add(m => m.TubeTypeId, i => { });
+			group.Items.Add(m => m.SampleTypeId, i => { });
+			//group.Items.Add(m => m.SampleStatusId, i => { });
+			group.Items.Add(m => m.CollectedDateTime, i => { });
+		}
+
+		if (!canEditModel)
+		{
+			group.Items.Add(m => m.ModelId, i => { });
+		}
+		if (!canMakeAliquot || isAliquotMode)
+		{
+			group.Items.Add(m => m.MakeAliquot, i => { });
+		}
+		if (isAliquotOnPlate)
+		{
+			group.Items.Add(m => m.BatchId, i => { });
+		}
+
+		group.Items.Add(m => m.PatientId, i => { });
+		if (!canEditPatient)
+		{
+			group.Items.Add(m => m.PatientNo, i => { });
+			group.Items.Add(m => m.PatientFirstName, i => { });
+			group.Items.Add(m => m.PatientLastName, i => { });
+			group.Items.Add(m => m.ClientId, i => { });
+			group.Items.Add(m => m.DoctorId, i => { });
+			group.Items.Add(m => m.PatientDateOfBirth, i => { });
+			group.Items.Add(m => m.PatientEmail, i => { });
+			group.Items.Add(m => m.PatientSendEmail, i => { });
+			//group.Items.Add(m => m.user_id, i => { });
+		}
+	});
+
+	settings.Items.AddGroupItem(group =>
+	{
+		group.HorizontalAlign = FormLayoutHorizontalAlign.Right;
+		group.GroupBoxDecoration = GroupBoxDecoration.None;
+		group.ColCount = 2;
+
+		group.Items.Add(i =>
+		{
+			i.HorizontalAlign = FormLayoutHorizontalAlign.Right;
+			i.ShowCaption = DefaultBoolean.False;
+			i.NestedExtensionType = FormLayoutNestedExtensionItemType.Button;
+			var button = (ButtonSettings)i.NestedExtensionSettings;
+			button.Name = Model == null ? "insert" : "update";
+			button.Text = "Save";
+			button.UseSubmitBehavior = false;
+			button.ClientSideEvents.Click = "save";
+		});
+		group.Items.Add(i =>
+		{
+			i.HorizontalAlign = FormLayoutHorizontalAlign.Right;
+			i.ShowCaption = DefaultBoolean.False;
+			i.NestedExtensionType = FormLayoutNestedExtensionItemType.Button;
+			var button = (ButtonSettings)i.NestedExtensionSettings;
+			button.Name = "cancel";
+			button.Text = "Cancel";
+			button.UseSubmitBehavior = false;
+			button.ClientSideEvents.Click = "cancelForm";
+		});
+	});
+
+}).GetHtml()
+
+	@Html.DevExpress().ValidationSummary().GetHtml()
+
+	<div id="errors" style="color:red" ></div>
+    <input type="hidden" name="Id" value="@ViewBag.Id" />
+	<input type="hidden" name="editMode" value="@ViewBag.EditMode" />
+</form>

@@ -1,0 +1,24 @@
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@using Sasha.Lims.WebUI.Localization
+@using Sasha.Lims.WebUI.Reports.BatchSchema
+
+@model BatchSchemaReport
+@{
+	string titlePage = "Plate";//Html.GetLocalizedCommonText("SampleJournalPrintTitle");
+	ViewBag.Title = titlePage;
+	Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+}
+@section Head {
+	<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Samples/SamplesGridView.css?v=" + AppVersionHelper.Version)" />
+}
+@if (ViewBag.DontShowMainMenu != true)
+{
+	@section PageToolbar {
+		@Html.Partial("Blocks\\Toolbar")
+	}
+}
+@Html.DevExpress().WebDocumentViewer(
+	settings =>
+	{
+					settings.Name = "PrintViewer";
+	}).Bind(Model).GetHtml()

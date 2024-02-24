@@ -1,0 +1,353 @@
+
+@using System.Web.UI.WebControls
+@using DevExpress.Web
+@using DevExpress.Web.Mvc.UI
+@using Sasha.Lims.DataAccess.Entities.Constants
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@using Sasha.Lims.WebUI.Localization
+
+@model IQueryable<Sasha.Lims.DataAccess.Entities.Entity.vSamplesBook>
+
+@{
+
+	ViewBag.Title = "Container content " + ViewBag.Barcode;
+	Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+
+}
+
+@section Head {
+	<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Samples/SamplesGridView.css?v=" + AppVersionHelper.Version)" />
+	<script>var tableId = @((int) TableType.JourLine)</script>
+	<script src="@Url.Content("~/Scripts/Properties/commonGridView.js?v=" + AppVersionHelper.Version)"></script>
+	<script>
+		window.addEventListener("load", init);
+		window.addEventListener("message", receiveMessage, false);
+
+		function init() {
+
+			gridView.Refresh();
+		}
+
+		function updateToolbarButtonsState() {
+			var focusedRowIndex = gridView.GetFocusedRowIndex();
+
+			var enabled = focusedRowIndex > -1;
+			//pageToolbar.GetItemByName("Edit").SetEnabled(enabled);
+			pageToolbar.GetItemByName("btCommentSample").SetEnabled(enabled);
+			pageToolbar.GetItemByName("btAttachedFiles").SetEnabled(enabled);
+		}
+
+		function onPageToolbarItemClick(s, e) {
+			var id = GetFocusedRowId();
+
+			switch (e.item.name) {
+			case "NewBox":
+				newEdit('@SampleModel.Box'); //do
+
+				break;
+			case "NewPlate":
+				newEdit('@SampleModel.Plate'); //do
+				break;
+				case "LocationEdit":
+					LocationEdit();
+					break;
+			case "Edit":
+				if (!id) return;
+				edit(id);
+				break;
+			case "btCommentSample":
+				CommentSelectedRow();
+				break;
+			case "btAttachedFiles":
+				AttachedFiles();
+				break;
+			case "btShowColumnChooser":
+				onShowChooserClick(s, e);
+				break;
+			case "Print":
+				gridView.GetSelectedFieldValues("Id", Print);
+				break;
+			case "Delete":
+				deleteSelectedRecords();
+				break;
+			case "Export":
+				gridView.ExportTo(ASPxClientGridViewExportFormat.Xlsx);
+				break;
+			case "Process":
+				process();
+				break;
+			default:
+			}
+		}
+
+
+		function receiveMessage(event) {
+
+			receiveMessageLocation(event);
+			refreshGrid(event);
+		}
+
+		function refreshGrid(event) {
+			if (typeof event.data === 'string' && event.data.indexOf('RefreshGrid') > -1) {
+
+				gridView.Refresh();
+			}
+		}
+
+		//прием сообщения о новом месте из Popup Location
+		function receiveMessageLocation(event) {
+			if (typeof event.data === 'string' && event.data.indexOf('LocationId=') > -1) {
+				var arr = event.data.split('=');
+				if (arr[1] != '') {
+					var locationId = arr[1];
+					gridView.GetSelectedFieldValues("Id", getSelectedFieldValues);
+				}
+			}
+
+			function getSelectedFieldValues(values) {
+				var selectedIds = SelectedIdsToString(values)
+				gridView.PerformCallback({
+					editMode: '@ViewBag.EditMode',
+					customAction: 'assignLocation',
+					selectedIds: selectedIds,
+					newValue: locationId
+				});
+			}
+		}
+
+
+		function SendReport() {
+
+			var val = sendReportCheckBox.GetValue();
+			LoadingPanel.Show();
+			gridView.GetSelectedFieldValues("Id", getSelectedFieldValues);
+
+
+			function getSelectedFieldValues(values) {
+
+				var selectedIds = SelectedIdsToString(values);
+
+				gridView.PerformCallback({ editMode: '@ViewBag.EditMode', customAction: 'sendReport', selectedIds: selectedIds, newValue: val });
+			}
+		}
+
+		function changeStatusFromMenu() {
+
+			var status = ChangeSamplesStatusCombo.GetValue();
+			changeStatus(status);
+		}
+
+
+
+		function process() {
+			dxConfirm("Are you sure to accept correction in samples?")
+				.success(function () {
+					LoadingPanel.Show();
+					gridView.GetSelectedFieldValues("Id;Barcode;DoubleBarcodeValidation;DoubleBarcodeJourLineValidation", getSelectedFieldValuesToProcessCallback);
+
+					setTimeout(gridView.UnselectAllRowsOnPage(), 500);
+				});
+
+			function getSelectedFieldValuesToProcessCallback(values) {
+				LoadingPanel.Show();
+				var correctid = [];
+				var incorrectBarcodeError = '';
+				for (var i = 0; i < values.length; i++) {
+					if (values[i][2] == 0 || values[i][3] == 0) {
+						if (incorrectBarcodeError.length > 0) incorrectBarcodeError += ',';
+						incorrectBarcodeError += values[i][1];
+					} else {
+						correctid.push(values[i][0]);
+					}
+				}
+				if (incorrectBarcodeError.length > 0 && correctid.length > 0) {
+					alert('Records with barcode:' + incorrectBarcodeError + '  are incorrect and will be excluded!');
+				}
+				if (correctid.length == 0) {
+					alert('All records are incorrect!');
+					return;
+				}
+
+				gridView.PerformCallback({ customAction: 'process', selectedIds: correctid });
+
+				setTimeout(gridView.UnselectAllRowsOnPage(), 500);
+			}
+
+		}
+
+		function deleteSelectedRecords() {
+			dxConfirm("Are you sure to delete selected samples?")
+				.success(function() {
+					LoadingPanel.Show();
+
+					if (gridView.GetSelectedRowCount() > 0) {
+						gridView.GetSelectedFieldValues("Id", deleteSelectedFieldValuesCallback);
+
+						setTimeout(gridView.UnselectAllRowsOnPage(), 500);
+					} else {
+						if (gridView.GetFocusedRowIndex() !== -1) {
+							gridView.GetRowValues(gridView.GetFocusedRowIndex(), 'Id', deleteSelectedFieldValuesCallback);
+							setTimeout(gridView.UnselectAllRowsOnPage(), 500);
+						}
+					}
+
+				});
+
+			function deleteSelectedFieldValuesCallback(values) {
+
+				sendData(resDelegate, "@Url.Action("Delete", "EditSample", new {Area = "SamplesEdit"})?selectedIds=" + values);
+
+				//В зависимости от ответа сервера Вызывает обновление грида или показ ошибки
+				function resDelegate(error) {
+					if (error != "") {
+						alert(error);
+					} else {
+						gridView.Refresh();
+					}
+				}
+			}
+
+		}
+
+		function Print(ids) {
+			ShowUrlPopup("@Html.GetLocalizedCommonText("SampleBookPrintTitle")", '@Url.Action("Book", "Print", new {Area = ""})?ids=' + ids + '&dontShowMainMenu=true', document.documentElement.clientWidth - 150);
+		}
+
+		@*function newEdit(type) {
+			var id = null;
+			console.log(type);
+			ShowUrlPopup("", '@Url.Action("Index", "ContainerEdit", new {Area = "SamplesEdit"})?containerType=' + type, document.documentElement.clientWidth - 150);
+		}
+
+		function edit(id) {
+			console.log(id);
+			ShowUrlPopup("", '@Url.Action("Index", "ContainerEdit", new {Area = "SamplesEdit"})?id=' + id, document.documentElement.clientWidth - 150);
+		}
+
+		function onRowDblClick() {
+			var id = GetFocusedRowId();
+			if (!id) return;
+			edit(id);
+		}*@
+
+		function onGridViewBeginCallback(s, e) {
+			//e.customArgs['SelectedRows'] = selectedIds;
+		}
+
+		function onContextMenuItemClick(item, row) {
+			console.log(item);
+
+			switch (row.item.name) {
+				case "Edit":
+					var id = GetFocusedRowId();
+					if (!id) {
+						return;
+					}
+				edit(id);
+				break; //edit(id);
+			default:
+				var rezRegexp = row.item.name.match(/Set(.*)/); //комманда изменения статуса начиается с Set
+				if (rezRegexp) {
+					changeStatus( rezRegexp[1]);
+				}
+			}
+		}
+
+		function changeStatus(status) {
+			LoadingPanel.Show();
+			gridView.GetSelectedFieldValues("Id", getSelectedFieldValues);
+
+			function getSelectedFieldValues(values) {
+				var selectedIds = SelectedIdsToString(values);
+				gridView.PerformCallback({ editMode: '@ViewBag.EditMode', customAction: 'changeStatus', selectedIds: selectedIds, newValue: status });
+			}
+		}
+
+
+	</script>
+}
+
+
+
+@Html.DevExpress().Menu(menuSettings =>
+{
+	var unit16px = System.Web.UI.WebControls.Unit.Pixel(16);
+
+	menuSettings.Name = "pageToolbar";
+
+	menuSettings.ItemAutoWidth = false;
+	menuSettings.AllowSelectItem = false;
+	menuSettings.ApplyItemStyleToTemplates = true;
+
+	menuSettings.SettingsAdaptivity.Enabled = true;
+	menuSettings.SettingsAdaptivity.EnableAutoHideRootItems = true;
+	menuSettings.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+	menuSettings.SettingsAdaptivity.CollapseRootItemsToIconsAtWindowInnerWidth = 600;
+
+	menuSettings.Width = Unit.Percentage(100);
+	menuSettings.ControlStyle.SeparatorWidth = Unit.Pixel(0);
+	menuSettings.ControlStyle.CssClass = "page-toolbar";
+
+	menuSettings.Styles.Item.CssClass = "item";
+	menuSettings.Styles.Item.VerticalAlign = VerticalAlign.Middle;
+
+	menuSettings.Images.Item.Width = unit16px;
+	menuSettings.Images.Item.Height = unit16px;
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Title";
+		item.Text = ViewBag.Title;
+		item.ClientEnabled = false;
+		item.ItemStyle.Font.Bold = true;
+		item.Alignment = MenuItemAlignment.Left;
+		item.ItemStyle.CssClass = "titleMenuItemStyle";
+	});// Title
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "btShowColumnChooser";
+		item.Text = "Columns";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 2;
+		item.Image.Url = "~/Content/Images/table_v2.svg";
+	});// btShowColumnChooser
+
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Print";
+		item.Text = Html.GetLocalizedText<UI>(nameof(UI.ButtonPrint));
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 7;
+		item.Image.Url = "~/Content/Images/print.svg";
+		item.Image.Width = Unit.Pixel(16);
+		item.Image.Height = Unit.Pixel(16);
+	});// Print
+
+	Html.AddMenuFilesAndComments(menuSettings);
+
+
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Export";
+		item.Text = "Export";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 5;
+		item.Image.Url = "~/Content/Images/export.svg";
+	});
+
+	menuSettings.ClientSideEvents.ItemClick = "onPageToolbarItemClick";
+
+}).GetHtml()
+
+
+
+<form>
+	@Html.Partial("_ContainerContentPartial", Model)
+</form>
+
+
+
+

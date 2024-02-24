@@ -1,0 +1,36 @@
+@using Sasha.Lims.WebUI.Localization
+@{
+	ViewBag.Title = Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.CustodyLog));
+	Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+}
+
+@section Head {
+	@*<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Samples/SamplesGridView.css?v=" + AppVersionHelper.Version)" />
+		<script type="text/javascript" src="@Url.Content("~/Scripts/PatientsGridView.js?v=" + AppVersionHelper.Version)"></script>*@
+
+	@Html.DevExpress().GetStyleSheets(
+		//new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+		new StyleSheet { ExtensionSuite = ExtensionSuite.Editors },
+		//new StyleSheet { ExtensionSuite = ExtensionSuite.GridView },
+		//new StyleSheet { ExtensionSuite = ExtensionSuite.TreeList },
+		new StyleSheet { ExtensionSuite = ExtensionSuite.CardView }
+		)
+	@Html.DevExpress().GetScripts(
+		//new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+		new Script { ExtensionSuite = ExtensionSuite.Editors },
+		//new Script { ExtensionSuite = ExtensionSuite.GridView },
+		//new Script { ExtensionSuite = ExtensionSuite.TreeList },
+		new Script { ExtensionSuite = ExtensionSuite.CardView }
+		)
+
+}
+
+@section PageToolbar {
+
+}
+
+@using (Html.BeginForm())
+{
+	@Html.Action("CustodyLogViewPartial")
+}
+

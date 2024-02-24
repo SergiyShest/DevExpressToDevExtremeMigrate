@@ -1,0 +1,71 @@
+@using Sasha.Lims.WebUI.Localization
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>@(ViewBag?.Title ?? string.Empty) - @(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.MainTitle)))</title>
+	<link href="~/Content/Site.css?v=2" rel="stylesheet" type="text/css" />
+	<link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="@Url.Content("~/Scripts/Script.js?v=1.2")"></script>
+	<script src="~/Scripts/modernizr-2.6.2.js"></script>
+	<style>
+		body {
+			font-size: 16px;
+			padding-top: 5px;
+			padding-bottom: 5px;
+		}
+	</style>
+	@{
+
+		@Html.DevExpress().GetStyleSheets(
+			new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+			new StyleSheet { ExtensionSuite = ExtensionSuite.Icons },
+			new StyleSheet { ExtensionSuite = ExtensionSuite.Editors },
+			new StyleSheet { ExtensionSuite = ExtensionSuite.GridView },
+			new StyleSheet { ExtensionSuite = ExtensionSuite.Report }
+			)
+		@Html.DevExpress().GetScripts(
+			new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+			new Script { ExtensionSuite = ExtensionSuite.Icons },
+			new Script { ExtensionSuite = ExtensionSuite.Editors },
+			new Script { ExtensionSuite = ExtensionSuite.GridView },
+			new Script { ExtensionSuite = ExtensionSuite.Report }
+			)
+	}
+	@RenderSection("Head", false)
+	<script type="text/javascript">
+	document.addEventListener("keydown", function (event) {
+		if (event.code == "F1")
+		{  console.log(event.code);
+			event.preventDefault();
+			ShowHelp();
+		}
+       function ShowHelp() {
+		var currentPath = document.location.pathname.replace('/','-');
+		ShowUrlPopup("Help", '@Url.Action("Index", "Help",new { Area = "Help"} )?path=' + currentPath, document.documentElement.clientWidth - 50);
+	}
+	})
+	</script>
+</head>
+<body>
+
+	<div id="wrap">
+		<div id="main" class="body-content">
+			@*container*@
+			@RenderBody()
+			@Html.Partial("_AlertPopup")
+			@Html.Partial("_ConfirmPopup")
+			@Html.Partial("_UrlPopup")
+			@Html.Partial("_UrlPopupAbout")
+		</div>
+	</div>
+
+	<script src="~/Scripts/bootstrap.min.js"></script>
+
+	@if (IsSectionDefined("Scripts"))
+	{
+		@RenderSection("Scripts", false)
+    }
+</body>
+</html>

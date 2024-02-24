@@ -1,0 +1,136 @@
+@using Sasha.Lims.WebUI.Models
+@using System.Web.UI.WebControls
+@using Sasha.Lims.WebUI.Controllers
+@using Sasha.Lims.WebUI.Infrastructure.ViewModelHelpers
+
+@{
+	const string ControllerName = "UserFields";
+	//int samplesCount = (int)ViewBag.SamplesCount;
+	var gridView = Html.DevExpress().GridView( settings => {
+		settings.Name = UserFieldsController.GridViewName;
+		settings.Width = Unit.Percentage(100);
+
+		settings.Settings.VerticalScrollBarMode = ScrollBarMode.Hidden;
+		settings.SettingsResizing.ColumnResizeMode = ColumnResizeMode.Control;
+		settings.SettingsResizing.Visualization = ResizingMode.Postponed;
+
+		settings.SettingsBehavior.ProcessColumnMoveOnClient = false;
+		settings.SettingsBehavior.ColumnMoveMode = GridColumnMoveMode.AmongSiblings;
+		settings.SettingsBehavior.EnableCustomizationWindow = true;
+		settings.SettingsCookies.Enabled = true;
+		settings.SettingsCookies.StoreColumnsVisiblePosition = true;
+		settings.SettingsCookies.StoreColumnsWidth = true;
+		settings.SettingsCookies.StoreControlWidth = false;
+		settings.SettingsCookies.StoreFiltering = true;
+		settings.SettingsCookies.StorePaging = false;
+		settings.SettingsCookies.StoreColumnsHierarchy = false;
+		settings.SettingsCookies.StoreFiltering = false;
+		settings.Settings.ShowGroupPanel = false;
+
+		settings.SettingsBehavior.AllowFocusedRow = true;
+		settings.SettingsBehavior.AllowSelectByRowClick = false;
+		settings.SettingsBehavior.AllowEllipsisInText = true;
+		settings.SettingsBehavior.AllowDragDrop = true;
+
+
+		settings.SettingsPager.Visible = true;
+		settings.Styles.PagerBottomPanel.HorizontalAlign = HorizontalAlign.Right;
+		settings.SettingsPager.Position = PagerPosition.Bottom;
+		settings.SettingsPager.Summary.Visible = false;
+
+		UserFieldViewModel vm = null; // compiler needs just type info, not the value
+
+		settings.Columns.AddColumnForVmField(vm, m => m.TableId);
+		settings.Columns.AddColumnForVmField(vm, m => m.FieldNumber);
+		settings.Columns.AddColumnForVmField(vm, m => m.Caption);
+		settings.Columns.AddColumnForVmField(vm, m => m.FieldTypeId);
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Type";
+			columnSettings.Caption = "Data Type";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 100;
+			columnSettings.ColumnType = MVCxGridViewColumnType.ComboBox;
+			var comboBoxProperties = columnSettings.PropertiesEdit as ComboBoxProperties;
+
+			Dictionary<int, string> dict = new Dictionary<int, string>();
+			foreach (var item in Enum.GetValues(typeof(Sasha.Lims.DataAccess.Entities.Constants.UserFieldDataType)))
+			{
+				dict.Add((int)item, item.ToString());
+			}
+			comboBoxProperties.ValueType = typeof(int);
+			comboBoxProperties.ValueField = "Key";
+			comboBoxProperties.TextField = "Value";
+			comboBoxProperties.DataSource = dict;
+
+
+		});
+
+		settings.CustomJSProperties = (sender, e) =>
+		{
+			var grid = sender as MVCxGridView;
+			e.Properties["cpRowCount"] = grid.VisibleRowCount;
+
+			if (ViewData["EditError"] != null)
+				e.Properties["cpEditError"] = ViewData["EditError"];
+		};
+
+		settings.SettingsPopup.HeaderFilter.Height = Unit.Pixel(440);
+		settings.SettingsPopup.HeaderFilter.Width = Unit.Pixel(360);
+		settings.SettingsPopup.HeaderFilter.SettingsAdaptivity.Mode = PopupControlAdaptivityMode.OnWindowInnerWidth;
+		settings.SettingsPopup.HeaderFilter.SettingsAdaptivity.SwitchAtWindowInnerWidth = 768;
+
+		//Command columns settings
+		settings.CommandColumn.Visible = true;
+		settings.CommandColumn.ShowSelectCheckbox = true;
+		settings.CommandColumn.SelectAllCheckboxMode = GridViewSelectAllCheckBoxMode.Page;
+		settings.CommandColumn.VisibleIndex = 0;
+		settings.CommandColumn.Width = Unit.Pixel(52);
+
+		settings.SettingsContextMenu.EnableRowMenu = DefaultBoolean.False;
+
+		//Handles standard grid callback requests.
+		settings.CallbackRouteValues = new { Controller = ControllerName, Action = "GridViewPartial" };
+		settings.SettingsEditing.AddNewRowRouteValues = new { Controller = ControllerName, Action = "GridViewPartialAddNew" };
+		settings.SettingsEditing.UpdateRowRouteValues = new { Controller = ControllerName, Action = "GridViewPartialUpdate" };
+
+		settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+		settings.SettingsEditing.EditFormColumnCount = 2;
+		settings.SettingsPopup.EditForm.SettingsAdaptivity.MaxWidth = 800;
+		settings.SettingsPopup.EditForm.SettingsAdaptivity.Mode = PopupControlAdaptivityMode.Always;
+		settings.SettingsPopup.EditForm.SettingsAdaptivity.VerticalAlign = PopupAdaptiveVerticalAlign.WindowCenter;
+
+		settings.SetEditFormTemplateContent(c => Html.RenderAction("DetailsPartial", ControllerName, new { id = DataBinder.Eval(c.DataItem, "Id") }) );
+
+		//Handles grid data operations - in this sample, paging and sorting.
+		settings.CustomBindingRouteValuesCollection.Add(GridViewOperationType.Paging, new { Controller = ControllerName, Action = "GridViewPagingAction" });
+		settings.CustomBindingRouteValuesCollection.Add(GridViewOperationType.Sorting, new { Controller = ControllerName, Action = "GridViewSortingAction" });
+		settings.CustomBindingRouteValuesCollection.Add(GridViewOperationType.Filtering, new { Controller = ControllerName, Action = "GridViewFilteringAction" });
+
+		settings.CustomActionRouteValues = new { Controller = ControllerName, Action = "CustomActionPartial" };
+
+		//Select checkbox enabled
+		settings.CommandButtonInitialize = (sender, e) =>
+		{
+			if (e.VisibleIndex == -1) return;
+			if (e.ButtonType == ColumnCommandButtonType.SelectCheckbox)
+			{
+				var enabled = true;
+				e.Visible = enabled;
+				e.Enabled = enabled;
+			}
+		};
+
+		settings.SettingsDataSecurity.AllowReadUnlistedFieldsFromClientApi = DefaultBoolean.True;
+
+		settings.ClientSideEvents.Init = "onGridViewInit";
+		settings.ClientSideEvents.SelectionChanged = "onGridViewSelectionChanged";
+		settings.ClientSideEvents.BeginCallback = "onGridViewBeginCallback";
+		settings.ClientSideEvents.EndCallback = "onGridViewEndCallback";
+		//settings.ClientSideEvents.RowDblClick = "onRowDblClick";
+		settings.ClientSideEvents.ColumnResized = "function(s, e) {	e.processOnServer = true; }"; // force event to save cookie
+		settings.ClientSideEvents.CustomizationWindowCloseUp = "onGridCustomizationWindowCloseUp";
+	});
+}
+
+@gridView.BindToCustomData(Model).GetHtml()

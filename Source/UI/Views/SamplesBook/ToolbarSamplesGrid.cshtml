@@ -1,0 +1,161 @@
+@using System.Web.UI.WebControls
+@using Sasha.Lims.DataAccess.Entities.Constants
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@using Sasha.Lims.WebUI.Localization
+
+
+
+@Html.DevExpress().Menu(menuSettings =>
+{
+	var unit16px = Unit.Pixel(16);
+
+	menuSettings.Name = "pageToolbar";
+
+	menuSettings.ItemAutoWidth = false;
+	menuSettings.AllowSelectItem = false;
+	menuSettings.ApplyItemStyleToTemplates = true;
+
+	menuSettings.SettingsAdaptivity.Enabled = true;
+	menuSettings.SettingsAdaptivity.EnableAutoHideRootItems = true;
+	menuSettings.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+	menuSettings.SettingsAdaptivity.CollapseRootItemsToIconsAtWindowInnerWidth = 600;
+
+	menuSettings.Width = Unit.Percentage(100);
+	menuSettings.ControlStyle.SeparatorWidth = Unit.Pixel(0);
+	menuSettings.ControlStyle.CssClass = "page-toolbar";
+
+	menuSettings.Styles.Item.CssClass = "item";
+	menuSettings.Styles.Item.VerticalAlign = VerticalAlign.Middle;
+
+	menuSettings.Images.Item.Width = unit16px;
+	menuSettings.Images.Item.Height = unit16px;
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Title";
+		item.Text = ViewData["Title"] as string;
+		item.ClientEnabled = false;
+		item.ItemStyle.Font.Bold = true;
+		item.Alignment = MenuItemAlignment.Left;
+		item.ItemStyle.CssClass = "titleMenuItemStyle";
+	});
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "btShowColumnChooser";
+		item.Text = "Columns";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 2;
+		item.Image.Url = "~/Content/Images/table_v2.svg";
+		item.Image.Width = unit16px;
+		item.Image.Height = unit16px;
+	});
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "btShowRepx";
+		item.Text = "Reports";
+		item.Alignment = MenuItemAlignment.Right;
+		item.Image.Url = "~/Content/Images/report.svg";
+		Html.AddReportMenuForTable(item.Items, "s_sample",true);
+		item.Items.Add(subMenu =>
+		{
+			subMenu.Name = "Report.Template.Box$Plate";
+			subMenu.Text = "Template";
+			subMenu.Alignment = MenuItemAlignment.Right;
+			subMenu.AdaptivePriority = 6;
+			subMenu.Image.Url = "~/Content/Images/report.svg";
+			subMenu.Image.Width = unit16px;
+			subMenu.Image.Height = unit16px;
+		});
+	});
+
+	Html.AddMenuFilesAndComments(menuSettings);
+	//menuSettings.Items.Add(subMenu =>
+	//{
+	//	subMenu.Name = "NewBox";
+	//	subMenu.Text = "Add Box";
+	//	subMenu.Alignment = MenuItemAlignment.Right;
+	//	subMenu.AdaptivePriority = 2;
+	//	subMenu.Image.Url = "~/Content/Images/add.svg";
+	//});
+	//menuSettings.Items.Add(subMenu =>
+	//{
+	//	subMenu.Name = "NewPlate";
+	//	subMenu.Text = "Add Plate";
+	//	subMenu.Alignment = MenuItemAlignment.Right;
+	//	subMenu.AdaptivePriority = 2;
+	//	subMenu.Image.Url = "~/Content/Images/add.svg";
+	//});
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "New";
+		item.Text = "Add";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 2;
+		item.Image.Url = "~/Content/Images/add.svg";
+
+	});
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Edit";
+		item.Text = Html.GetLocalizedText<UI>
+			(nameof(UI.ButtonEdit));
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 3;
+		item.Image.Url = "~/Content/Images/edit.svg";
+	});
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "EditContainer";
+		item.Text = "Container Edit";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 3;
+		item.Image.Url = "~/Content/Images/edit.svg";
+	});
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Wells";
+		item.Text = "Wells";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 3;
+		item.Image.Url = "~/Content/Images/edit.svg";
+	});
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Aliquoting";
+		item.Text = Html.GetLocalizedText<UI>(nameof(UI.ButtonAliquoting));
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 1;
+		item.Image.Url = "~/Content/Images/aliquoting.svg";
+		item.Image.Width = unit16px;
+		item.Image.Height = unit16px;
+	});
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Export";
+		item.Text = "Export";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 5;
+		item.Image.Url = "~/Content/Images/export.svg";
+	});
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Process";
+		item.Text = Html.GetLocalizedText<UI>(nameof(UI.ButtonManagement));
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 1;
+		item.Image.Url = "~/Content/Images/operations.svg";
+		item.Image.Width = unit16px;
+		item.Image.Height = unit16px;
+	});
+
+	menuSettings.ClientSideEvents.ItemClick = "onPageToolbarItemClick";
+
+	menuSettings.CustomJSProperties = (s, e) =>
+	{
+		e.Properties["cpBarcodeApiUrl"] = Url.HttpRouteUrl("DefaultApi", new { controller = "Barcode"});
+		e.Properties["cpGetSamplesUrl"] = Url.HttpRouteUrl("DefaultApi", new { controller = "SampleApproved" });
+	};
+}).GetHtml()

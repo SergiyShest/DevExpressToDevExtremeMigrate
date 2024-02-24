@@ -1,0 +1,261 @@
+@using System.Drawing
+@using System.Web.UI.WebControls
+@using DevExpress.Utils
+@using DevExpress.Web
+@using DevExpress.Web.ASPxThemes
+@using DevExpress.Web.Mvc.UI
+@using Sasha.Lims.Core.Helpers
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@using Sasha.Lims.WebUI.Localization
+@using Sasha.Lims.DataAccess.Entities.Constants
+@using Sasha.Lims.WebUI.Controllers
+@using ProcessStatus = Sasha.Lims.DataAccess.Entities.Constants.ProcessStatus
+@model Sasha.Lims.Core.BusinessObjects.ProcessBo
+@{
+	ViewBag.Title = Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Samples));
+	Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+
+@section Head {
+	<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Samples/SamplesGridView.css?v=" + AppVersionHelper.Version)"/>
+	<script src="@Url.Content("~/Scripts/Script.js?v=" + AppVersionHelper.Version)"></script>
+	<script>var tableId = @((int) TableType.WorkflowResult)</script>
+	<script src="@Url.Content("~/Scripts/Properties/commonGridView.js?v=" + AppVersionHelper.Version)"></script>
+	<script>
+		window.addEventListener("load", Init);
+
+		function Init() {
+			var headerText = 'Process name:@Model.Name';
+			window.parent.postMessage("SetPopUpHeader=" + headerText, '*'); //send message parent window for  close this form
+
+			var status = '@(Model.StatusTxt)';
+			if (status !== '') {
+				var path = '/Content/Images/Status/' + status + '.png';
+				window.parent.postMessage("SetHeaderImageUrl=" + path, '*'); //send message parent window for  close this form
+			}
+			onProcessStatusChanged();
+			updateToolbarButtonsState();
+		}
+
+
+
+		function updateToolbarButtonsState() {
+			var enabled = gridView.GetFocusedRowIndex() >= 0;
+			//pageToolbar.GetItemByName("AddSamples").SetEnabled(enabled);
+			pageToolbar.GetItemByName("btCommentSample").SetEnabled(enabled);
+			pageToolbar.GetItemByName("btAttachedFiles").SetEnabled(enabled);
+		}
+
+		function onPageToolbarItemClick(s, e) {
+
+			switch (e.item.name) {
+			case "AddSamples":
+				AddSamples();
+				break;
+			case "btCommentSample":
+				CommentSelectedRow();
+				break;
+			case "btAttachedFiles":
+				AttachedFiles();
+				break;
+			case "btShowColumnChooser":
+				onShowChooserClick(s, e);
+				break;
+
+			default:
+				if (!id) return;
+				var rezRegexp = e.item.name.match(/Set(.*)/); //комманда изменения статуса начиается с Set
+				if (rezRegexp) {
+					changeSampleResultStatus(id, rezRegexp[1]);
+				}
+			}
+		}
+
+		function onContextMenuItemClick(item, row) {
+			var id = GetFocusedRowId();
+			switch (row.item.name) {
+			case "Samples":
+				AddSamples();
+				break;
+
+			case "Edit":
+
+				if (!id) return;
+				edit(id);
+				break; //edit(id);
+			default:
+				var rezRegexp = row.item.name.match(/Set(.*)/); //комманда изменения статуса начиается с Set
+				if (rezRegexp) {
+					changeSampleResultStatus(id, rezRegexp[1]);
+				}
+			}
+		}
+
+		//Изменение статуса результата
+		function changeSampleResultStatus(id, status) {
+			sendData(resDelegate, "@Url.Action("ChangeSampleResultStatus", "Process", new {Area = "Workflow"})?rowId=" + id + "&status=" + status);
+
+			//В зависимости от ответа сервера Вызывает обновление грида или показ ошибки
+			function resDelegate(error) {
+				if (error != "") {
+					alert("ChangeSampleResultStatus " + error);
+				} else {
+					gridView.Refresh();
+				}
+			}
+
+		}
+
+		function onProcessStatusChanged() {
+
+			var status = Status.GetText();
+			var elem = document.getElementById("statysImage");
+			if (status == '') {
+
+			} else {
+				var path = "/Content/Images/Status/" + status + ".png";
+				elem.src = path;
+			}
+
+		}
+
+		function onGridViewBeginCallback(s, e) {
+			//need as tech function
+		}
+
+		function AddSamples() {
+			var id = @Model.Id;
+			ShowUrlPopup("", '@Url.Action("SelectSamples", "SelectSamples", new {Area = "Workflow"})?ProcessId=' + id);
+		}
+
+		function save() {
+			var form = document.getElementById('form');
+			form.submit();
+		}
+
+		function cancelForm() {
+			window.parent.postMessage("CloseUrlForm", '*'); //send message parent window for  close this form
+		}
+	</script>
+}
+
+<form id="form" method='POST'>
+	<input type="hidden" name="act" value="save" />
+	<input type="hidden" name="rowId" value="@Model.Id" />
+	<div class="flex-row">
+		<div>
+			<img id="statysImage" style="width: 24px;height:24px" />
+		</div>@*image*@
+		<div class="flex-row">
+			<div class="textHeader">Status:</div><div class="border textBody">
+				@Html.DevExpress().ComboBoxFor(x => x.Status, settings =>
+				{
+					settings.Name = "Status";
+					settings.Properties.ValueField = "value";
+					settings.Properties.TextField = "text";
+					settings.Properties.ImageUrlField = "ImageUrl";
+					settings.Properties.ItemImage.Width = 16;
+					settings.Width = 180;
+					settings.Properties.ClientSideEvents.SelectedIndexChanged = "onProcessStatusChanged";
+					settings.Properties.ClearButton.DisplayMode = ClearButtonDisplayMode.OnHover;
+				}).BindList(DataHelper.GetAvailableStatuses(Model.ObjectType).Select(x => new
+				{
+					text = x.Name,
+					value = x.Id,
+					ImageUrl = Url.Content("~/Content/Images/Status/" + x.Name + ".png")
+				})).GetHtml()
+			</div>
+		</div>@*Status*@
+		<div class="flex-row">
+			<div class="textHeader">Started at:</div><div class="border textBody"> @string.Format("{0:g}", Model.DateStarted) </div>
+		</div>@*Started at*@
+		<div class="flex-row">
+			<div class="textHeader">Completed at:</div><div class="border textBody"> @string.Format("{0:g}", Model.DateCompleted)</div>
+		</div>@*Completed at*@
+		<div class="flex-row">
+			<div class="textHeader">Completed User:</div><div class="border textBody"> @Model.CompletedUser</div>
+		</div>@*Completed User*@
+
+@if (Model.IsPathEnabled)
+{
+			<div class="flex-row">
+				<div class="textHeader">Result Path:</div>
+				<div class="border textBody">
+					<input type="text" value="@Model.ResultPath" name="ResultPath">
+				</div>
+			</div>
+		}@*Result Path*@
+	</div>
+
+
+
+	@Html.DevExpress().Menu(menuSettings =>
+{
+	menuSettings.Name = "pageToolbar";
+
+	menuSettings.ItemAutoWidth = false;
+	menuSettings.AllowSelectItem = false;
+	menuSettings.ApplyItemStyleToTemplates = true;
+
+	menuSettings.SettingsAdaptivity.Enabled = true;
+	menuSettings.SettingsAdaptivity.EnableAutoHideRootItems = true;
+	menuSettings.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+	menuSettings.SettingsAdaptivity.CollapseRootItemsToIconsAtWindowInnerWidth = 600;
+
+	menuSettings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+	menuSettings.ControlStyle.SeparatorWidth = System.Web.UI.WebControls.Unit.Pixel(0);
+	menuSettings.ControlStyle.CssClass = "page-toolbar";
+
+	menuSettings.Styles.Item.CssClass = "item";
+	menuSettings.Styles.Item.VerticalAlign = System.Web.UI.WebControls.VerticalAlign.Middle;
+
+	menuSettings.Images.Item.Width = System.Web.UI.WebControls.Unit.Pixel(16);
+	menuSettings.Images.Item.Height = System.Web.UI.WebControls.Unit.Pixel(16);
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Title";
+		item.Text = ViewBag.Title;
+		item.ClientEnabled = false;
+		item.ItemStyle.Font.Bold = true;
+		item.Alignment = MenuItemAlignment.Left;
+		item.ItemStyle.CssClass = "titleMenuItemStyle";
+	});
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "btShowColumnChooser";
+		item.Text = "Columns";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 2;
+		item.Image.Url = "~/Content/Images/table_v2.svg";
+	});
+
+	Html.AddMenuFilesAndComments(menuSettings);
+
+	SettingHelper.AddChangeStatusToolBarMenuItems(menuSettings, DataHelper.GetAvailableStatuses(TableType.WorkflowResult));
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "AddSamples";
+		item.Text = "Add samples";//Html.GetLocalizedText<UI>(nameof(UI.ButtonEdit));
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 1;
+		item.Image.Url = "~/Content/Images/add.svg";
+	});
+
+	menuSettings.ClientSideEvents.ItemClick = "onPageToolbarItemClick";
+}).GetHtml()
+
+	@Html.Partial("_ProcessSamplesGridPartial", Model)
+
+	<div style="display: block; margin:5px">
+		<button onclick="save()" class="dxbButton_@DataHelper.Current.UiTheme dxbButtonSys dxbTSys dx-button" style="-webkit-user-select:none;padding:6px;margin: 3px; float: right">
+			Save
+		</button>
+		<button onclick="cancelForm()" class="dxbButton_@DataHelper.Current.UiTheme dxbButtonSys dxbTSys dx-button" style="-webkit-user-select:none;padding:6px;margin: 3px; float: right">
+			Close
+		</button>
+
+	</div>
+</form>

@@ -1,0 +1,26 @@
+@model JournalType
+@using Sasha.Lims.WebUI.Controllers
+@using Sasha.Lims.DataAccess.Entities.Constants;
+
+@{ 
+	string controllerName = typeof(SamplesController).Name.Replace("Controller", "");
+}
+
+<div id="barcodeAjaxScanner" class="panel-barcode-lookup">
+	@using (Html.BeginForm("AddSamplesByBarCode", controllerName))
+	{
+		@Html.Hidden("editMode", Model)
+		@Html.TextBox("barcodeInput", "Scan barcodes", new { @class = "hint" })
+	}
+
+	<script>
+		$(function () {
+			var audios = {
+				found: new Audio("@VirtualPathUtility.ToAbsolute("~/Content/Sounds/code-found.mp3")"),
+				notFound: new Audio("@VirtualPathUtility.ToAbsolute("~/Content/Sounds/bad-beep.mp3")")
+			};
+			ajaxBarcodeInput("#barcodeAjaxScanner", "Scan barcodes", @((int)Model), "@Url.RouteUrl(new { Controller = controllerName, Action = "FindSampleByBarcode" })", audios);
+		});
+	</script>
+</div>
+

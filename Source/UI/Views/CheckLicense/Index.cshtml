@@ -1,0 +1,19 @@
+@using System.Web.UI.WebControls
+@model string
+@{
+	Layout = null;
+}
+@{
+	if (!string.IsNullOrEmpty(Model))
+	{
+		@Html.DevExpress().Panel(settings =>
+		{
+			settings.Name = "LicensePanel";
+			settings.Styles.Panel.CssClass = "licensePanel";
+			settings.SetContent(() =>
+			{
+				ViewContext.Writer.Write("<div class='licensePanelContent'>" + Model + "</div>");
+			});
+		}).GetHtml()
+	}
+}

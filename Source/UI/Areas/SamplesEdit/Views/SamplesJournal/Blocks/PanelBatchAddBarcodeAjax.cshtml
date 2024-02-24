@@ -1,0 +1,34 @@
+@model JournalType
+@using Sasha.Lims.WebUI.Controllers
+@using Sasha.Lims.DataAccess.Entities.Constants;
+
+@{ 
+	string controllerName = typeof(Sasha.Lims.WebUI.Areas.SamplesEdit.Controllers.SamplesJournalController).Name.Replace("Controller", "");
+}
+
+<div id="barcodeAjaxScanner" class="panel-barcode-lookup">
+	@using (Html.BeginForm("AddSamplesByBarCode", controllerName))
+	{
+		@Html.Hidden("editMode", Model)
+
+<div style="display:inline-flex;align-items:center;border:solid; border-width:1px;border-color:lightgray;padding:1px"  >
+	    @Html.CheckBox("ScanBarcodesMode",true)
+        <span style="width:100px;margin:3px" > Parse barcode</span>
+		@Html.TextBox("barcodeInput" ,string.Empty, new { placeholder = "Scan barcodes" } )  @*, new { @class = "hint" }*@
+</div>
+	}
+
+	<script>
+	$(function () {
+		var audios = {
+			found: new Audio("@VirtualPathUtility.ToAbsolute("~/Content/Sounds/code-found.mp3")"),
+			notFound: new Audio("@VirtualPathUtility.ToAbsolute("~/Content/Sounds/bad-beep.mp3")")
+		};
+		var pathForPrev = "@Url.RouteUrl(new { Controller = controllerName, Action = "FindSampleByBarcode" })";
+        var pathForJJI = "@Url.RouteUrl(new { Controller = controllerName, Action = "AddSamplesByJJIBarcode" })";
+		ajaxBarcodeInput("#barcodeAjaxScanner",  @((int)Model), pathForPrev, pathForJJI,audios);
+
+	});
+	</script>
+</div>
+

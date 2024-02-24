@@ -1,0 +1,483 @@
+@using Sasha.Lims.Core.Helpers
+
+@{
+	Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+
+	<script src='@Url.Content("~/Scripts/vue.js")'></script>
+	<script src='@Url.Content("~/Scripts/jquery-3.2.1.min.js")'></script>
+	<style>
+		.dx-button {
+			outline: none !important;
+			min-width: 80px
+		}
+
+			.dx-button:disabled {
+				filter: brightness(100%) contrast(50%);
+				cursor: default;
+			}
+
+		.container {
+			overflow: hidden;
+			background-color: #eee;
+			border: unset solid #808080;
+			padding: 5px;
+			margin: 0px;
+			height: 100vh;
+		}
+
+		.wrap {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			height: 100%;
+		}
+
+		.scrollArea {
+			position: relative;
+			overflow: auto; /* Добавляем полосы прокрутки */
+			height: 100%; /*Высота блока */
+			padding: 5px; /* Поля вокруг текста */
+			border: solid 0px gray; /* Параметры рамки */
+			/*background-color: е;*/
+			flex-grow: 1;
+		}
+
+
+
+		.p1 { /* Поля вокруг текста */
+			margin: 2px;
+			padding: 2px;
+		}
+
+		.nam {
+			color: brown;
+			font-size: large;
+		}
+
+		.column {
+			width: 210px;
+		}
+
+		.column-content {
+			width: 200px;
+		}
+
+		.cell {
+			border: solid darkgray 1px;
+			margin: 3px;
+		}
+
+		.message-text {
+			border: 0px;
+			text-wrap: normal;
+			background: lightgray;
+			min-height: 30px;
+			height: fit-content;
+		}
+
+
+
+		.flex-row {
+			display: flex;
+			flex-direction: row
+		}
+
+		select {
+			margin: 3px;
+			padding: 6px;
+			border: 0;
+			height: fit-content;
+			outline: none !important
+		}
+
+		textarea {
+			margin: 1px;
+			width: 99%;
+			border: 0px;
+			outline: none !important;
+		}
+
+		.loader {
+			display: none;
+			position: absolute;
+			left: 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			/*background-image:url(/Content/icons/loading.gif);*/
+			/*align-content: center;*/
+			background: rgba(104, 104, 155, 0.5);
+		}
+
+		.loader-icon {
+			display: block;
+			margin-left: auto;
+			margin-right: auto;
+		}
+	</style>
+
+</head>
+<body style="padding:0px;margin:0px" class="container">
+	<div class="flex-column" id="form">
+
+		<div class="flex-row scrollArea" style="height:45vh">
+			<group-column v-bind:fields="AvailableFields"
+						  v-bind:selfield="selectedFields[ind-1]"
+						  v-bind:index="ind-1"
+						  v-bind:dat="dataArr[ind-1]"
+						  v-on:changed="dataChanged"
+						  v-for="ind in columnCount" />
+		</div>
+
+		<div v-if="canSave" class=" scrollArea" style="height:45vh">
+			<table border="1">
+				<thead>
+				<td>Nr</td>
+				<td v-for="(row,rowNum) in columnCount" style="background-color: lightgray">
+					{{selectedFields[row-1][0]}}
+				</td>
+				</thead>
+				<tbody>
+					<tr v-for="(row,rowNum) in rowCount" style="min-height: 20px">
+						<td>{{row}}</td>
+						<td v-for="(row, collNum) in columnCount" style="min-height: 20px">
+							<input readonly v-model="cell(rowNum,collNum)" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="flex-row" style="justify-content: flex-end; max-height:10vh">
+			<dx-button text="Ok" :disabled="!canSave"
+					   v-on:click.native="save()"></dx-button>
+			<dx-button text="Clear"
+					   v-on:click.native="reloadForm()"></dx-button>
+			<dx-button text="Close"
+					   v-on:click.native="cancelForm()"></dx-button>
+		</div>@*кнопки*@
+		<div class="loader" v-bind:style="{display:loadingStyle}  ">
+			<img class="loader-icon" src="~/Content/Images/loading.gif" />
+		</div>@*loader*@
+	</div>
+	<script>const EditingRowCount =  '@ViewBag.EditingRowCount'</script>
+	@*<script src="~/Vue/group-input/groupInput.js" />*@
+<script>
+
+		function auto_grow(element) {
+			try {
+				element.style.height = "30px";
+				element.style.height = element.scrollHeight + "px";
+			} catch (error) {
+
+			}
+		}
+
+		Vue.component('dx-button',
+			{
+				props: { text: String },
+				template:
+					'<button class="dxbButton_@DataHelper.Current.UiTheme dxbButtonSys dxbTSys dx-button"  style="-webkit-user-select:none;padding:6px;margin: 3px; ">' +
+						'{{text}}' +
+						'</button>'
+			});
+
+		Vue.component('group-column',
+			{
+				props: {
+					fields: Array,
+					index: Number,
+					dat: Array,
+					dataCh: Number,
+					selfield: Array
+				}
+				,
+				data: function() {
+					return {
+						pastedData: null,
+						selectedField: '',
+						editingRowCount: EditingRowCount //количество строк для вставки
+					}
+				}
+				,
+                watch: {
+                    selectedField: function (newVal) {
+                        localStorage.setItem("selectedField" + this.index, newVal);
+                        this.selfield.length = 0;
+                        this.selfield.push(this.selectedField);
+                    }
+                    ,
+					dataCh: function()
+					{
+						var ta = document.getElementById('inp_' + this.index);
+						this.changedData(ta.value);
+					}
+					,
+					pastedData: function(newVal) {
+					this.changedData(newVal);
+				}
+			},
+			methods:
+			{
+				//Функция обработки данных
+				changedData: function (newVal) {
+
+
+					let restInput = "";
+					let rest = "";
+					this.dat.length = 0;
+					let cellInRow = 100;
+					if (newVal != '') {
+
+						var rows = newVal.split('\n');
+
+
+
+						for (let r = 0; r < rows.length; r++) {
+							let row = rows[r];
+							if (row == '')
+								continue;
+							let cells = row.split('\t');
+							let len = cells.length;
+							if (cellInRow < len)
+							{
+								continue;
+							}
+							cellInRow = len;//тупая защита от переноса строки
+
+							this.dat.push(cells[0]);//кладем данные в  первую часть
+							if (cells.length > 1) {
+								rest = "";
+								for (let c = 1; c < cells.length; c++) {
+									if (rest.length > 0) rest += '\t';
+									rest += cells[c];
+								}
+							}
+							if (restInput.length > 0) {
+								console.log(restInput);
+								restInput += '\n';
+							}
+							restInput += rest;
+						}
+					}
+
+					if (restInput.length > 0) { //оставшуюся часть следующему контолу
+						let id = 'inp_' + (this.index + 1);
+						let nextElem = document.getElementById(id);
+						if (nextElem != null) {
+							nextElem.value = restInput;
+							var event = new Event('input');
+							nextElem.dispatchEvent(event);
+						}
+
+					}
+					this.$emit('changed'); //send event --> anysing changed
+				}
+		   },
+		mounted: function() {
+			var pr = localStorage.getItem("selectedField" + this.index);
+			if (pr) {
+				this.selectedField = pr;
+			}
+
+		},
+		template:
+			'		<div class="column">' +
+				'			<select class="p1 nam column-content" v-model="selectedField">' +
+				'				<option selected value="" style="background: lightgray">dont use </option>' +
+				'				<option v-for=" field in fields" :v-key="field.Name" :v-value="field.Name" v-bind:value="field.Name" >' +
+				'					{{field.Value}}' +
+				'				</option>' +
+				'			</select>' +
+				'			<textarea v-bind:id="\'inp_\'+index"  style="margin: 3px; border: thin gray"' +
+				'					  placeholder="Paste values"' +
+				'					  v-model="pastedData"' +
+				'                     oninput="auto_grow(this)"></textarea>' +
+				'		</div>'
+		});
+
+
+</script>
+
+
+	<script type="text/javascript">
+var vue = new Vue({
+	el: "#form"
+	,
+	data: {
+		loadingData: false,
+		selectedFields: [[], [], [], [], [], [], [], [], [], []],//Названия полей В каждом массиве всегда одно значение. Такая  конструкция использована, что бы получать данные изменяемые в дочерних компонентах по ссылке ( массивы передаются через ссылки)
+		dataArr: [[], [], [], [], [], [], [], [], [], []],// Массив данных
+		availableFields: [], //список доступных полей
+
+		columnCount: 10, //количество колонок для вставки
+		editingRowCount: @ViewBag.EditingRowCount, //количество строк для редактирования Если он равен нулю, то это вставка
+		rowCount:0,
+		canSave: false
+	}
+	,
+	computed: {
+		//Show or hide loading gif
+		loadingStyle: function() {
+			if (!this.loadingData) {
+				return 'none';
+			}
+			return 'block';
+		},
+		AvailableFields:function() {
+			var ava= this.availableFields;
+//		   if(ava.length>0){
+//			for (var i = 0; i < this.selectedFields.length; i++) {
+//				var arrF = this.selectedFields[i];
+//				if(arrF[0])	{
+//					ava=ava.filter(x=>x.Name!=arrF[0]);
+//				}
+//			}
+//		  }
+		return	ava;
+  		}
+	}
+	,
+	methods: {
+		load: function () {
+		}
+		,
+		//список выбранных полей
+		getFields: function () {
+			var fields = [];
+			for (var i = 0; i < this.selectedFields.length; i++) {
+				var arrF = this.selectedFields[i];
+				fields.push(arrF[0]);
+			}
+			return fields;
+		}
+		,
+		save: function () {
+
+			var cancelForm = this.cancelForm;
+			var onSave = this.onSave;
+			var data = { Data: this.dataArr, Fields: this.getFields() };
+			this.fetch(onSave,"/GroupInputSave?selectedIds=@(ViewBag.SelectedIds)&journalType=@ViewBag.JournalType", data);
+
+		}
+		,
+		onSave:	function (error) {
+			if(error == '') {
+			window.parent.postMessage("Refresh", '*'); //send message parent window for  Refresh
+			this.cancelForm();
+				} else {
+					alert(error);
+					console.log(error);
+					this.loadingData = false;
+			}
+		}
+		,
+		validate: function () {
+			var fields = this.getFields();
+			for (var i = 0; i < fields.length; i++) {
+				if (typeof fields[i] != 'undefined')
+					for (var af = 0; af < this.availableFields.length; af++) {
+						var field = this.availableFields[af];
+						if (field.Name == fields[i]) {
+							console.log(field);
+							if (field.TestRegexp != null) {
+								console.log(field.TestRegexp);
+
+							}
+							break;
+						}
+					}
+			}
+
+		}
+		,
+		cell: function (row, coll) {
+			return this.dataArr[coll][row];
+
+		},
+			dataChanged: function () {
+				var canSave = false;
+				var maxlength = 0;
+				for (var i = 0; i < this.columnCount; i++)
+				{
+					if (this.selectedFields[i] != "" && this.dataArr[i].length > 0) {
+						canSave = true;
+						maxlength = Math.max(maxlength, this.dataArr[i].length);
+						break;
+					}
+				}
+				this.canSave = canSave;
+				//if (this.canSave) {
+				//	this.validate();
+				//}
+				if (this.editingRowCount == 0) {
+					this.rowCount = maxlength;
+
+				}
+
+		},
+
+		    cancelForm: function (value) {
+			   this.loadingData = false;
+				window.parent.postMessage("CloseUrlForm", '*');//send message parent window for  close this form
+			}
+					      ,
+			//Получение описания полей
+		    getAvailableFields: function () {
+				this.fetch(this.setAvailableFields, "/GetAvailableFields");
+			}
+		    ,
+		    setAvailableFields: function (val) {
+				this.availableFields = val;
+				this.loadingData = false;
+			},
+
+		    reloadForm: function (val) {
+				document.location.reload();
+			}
+			,
+			//универсальная функция получения/отправки данных
+			fetch: function (execFunction, pathEnd, data = null) {
+				this.loadingData = true;
+				var fetchRef = execFunction;
+				var path = document.location.href;
+				path = path.substr(0, path.lastIndexOf('/')) + pathEnd;
+				fetch(path,
+						{
+							method: 'POST', // *GET, POST, PUT, DELETE, etc.
+							mode: 'cors', // no-cors, *cors, same-origin
+							body: JSON.stringify(data), //sending data
+							headers: {
+								'Content-Type': 'application/json'
+							}
+						})
+					.then((response) => {
+						return response.json();
+					})
+					.then((retData) => {
+						fetchRef(retData);
+					}).catch(error => {
+						alert("Error while getting server data: " + error);
+						this.loadingData = false;
+					});
+
+			}
+		}
+	,
+	mounted: function () {
+		this.getAvailableFields();//типы
+
+		this.rowCount = this.editingRowCount;
+		if (this.editingRowCount > 0)
+		{
+			//this.Load();
+		}
+	}
+	});
+	</script>
+
+</body>
+</html>

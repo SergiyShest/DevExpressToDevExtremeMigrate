@@ -1,0 +1,593 @@
+@using Sasha.Lims.Core.Helpers
+@using Sasha.Lims.Core.Helpers
+@using Sasha.Lims.WebUI.Localization
+@using Sasha.Lims.WebUI.Infrastructure.Consts
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@using Sasha.Lims.WebUI.Controllers
+@using Sasha.Lims.DataAccess.Entities.Constants
+@using Sasha.Lims.WebUI.Areas.SamplesEdit.Controllers
+@using System.Web.UI.WebControls
+@using DevExpress.Web.ASPxRichEdit.Forms
+@using Sasha.Lims.Core
+@using MenuItemAlignment = DevExpress.Web.MenuItemAlignment
+@using System.Drawing
+@using DevExpress.XtraRichEdit.Model
+@using NLog.Fluent
+<style>
+	.main-menu {
+		border: none !important;
+		font-size: 1.00em !important;
+		margin: 0px;
+		height: 50px;
+		margin-top: -50px;
+	}
+
+	.main-menu-item {
+		border: none !important;
+		font-size: 1.00em !important;
+		color: #777;
+		height: 3.0rem;
+		background-color: #E3F2FD !important;
+	}
+
+	.addmenu {
+		display: none;
+		border: none !important;
+		width: 200px;
+		font-size: larger;
+		margin: 5px;
+		height: 20px;
+	}
+
+		.addmenu:hover {
+			filter: contrast(50%);
+			font: bold;
+	/*		#background-color: #bbd;*/
+			cursor: pointer
+		}
+	/* context menu */
+
+	.context-menu {
+		display: none;
+		position: absolute;
+		z-index: 99999999;
+		padding: 12px 0;
+		width: 240px;
+		background-color: #fff;
+		border: solid 1px #dfdfdf;
+		box-shadow: 1px 1px 2px #cfcfcf;
+	}
+
+	.context-menu--active {
+		display: block;
+	}
+
+	.context-menu__items {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.context-menu__item {
+		display: block;
+		margin-bottom: 4px;
+	}
+
+	.context-menu__item:last-child {
+		margin-bottom: 0;
+	}
+
+	.context-menu__link {
+		display: block;
+		padding: 4px 12px;
+		color: #0066aa;
+		text-decoration: none;
+	}
+
+	.context-menu__link:hover {
+		color: #fff;
+		background-color: #0066aa;
+	}
+
+</style>
+@{
+	var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
+
+	var user = ViewBag.getUser();
+	IEnumerable<string> userRoles = user.Roles;
+	string licenseMessage = @DataHelper.Current.CheckLicense();
+
+}
+
+<script type="text/javascript">
+	@*document.addEventListener("keydown", function (event) {
+		if (event.code == "F1")
+		{  console.log(event.code);
+			event.preventDefault();
+			ShowHelp();
+		}
+       function ShowHelp() {
+		var currentPath = document.location.pathname.replace('/','-');
+		ShowUrlPopup("Help", '@Url.Action("Index", "Help",new { Area = "Help"} )?path=' + currentPath, document.documentElement.clientWidth - 50);
+	}
+	})*@
+
+	function ShowReportList() {
+		ShowUrlPopup("Report List on LIMS System", '@Url.Action("ReportListPopup", "ReportMenu",new { Area = "" })', 980, 630);
+	}
+
+	function ShowAbout() {
+		ShowUrlPopupAbout("About", '@Url.Action("About", "Help",new { Area = "Help"} )', 400, 350);
+	}
+
+
+
+
+	function Goto(path) {
+
+		if (path.trim()[0]!=='/')
+			path='/'+ path;
+		document.location.replace(path);
+	}
+
+	function NewWindow(path,text) {
+
+		if (path.trim()[0] !== '/')
+			path = '/' + path;
+		window.open(path, text, "location=yes,scrollbars=yes,status=yes").focus();
+	}
+
+	function NewTab(path) {
+
+		if (path.trim()[0] !== '/')
+			path = '/' + path;
+		window.open(path, '_blank').focus();
+	}
+
+
+	function MainMenuItemClick(s,e) {
+		switch (e.item.name) {
+
+			@foreach (var mi in DataHelper.Current.GetMenuItems())
+			{
+				if (mi.IsScript)
+				{
+					<text>
+					@Html.Raw($"case \'menuItem{mi.Id}\':{mi.Path} ;break;\n")
+	               </text>
+				}
+				else
+				{
+					<text>
+		            @Html.Raw($"case \'menuItem{mi.Id}\':Goto(\'{mi.Path}\'); break;\n")
+					</text>
+					<text>
+		            @Html.Raw($"case \'NewWindow{mi.Id}\':NewWindow(\'{mi.Path}\'); break;\n")
+					</text>
+					<text>
+		            @Html.Raw($"case \'NewTab{mi.Id}\':NewTab(\'{mi.Path}\'); break;\n")
+					</text>
+				}
+
+			}
+		}
+	}
+</script>
+
+
+
+@functions {
+	private void AddDataBaseItems(MenuSettings menusettings, IEnumerable<string> userRoles)
+	{
+		var menuItems = DataHelper.Current.GetMenu();
+		foreach (var mi in menuItems)
+			menusettings.Items.Add(item =>
+			{
+				AddItem(item, mi);
+
+			});
+
+		void AddItems(MVCxMenuItem item, LimsMenuItem model)
+		{
+			try
+			{
+				if (model.Disabled || !DataHelper.Current.EnabledMenuItem(model, userRoles)) return;
+				item.Items.Add(chaidItem =>
+				{
+					chaidItem.Text = model.Text;
+					chaidItem.Name = "menuItem" + model.Id;
+					chaidItem.ItemStyle.CssClass = "task";
+
+					chaidItem.Alignment = (MenuItemAlignment)(int)model.Aligment;
+					chaidItem.BeginGroup = model.BeginGroup;
+					if (!model.IsScript)
+					{
+						if (DataHelper.Current.MainMenuStyle == "1")
+						{
+							chaidItem.SetSubMenuTemplateContent(c =>
+							{
+								ViewContext.Writer.Write(
+									$"<div id='addmenu_1_{model.Id}'  class=\"addmenu \" onclick=\"NewTab('{model.Path}')\">Open in new tab</div>" +
+									$"<div id='addmenu_2_{model.Id}'  class=\"addmenu \" onclick =\"NewWindow('{model.Path}','{model.Text}')\">Open in new window</div>"
+								);
+							});
+						}
+						//if (DataHelper.Current.MainMenuStyle == "2")
+						//{
+
+						//	chaidItem.Items.Add(c =>
+						//	{
+						//		c.Name = "NewTab" + model.Id;
+						//		c.Text = "Open in new tab";
+						//		c.ItemStyle.Font.Size = FontUnit.Larger;
+						//	});
+						//	chaidItem.Items.Add(c =>
+						//	{
+						//		c.Name = "NewWindow" + model.Id;
+						//		c.Text = "Open in new window";
+						//		c.ItemStyle.Font.Size = FontUnit.Larger;
+						//	});
+						//}
+
+					}
+					chaidItem.ItemStyle.Font.Size = FontUnit.Larger;
+					foreach (var cmi in model.Items)
+						try
+						{
+							AddItems(chaidItem, cmi);
+						}
+						catch (Exception ex)
+						{
+							Log.Error(ex.ToString());
+						}
+				});
+			}
+			catch (Exception ex)
+			{
+				Log.Error(ex.ToString());
+			}
+		}
+
+		void AddItem(MVCxMenuItem item, LimsMenuItem mi)
+		{
+			try
+			{
+				if (mi.Disabled || !DataHelper.Current.EnabledMenuItem(mi, userRoles))
+				{
+					item.Visible = false;
+				}
+				item.Text = mi.Text;
+				item.Name = "menuItem" + mi.Id;
+				item.Alignment = (MenuItemAlignment)(int)mi.Aligment;
+				item.ItemStyle.Font.Size = FontUnit.Larger;
+				var items = mi.Items.OrderBy(x => x.Order);
+				foreach (var cmi in items)
+					AddItems(item, cmi);
+			}
+			catch (Exception ex)
+			{
+				Log.Error(ex.ToString());
+			}
+		}
+	}
+}
+
+@Html.DevExpress().Menu(
+		settings =>
+		{
+			settings.Name = "mainMenu";
+			settings.ClientSideEvents.ItemClick = "MainMenuItemClick";
+			settings.ItemAutoWidth = false;
+			settings.AllowSelectItem = false;
+			settings.ApplyItemStyleToTemplates = true;
+
+
+			settings.SettingsAdaptivity.Enabled = true;
+			settings.SettingsAdaptivity.EnableAutoHideRootItems = true;
+			settings.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+			settings.SettingsAdaptivity.CollapseRootItemsToIconsAtWindowInnerWidth = 600;
+
+			//settings.ControlStyle.SeparatorWidth = System.Web.UI.WebControls.Unit.Pixel(0);
+			settings.ControlStyle.CssClass = "main-menu";
+			//settings.ControlStyle.BackColor=Color.Blue;
+
+			//settings.Styles.Item.CssClass = "main-menu-item";
+			//settings.Styles.Item.VerticalAlign = VerticalAlign.Middle;
+			settings.Styles.Item.HorizontalAlign = HorizontalAlign.Left;
+			settings.Styles.Item.VerticalAlign = VerticalAlign.Middle;
+			//settings.Images.Item.Width = System.Web.UI.WebControls.Unit.Pixel(16);
+			//settings.Images.Item.Height = System.Web.UI.WebControls.Unit.Pixel(16);
+			//settings.AllowSelectItem = Model.AllowSelectItem;
+			//settings.EnableHotTrack = Model.EnableHotTrack;
+			//settings.EnableAnimation = Model.EnableAnimation;
+			//settings.AppearAfter = Model.AppearAfter;
+			//settings.DisappearAfter = Model.DisappearAfter;
+			//settings.MaximumDisplayLevels = Model.MaximumDisplayLevels;
+			settings.Height = Unit.Percentage(100);
+			settings.Width = Unit.Percentage(100);
+			settings.Init = (s, e) =>
+			{
+				MVCxMenu menu = (MVCxMenu)s;
+				menu.AutoSeparators = AutoSeparatorMode.None;
+				menu.ShowPopOutImages = DefaultBoolean.True;
+
+			};
+
+			settings.Items.Add(item =>
+			{
+
+			    item.Image.Url = Url.Content("~/Content/Images/logos/logo_1.svg");
+				item.Image.Height = Unit.Pixel(44);
+				item.Text = "LIMS Portal";
+				item.Enabled = false;
+				item.Alignment = MenuItemAlignment.Left;
+				//item.ItemStyle.ForeColor = Color.Black;
+				item.ItemStyle.Font.Bold = true;
+				item.ItemStyle.Font.Size = FontUnit.Larger;
+				item.ItemStyle.Height = Unit.Pixel(60);
+				//item.ItemStyle.CssClass = "main-menu-item";
+
+
+			});
+
+			AddDataBaseItems(settings, userRoles);
+
+		}).GetHtml()
+
+@*@if (!string.IsNullOrEmpty(licenseMessage))
+{
+	@Html.DevExpress().Panel(settings =>
+	{
+		settings.Name = "LicensePanel";
+		settings.Styles.Panel.CssClass = "licensePanel";
+		settings.SetContent(() =>
+		{
+				ViewContext.Writer.Write("<div class='licensePanelContent'>" + @licenseMessage + "</div>");
+		});
+	}).GetHtml()
+}*@
+
+@*<nav id="context-menu" class="context-menu">
+    <ul class="context-menu__items dmx-item ">
+      <li class="  context-menu__item dmx-item">
+        <a href="#" class="context-menu__link" data-action="View"><i class="fa fa-eye"></i> Open in new tab</a>
+      </li>
+      <li class="context-menu__item">
+        <a href="#" class="context-menu__link" data-action="Edit"><i class="fa fa-edit"></i> Open in new window</a>
+      </li>
+
+    </ul>
+  </nav>*@
+<script>
+(function() {
+  
+  "use strict";
+
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  //
+  // H E L P E R    F U N C T I O N S
+  //
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+
+  /**
+   * Function to check if we clicked inside an element with a particular class
+   * name.
+   * 
+   * @@param {Object} e The event
+   * @@param {String} className The class name to check against
+   * @@return {Boolean}
+   */
+  function clickInsideElement( e, className ) {
+    var el = e.srcElement || e.target;
+    
+    if ( el.classList.contains(className) ) {
+      return el;
+    } else {
+      while ( el = el.parentNode ) {
+        if ( el.classList && el.classList.contains(className) ) {
+          return el;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * Get's exact position of event.
+   * 
+   * @@param {Object} e The event passed in
+   * @@return {Object} Returns the x and y position
+   */
+  function getPosition(e) {
+    var posx = 0;
+    var posy = 0;
+
+    if (!e) var e = window.event;
+    
+    if (e.pageX || e.pageY) {
+      posx = e.pageX;
+      posy = e.pageY;
+    } else if (e.clientX || e.clientY) {
+      posx = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+      posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+    }
+
+    return {
+      x: posx,
+      y: posy
+    }
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  //
+  // C O R E    F U N C T I O N S
+  //
+  //////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  
+  /**
+   * Variables.
+   */
+  var contextMenuClassName = "context-menu";
+  var contextMenuItemClassName = "context-menu__item";
+  var contextMenuLinkClassName = "context-menu__link";
+  var contextMenuActive = "context-menu--active";
+
+  var taskItemClassName = "task";
+  var taskItemInContext;
+
+  var clickCoords;
+  var clickCoordsX;
+  var clickCoordsY;
+
+  var menu = document.querySelector("#context-menu");
+  //var menuItems = menu.querySelectorAll(".context-menu__item");
+  var menuState = 0;
+  var menuWidth;
+  var menuHeight;
+  var menuPosition;
+  var menuPositionX;
+  var menuPositionY;
+
+  var windowWidth;
+  var windowHeight;
+
+  /**
+   * Initialise our application's code.
+   */
+	function init() {
+
+    contextListener();
+    clickListener();
+    keyupListener();
+    resizeListener();
+  }
+
+  /**
+   * Listens for contextmenu events.
+   */
+  function contextListener() {
+    document.addEventListener( "contextmenu", function(e) {
+      taskItemInContext = clickInsideElement( e, taskItemClassName );
+
+      if ( taskItemInContext ) {
+        e.preventDefault();
+        toggleMenuOn();
+        positionMenu(e);
+      } else {
+        taskItemInContext = null;
+        toggleMenuOff();
+      }
+    });
+  }
+
+  /**
+   * Listens for click events.
+   */
+  function clickListener() {
+    document.addEventListener( "click", function(e) {
+      var clickeElIsLink = clickInsideElement( e, contextMenuLinkClassName );
+	  console.log(clickeElIsLink);
+      if ( clickeElIsLink ) {
+        e.preventDefault();
+        menuItemListener( clickeElIsLink );
+      } else {
+        var button = e.which || e.button;
+        if ( button === 1 ) {
+          toggleMenuOff();
+        }
+      }
+    });
+  }
+
+  /**
+   * Listens for keyup events.
+   */
+  function keyupListener() {
+    window.onkeyup = function(e) {
+      if ( e.keyCode === 27 ) {
+        toggleMenuOff();
+      }
+    }
+  }
+
+  /**
+   * Window resize event listener
+   */
+  function resizeListener() {
+    window.onresize = function(e) {
+      toggleMenuOff();
+    };
+  }
+
+  /**
+   * Turns the custom context menu on.
+   */
+  function toggleMenuOn() {
+    if ( menuState !== 1 ) {
+      menuState = 1;
+      menu.classList.add( contextMenuActive );
+    }
+  }
+
+  /**
+   * Turns the custom context menu off.
+   */
+  function toggleMenuOff() {
+    if ( menuState !== 0 ) {
+      menuState = 0;
+      menu.classList.remove( contextMenuActive );
+    }
+  }
+
+  /**
+   * Positions the menu properly.
+   * 
+   * @@param {Object} e The event
+   */
+  function positionMenu(e) {
+    clickCoords = getPosition(e);
+    clickCoordsX = clickCoords.x;
+    clickCoordsY = clickCoords.y;
+
+    menuWidth = menu.offsetWidth + 4;
+    menuHeight = menu.offsetHeight + 4;
+
+    windowWidth = window.innerWidth;
+    windowHeight = window.innerHeight;
+
+    if ( (windowWidth - clickCoordsX) < menuWidth ) {
+      menu.style.left = windowWidth - menuWidth + "px";
+    } else {
+      menu.style.left = clickCoordsX + "px";
+    }
+
+    if ( (windowHeight - clickCoordsY) < menuHeight ) {
+      menu.style.top = windowHeight - menuHeight + "px";
+    } else {
+      menu.style.top = clickCoordsY + "px";
+    }
+  }
+
+  /**
+   * Dummy action function that logs an action when a menu item link is clicked
+   * 
+   * @@param {HTMLElement} link The link that was clicked
+   */
+	function menuItemListener(link) {
+		console.log(taskItemInContext);
+    console.log( "Task ID - " + taskItemInContext.getAttribute("data-id") + ", Task action - " + link.getAttribute("data-action"));
+    toggleMenuOff();
+  }
+
+  /**
+   * Run the app.
+   */
+  init();
+
+})();
+</script>

@@ -1,0 +1,22 @@
+[
+  {
+    "Input": " column.FieldName = \"Id\";column.Caption = \"Код договора\";column.Width = Unit.Pixel(125);column.ColumnType = MVCxGridViewColumnType.SpinEdit;((SpinEditProperties)column.PropertiesEdit).NumberType = SpinEditNumberType.Integer;((SpinEditProperties)column.PropertiesEdit).SpinButtons.ShowIncrementButtons = false;column.SortOrder = DevExpress.Data.ColumnSortOrder.Descending;c.Settings.AllowSort = DefaultBoolean.False",
+    "Expected": "{caption:'\"Код договора\"', dataField:'\"Id\"', dataType:'number'\r\n,width:125px\r\n}",
+    "Name": "visible:not defined"
+  },
+  {
+    "Input": " column.FieldName = \"Id\";column.Caption = \"Код договора\";column.Width = Unit.Pixel(125);column.ColumnType = MVCxGridViewColumnType.SpinEdit;((SpinEditProperties)column.PropertiesEdit).NumberType = SpinEditNumberType.Integer;((SpinEditProperties)column.PropertiesEdit).SpinButtons.ShowIncrementButtons = false;column.SortOrder = DevExpress.Data.ColumnSortOrder.Descending;c.Settings.AllowSort = DefaultBoolean.False;c.Visible = true;",
+    "Expected": "{caption:'\"Код договора\"', dataField:'\"Id\"', dataType:'number'\r\n,width:125px\r\n,visible:true\r\n}",
+    "Name": "visible:true"
+  },
+  {
+    "Input": " column.FieldName = \"Id\";column.Caption = \"Код договора\";column.Width = Unit.Pixel(125);column.ColumnType = MVCxGridViewColumnType.SpinEdit;((SpinEditProperties)column.PropertiesEdit).NumberType = SpinEditNumberType.Integer;((SpinEditProperties)column.PropertiesEdit).SpinButtons.ShowIncrementButtons = false;column.SortOrder = DevExpress.Data.ColumnSortOrder.Descending;c.Settings.AllowSort = DefaultBoolean.False;c.Visible = false;",
+    "Expected": "{caption:'\"Код договора\"', dataField:'\"Id\"', dataType:'number'\r\n,width:125px\r\n,visible:false\r\n}",
+    "Name": "visible:false"
+  },
+  {
+    "Input": " column.FieldName = \"DocNum\";column.Caption = \"Номер документа\";column.Width = Unit.Pixel(225);",
+    "Expected": "{caption:'\"Номер документа\"', dataField:'\"DocNum\"', dataType:'text',width:225px}",
+    "Name": "Номер документа"
+  }
+]

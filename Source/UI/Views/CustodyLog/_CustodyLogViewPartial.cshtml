@@ -1,0 +1,131 @@
+@using System.Web.UI.WebControls;
+
+@Html.DevExpress().CardView(
+	settings =>
+	{
+		settings.Name = "CardView";
+		settings.CallbackRouteValues = new { Controller = "CustodyLog", Action = "CustodyLogViewPartial" };
+		settings.SettingsSearchPanel.Visible = true;
+		settings.Width = Unit.Percentage(100);
+		settings.KeyFieldName = "CustodyLogDetailId";
+		settings.Columns.Add("SampleNumber");
+		settings.Columns.Add("Status");
+		settings.Columns.Add(column => {
+			column.FieldName = "DateTime";
+			//column.PropertiesEdit.DisplayFormatString = "d";
+			column.PropertiesEdit.DisplayFormatString = "g";
+		});
+		//settings.Columns.Add("DateTime");
+		settings.Columns.Add("Location");
+		settings.Columns.Add("StoredAt");
+		settings.Columns.Add("AmountInOut");
+		settings.Columns.Add("Signature");
+
+
+		//exporting
+		settings.SettingsExport.EnableClientSideExportAPI = true;
+		settings.SettingsExport.CardWidth = 600;
+		settings.EnableCardsCache = false;
+		settings.Toolbars.Add(tb => {
+			//tb.SettingsAdaptivity.Enabled = true;
+			//tb.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+			tb.Items.Add(CardViewToolbarCommand.ExportToPdf);
+			//tb.Items.Add(CardViewToolbarCommand.ExportToXls);
+			//tb.Items.Add(CardViewToolbarCommand.ExportToXlsx);
+			//tb.Items.Add(CardViewToolbarCommand.ExportToDocx);
+			//tb.Items.Add(CardViewToolbarCommand.ExportToRtf);
+		});
+
+		//settings.Columns.Add("Address");
+		//settings.Columns.Add("City");
+		//settings.Columns.Add("PostalCode");
+		//settings.Columns.Add("Country");
+		//settings.Columns.Add("Phone");
+
+		//settings.PreRender = (sender, e) =>
+		//{
+		//	var cardView = (MVCxCardView)sender;
+		//	cardView.SearchPanelFilter = "an";
+		//};
+		//settings.SettingsPager.EnableAdaptivity = true;
+
+		settings.SettingsPager.Visible = true;
+		//settings.Styles.PagerBottomPanel.HorizontalAlign = HorizontalAlign.Right;
+		//settings.SettingsPager.SettingsBreakpointsLayout.ItemsPerPage = 5;
+		//settings.Styles.BreakpointsCard.Height = 100;
+		//settings.SettingsPager.SettingsTableLayout.RowsPerPage = 5;
+
+		settings.SettingsPager.Position = PagerPosition.Bottom;
+		settings.SettingsPager.PageSizeItemSettings.Visible = false;
+		settings.SettingsPager.PageSizeItemSettings.Position = PagerPageSizePosition.Right;
+		settings.SettingsPager.Summary.Visible = false;
+		settings.SettingsPager.ShowSeparators = false;
+
+		//settings.SettingsPager.SettingsTableLayout.ColumnCount = 3;
+		settings.SettingsPager.SettingsTableLayout.ColumnCount = 1;
+		//settings.SettingsPager.SettingsTableLayout.RowsPerPage = 5;
+		settings.SettingsPager.SettingsTableLayout.RowsPerPage = 10;
+		settings.SettingsPager.EnableAdaptivity = true;
+
+		//settings.Styles.Card.Height = 1;
+		//settings.CardLayoutProperties.ColumnCount = 1;
+		//settings.SettingsPager.Mode = GridViewPagerMode.ShowAllRecords;
+
+		//settings.Settings.LayoutMode = DevExpress.Web.Layout.Table;
+		//settings.Styles.BreakpointsCard.Height = 150;
+		//settings.SettingsAdaptivity.BreakpointsLayoutSettings.CardsPerRow = 1;
+		//settings.CardLayoutProperties.ColCount = 3;
+		//settings.CardLayoutProperties
+
+		settings.CardLayoutProperties.ColCount = 3;
+		//settings.CardLayoutProperties.Items.
+		settings.CardLayoutProperties.Items.AddCommandItem(i => {
+			i.ShowEditButton = false;
+			i.ColSpan = 3;
+			i.HorizontalAlign = FormLayoutHorizontalAlign.Right;
+		});
+		settings.CardLayoutProperties.Items.Add(i => {
+			i.ColumnName = "SampleNumber";
+			//i.ShowCaption = DefaultBoolean.False;
+			i.ColSpan = 1;
+
+			//i.RowSpan = 4;
+		});
+		settings.CardLayoutProperties.Items.Add(i => { i.ColumnName = "Status"; });
+		//settings.CardLayoutProperties.Items.Add("Status");
+		settings.CardLayoutProperties.Items.Add(i => {
+			i.ColumnName = "DateTime";
+			//i.PropertiesEdit.DisplayFormatString = "c";
+		});
+		//settings.CardLayoutProperties.Items.Add("DateTime");
+		settings.CardLayoutProperties.Items.Add(i => { i.ColumnName = "Location"; });
+		//settings.CardLayoutProperties.Items.Add("Location");
+		settings.CardLayoutProperties.Items.Add(i => { i.ColumnName = "StoredAt"; });
+		//settings.CardLayoutProperties.Items.Add("StoredAt");
+		settings.CardLayoutProperties.Items.Add(i => { i.ColumnName = "AmountInOut"; });
+		//settings.CardLayoutProperties.Items.Add("AmountInOut");
+		settings.CardLayoutProperties.Items.Add(i => { i.ColumnName = "Signature"; });
+		//settings.CardLayoutProperties.Items.Add("Signature");
+		//settings.CardLayoutProperties.Paddings.PaddingBottom = 1;
+		//settings.CardLayoutProperties.Items.AddEditModeCommandItem(item => {
+		//          item.HorizontalAlign = FormLayoutHorizontalAlign.Right;
+		//          item.ColSpan = 3;
+		//      });
+
+		//settings.SettingsPager.SettingsTableLayout.ColumnCount = 1;
+		//settings.SettingsPager.SettingsTableLayout.RowsPerPage = 6;
+		//settings.SettingsAdaptivity.BreakpointsLayoutSettings.Breakpoints.Add(1400, 4);
+		//settings.SettingsAdaptivity.BreakpointsLayoutSettings.Breakpoints.Add(900, 3);
+		//settings.SettingsAdaptivity.BreakpointsLayoutSettings.Breakpoints.Add(700, 2);
+		//settings.SettingsAdaptivity.BreakpointsLayoutSettings.Breakpoints.Add(500, 1);
+		//settings.SettingsPager.SettingsTableLayout.ColumnCount = 1;
+
+		//settings.SettingsPager.NumericButtonCount = 4;
+		//settings.Settings.LayoutMode = DevExpress.Web.Layout.Flow;
+		//settings.Styles.FlowCard.Height = 330;
+		//settings.Styles.FlowCard.CssClass = "FlowCard";
+		//settings.Styles.FlowCard.Width = 234;
+		settings.Styles.Card.Width = 200;
+		settings.Styles.Card.Height = 1;
+
+	}).Bind(Model).GetHtml()

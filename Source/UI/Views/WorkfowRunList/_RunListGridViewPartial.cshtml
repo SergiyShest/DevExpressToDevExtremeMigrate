@@ -1,0 +1,268 @@
+@using DevExpress.XtraGrid
+@using Sasha.Lims.WebUI.Controllers
+@using System.Web.UI.WebControls
+
+@{
+	var gridView = Html.DevExpress().GridView(settings =>
+	{
+		settings.Name = "RunListGridView";
+		settings.Width = Unit.Percentage(100);
+		settings.SettingsBehavior.AllowFocusedRow = true;
+		settings.SettingsBehavior.AllowSelectByRowClick = true;
+		settings.SettingsBehavior.AllowEllipsisInText = true;
+
+		settings.Settings.VerticalScrollBarMode = ScrollBarMode.Hidden;
+
+		settings.SettingsPager.Visible = true;
+		settings.Styles.PagerBottomPanel.HorizontalAlign = HorizontalAlign.Right;
+		settings.SettingsPager.Position = PagerPosition.Bottom;
+		settings.SettingsPager.Summary.Visible = false;
+
+		settings.SettingsPopup.HeaderFilter.Height = Unit.Pixel(420);
+		settings.SettingsPopup.HeaderFilter.Width = Unit.Pixel(290);
+		settings.SettingsPopup.HeaderFilter.SettingsAdaptivity.Mode = PopupControlAdaptivityMode.OnWindowInnerWidth;
+		settings.SettingsPopup.HeaderFilter.SettingsAdaptivity.SwitchAtWindowInnerWidth = 768;
+
+		settings.SettingsPager.PageSize = 15;
+		settings.SettingsPager.FirstPageButton.Visible = true;
+		settings.SettingsPager.LastPageButton.Visible = true;
+		settings.SettingsPager.PageSizeItemSettings.Visible = true;
+		settings.SettingsPager.PageSizeItemSettings.ShowPopupShadow = true;
+		settings.SettingsPager.PageSizeItemSettings.Position = PagerPageSizePosition.Left;
+		settings.SettingsPager.PageSizeItemSettings.Items = new[] { "15", "50", "100", "200" };
+
+
+		settings.Settings.ShowFilterRow = true;
+		settings.Settings.ShowFilterRowMenu = true;
+		settings.SettingsBehavior.FilterRowMode = GridViewFilterRowMode.Auto;
+
+
+		settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+		settings.SettingsEditing.EditFormColumnCount = 2;
+//gridViewSettings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+settings.SettingsPopup.EditForm.SettingsAdaptivity.MaxWidth = 600;
+		settings.SettingsPopup.EditForm.SettingsAdaptivity.Mode = PopupControlAdaptivityMode.Always;
+		settings.SettingsPopup.EditForm.SettingsAdaptivity.VerticalAlign = PopupAdaptiveVerticalAlign.WindowCenter;
+
+		settings.EditFormLayoutProperties.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+		settings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 600;
+
+		settings.SettingsResizing.ColumnResizeMode = ColumnResizeMode.Control;
+		settings.SettingsResizing.Visualization = ResizingMode.Postponed;
+
+
+		settings.SettingsBehavior.ProcessColumnMoveOnClient = false;
+		settings.SettingsBehavior.ColumnMoveMode = GridColumnMoveMode.AmongSiblings;
+		settings.SettingsBehavior.EnableCustomizationWindow = true;
+		settings.SettingsCookies.Enabled = true;
+		settings.SettingsCookies.StoreColumnsVisiblePosition = true;
+		settings.SettingsCookies.StoreColumnsWidth = true;
+		settings.SettingsCookies.StoreControlWidth = true;
+		settings.SettingsCookies.StoreFiltering = true;
+		settings.SettingsCookies.StorePaging = false;
+		settings.SettingsCookies.StoreColumnsHierarchy = false;
+		settings.Settings.ShowGroupPanel = false;
+
+		settings.SettingsBehavior.AllowDragDrop = true;
+
+
+
+		settings.SetEditFormTemplateContent(c =>
+		{
+			Html.RenderAction("RunListPartial", "RunList", new
+			{
+				id = DataBinder.Eval(c.DataItem, "Id")
+			});
+		});
+
+		settings.ClientSideEvents.Init = "onGridViewInit";
+		settings.ClientSideEvents.SelectionChanged = "onGridViewSelectionChanged";
+		settings.ClientSideEvents.BeginCallback = "onGridViewBeginCallback";
+		settings.ClientSideEvents.CustomizationWindowCloseUp = "onGridCustomizationWindowCloseUp";
+
+		settings.CallbackRouteValues = new { Controller = "RunList", Action = "RunListGridViewPartial" };
+		settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "RunList", Action = "RunListGridViewPartialAddNew" };
+
+		settings.CustomActionRouteValues = new { Controller = "RunList", Action = "RunListGridViewCustomAction" };
+
+		settings.CustomBindingRouteValuesCollection.Add(GridViewOperationType.Paging, new { Controller = "RunList", Action = "RunListGridViewPagingAction" });
+		settings.CustomBindingRouteValuesCollection.Add(GridViewOperationType.Sorting, new { Controller = "RunList", Action = "RunListGridViewSortingAction" });
+		settings.CustomBindingRouteValuesCollection.Add(GridViewOperationType.Filtering, new { Controller = "RunList", Action = "RunListGridViewFilteringAction" });
+
+		settings.KeyFieldName = "Id";
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "TypeId";
+			columnSettings.Caption = "Type";
+			columnSettings.Width = Unit.Pixel(130);
+
+			columnSettings.EditorProperties().ComboBox(comboBoxProperties =>
+			{
+				comboBoxProperties.ShowImageInEditBox = true;
+				comboBoxProperties.ItemImage.Width = 16;
+				comboBoxProperties.ItemImage.Height = 16;
+				comboBoxProperties.ValueField = "Id";
+				comboBoxProperties.TextField = "DisplayText";
+				comboBoxProperties.BindList(((RunListController)ViewContext.Controller).GetProperties("WorkflowType"));
+			});
+
+		});
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Code";
+			columnSettings.Caption = "Code";
+
+			columnSettings.SetDataItemTemplateContent(c =>
+			{
+				string linkText = DataBinder.Eval(c.DataItem, "Code")?.ToString();
+				if (!String.IsNullOrEmpty(linkText))
+				{
+					ViewContext.Writer.Write(
+						Html.ActionLink(linkText,
+						"Index",
+						"ProcessList",
+						new { runId = Convert.ToString(DataBinder.Eval(c.DataItem, "ID")) }
+						, new { target = "_self" }
+						).ToHtmlString()
+						);
+				}
+			});
+
+		});
+		settings.Columns.Add("CurProcessId");
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "StatusId";
+			columnSettings.Caption = "Status";
+			columnSettings.Width = Unit.Pixel(130);
+
+			columnSettings.EditorProperties().ComboBox(comboBoxProperties =>
+			{
+				comboBoxProperties.ShowImageInEditBox = true;
+				comboBoxProperties.ItemImage.Width = 16;
+				comboBoxProperties.ItemImage.Height = 16;
+				comboBoxProperties.ValueField = "Id";
+				comboBoxProperties.TextField = "DisplayText";
+				comboBoxProperties.BindList(((RunListController)ViewContext.Controller).GetProperties("WorkflowStatus"));
+			});
+
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.Settings.AllowHeaderFilter = DefaultBoolean.True;
+			columnSettings.FieldName = "DateStarted";
+			columnSettings.Caption = "DateStarted";
+	//columnSettings.Width = Unit.Pixel(180);
+	columnSettings.EditFormSettings.Visible = DefaultBoolean.False;
+			columnSettings.SettingsHeaderFilter.Mode = GridHeaderFilterMode.DateRangeCalendar;
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.Settings.AllowHeaderFilter = DefaultBoolean.True;
+			columnSettings.FieldName = "DateUpdated";
+			columnSettings.Caption = "DateUpdated";
+	//columnSettings.Width = Unit.Pixel(180);
+	columnSettings.EditFormSettings.Visible = DefaultBoolean.False;
+			columnSettings.SettingsHeaderFilter.Mode = GridHeaderFilterMode.DateRangeCalendar;
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.Settings.AllowHeaderFilter = DefaultBoolean.True;
+			columnSettings.FieldName = "DateCompleted";
+			columnSettings.Caption = "DateCompleted";
+	//columnSettings.Width = Unit.Pixel(180);
+	columnSettings.EditFormSettings.Visible = DefaultBoolean.False;
+			columnSettings.SettingsHeaderFilter.Mode = GridHeaderFilterMode.DateRangeCalendar;
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.Settings.AllowHeaderFilter = DefaultBoolean.True;
+			columnSettings.FieldName = "DateCreated";
+			columnSettings.Caption = "DateCreated";
+	//columnSettings.Width = Unit.Pixel(180);
+	columnSettings.EditFormSettings.Visible = DefaultBoolean.False;
+			columnSettings.SettingsHeaderFilter.Mode = GridHeaderFilterMode.DateRangeCalendar;
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.Settings.AllowHeaderFilter = DefaultBoolean.True;
+			columnSettings.FieldName = "StartedById";
+			columnSettings.Caption = "StartedById";
+	//columnSettings.Width = Unit.Pixel(200);
+	columnSettings.EditFormSettings.Visible = DefaultBoolean.False;
+			columnSettings.Settings.SortMode = ColumnSortMode.DisplayText;
+			columnSettings.EditorProperties().ComboBox(comboBoxProperties =>
+				{
+					comboBoxProperties.ShowImageInEditBox = true;
+					comboBoxProperties.ItemImage.Width = 16;
+					comboBoxProperties.ItemImage.Height = 16;
+					comboBoxProperties.ValueField = "UserId";
+					comboBoxProperties.TextField = "DisplayText";
+					comboBoxProperties.BindList(((RunListController)ViewContext.Controller).GetSystemUsers());
+				});
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.Settings.AllowHeaderFilter = DefaultBoolean.True;
+			columnSettings.FieldName = "UpdatedById";
+			columnSettings.Caption = "UpdatedById";
+	//columnSettings.Width = Unit.Pixel(200);
+	columnSettings.EditFormSettings.Visible = DefaultBoolean.False;
+			columnSettings.Settings.SortMode = ColumnSortMode.DisplayText;
+			columnSettings.EditorProperties().ComboBox(comboBoxProperties =>
+				{
+					comboBoxProperties.ShowImageInEditBox = true;
+					comboBoxProperties.ItemImage.Width = 16;
+					comboBoxProperties.ItemImage.Height = 16;
+					comboBoxProperties.ValueField = "UserId";
+					comboBoxProperties.TextField = "DisplayText";
+					comboBoxProperties.BindList(((RunListController)ViewContext.Controller).GetSystemUsers());
+				});
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.Settings.AllowHeaderFilter = DefaultBoolean.True;
+			columnSettings.FieldName = "CompletedById";
+			columnSettings.Caption = "CompletedById";
+	//columnSettings.Width = Unit.Pixel(200);
+	columnSettings.EditFormSettings.Visible = DefaultBoolean.False;
+			columnSettings.Settings.SortMode = ColumnSortMode.DisplayText;
+			columnSettings.EditorProperties().ComboBox(comboBoxProperties =>
+				{
+					comboBoxProperties.ShowImageInEditBox = true;
+					comboBoxProperties.ItemImage.Width = 16;
+					comboBoxProperties.ItemImage.Height = 16;
+					comboBoxProperties.ValueField = "UserId";
+					comboBoxProperties.TextField = "DisplayText";
+					comboBoxProperties.BindList(((RunListController)ViewContext.Controller).GetSystemUsers());
+				});
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.Settings.AllowHeaderFilter = DefaultBoolean.True;
+			columnSettings.FieldName = "CreatedById";
+			columnSettings.Caption = "CreatedById";
+	//columnSettings.Width = Unit.Pixel(200);
+	columnSettings.EditFormSettings.Visible = DefaultBoolean.False;
+			columnSettings.Settings.SortMode = ColumnSortMode.DisplayText;
+			columnSettings.EditorProperties().ComboBox(comboBoxProperties =>
+				{
+					comboBoxProperties.ShowImageInEditBox = true;
+					comboBoxProperties.ItemImage.Width = 16;
+					comboBoxProperties.ItemImage.Height = 16;
+					comboBoxProperties.ValueField = "UserId";
+					comboBoxProperties.TextField = "DisplayText";
+					comboBoxProperties.BindList(((RunListController)ViewContext.Controller).GetSystemUsers());
+				});
+		});
+
+		settings.SettingsDetail.ShowDetailRow = true;
+		settings.SetDetailRowTemplateContent(c => Html.RenderAction("Index", "ProcessResult", new { id = (int)c.KeyValue }));
+		settings.SettingsDetail.AllowOnlyOneMasterRowExpanded = true;
+	});
+}
+
+@gridView.BindToCustomData(Model).GetHtml()
+

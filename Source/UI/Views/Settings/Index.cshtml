@@ -1,0 +1,246 @@
+@using Sasha.Lims.DataAccess.Entities.Constants
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@using Sasha.Lims.WebUI.Localization
+@using Sasha.Lims.Core.DTO.Common
+@{
+	ViewBag.Title = Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Properties));
+	Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+}
+@section Head {
+	<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Properties/toolbar.css?v=0.10")" />
+	<script type="text/javascript" src="@Url.Content("~/Scripts/Properties/toolbar.js?v=0.54")"></script>
+	<script>
+
+		window.addEventListener("message", receiveMessage, false);
+
+		function receiveMessage(event) {
+			if (typeof event.data === 'string' && event.data.indexOf('Rules=') > -1) {
+				var json = event.data.substring(6);
+				var rules = JSON.parse(json);
+				window['EditSampleSetting.RulesStr'].SetText(json)
+			}
+			if (typeof event.data === 'string' && event.data.indexOf('RefreshGrid') > -1) {
+				TreeList.Refresh();
+			}
+
+		}
+
+
+		function EditRules() {
+			var nodeKey = TreeList.GetFocusedNodeKey();
+			var url = '@Url.Action("Index", "RuleEdit", new { Area = "PropertyTree" })?id=' + nodeKey+'&type=prop';
+			ShowUrlPopup("Rules", url, 900, 600);
+		}
+		function Edit(id) {
+			var url = '@Url.Action("Index", "PropertyEdit", new { Area = "PropertyTree" })?id=' + id+'&type=prop';
+			ShowUrlPopup("Rules", url, 900, 600);
+		}
+		function comment(key) {
+			ShowUrlPopup("Comments", '@Url.Action("CommentForm", "Comments")?rowId=' + key + '&tableId=@((int)TableType.Prop)', 900, 600);
+		}
+		//загрузка файлов
+		function AttachedFiles(key) {
+			ShowUrlPopup("Files", '@Url.Action("FileManager", "FileManager")?rowId=' + key + '&tableId=@((int)TableType.Prop)', 900, 630);
+		}
+		//Экспорт настроек (properties)
+		function ExportSettings(keys) {
+			ShowUrlPopup("Selected properties to export", '@Url.Action("ExportSettings", "Print")?keys=' + keys, 980, 630);
+		}
+
+		function ClearCache() {
+			var url = '@Url.Action("ClearCache", "Settings")';
+			fetch(url,
+					{
+						method: 'POST', // *GET, POST, PUT, DELETE, etc.
+						mode: 'cors', // no-cors, *cors, same-origin
+						body: null, //sending data
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					})
+				.then((response) => {
+					alert("Cache is cleared");
+				})
+				.catch(error => {
+					alert("Error while getting server data: " + error);
+
+				});
+		}
+
+		function Edit() {
+			var nodeKey = TreeList.GetFocusedNodeKey();
+
+			//var url = '@Url.Action("Index", "PropertyEdit",new {Area = "PropertyTree"})?id=' + nodeKey;
+			//ShowUrlPopup("Edit setting ",url  , 900, 630);
+			TreeList.StartEdit(nodeKey);
+		}
+
+		function New(parId) {
+			//var url = '@Url.Action("New", "PropertyEdit",new {Area = "PropertyTree"})?parId=' + parId;
+			//ShowUrlPopup("new setting ",url  , 900, 630);
+			TreeList.StartEditNewNode(parId);
+
+		}
+
+		function onTypeChanged(s, e) {
+			var valueArea = document.getElementById("valueArea");
+			var menuItemPropertyArea = document.getElementById("menuItemPropertyArea");
+			var editSettingsArea = document.getElementById("objectEditSettingArea");
+			var reagentArea = document.getElementById("reagentArea");
+			switch (s.GetValue()) {
+			case '@PropertyType.MenuItem':
+					valueArea.style.visibility = 'collapse';
+					valueArea.style.width = '0px';
+					editSettingsArea.style.visibility = 'collapse';
+					editSettingsArea.style.width = '0px';
+					menuItemPropertyArea.style.visibility = 'visible';
+					menuItemPropertyArea.style.width = '100%'
+					reagentArea.style.visibility = 'collapse';
+					reagentArea.style.width = '0px'
+					break;
+				case '@PropertyType.ObjectEditSetting':
+					valueArea.style.visibility = 'collapse';
+					valueArea.style.width = '0px';
+					editSettingsArea.style.visibility = 'visible';
+					editSettingsArea.style.width = '';
+					menuItemPropertyArea.style.visibility = 'collapse';
+					menuItemPropertyArea.style.width = '0px'
+					reagentArea.style.visibility = 'collapse';
+					reagentArea.style.width = '0px'
+				case '@PropertyType.ReagentTemplate':
+					valueArea.style.visibility = 'collapse';
+					valueArea.style.width = '0px';
+					editSettingsArea.style.visibility = 'collapse';
+					editSettingsArea.style.width = '0px';
+					menuItemPropertyArea.style.visibility = 'collapse';
+					menuItemPropertyArea.style.width = '0px'
+					reagentArea.style.visibility = 'visible';
+					reagentArea.style.width = ''
+					break;
+
+			default:
+					valueArea.style.visibility = 'visible';
+					valueArea.style.width = '';
+					editSettingsArea.style.visibility = 'collapse';
+					editSettingsArea.style.width = '0px';
+					menuItemPropertyArea.style.visibility = 'collapse';
+					menuItemPropertyArea.style.width = '0px'
+					reagentArea.style.visibility = 'collapse';
+					reagentArea.style.width = '0px'
+			}
+
+		}
+
+		function onRolesChanged(e) {
+			var items = [];
+			var itemsM = e.GetSelectedItems()
+			for (var i = 0; i < itemsM.length; i++) {
+				items.push(itemsM[i].text)
+			}
+
+			console.log(items);
+			window['MenuItem.RolesStr'].SetText(items);
+		}
+
+		function onTargetTypesChanged(e) {
+			var items = [];
+			var itemsM = e.GetSelectedItems()
+			for (var i = 0; i < itemsM.length; i++) {
+				items.push(itemsM[i].text)
+			}
+			var tt = items.join(';')
+			console.log(tt);
+
+			window['EditSampleSetting.TargetTypes'].SetText(tt);
+		}
+
+	</script>
+
+}
+@section PageToolbar {	@Html.DevExpress().Menu(menuSettings =>
+{
+	menuSettings.Name = "pageToolbar";
+
+	menuSettings.ItemAutoWidth = false;
+	menuSettings.AllowSelectItem = false;
+	menuSettings.ApplyItemStyleToTemplates = true;
+
+	menuSettings.SettingsAdaptivity.Enabled = true;
+	menuSettings.SettingsAdaptivity.EnableAutoHideRootItems = true;
+	menuSettings.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+	menuSettings.SettingsAdaptivity.CollapseRootItemsToIconsAtWindowInnerWidth = 600;
+
+	menuSettings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+	menuSettings.ControlStyle.SeparatorWidth = System.Web.UI.WebControls.Unit.Pixel(0);
+	menuSettings.ControlStyle.CssClass = "page-toolbar";
+
+	menuSettings.Styles.Item.CssClass = "item";
+	menuSettings.Styles.Item.VerticalAlign = System.Web.UI.WebControls.VerticalAlign.Middle;
+
+	menuSettings.Images.Item.Width = System.Web.UI.WebControls.Unit.Pixel(16);
+	menuSettings.Images.Item.Height = System.Web.UI.WebControls.Unit.Pixel(16);
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Title";
+		item.Text = ViewBag.Title;
+		item.ClientEnabled = false;
+		item.ItemStyle.Font.Bold = true;
+		item.Alignment = MenuItemAlignment.Left;
+		item.ItemStyle.CssClass = "titleMenuItemStyle";
+	});
+	Html.AddMenuFilesAndComments(menuSettings);
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "ToExport";
+		item.Text = "To Export";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 2;
+		item.Image.Url = "~/Content/Images/add.svg";
+	});
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "New";
+		item.Text = "New";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 2;
+		item.Image.Url = "~/Content/Images/add.svg";
+	});
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "NewRoot";
+		item.Text = "New root";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 2;
+		item.Image.Url = "~/Content/Images/add.svg";
+	});
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Edit";
+		item.Text = "Edit";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 2;
+		item.Image.Url = "~/Content/Images/edit.svg";
+	});
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Delete";
+		item.Text = "Delete";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 2;
+		item.Image.Url = "~/Content/Images/delete.svg";
+	});
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "ClearCache";
+		item.Text = "Clear Cache";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 2;
+		item.Image.Url = "~/Content/Images/delete.svg";
+	});
+
+
+	menuSettings.ClientSideEvents.ItemClick = "onPageToolbarItemClick";
+}).GetHtml()
+}
+@Html.Action("TreeListPartial")

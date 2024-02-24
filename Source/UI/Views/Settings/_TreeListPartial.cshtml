@@ -1,0 +1,121 @@
+@using System.Web.UI.WebControls
+@using System.Web.UI.WebControls
+@using Sasha.Lims.Core.DTO.Common
+@using Sasha.Lims.Core.Helpers
+@using Sasha.Lims.Core.Interfaces.Access
+@using Sasha.Lims.WebUI.Areas.Identity.Controllers
+@using Sasha.Lims.WebUI.Controllers
+@using Sasha.Lims.DataAccess.Entities.Entity
+@using Sasha.Lims.WebUI.Models
+@model IEnumerable<vProperty>
+@{
+	var treeList = Html.DevExpress().TreeList(settings =>
+	{
+		settings.Name = "TreeList";
+		settings.CallbackRouteValues = new { Controller = "Settings", Action = "TreeListPartial" };
+		settings.KeyFieldName = "Id";
+		settings.ParentFieldName = "ParentId";
+		settings.SettingsSelection.Enabled = true;
+		settings.Settings.VerticalScrollBarMode = ScrollBarMode.Visible;
+		settings.Settings.ScrollableHeight = 800;
+
+        settings.Settings.ScrollableHeight = 800;
+		settings.SettingsEditing.AddNewNodeRouteValues = new { Controller = "Settings", Action = "PropertiesTreeListPartialAddNew" };
+		settings.SettingsEditing.UpdateNodeRouteValues = new { Controller = "Settings", Action = "PropertiesTreeListPartialUpdate" };
+		settings.SettingsEditing.DeleteNodeRouteValues = new { Controller = "Settings", Action = "PropertiesTreeListPartialDelete" };
+		settings.SettingsEditing.Mode = TreeListEditMode.EditForm;
+//		settings.SettingsEditing.Mode = TreeListEditMode.PopupEditForm;
+//        settings.EnableClientSideAPI = true;
+		settings.ClientSideEvents.NodeDblClick = "Edit";
+		settings.SettingsBehavior.AllowFocusedNode = true;
+		settings.SettingsBehavior.ExpandCollapseAction = TreeListExpandCollapseAction.NodeDblClick;
+
+		settings.Columns.Add(column => { column.FieldName = "Name"; });
+		settings.Columns.Add(column => { column.FieldName = "Code"; });
+		settings.Columns.Add(column =>
+		{
+			column.FieldName = "Value";
+			column.ColumnType = MVCxTreeListColumnType.Memo;
+			((MemoProperties)column.PropertiesEdit).Rows = 5;
+		});
+		settings.Columns.Add(column =>
+		{
+			column.FieldName = "Number";
+			column.ColumnType = MVCxTreeListColumnType.TextBox;
+			((TextBoxProperties)column.PropertiesEdit).MaskSettings.Mask = "<999999>";
+		});
+		settings.Columns.Add(column =>
+		{
+			column.FieldName = "Description";
+			column.ColumnType = MVCxTreeListColumnType.TextBox;
+		});
+		settings.Columns.Add(column =>
+		{
+			column.Caption = "Comments";
+			column.SetDataCellTemplateContent(container =>
+			{
+				Html.DevExpress().Button(button =>
+				{
+					var keyValue =  (DataBinder.Eval(container.DataItem, "Id") as int?) ?? 0;
+					var commentCount = (DataBinder.Eval(container.DataItem, "CommentsCount") as int?) ?? 0;
+					button.UseSubmitBehavior = true;
+					button.CausesValidation = false;
+					button.RenderMode = ButtonRenderMode.Link;
+					button.Name = "comment_Count_" + keyValue;
+					button.UseSubmitBehavior = false;
+					button.Text = commentCount.ToString();
+					button.EnableClientSideAPI = true;
+					button.ClientSideEvents.Click = $"function(s, e) {{ comment({keyValue}); }}";
+				})
+				   .Render();
+			});
+
+
+		});
+
+		settings.Columns.Add(column =>
+		{
+			column.Caption = "Files";
+			column.SetDataCellTemplateContent(container =>
+			{
+				Html.DevExpress().Button(button =>
+				{
+					var keyValue = (DataBinder.Eval(container.DataItem, "Id") as int?) ?? 0;
+					var commentCount = (DataBinder.Eval(container.DataItem, "FilesCount") as int?) ?? 0;
+					button.UseSubmitBehavior = true;
+					button.CausesValidation = false;
+					button.RenderMode = ButtonRenderMode.Link;
+					button.Name = "files_Count_" + keyValue;
+					button.UseSubmitBehavior = false;
+					button.Text = commentCount.ToString();
+					button.EnableClientSideAPI = true;
+					button.ClientSideEvents.Click = $"function(s, e) {{ AttachedFiles({keyValue}); }}";
+				})
+		   .Render();
+			});
+
+
+		});
+		settings.SetEditFormTemplateContent(c =>
+		{
+			Html.RenderPartial("editNode", TreeListInlineEditingHelper.GetEditedPost(c));
+		});
+
+		// devexpress known issue: without visible command column update and cancel buttons are not shown in edit form
+		settings.CommandColumn.Visible = true;
+		settings.CommandColumn.Caption = "";
+
+		settings.SettingsPager.Visible = false;
+		settings.SettingsSelection.Enabled = false;
+
+		settings.ClientSideEvents.Init = "onTreeListInit";
+		settings.ClientSideEvents.FocusedNodeChanged = "onFocusedNodeChanged";
+	});
+
+	if (ViewData["EditError"] != null)
+	{
+		treeList.SetEditErrorText((string)ViewData["EditError"]);
+	}
+
+}
+@treeList.Bind(Model).GetHtml()

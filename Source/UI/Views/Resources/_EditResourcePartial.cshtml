@@ -1,0 +1,111 @@
+@using Sasha.Lims.WebUI.Controllers;
+@using Sasha.Lims.WebUI.Infrastructure.Consts
+
+@model Sasha.Lims.WebUI.Models.ResourceViewModel
+@{
+	bool cultureDefault = string.IsNullOrEmpty(Model.Culture) || Model.Culture == AppConsts.CULTURE_DEFAULT;
+	if (cultureDefault)
+	{
+		Model.Culture = "en-US";
+	}
+}
+@Html.DevExpress().FormLayout(settings =>
+{
+	settings.Name = "FormEditResource";
+
+	settings.SettingsItems.ShowCaption = DefaultBoolean.True;
+	settings.SettingsItemCaptions.Location = LayoutItemCaptionLocation.Left;
+
+	settings.Items.AddGroupItem(group =>
+	{
+		group.GroupBoxDecoration = GroupBoxDecoration.None;
+		group.ColCount = 2;
+
+		group.Items.Add(m => m.Name, s =>
+		{
+			s.Caption = "Name";
+			s.NestedExtensionSettings.Enabled = !cultureDefault;
+			if (cultureDefault)
+			{
+				s.Name += "_Disabled";
+			}
+		});
+
+		group.Items.Add(m => m.Culture, i =>
+		{
+			i.Caption = "Culture:";
+			i.NestedExtension().ComboBox(cb =>
+			{
+				cb.Properties.TextField = "reg";
+				cb.Properties.ValueField = "reg";
+				cb.Properties.NullText = "en-US";
+				cb.Properties.ConvertEmptyStringToNull = true;
+				cb.Properties.ValueType = typeof(string);
+
+				cb.Properties.DataSource = ((ResourcesController)ViewContext.Controller).GetListCulture();
+			});
+
+			i.NestedExtensionSettings.Enabled = !cultureDefault;
+			if (cultureDefault)
+			{
+				i.Name += "_Disabled";
+			}
+		});
+
+		group.Items.Add(m => m.Value, s =>
+		{
+			s.Caption = "Value";
+		});
+
+		group.Items.Add(m => m.NameSpace, s =>
+		{
+			s.Caption = "NameSpace";
+			s.NestedExtensionSettings.Enabled = !cultureDefault;
+			if (cultureDefault)
+			{
+				s.Name += "_Disabled";
+			}
+		});
+
+	});
+
+	settings.Items.AddGroupItem(group =>
+	{
+		group.ClientVisible = false;
+		if (cultureDefault)
+		{
+			group.Items.Add(m => m.Culture, i => { });
+			group.Items.Add(m => m.Name, i => { });
+			group.Items.Add(m => m.NameSpace, i => { });
+
+
+		}
+	});
+
+	settings.Items.AddGroupItem(group =>
+	{
+		group.GroupBoxDecoration = GroupBoxDecoration.None;
+		group.ColCount = 2;
+		group.Items.Add(i =>
+		{
+			i.ShowCaption = DefaultBoolean.False;
+			i.NestedExtensionType = FormLayoutNestedExtensionItemType.Button;
+			var button = (ButtonSettings)i.NestedExtensionSettings;
+			button.Name = "update";
+			button.Text = "Ok";
+			button.ClientSideEvents.Click = "function (s,e) {ResourceGridView.UpdateEdit();}";
+		});
+		group.Items.Add(i =>
+		{
+			i.ShowCaption = DefaultBoolean.False;
+			i.NestedExtensionType = FormLayoutNestedExtensionItemType.Button;
+			i.HorizontalAlign = FormLayoutHorizontalAlign.Right;
+			var button = (ButtonSettings)i.NestedExtensionSettings;
+			button.Name = "cancel";
+			button.Text = "Cancel";
+			button.ClientSideEvents.Click = "function (s,e) {ResourceGridView.CancelEdit();}";
+		});
+	});
+}).GetHtml()
+
+@Html.DevExpress().ValidationSummary().GetHtml()

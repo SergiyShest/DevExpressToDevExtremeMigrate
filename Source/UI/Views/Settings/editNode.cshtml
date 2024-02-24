@@ -1,0 +1,313 @@
+@using System.Web.UI.WebControls
+@using Sasha.Lims.Core.DTO.Common
+@using Sasha.Lims.Core.Helpers
+@using Sasha.Lims.Core.Interfaces.Access
+@using Sasha.Lims.WebUI.Areas.Identity.Controllers
+@using Sasha.Lims.WebUI.Controllers
+@model Sasha.Lims.WebUI.Models.ExtendedPropertyModel
+@{
+	var controller = (SettingsController)ViewContext.Controller;
+
+}
+<style>
+	.col1 {
+		width: 100px;
+		margin: 6px
+	}
+
+	.col2 {
+		margin: 5px
+	}
+
+	.col3 {
+		margin: 5px;
+		width: 300px;
+		height: 100px;
+	}
+
+	textarea:read-only:not([read-only="false"]) {
+		color: blue;
+	}
+</style>
+
+<form style="background-color: lightgray">
+	<div style="display: flex; flex-direction: row;">
+		<div style="display: flex;flex-direction: column">
+			<div style="display: flex;flex-direction: row">
+				<div class="col1">Name:</div>
+				<div class="col2">
+					@Html.DevExpress().TextBoxFor(x => x.Name).GetHtml()
+				</div>
+			</div>
+			<div style="display: flex;flex-direction: row">
+				<div class="col1">Code:</div>
+				<div class="col2">
+					@Html.DevExpress().TextBoxFor(x => x.Code).GetHtml()
+				</div>
+			</div>
+			<div style="display: flex;flex-direction: row">
+				<div class="col1">Sort Number:</div>
+				<div class="col2">
+					@Html.DevExpress().SpinEditFor(x => x.Number, s =>
+					{
+						s.Name = "Number";
+
+					}).GetHtml()
+				</div>
+			</div>
+			<div style="display: flex;flex-direction: row">
+				<div class="col1">Type:</div>
+				<div class="col2">
+					@Html.DevExpress().ComboBoxFor(x => x.Type, s =>
+			   {
+				   s.Name = "Type";
+				   s.Properties.ClientSideEvents.SelectedIndexChanged = "onTypeChanged";
+			   }).BindList(Enum.GetNames(typeof(PropertyType))).GetHtml()
+				</div>
+			</div>
+		</div>
+
+		<div id="valueArea" style="visibility:@(Model.Type!=PropertyType.None?"collapse":"visible");
+                                   width: @(Model.Type!=PropertyType.None?"0px":"");
+		                           display: flex;flex-direction: row">
+			<div class="col1">Value:</div>
+			<div class="col3">
+				@Html.DevExpress().MemoFor(x => x.Value, s =>
+				{
+					s.Width = Unit.Pixel(400);
+					s.Height = Unit.Pixel(130);
+				}).GetHtml()
+			</div>@*Value*@
+		</div>
+		<div id="menuItemPropertyArea" style="
+	visibility:@(Model.Type!=PropertyType.MenuItem?"collapse":"visible");
+    width: @(Model.Type!=PropertyType.MenuItem?"0px":"100%")
+           ;display: flex; flex-direction: column;">
+			<div style="display: flex; flex-direction: row;">
+				<div class="col1">Path:</div>
+				<div style="width: fit-content; flex-grow: 1;">
+					@Html.DevExpress().TextBoxFor(x => x.MenuItem.Path, s =>
+					{
+				   s.Width = Unit.Percentage(100);
+					}).GetHtml()
+				</div>
+			</div>@*Path*@
+			<div style="display: flex;flex-direction: row">
+				<div style="display: flex;flex-direction: column">
+
+					<div style="display: flex;flex-direction: row">
+						<div class="col1">Aligment:</div>
+						<div class="col2">
+							@Html.DevExpress().ComboBoxFor(x => x.MenuItem.Aligment, s => { }).BindList(new List<string>() { "Left", "Right" }).GetHtml()
+						</div>
+					</div>@*Aligment*@
+
+					<div style="display: flex;flex-direction: row">
+						<div class="col1">License Name:</div>
+						<div class="col2">
+							@Html.DevExpress().ComboBoxFor(x => x.MenuItem.NeedLicense, s => { }).BindList(new List<string>() { "", "Inventory" }).GetHtml()
+						</div>
+					</div>@*License Name*@
+					<div style="display: none;flex-direction: row">
+						<div class="col1">Roles:</div>
+						<div class="col2">
+							@Html.DevExpress().TextBoxFor(x => x.MenuItem.RolesStr, s =>
+							{
+								s.Properties.EnableClientSideAPI = true;
+							}).GetHtml()
+						</div>
+					</div>@*Roles invisimle (for bunding)*@
+
+					<div style="display: flex;flex-direction: row">
+						<div class="col1">Roles:</div>
+						<div class="col2">
+							@Html.DevExpress().ListBox(s =>
+					   {
+						   s.Name = "roles";
+						   s.Properties.SelectionMode = ListEditSelectionMode.CheckColumn;
+						   s.Properties.ValueType = typeof(string);
+						   s.Properties.ClientSideEvents.SelectedIndexChanged = "onRolesChanged";
+						   s.PreRender = (sender, e) =>
+						   {
+							   var me = (MVCxListBox)sender;
+							   foreach (ListEditItem item in me.Items)
+							   {
+								   if (Model.MenuItem.Roles != null)
+								   {
+									   item.Selected = Model.MenuItem.Roles.Contains(item.Text);
+								   }
+							   }
+						   };
+
+					   }).BindList(controller.GetRoles()).GetHtml()
+						</div>
+					</div>@*Roles*@
+				</div>
+				<div style="display: flex;flex-direction: column">
+					<div style="display: flex;flex-direction: row">
+						<div class="col1">Begin Group:</div>
+						<div class="col2">
+							@Html.DevExpress().CheckBoxFor(x => x.MenuItem.BeginGroup, s => { }).GetHtml()
+						</div>
+					</div>@*Begin Group*@
+					<div style="display: flex;flex-direction: row">
+						<div class="col1">Disabled:</div>
+						<div class="col2">
+							@Html.DevExpress().CheckBoxFor(x => x.MenuItem.Disabled, s => { }).GetHtml()
+						</div>
+					</div>@*Disabled*@
+					<div style="display: flex;flex-direction: row">
+						<div class="col1">Path is script:</div>
+						<div class="col2">
+							@Html.DevExpress().CheckBoxFor(x => x.MenuItem.IsScript, s => { }).GetHtml()
+						</div>
+					</div>@*Path is script*@
+				</div>
+			</div>
+		</div>
+		<div id="objectEditSettingArea" style="
+	visibility:@(Model.Type!=PropertyType.ObjectEditSetting?"collapse":"visible");
+    width: @(Model.Type!=PropertyType.ObjectEditSetting?"0px":"");
+    display: flex; flex-direction: column;width: 800px">
+			<div style="display: flex;flex-direction: row">
+				<div class="col1">Text:</div>
+				<div class="col2">
+					@Html.DevExpress().TextBoxFor(x => x.EditSampleSetting.Text, s => { }).GetHtml()
+				</div>
+			</div>@*Text*@
+			<div style="display: flex;flex-direction: row">
+				<div class="col1">Column:</div>
+				<div class="col2">
+					@Html.DevExpress().SpinEditFor(x => x.EditSampleSetting.Column, s => { }).GetHtml()
+				</div>
+			</div>@*Column*@
+			<div style="display: none;flex-direction: row">
+				<div class="col1">Target Types:</div>
+				<div class="col2">
+					@Html.DevExpress().TextBoxFor(x => x.EditSampleSetting.TargetTypes, s =>
+					{
+						s.Properties.EnableClientSideAPI = true;
+					}).GetHtml()
+				</div>
+			</div>@*TargetTypes invisimle (for bunding)*@
+			<div style="display: flex;flex-direction: row">
+				<div class="col1">Target Types:</div>
+				<div class="col2">
+					@Html.DevExpress().ListBox(s =>
+			   {
+				   s.Name = "targetTypes";
+				   s.Width = 200;
+				   s.Properties.SelectionMode = ListEditSelectionMode.CheckColumn;
+				   s.Properties.ValueType = typeof(string);
+				   s.Properties.ClientSideEvents.SelectedIndexChanged = "onTargetTypesChanged";
+				   s.PreRender = (sender, e) =>
+				   {
+					   var me = (MVCxListBox)sender;
+					   foreach (ListEditItem item in me.Items)
+					   {
+						   if (Model.EditSampleSetting.TargetTypes != null)
+						   {
+							   item.Selected = Model.EditSampleSetting.TargetTypes.Contains(item.Text);
+						   }
+					   }
+				   };
+
+			   }).BindList(Model.EditSampleSetting.AvaiableTargetTypes).GetHtml()
+				</div>
+			</div>@*TargetTypes*@
+			<div style="display: flex;flex-direction: row">
+				<div class="col1">Rules:</div>
+				<div class="col2">
+
+					@Html.DevExpress().Memo(s =>
+					{
+				   s.ReadOnly = true;
+				   s.Name = "EditSampleSetting.RulesStr";
+				   s.Text = Model.EditSampleSetting.RulesStr;
+				   s.Properties.EnableClientSideAPI = true;
+				   s.Height = 100; s.Width = 200;
+			   }
+			   ).GetHtml()
+				</div>
+				<div style="height:30px">
+					@Html.DevExpress().Button(edtSettings =>
+			   {
+				   edtSettings.Name = "btnEditRules";
+				   edtSettings.Text = "...";
+				   edtSettings.ToolTip = "Rule setting";
+				   edtSettings.ControlStyle.Font.Underline = true;
+				   edtSettings.ClientSideEvents.Click = "function(s, e) { EditRules(); }";
+			   }).GetHtml()
+				</div>
+			</div>@*Text*@
+
+		</div>
+		<div id="reagentArea" style="
+	visibility:@(Model.Type!=PropertyType.ReagentTemplate?"collapse":"visible");
+    width: @(Model.Type!=PropertyType.ReagentTemplate?"0px":"100%")
+           ;display: flex; flex-direction: column;">
+
+			<div style="display: flex;flex-direction: row">
+				<div style="display: flex;flex-direction: column">
+
+				
+
+					<div style="display: flex;flex-direction: row">
+						<div class="col1">Reagent :</div>
+						<div class="col2">
+							@Html.DevExpress().ComboBoxFor(x=>x.ReagentTemplate.ReagentTypeId, cbSet =>
+					   {
+
+						   //s.Properties.SelectionMode = ListEditSelectionMode.CheckColumn;
+							//cbSet.Properties.ClientSideEvents.SelectedIndexChanged = "onRolesChanged";
+						   cbSet.Properties.TextField = "Name";
+						  // cbSet.Properties.TextFormatString = "{0} {1}";
+						  cbSet.Properties.ValueField = "Id";
+						  // cbSet.Properties.ValueType = typeof(int?);
+						   //cbSet.Properties.FilterMinLength = 0;
+
+//						  cbSet.Properties.Columns.Add("Name", "Name");
+//						  cbSet.Properties.Columns.Add("VendorName", "Vendor");
+
+					   }).BindList(Model.ReagentTemplate.GetReagents()).GetHtml()
+						</div>
+					</div>@*Roles*@
+				</div>
+
+				</div>
+			</div>
+
+
+		<div style="display: flex;flex-direction: column">
+			@*<div class="col1">Description:</div>class="col2"*@
+			<div>
+				@Html.DevExpress().MemoFor(x => x.Description, s =>
+				{
+			   s.Height = 300;
+			   s.ReadOnly = true;
+			   s.ControlStyle.BackColor = System.Drawing.Color.LightGray;
+			   s.Width = 400;
+				}).GetHtml()
+			</div>
+		</div>@*Desctiption*@
+	</div>
+
+	<div style="text-align: right; margin: 6px;padding: 6px">
+		@Html.DevExpress().Button(edtSettings =>
+		{
+			edtSettings.Name = "hlUpdate";
+			edtSettings.Text = "Save";
+			edtSettings.ControlStyle.Font.Underline = true;
+			edtSettings.ClientSideEvents.Click = "function(s, e) { TreeList.UpdateEdit(); }";
+		}).GetHtml()
+		@Html.DevExpress().Button(edtSettings =>
+		{
+			edtSettings.Name = "hlCancel";
+			edtSettings.Text = "Cancel";
+			edtSettings.ControlStyle.Font.Underline = true;
+			edtSettings.ClientSideEvents.Click = "function(s, e) { TreeList.CancelEdit(); }";
+		}).GetHtml()
+	</div>
+</form>
+
+

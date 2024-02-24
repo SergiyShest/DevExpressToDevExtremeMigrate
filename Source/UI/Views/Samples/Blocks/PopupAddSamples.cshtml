@@ -1,0 +1,62 @@
+@using System.Web.UI.WebControls
+@using Sasha.Lims.WebUI.Controllers
+@using Sasha.Lims.WebUI.Localization
+@using Sasha.Lims.WebUI.Infrastructure.ViewModelHelpers
+
+@Html.DevExpress().PopupControl(
+	settings =>
+	{
+		settings.Name = "AddSamplesDialog";
+		settings.Width = 520;
+		settings.AllowDragging = true;
+		settings.CloseAction = CloseAction.CloseButton;
+		settings.CloseOnEscape = true;
+		settings.PopupAnimationType = AnimationType.None;
+		settings.HeaderText = "Add samples by Barcode's";
+		settings.Modal = true;
+		settings.AutoUpdatePosition = true;
+		settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+		settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+		settings.SetContent(() =>
+		{
+			using (Html.BeginForm("AddSamplesByBarcode", "Samples", new { editMode = ViewBag.EditMode }, FormMethod.Post, new { id = "popupForm1", @class = "edit_form" })){
+
+				@Html.DevExpress().FormLayout(s => {
+					s.Name = "ModalModeFormLayout";
+					s.RequiredMarkDisplayMode = RequiredMarkMode.None;
+					s.Width = Unit.Percentage(100);
+					s.Height = Unit.Percentage(100);
+
+					s.NestedExtensionWidth = Unit.Percentage(100);
+					//s.Items.Add(i =>
+					//{
+					//	i.Caption = "Select field";
+					//	i.NestedExtension().ComboBox(cb =>
+					//	{
+					//		cb.Name = "fieldName";
+					//		cb.Properties.ValueType = typeof(string);
+					//		cb.Properties.DataSource = ((SamplesController)ViewContext.Controller).GetAvailableFields();
+					//	});
+					//});
+
+					s.Items.Add(i =>
+					{
+						i.Caption = "Samples barcode's (separated a line break)";
+						i.NestedExtensionType = FormLayoutNestedExtensionItemType.Default;
+					});
+
+					s.Items.Add(i => {
+						i.ShowCaption = DefaultBoolean.False;
+						i.Name = "SamplesBarcodes";
+						i.Caption = "";
+						i.NestedExtensionType = FormLayoutNestedExtensionItemType.Memo;
+						i.NestedExtensionSettings.Height = 70;
+					});
+
+					s.Items.Add(Html.MakeDxOkCancelButtonForPopup("AddSamplesDialog"));
+				}).Render();
+			}
+		});
+
+		settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer(null, '', false); }";
+	}).GetHtml()

@@ -1,0 +1,2151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EMLabModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="__EFMigrationsHistory">
+    <Key>
+      <PropertyRef Name="MigrationId" />
+    </Key>
+    <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="__MigrationHistory">
+    <Key>
+      <PropertyRef Name="MigrationId" />
+      <PropertyRef Name="ContextKey" />
+    </Key>
+    <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="ContextKey" Type="nvarchar" MaxLength="300" Nullable="false" />
+    <Property Name="Model" Type="varbinary(max)" Nullable="false" />
+    <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="a_comment">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="table_id" Type="int" />
+    <Property Name="row_id" Type="int" />
+    <Property Name="createdDateTime" Type="datetime" />
+    <Property Name="createdByUser_id" Type="int" />
+    <Property Name="comment" Type="nvarchar(max)" />
+    <Property Name="commentType_id" Type="int" />
+  </EntityType>
+  <EntityType Name="a_file">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="table_id" Type="int" />
+    <Property Name="row_id" Type="int" />
+    <Property Name="createdDateTime" Type="datetime" />
+    <Property Name="createdByUser_id" Type="int" />
+    <Property Name="type_id" Type="int" />
+    <Property Name="name" Type="nvarchar" MaxLength="255" />
+    <Property Name="data" Type="varbinary(max)" />
+    <Property Name="aspNetUser_Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="path" Type="varchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="a_prop">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="prop_id" Type="int" />
+    <Property Name="code" Type="varchar" MaxLength="25" />
+    <Property Name="value" Type="nvarchar(max)" />
+    <Property Name="num" Type="int" />
+    <Property Name="name" Type="nvarchar" MaxLength="500" />
+    <Property Name="path" Type="nvarchar" MaxLength="500" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="a_tableLink">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="tableFrom_id" Type="int" />
+    <Property Name="rowFrom_id" Type="int" />
+    <Property Name="tableTo_id" Type="int" />
+    <Property Name="rowTo_id" Type="int" />
+  </EntityType>
+  <EntityType Name="a_userData">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="table_id" Type="int" />
+    <Property Name="row_id" Type="int" />
+    <Property Name="props1" Type="nvarchar" MaxLength="850" />
+    <Property Name="props2" Type="nvarchar" MaxLength="850" />
+    <Property Name="props3" Type="nvarchar" MaxLength="850" />
+    <Property Name="props4" Type="nvarchar" MaxLength="850" />
+    <Property Name="props5" Type="nvarchar" MaxLength="850" />
+    <Property Name="propd1" Type="datetime" />
+    <Property Name="propd2" Type="datetime" />
+    <Property Name="propd3" Type="datetime" />
+    <Property Name="propd4" Type="datetime" />
+    <Property Name="propd5" Type="datetime" />
+    <Property Name="createdDateTime" Type="datetime" />
+    <Property Name="createdByUser_id" Type="int" />
+    <Property Name="aspNetUser_Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="prop1" Type="int" />
+    <Property Name="prop2" Type="int" />
+    <Property Name="prop3" Type="int" />
+    <Property Name="prop4" Type="int" />
+    <Property Name="prop5" Type="int" />
+    <Property Name="propn1" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="propn2" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="propn3" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="propn4" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="propn5" Type="decimal" Precision="18" Scale="5" />
+  </EntityType>
+  <EntityType Name="a_userField">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="table_id" Type="int" Nullable="false" />
+    <Property Name="fieldNumber" Type="int" Nullable="false" />
+    <Property Name="fieldList_id" Type="int" />
+    <Property Name="caption" Type="nvarchar" MaxLength="50" />
+    <Property Name="dataType" Type="int" />
+    <Property Name="column" Type="int" />
+    <Property Name="groupName" Type="nvarchar" MaxLength="50" />
+    <Property Name="order" Type="int" />
+    <Property Name="dopAttr" Type="nvarchar" MaxLength="4000" />
+  </EntityType>
+  <EntityType Name="a_userFieldList">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="linkedTable_id" Type="int" />
+    <Property Name="branchRoot" Type="int" />
+    <Property Name="isHierarchy" Type="bit" />
+    <Property Name="sqlQuery" Type="nvarchar" MaxLength="500" />
+  </EntityType>
+  <EntityType Name="a_userLayout">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="user_id" Type="int" />
+    <Property Name="user_name" Type="nvarchar" MaxLength="500" />
+    <Property Name="layout_id" Type="nvarchar" MaxLength="500" />
+    <Property Name="userData" Type="text" />
+  </EntityType>
+  <EntityType Name="AspNetRoles">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+    <Property Name="Discriminator" Type="nvarchar" MaxLength="128" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AspNetUserClaims">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="ClaimType" Type="nvarchar(max)" />
+    <Property Name="ClaimValue" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="AspNetUserLogins">
+    <Key>
+      <PropertyRef Name="LoginProvider" />
+      <PropertyRef Name="ProviderKey" />
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AspNetUserRoles">
+    <Key>
+      <PropertyRef Name="UserId" />
+      <PropertyRef Name="RoleId" />
+    </Key>
+    <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="user_id" Type="int" />
+  </EntityType>
+  <EntityType Name="AspNetUsers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="256" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="256" />
+    <Property Name="Email" Type="nvarchar" MaxLength="256" />
+    <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+    <Property Name="PasswordHash" Type="nvarchar(max)" />
+    <Property Name="SecurityStamp" Type="nvarchar(max)" />
+    <Property Name="PhoneNumber" Type="nvarchar(max)" />
+    <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+    <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+    <Property Name="LockoutEndDateUtc" Type="datetime" />
+    <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+    <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+    <Property Name="user_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityType Name="c_client">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" />
+    <Property Name="prop1" Type="int" />
+    <Property Name="prop2" Type="int" />
+    <Property Name="prop3" Type="int" />
+    <Property Name="prop4" Type="int" />
+    <Property Name="prop5" Type="int" />
+    <Property Name="prop6" Type="int" />
+    <Property Name="prop7" Type="int" />
+    <Property Name="prop8" Type="int" />
+    <Property Name="prop9" Type="int" />
+    <Property Name="prop10" Type="int" />
+  </EntityType>
+  <EntityType Name="c_doctor">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="client_id" Type="int" />
+    <Property Name="firstName" Type="nvarchar" MaxLength="30" />
+    <Property Name="lastName" Type="nvarchar" MaxLength="30" />
+    <Property Name="title" Type="nvarchar" MaxLength="30" />
+    <Property Name="email" Type="varchar" MaxLength="255" />
+    <Property Name="sendEmail" Type="smallint" />
+    <Property Name="prop1" Type="int" />
+    <Property Name="prop2" Type="int" />
+    <Property Name="prop3" Type="int" />
+    <Property Name="prop4" Type="int" />
+    <Property Name="prop5" Type="int" />
+    <Property Name="prop6" Type="int" />
+    <Property Name="prop7" Type="int" />
+    <Property Name="prop8" Type="int" />
+    <Property Name="prop9" Type="int" />
+    <Property Name="prop10" Type="int" />
+  </EntityType>
+  <EntityType Name="c_patient">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="client_id" Type="int" />
+    <Property Name="doctor_id" Type="int" />
+    <Property Name="no" Type="varchar" MaxLength="20" />
+    <Property Name="firstName" Type="nvarchar" MaxLength="30" />
+    <Property Name="lastName" Type="nvarchar" MaxLength="30" />
+    <Property Name="dob" Type="datetime" />
+    <Property Name="email" Type="varchar" MaxLength="255" />
+    <Property Name="sendEmail" Type="smallint" />
+    <Property Name="prop1" Type="int" />
+    <Property Name="prop2" Type="int" />
+    <Property Name="prop3" Type="int" />
+    <Property Name="prop4" Type="int" />
+    <Property Name="prop5" Type="int" />
+    <Property Name="prop6" Type="int" />
+    <Property Name="prop7" Type="int" />
+    <Property Name="prop8" Type="int" />
+    <Property Name="prop9" Type="int" />
+    <Property Name="prop10" Type="int" />
+    <Property Name="Sended" Type="smallint" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EMLab.dbo.mb_data' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="mb_data">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="sample_id" Type="int" />
+    <Property Name="taxonomy_id" Type="int" />
+    <Property Name="count" Type="int" />
+    <Property Name="proportion" Type="real" />
+  </EntityType>
+  <EntityType Name="mb_report">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="sample_id" Type="int" />
+    <Property Name="reportField_id" Type="int" />
+    <Property Name="taxon_id" Type="int" />
+    <Property Name="value_id" Type="int" />
+  </EntityType>
+  <EntityType Name="mb_reportField">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="sectionCode" Type="varchar" MaxLength="20" />
+    <Property Name="fieldCode" Type="varchar" MaxLength="20" />
+    <Property Name="name" Type="nchar" MaxLength="30" />
+    <Property Name="lineNum" Type="int" />
+    <Property Name="ruleCode" Type="varchar" MaxLength="20" />
+    <Property Name="taxon_id" Type="int" />
+    <Property Name="refLowValue" Type="float" />
+    <Property Name="refHighValue" Type="float" />
+  </EntityType>
+  <EntityType Name="mb_taxonomy">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="k" Type="varchar" MaxLength="50" />
+    <Property Name="p" Type="varchar" MaxLength="50" />
+    <Property Name="c" Type="varchar" MaxLength="50" />
+    <Property Name="o" Type="varchar" MaxLength="50" />
+    <Property Name="f" Type="varchar" MaxLength="50" />
+    <Property Name="g" Type="varchar" MaxLength="50" />
+    <Property Name="s" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="r_reagent">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="barcode" Type="varchar" MaxLength="20" />
+    <Property Name="kitType_id" Type="int" />
+    <Property Name="quantity" Type="decimal" Precision="19" Scale="6" Nullable="false" />
+    <Property Name="unit_id" Type="int" Nullable="false" />
+    <Property Name="catalogNumber" Type="varchar" MaxLength="20" />
+    <Property Name="storageTemp_id" Type="int" />
+    <Property Name="vendor_id" Type="int" />
+    <Property Name="prop1" Type="int" />
+    <Property Name="prop2" Type="int" />
+    <Property Name="prop3" Type="int" />
+    <Property Name="prop4" Type="int" />
+    <Property Name="prop5" Type="int" />
+    <Property Name="prop6" Type="int" />
+    <Property Name="prop7" Type="int" />
+    <Property Name="prop8" Type="int" />
+    <Property Name="prop9" Type="int" />
+    <Property Name="prop10" Type="int" />
+  </EntityType>
+  <EntityType Name="r_reagentJournal">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="jourType_id" Type="int" Nullable="false" />
+    <Property Name="user_id" Type="int" Nullable="false" />
+    <Property Name="reagent_id" Type="int" Nullable="false" />
+    <Property Name="quantity" Type="decimal" Precision="19" Scale="6" Nullable="false" />
+    <Property Name="lotNumber" Type="varchar" MaxLength="20" />
+    <Property Name="expirationDate" Type="datetime" />
+    <Property Name="location_id" Type="int" />
+    <Property Name="process_id" Type="int" />
+    <Property Name="parent_id" Type="int" />
+    <Property Name="prop1" Type="int" />
+    <Property Name="prop2" Type="int" />
+    <Property Name="prop3" Type="int" />
+    <Property Name="prop4" Type="int" />
+    <Property Name="prop5" Type="int" />
+    <Property Name="prop6" Type="int" />
+    <Property Name="prop7" Type="int" />
+    <Property Name="prop8" Type="int" />
+    <Property Name="prop9" Type="int" />
+    <Property Name="prop10" Type="int" />
+  </EntityType>
+  <EntityType Name="r_reagentLedger">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="operation_id" Type="int" Nullable="false" />
+    <Property Name="reagent_id" Type="int" Nullable="false" />
+    <Property Name="quantity" Type="decimal" Precision="19" Scale="6" Nullable="false" />
+    <Property Name="lotNumber" Type="varchar" MaxLength="50" />
+    <Property Name="expirationDate" Type="datetime" />
+    <Property Name="location_id" Type="int" />
+    <Property Name="process_id" Type="int" />
+    <Property Name="operationDate" Type="datetime" Nullable="false" />
+    <Property Name="user_id" Type="int" Nullable="false" />
+    <Property Name="parent_id" Type="int" />
+    <Property Name="prop1" Type="int" />
+    <Property Name="prop2" Type="int" />
+    <Property Name="prop3" Type="int" />
+    <Property Name="prop4" Type="int" />
+    <Property Name="prop5" Type="int" />
+    <Property Name="prop6" Type="int" />
+    <Property Name="prop7" Type="int" />
+    <Property Name="prop8" Type="int" />
+    <Property Name="prop9" Type="int" />
+    <Property Name="prop10" Type="int" />
+  </EntityType>
+  <EntityType Name="s_clones">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="sampleBarcode" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="patientId" Type="int" Nullable="false" />
+    <Property Name="v" Type="nvarchar" MaxLength="50" />
+    <Property Name="j" Type="nvarchar" MaxLength="50" />
+    <Property Name="cdr3" Type="nvarchar" MaxLength="100" />
+    <Property Name="Count" Type="int" Nullable="false" />
+    <Property Name="fraction" Type="real" Nullable="false" />
+    <Property Name="flags" Type="int" />
+    <Property Name="createdDateTime" Type="datetime" />
+    <Property Name="type" Type="nvarchar" MaxLength="6" />
+  </EntityType>
+  <EntityType Name="s_custodyLog">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="logDateTime" Type="datetime" />
+    <Property Name="sample_id" Type="int" />
+    <Property Name="status_id" Type="int" />
+    <Property Name="location_id" Type="int" />
+    <Property Name="aspNetUser_Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="user_id" Type="int" />
+    <Property Name="singature" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="s_jourLine">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="jourType_id" Type="int" />
+    <Property Name="documentNo" Type="nvarchar" MaxLength="20" />
+    <Property Name="sample_id" Type="int" />
+    <Property Name="barcode" Type="varchar" MaxLength="20" />
+    <Property Name="well" Type="varchar" MaxLength="10" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" />
+    <Property Name="workflow_id" Type="int" />
+    <Property Name="collectedDate" Type="datetime" />
+    <Property Name="status_id" Type="int" />
+    <Property Name="client_id" Type="int" />
+    <Property Name="doctor_id" Type="int" />
+    <Property Name="patient_id" Type="int" />
+    <Property Name="location_id" Type="int" />
+    <Property Name="equipment_id" Type="int" />
+    <Property Name="user_id" Type="int" />
+    <Property Name="sampleType_id" Type="int" />
+    <Property Name="volume" Type="float" />
+    <Property Name="volumeUnit_id" Type="int" />
+    <Property Name="tubeType_id" Type="int" />
+    <Property Name="aspNetUser_Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="DateCreate" Type="datetime" />
+    <Property Name="ModDate" Type="datetime" />
+    <Property Name="PacientNo" Type="varchar" MaxLength="20" />
+    <Property Name="PacientFirstName" Type="nvarchar" MaxLength="30" />
+    <Property Name="PacientLastName" Type="nvarchar" MaxLength="30" />
+    <Property Name="PacientDateOfBirth" Type="datetime" />
+    <Property Name="workflowStatus_id" Type="int" />
+    <Property Name="sample_version" Type="varbinary" MaxLength="8" />
+    <Property Name="acceptedDate" Type="datetime" />
+    <Property Name="parent_id" Type="int" />
+    <Property Name="batch_id" Type="int" />
+    <Property Name="model_id" Type="int" />
+    <Property Name="makeAliquot" Type="bit" />
+    <Property Name="patientEmail" Type="nvarchar" MaxLength="255" />
+    <Property Name="patientSendEmail" Type="bit" />
+    <Property Name="emailReport" Type="bit" />
+    <Property Name="prop1" Type="int" />
+    <Property Name="prop2" Type="int" />
+    <Property Name="prop3" Type="int" />
+    <Property Name="prop4" Type="int" />
+    <Property Name="prop5" Type="int" />
+    <Property Name="prop6" Type="int" />
+    <Property Name="prop7" Type="int" />
+    <Property Name="prop8" Type="int" />
+    <Property Name="prop9" Type="int" />
+    <Property Name="prop10" Type="int" />
+    <Property Name="source_id" Type="int" />
+    <Property Name="process_id" Type="int" />
+    <Property Name="Discriminator" Type="varchar" MaxLength="8" StoreGeneratedPattern="Computed" />
+    <Property Name="draft_bathId" Type="int" />
+    <Property Name="flags" Type="int" />
+    <Property Name="props1" Type="nvarchar" MaxLength="850" />
+    <Property Name="props2" Type="nvarchar" MaxLength="850" />
+    <Property Name="props3" Type="nvarchar" MaxLength="850" />
+    <Property Name="props4" Type="nvarchar" MaxLength="850" />
+    <Property Name="props5" Type="nvarchar" MaxLength="850" />
+    <Property Name="propn1" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="propn2" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="propn3" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="propn4" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="propn5" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="propd1" Type="datetime" />
+    <Property Name="propd2" Type="datetime" />
+    <Property Name="propd3" Type="datetime" />
+    <Property Name="propd4" Type="datetime" />
+    <Property Name="propd5" Type="datetime" />
+  </EntityType>
+  <EntityType Name="s_sample">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="barcode" Type="varchar" MaxLength="20" />
+    <Property Name="model_id" Type="int" />
+    <Property Name="parent_id" Type="int" />
+    <Property Name="well" Type="varchar" MaxLength="10" />
+    <Property Name="name" Type="nvarchar" MaxLength="50" />
+    <Property Name="workflow_id" Type="int" />
+    <Property Name="workflowStatus_id" Type="int" />
+    <Property Name="process_id" Type="int" />
+    <Property Name="collectedDateTime" Type="datetime" />
+    <Property Name="status_id" Type="int" />
+    <Property Name="client_id" Type="int" />
+    <Property Name="doctor_id" Type="int" />
+    <Property Name="patient_id" Type="int" />
+    <Property Name="location_id" Type="int" />
+    <Property Name="equipment_id" Type="int" />
+    <Property Name="user_id" Type="int" />
+    <Property Name="tubeType_id" Type="int" />
+    <Property Name="sampleType_id" Type="int" />
+    <Property Name="volume" Type="float" />
+    <Property Name="volumeUnit_id" Type="int" />
+    <Property Name="aspNetUser_Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="DateCreate" Type="datetime" />
+    <Property Name="ModDate" Type="datetime" />
+    <Property Name="acceptedDate" Type="datetime" />
+    <Property Name="isChild" Type="bit" StoreGeneratedPattern="Computed" />
+    <Property Name="batch_id" Type="int" />
+    <Property Name="prop1" Type="int" />
+    <Property Name="prop2" Type="int" />
+    <Property Name="prop3" Type="int" />
+    <Property Name="prop4" Type="int" />
+    <Property Name="prop5" Type="int" />
+    <Property Name="prop6" Type="int" />
+    <Property Name="prop7" Type="int" />
+    <Property Name="prop8" Type="int" />
+    <Property Name="prop9" Type="int" />
+    <Property Name="prop10" Type="int" />
+    <Property Name="source_id" Type="int" />
+    <Property Name="Discriminator" Type="varchar" MaxLength="8" StoreGeneratedPattern="Computed" />
+    <Property Name="flags" Type="int" />
+    <Property Name="props1" Type="nvarchar" MaxLength="850" />
+    <Property Name="props2" Type="nvarchar" MaxLength="850" />
+    <Property Name="props3" Type="nvarchar" MaxLength="850" />
+    <Property Name="props4" Type="nvarchar" MaxLength="850" />
+    <Property Name="props5" Type="nvarchar" MaxLength="850" />
+    <Property Name="propn1" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="propn2" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="propn3" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="propn4" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="propn5" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="propd1" Type="datetime" />
+    <Property Name="propd2" Type="datetime" />
+    <Property Name="propd3" Type="datetime" />
+    <Property Name="propd4" Type="datetime" />
+    <Property Name="propd5" Type="datetime" />
+  </EntityType>
+  <EntityType Name="srv_request">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="dateTimeRequested" Type="datetime" />
+    <Property Name="data_id" Type="int" />
+    <Property Name="prop_id" Type="int" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar(max)" />
+    <Property Name="LastName" Type="nvarchar(max)" />
+    <Property Name="Logon" Type="nvarchar(max)" />
+    <Property Name="Sex" Type="int" />
+    <Property Name="BirthDay" Type="date" />
+    <Property Name="RegisterDate" Type="datetime" />
+    <Property Name="Email" Type="nvarchar(max)" />
+    <Property Name="PasswordHash" Type="varbinary(max)" />
+    <Property Name="PasswordSalt" Type="varbinary(max)" />
+    <Property Name="Auth" Type="nvarchar" MaxLength="10" />
+    <Property Name="Guid" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="wf_bom">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="run_id" Type="int" />
+    <Property Name="name" Type="nvarchar" MaxLength="500" />
+    <Property Name="lot_number" Type="nvarchar" MaxLength="500" />
+    <Property Name="catalog_number" Type="nvarchar" MaxLength="500" />
+    <Property Name="expirationDate" Type="date" />
+    <Property Name="barcode" Type="nvarchar" MaxLength="20" />
+    <Property Name="dateCreated" Type="datetime" />
+    <Property Name="dateUpdated" Type="datetime" />
+    <Property Name="createdBy_id" Type="int" />
+    <Property Name="updatedBy_id" Type="int" />
+  </EntityType>
+  <EntityType Name="wf_process">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="run_id" Type="int" />
+    <Property Name="type_id" Type="int" />
+    <Property Name="status_id" Type="int" />
+    <Property Name="dateStarted" Type="datetime" />
+    <Property Name="dateCompleted" Type="datetime" />
+    <Property Name="startedBy_id" Type="int" />
+    <Property Name="completedBy_id" Type="int" />
+    <Property Name="dateCreated" Type="datetime" />
+    <Property Name="createdBy_id" Type="int" />
+    <Property Name="updatedBy_id" Type="int" />
+    <Property Name="dateUpdated" Type="datetime" />
+    <Property Name="result_path" Type="nchar" MaxLength="255" />
+    <Property Name="flags" Type="int" />
+  </EntityType>
+  <EntityType Name="wf_result">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="process_id" Type="int" />
+    <Property Name="sample_id" Type="int" />
+    <Property Name="result_id" Type="int" />
+    <Property Name="value" Type="float" />
+    <Property Name="filePath" Type="varchar" MaxLength="255" />
+    <Property Name="comment" Type="nvarchar(max)" />
+    <Property Name="Sended" Type="smallint" />
+    <Property Name="jsonData" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="wf_run">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="type_id" Type="int" />
+    <Property Name="code" Type="varchar" MaxLength="20" />
+    <Property Name="curProcess_id" Type="int" />
+    <Property Name="status_id" Type="int" />
+    <Property Name="dateStarted" Type="datetime" />
+    <Property Name="dateUpdated" Type="datetime" />
+    <Property Name="dateCompleted" Type="datetime" />
+    <Property Name="startedBy_id" Type="int" />
+    <Property Name="updatedBy_id" Type="int" />
+    <Property Name="dateCreated" Type="datetime" />
+    <Property Name="createdBy_id" Type="int" />
+    <Property Name="completedBy_id" Type="int" />
+  </EntityType>
+  <EntityType Name="__MigrationHistory1">
+    <Key>
+      <PropertyRef Name="MigrationId" />
+      <PropertyRef Name="ContextKey" />
+    </Key>
+    <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="ContextKey" Type="nvarchar" MaxLength="300" Nullable="false" />
+    <Property Name="Model" Type="varbinary(max)" Nullable="false" />
+    <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Resources">
+    <Key>
+      <PropertyRef Name="ResourceId" />
+    </Key>
+    <Property Name="ResourceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Culture" Type="nvarchar" MaxLength="10" />
+    <Property Name="Value" Type="nvarchar" MaxLength="4000" />
+    <Property Name="NameSpace" Type="nvarchar" MaxLength="250" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EMLab.dbo.vBillOfMaterial' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vBillOfMaterial">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="RunId" Type="int" />
+    <Property Name="ReagentName" Type="nvarchar" MaxLength="500" />
+    <Property Name="CatalogNumber" Type="nvarchar" MaxLength="500" />
+    <Property Name="LotNumber" Type="nvarchar" MaxLength="500" />
+    <Property Name="Barcode" Type="nvarchar" MaxLength="20" />
+    <Property Name="ExpirationDate" Type="date" />
+    <Property Name="CreatedDate" Type="datetime" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="CreatedUser" Type="nvarchar" MaxLength="256" />
+    <Property Name="UpdatedUser" Type="nvarchar" MaxLength="256" />
+    <Property Name="CommentsCount" Type="int" />
+    <Property Name="FilesCount" Type="int" />
+    <Property Name="Files" Type="nvarchar(max)" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EMLab.dbo.vBioinformaticsRunList' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vBioinformaticsRunList">
+    <Key>
+      <PropertyRef Name="task_id" />
+      <PropertyRef Name="cmd" />
+      <PropertyRef Name="sqlCompleted" />
+      <PropertyRef Name="sqlFail" />
+    </Key>
+    <Property Name="task_id" Type="int" Nullable="false" />
+    <Property Name="cmd" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="sqlCompleted" Type="varchar" MaxLength="58" Nullable="false" />
+    <Property Name="sqlFail" Type="varchar" MaxLength="58" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EMLab.dbo.vClientDoctor' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vClientDoctor">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="v" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="client_id" Type="int" />
+    <Property Name="firstName" Type="nvarchar" MaxLength="30" />
+    <Property Name="lastName" Type="nvarchar" MaxLength="30" />
+    <Property Name="title" Type="nvarchar" MaxLength="30" />
+    <Property Name="clientName" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EMLab.dbo.vClientDoctorPatient' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vClientDoctorPatient">
+    <Key>
+      <PropertyRef Name="client_id" />
+      <PropertyRef Name="doctor_id" />
+      <PropertyRef Name="patient_id" />
+    </Key>
+    <Property Name="client_id" Type="int" Nullable="false" />
+    <Property Name="client_name" Type="nvarchar" MaxLength="50" />
+    <Property Name="doctor_id" Type="int" Nullable="false" />
+    <Property Name="doctor_title" Type="nvarchar" MaxLength="30" />
+    <Property Name="doctor_firstName" Type="nvarchar" MaxLength="30" />
+    <Property Name="doctor_lastName" Type="nvarchar" MaxLength="30" />
+    <Property Name="patient_id" Type="int" Nullable="false" />
+    <Property Name="patient_firstName" Type="nvarchar" MaxLength="30" />
+    <Property Name="patient_lastName" Type="nvarchar" MaxLength="30" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EMLab.dbo.vContaiter' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vContaiter">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="DoubleBarcodeValidation" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="ContainerType" Type="nvarchar" MaxLength="30" />
+    <Property Name="ContainerTypeDescription" Type="varchar" MaxLength="100" />
+    <Property Name="Barcode" Type="varchar" MaxLength="20" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="WorkflowId" Type="int" />
+    <Property Name="CollectedDate" Type="datetime" />
+    <Property Name="Status" Type="nvarchar" MaxLength="30" />
+    <Property Name="Location" Type="nvarchar" MaxLength="500" />
+    <Property Name="LocationId" Type="int" />
+    <Property Name="UserId" Type="int" />
+    <Property Name="BatchId" Type="int" />
+    <Property Name="BatchName" Type="nvarchar" MaxLength="50" />
+    <Property Name="BatchBarcode" Type="varchar" MaxLength="20" />
+    <Property Name="ModelId" Type="int" />
+    <Property Name="Model" Type="nvarchar" MaxLength="30" />
+    <Property Name="ContentListCount" Type="int" />
+    <Property Name="CommentsCount" Type="int" />
+    <Property Name="FilesCount" Type="int" />
+    <Property Name="DraftCount" Type="int" />
+    <Property Name="Prop1" Type="int" />
+    <Property Name="Prop2" Type="int" />
+    <Property Name="Prop3" Type="int" />
+    <Property Name="Prop4" Type="int" />
+    <Property Name="Prop5" Type="int" />
+    <Property Name="Prop6" Type="int" />
+    <Property Name="Prop7" Type="int" />
+    <Property Name="Prop8" Type="int" />
+    <Property Name="Prop9" Type="int" />
+    <Property Name="Prop10" Type="int" />
+    <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="DoubleBarcodeValidation" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EMLab.dbo.vContaiterDraft' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vContaiterDraft">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="DoubleBarcodeValidation" />
+      <PropertyRef Name="DoubleBarcodeJourLineValidation" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Type" Type="nvarchar" MaxLength="30" />
+    <Property Name="TypeId" Type="int" />
+    <Property Name="SampleId" Type="int" />
+    <Property Name="Barcode" Type="varchar" MaxLength="20" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="WorkflowId" Type="int" />
+    <Property Name="CollectedDate" Type="datetime" />
+    <Property Name="Status" Type="nvarchar" MaxLength="30" />
+    <Property Name="Location" Type="nvarchar" MaxLength="500" />
+    <Property Name="LocationId" Type="int" />
+    <Property Name="UserId" Type="int" />
+    <Property Name="BatchId" Type="int" />
+    <Property Name="BatchName" Type="nvarchar" MaxLength="50" />
+    <Property Name="BatchBarcode" Type="varchar" MaxLength="20" />
+    <Property Name="ModelId" Type="int" />
+    <Property Name="Model" Type="nvarchar" MaxLength="30" />
+    <Property Name="ContentListCount" Type="int" />
+    <Property Name="CommentsCount" Type="int" />
+    <Property Name="MakeAliquot" Type="bit" />
+    <Property Name="Prop1" Type="int" />
+    <Property Name="Prop2" Type="int" />
+    <Property Name="Prop3" Type="int" />
+    <Property Name="Prop4" Type="int" />
+    <Property Name="Prop5" Type="int" />
+    <Property Name="Prop6" Type="int" />
+    <Property Name="Prop7" Type="int" />
+    <Property Name="Prop8" Type="int" />
+    <Property Name="Prop9" Type="int" />
+    <Property Name="Prop10" Type="int" />
+    <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="DoubleBarcodeValidation" Type="int" Nullable="false" />
+    <Property Name="DoubleBarcodeJourLineValidation" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EMLab.dbo.vCustodyLog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vCustodyLog">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="SampleId" Type="int" />
+    <Property Name="Barcode" Type="varchar" MaxLength="20" />
+    <Property Name="SampleName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Status" Type="nvarchar" MaxLength="500" />
+    <Property Name="StatusId" Type="int" />
+    <Property Name="DateTime" Type="datetime" />
+    <Property Name="Location" Type="nvarchar" MaxLength="500" />
+    <Property Name="LocationId" Type="int" />
+    <Property Name="StoredAt" Type="datetime" />
+    <Property Name="AmountInOut" Type="nvarchar" MaxLength="126" />
+    <Property Name="Signature" Type="nvarchar(max)" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="513" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EMLab.dbo.vCustomData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vCustomData">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Prop1" Type="int" />
+    <Property Name="Prop2" Type="int" />
+    <Property Name="Prop3" Type="int" />
+    <Property Name="Prop4" Type="int" />
+    <Property Name="Prop5" Type="int" />
+    <Property Name="PropS1" Type="nvarchar" MaxLength="850" />
+    <Property Name="PropS2" Type="nvarchar" MaxLength="850" />
+    <Property Name="PropS3" Type="nvarchar" MaxLength="850" />
+    <Property Name="PropS4" Type="nvarchar" MaxLength="850" />
+    <Property Name="PropS5" Type="nvarchar" MaxLength="850" />
+    <Property Name="PropN1" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="PropN2" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="PropN3" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="PropN4" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="PropN5" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="PropD1" Type="datetime" />
+    <Property Name="PropD2" Type="datetime" />
+    <Property Name="PropD3" Type="datetime" />
+    <Property Name="PropD4" Type="datetime" />
+    <Property Name="PropD5" Type="datetime" />
+    <Property Name="CommentsCount" Type="int" />
+    <Property Name="FilesCount" Type="int" />
+    <Property Name="TypeName" Type="nvarchar" MaxLength="500" />
+    <Property Name="TypeId" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EMLab.dbo.vDoctor' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vDoctor">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="30" />
+    <Property Name="LastName" Type="nvarchar" MaxLength="30" />
+    <Property Name="Email" Type="varchar" MaxLength="255" />
+    <Property Name="SendEmail" Type="smallint" />
+    <Property Name="Hospital" Type="nvarchar" MaxLength="50" />
+    <Property Name="HospitalId" Type="int" />
+    <Property Name="Prop1" Type="int" />
+    <Property Name="Prop2" Type="int" />
+    <Property Name="Prop3" Type="int" />
+    <Property Name="Prop4" Type="int" />
+    <Property Name="Prop5" Type="int" />
+    <Property Name="Prop6" Type="int" />
+    <Property Name="Prop7" Type="int" />
+    <Property Name="Prop8" Type="int" />
+    <Property Name="Prop9" Type="int" />
+    <Property Name="Prop10" Type="int" />
+    <Property Name="PropS1" Type="nvarchar" MaxLength="850" />
+    <Property Name="PropS2" Type="nvarchar" MaxLength="850" />
+    <Property Name="PropS3" Type="nvarchar" MaxLength="850" />
+    <Property Name="PropS4" Type="nvarchar" MaxLength="850" />
+    <Property Name="PropS5" Type="nvarchar" MaxLength="850" />
+    <Property Name="PropN1" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="PropN2" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="PropN3" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="PropN4" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="PropN5" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="PropD1" Type="datetime" />
+    <Property Name="PropD2" Type="datetime" />
+    <Property Name="PropD3" Type="datetime" />
+    <Property Name="PropD4" Type="datetime" />
+    <Property Name="PropD5" Type="datetime" />
+    <Property Name="SampleCount" Type="int" />
+    <Property Name="CommentsCount" Type="int" />
+    <Property Name="FilesCount" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EMLab.dbo.vHospital' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vHospital">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Prop1" Type="int" />
+    <Property Name="Prop2" Type="int" />
+    <Property Name="Prop3" Type="int" />
+    <Property Name="Prop4" Type="int" />
+    <Property Name="Prop5" Type="int" />
+    <Property Name="Prop6" Type="int" />
+    <Property Name="Prop7" Type="int" />
+    <Property Name="Prop8" Type="int" />
+    <Property Name="Prop9" Type="int" />
+    <Property Name="Prop10" Type="int" />
+    <Property Name="PropS1" Type="nvarchar" MaxLength="850" />
+    <Property Name="PropS2" Type="nvarchar" MaxLength="850" />
+    <Property Name="PropS3" Type="nvarchar" MaxLength="850" />
+    <Property Name="PropS4" Type="nvarchar" MaxLength="850" />
+    <Property Name="PropS5" Type="nvarchar" MaxLength="850" />
+    <Property Name="PropN1" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="PropN2" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="PropN3" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="PropN4" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="PropN5" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="PropD1" Type="datetime" />
+    <Property Name="PropD2" Type="datetime" />
+    <Property Name="PropD3" Type="datetime" />
+    <Property Name="PropD4" Type="datetime" />
+    <Property Name="PropD5" Type="datetime" />
+    <Property Name="SampleCount" Type="int" />
+    <Property Name="CommentsCount" Type="int" />
+    <Property Name="FilesCount" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EMLab.dbo.vJourLine' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vJourLine">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="DoubleBarcodeValidation" />
+      <PropertyRef Name="DoubleBarcodeJourLineValidation" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Type" Type="nvarchar" MaxLength="30" />
+    <Property Name="TypeId" Type="int" />
+    <Property Name="SampleId" Type="int" />
+    <Property Name="Barcode" Type="varchar" MaxLength="20" />
+    <Property Name="Well" Type="varchar" MaxLength="10" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="WorkflowId" Type="int" />
+    <Property Name="CollectedDate" Type="datetime" />
+    <Property Name="Status" Type="nvarchar" MaxLength="30" />
+    <Property Name="Doctor" Type="nvarchar" MaxLength="61" />
+    <Property Name="Patient" Type="nvarchar" MaxLength="61" />
+    <Property Name="Location" Type="nvarchar" MaxLength="500" />
+    <Property Name="LocationId" Type="int" />
+    <Property Name="UserId" Type="int" />
+    <Property Name="BatchId" Type="int" />
+    <Property Name="BatchName" Type="nvarchar" MaxLength="50" />
+    <Property Name="BatchBarcode" Type="varchar" MaxLength="20" />
+    <Property Name="ModelId" Type="int" />
+    <Property Name="Model" Type="nvarchar" MaxLength="30" />
+    <Property Name="HospitalName" Type="nvarchar" MaxLength="50" />
+    <Property Name="CommentsCount" Type="int" />
+    <Property Name="FilesCount" Type="int" />
+    <Property Name="MakeAliquot" Type="bit" />
+    <Property Name="Prop1" Type="int" />
+    <Property Name="Prop2" Type="int" />
+    <Property Name="Prop3" Type="int" />
+    <Property Name="Prop4" Type="int" />
+    <Property Name="Prop5" Type="int" />
+    <Property Name="Prop6" Type="int" />
+    <Property Name="Prop7" Type="int" />
+    <Property Name="Prop8" Type="int" />
+    <Property Name="Prop9" Type="int" />
+    <Property Name="Prop10" Type="int" />
+    <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="DoubleBarcodeValidation" Type="int" Nullable="false" />
+    <Property Name="DoubleBarcodeJourLineValidation" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EMLab.dbo.vJourLineFile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vJourLineFile">
+    <Key>
+      <PropertyRef Name="jourLine_id" />
+      <PropertyRef Name="file_id" />
+      <PropertyRef Name="aspNetUser_Id" />
+    </Key>
+    <Property Name="jourLine_id" Type="int" Nullable="false" />
+    <Property Name="sample_id" Type="int" />
+    <Property Name="file_id" Type="int" Nullable="false" />
+    <Property Name="createdDateTime" Type="datetime" />
+    <Property Name="type_id" Type="int" />
+    <Property Name="name" Type="nvarchar" MaxLength="255" />
+    <Property Name="data" Type="binary" MaxLength="30" />
+    <Property Name="aspNetUser_Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6013: The table/view 'EMLab.dbo.vLocation' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="vLocation">
+          <Property Name="v" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="id" Type="int" />
+          <Property Name="prop_id" Type="int" />
+          <Property Name="code" Type="varchar" MaxLength="20" />
+          <Property Name="value" Type="varchar" MaxLength="100" />
+          <Property Name="num" Type="int" />
+          <Property Name="name" Type="nvarchar" MaxLength="30" />
+          <Property Name="path" Type="nvarchar" MaxLength="500" />
+        </EntityType>-->
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EMLab.dbo.vPatient' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vPatient">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="no" Type="varchar" MaxLength="20" />
+    <Property Name="firstName" Type="nvarchar" MaxLength="30" />
+    <Property Name="lastName" Type="nvarchar" MaxLength="30" />
+    <Property Name="dob" Type="datetime" />
+    <Property Name="email" Type="varchar" MaxLength="255" />
+    <Property Name="sendEmail" Type="smallint" />
+    <Property Name="hospital" Type="nvarchar" MaxLength="50" />
+    <Property Name="doctor" Type="nvarchar" MaxLength="61" />
+    <Property Name="Prop1" Type="int" />
+    <Property Name="Prop2" Type="int" />
+    <Property Name="Prop3" Type="int" />
+    <Property Name="Prop4" Type="int" />
+    <Property Name="Prop5" Type="int" />
+    <Property Name="Prop6" Type="int" />
+    <Property Name="Prop7" Type="int" />
+    <Property Name="Prop8" Type="int" />
+    <Property Name="Prop9" Type="int" />
+    <Property Name="Prop10" Type="int" />
+    <Property Name="PropS1" Type="nvarchar" MaxLength="850" />
+    <Property Name="PropS2" Type="nvarchar" MaxLength="850" />
+    <Property Name="PropS3" Type="nvarchar" MaxLength="850" />
+    <Property Name="PropS4" Type="nvarchar" MaxLength="850" />
+    <Property Name="PropS5" Type="nvarchar" MaxLength="850" />
+    <Property Name="PropN1" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="PropN2" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="PropN3" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="PropN4" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="PropN5" Type="decimal" Precision="18" Scale="5" />
+    <Property Name="PropD1" Type="datetime" />
+    <Property Name="PropD2" Type="datetime" />
+    <Property Name="PropD3" Type="datetime" />
+    <Property Name="PropD4" Type="datetime" />
+    <Property Name="PropD5" Type="datetime" />
+    <Property Name="SampleCount" Type="int" />
+    <Property Name="CommentsCount" Type="int" />
+    <Property Name="FilesCount" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EMLab.dbo.vProcessResult' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vProcessResult">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="SampleId" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" />
+    <Property Name="ProcessDateStarted" Type="datetime" />
+    <Property Name="ProcessDateCompleted" Type="datetime" />
+    <Property Name="RunDateStarted" Type="datetime" />
+    <Property Name="RunDateCompleted" Type="datetime" />
+    <Property Name="SampleId" Type="int" Nullable="false" />
+    <Property Name="Barcode" Type="varchar" MaxLength="20" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Location" Type="nvarchar" MaxLength="500" />
+    <Property Name="Well" Type="varchar" MaxLength="10" />
+    <Property Name="Doctor" Type="nvarchar" MaxLength="61" />
+    <Property Name="Patient" Type="nvarchar" MaxLength="82" />
+    <Property Name="IsChild" Type="bit" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="513" />
+    <Property Name="BatchId" Type="int" />
+    <Property Name="Model" Type="nvarchar" MaxLength="30" />
+    <Property Name="ModelId" Type="int" />
+    <Property Name="EquipmentId" Type="int" />
+    <Property Name="TubeTypeId" Type="int" />
+    <Property Name="HospitalName" Type="nvarchar" MaxLength="50" />
+    <Property Name="SampleTypeId" Type="int" />
+    <Property Name="VolumeUnitId" Type="int" />
+    <Property Name="SampleWorkflowStatusId" Type="int" />
+    <Property Name="SampleStatusId" Type="int" />
+    <Property Name="ParentName" Type="nvarchar" MaxLength="50" />
+    <Property Name="SampleCurrentProcessName" Type="nvarchar" MaxLength="51" />
+    <Property Name="SampleCommentsCount" Type="int" />
+    <Property Name="ModDate" Type="datetime" />
+    <Property Name="CollectedDateTime" Type="datetime" />
+    <Property Name="AcceptedDate" Type="datetime" />
+    <Property Name="DateCreate" Type="datetime" />
+    <Property Name="Volume" Type="float" />
+    <Property Name="BatchName" Type="nvarchar" MaxLength="71" />
+    <Property Name="Prop1" Type="int" />
+    <Property Name="Prop2" Type="int" />
+    <Property Name="Prop3" Type="int" />
+    <Property Name="Prop4" Type="int" />
+    <Property Name="Prop5" Type="int" />
+    <Property Name="Prop6" Type="int" />
+    <Property Name="Prop7" Type="int" />
+    <Property Name="Prop8" Type="int" />
+    <Property Name="Prop9" Type="int" />
+    <Property Name="Prop10" Type="int" />
+    <Property Name="Run" Type="varchar" MaxLength="20" />
+    <Property Name="Workflow" Type="nvarchar" MaxLength="30" />
+    <Property Name="Process" Type="nvarchar" MaxLength="30" />
+    <Property Name="ProcessTypeCode" Type="varchar" MaxLength="20" />
+    <Property Name="ResultId" Type="int" />
+    <Property Name="Result" Type="nvarchar" MaxLength="30" />
+    <Property Name="CommentsCount" Type="int" />
+    <Property Name="FilesCount" Type="int" />
+    <Property Name="RunCreatedUserName" Type="nvarchar" MaxLength="500" />
+    <Property Name="RunCompletedUserName" Type="nvarchar" MaxLength="500" />
+    <Property Name="ProcessStatusId" Type="int" />
+    <Property Name="ProcessStatus" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="ProcessCreatedUserName" Type="nvarchar" MaxLength="500" />
+    <Property Name="ProcessCompletedUserName" Type="nvarchar" MaxLength="500" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EMLab.dbo.vProperty' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vProperty">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="500" />
+    <Property Name="ParentId" Type="int" />
+    <Property Name="Code" Type="varchar" MaxLength="25" />
+    <Property Name="Value" Type="nvarchar(max)" />
+    <Property Name="Number" Type="int" />
+    <Property Name="Type" Type="varchar" MaxLength="25" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="CommentsCount" Type="int" />
+    <Property Name="FilesCount" Type="int" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EMLab.dbo.vPropLocation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vPropLocation">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="30" />
+    <Property Name="prop_id" Type="int" />
+    <Property Name="LEVEL" Type="int" />
+    <Property Name="treepath" Type="nvarchar" MaxLength="4000" />
+    <Property Name="limited_level" Type="int" />
+    <Property Name="limited_id" Type="int" />
+    <Property Name="limited_path" Type="nvarchar" MaxLength="4000" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EMLab.dbo.vReagent' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vReagent">
+    <Key>
+      <PropertyRef Name="Name" />
+      <PropertyRef Name="Quantity" />
+      <PropertyRef Name="Unit_id" />
+    </Key>
+    <Property Name="Name" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="Barcode" Type="varchar" MaxLength="20" />
+    <Property Name="KitType_id" Type="int" />
+    <Property Name="KitName" Type="nvarchar" MaxLength="30" />
+    <Property Name="Quantity" Type="decimal" Precision="19" Scale="6" Nullable="false" />
+    <Property Name="Unit_id" Type="int" Nullable="false" />
+    <Property Name="UnitName" Type="nvarchar" MaxLength="30" />
+    <Property Name="CatalogNumber" Type="varchar" MaxLength="20" />
+    <Property Name="StorageTemp_id" Type="int" />
+    <Property Name="StorageTemp" Type="nvarchar" MaxLength="30" />
+    <Property Name="Vendor_id" Type="int" />
+    <Property Name="VendorName" Type="nvarchar" MaxLength="30" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EMLab.dbo.vSampleFile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vSampleFile">
+    <Key>
+      <PropertyRef Name="sample_id" />
+      <PropertyRef Name="file_id" />
+      <PropertyRef Name="aspNetUser_Id" />
+    </Key>
+    <Property Name="sample_id" Type="int" Nullable="false" />
+    <Property Name="file_id" Type="int" Nullable="false" />
+    <Property Name="createdDateTime" Type="datetime" />
+    <Property Name="type_id" Type="int" />
+    <Property Name="name" Type="nvarchar" MaxLength="255" />
+    <Property Name="data" Type="binary" MaxLength="30" />
+    <Property Name="aspNetUser_Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EMLab.dbo.vSamplesBook' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vSamplesBook">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Barcode" Type="varchar" MaxLength="20" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Location" Type="nvarchar" MaxLength="500" />
+    <Property Name="LocationId" Type="int" />
+    <Property Name="Well" Type="varchar" MaxLength="10" />
+    <Property Name="Doctor" Type="nvarchar" MaxLength="61" Nullable="false" />
+    <Property Name="DoctorId" Type="int" />
+    <Property Name="Patient" Type="nvarchar" MaxLength="82" Nullable="false" />
+    <Property Name="PatientId" Type="int" />
+    <Property Name="IsChild" Type="bit" />
+    <Property Name="UserId" Type="int" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="513" />
+    <Property Name="BatchId" Type="int" />
+    <Property Name="ModelId" Type="int" />
+    <Property Name="Model" Type="nvarchar" MaxLength="500" />
+    <Property Name="EquipmentId" Type="int" />
+    <Property Name="TubeTypeId" Type="int" />
+    <Property Name="ProcessId" Type="int" />
+    <Property Name="HospitalName" Type="nvarchar" MaxLength="50" />
+    <Property Name="HospitalId" Type="int" />
+    <Property Name="SampleTypeId" Type="int" />
+    <Property Name="VolumeUnitId" Type="int" />
+    <Property Name="SampleWorkflowStatusId" Type="int" />
+    <Property Name="SampleStatusId" Type="int" />
+    <Property Name="ParentName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProcessName" Type="nvarchar" MaxLength="521" />
+    <Property Name="ContentListCount" Type="int" />
+    <Property Name="CommentsCount" Type="int" />
+    <Property Name="FilesCount" Type="int" />
+    <Property Name="Files" Type="nvarchar(max)" />
+    <Property Name="Clones" Type="int" />
+    <Property Name="ModDate" Type="datetime" />
+    <Property Name="CollectedDateTime" Type="datetime" />
+    <Property Name="AcceptedDate" Type="datetime" />
+    <Property Name="DateCreate" Type="datetime" />
+    <Property Name="Volume" Type="float" />
+    <Property Name="BatchName" Type="nvarchar" MaxLength="71" />
+    <Property Name="Result" Type="nvarchar" MaxLength="500" />
+    <Property Name="Sended_Id" Type="smallint" />
+    <Property Name="Sended" Type="nvarchar" MaxLength="500" />
+    <Property Name="Prop1" Type="int" />
+    <Property Name="Prop2" Type="int" />
+    <Property Name="Prop3" Type="int" />
+    <Property Name="Prop4" Type="int" />
+    <Property Name="Prop5" Type="int" />
+    <Property Name="Prop6" Type="int" />
+    <Property Name="Prop7" Type="int" />
+    <Property Name="Prop8" Type="int" />
+    <Property Name="Prop9" Type="int" />
+    <Property Name="Prop10" Type="int" />
+    <Property Name="PropS1" Type="nvarchar" MaxLength="850" />
+    <Property Name="PropS2" Type="nvarchar" MaxLength="850" />
+    <Property Name="PropS3" Type="nvarchar" MaxLength="850" />
+    <Property Name="PropS4" Type="nvarchar" MaxLength="850" />
+    <Property Name="PropS5" Type="nvarchar" MaxLength="850" />
+    <Property Name="PropN1" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="PropN2" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="PropN3" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="PropN4" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="PropN5" Type="decimal" Precision="18" Scale="0" />
+    <Property Name="PropD1" Type="datetime" />
+    <Property Name="PropD2" Type="datetime" />
+    <Property Name="PropD3" Type="datetime" />
+    <Property Name="PropD4" Type="datetime" />
+    <Property Name="PropD5" Type="datetime" />
+    <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EMLab.dbo.vSamplesBookInProcess' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vSamplesBookInProcess">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Barcode" Type="varchar" MaxLength="20" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Location" Type="nvarchar" MaxLength="500" />
+    <Property Name="Well" Type="varchar" MaxLength="10" />
+    <Property Name="Doctor" Type="nvarchar" MaxLength="61" />
+    <Property Name="Patient" Type="nvarchar" MaxLength="82" />
+    <Property Name="IsChild" Type="bit" />
+    <Property Name="UserId" Type="int" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="513" />
+    <Property Name="BatchId" Type="int" />
+    <Property Name="ModelId" Type="int" />
+    <Property Name="Model" Type="nvarchar" MaxLength="500" />
+    <Property Name="EquipmentId" Type="int" />
+    <Property Name="TubeTypeId" Type="int" />
+    <Property Name="ProcessId" Type="int" />
+    <Property Name="HospitalName" Type="nvarchar" MaxLength="50" />
+    <Property Name="SampleTypeId" Type="int" />
+    <Property Name="VolumeUnitId" Type="int" />
+    <Property Name="SampleWorkflowStatusId" Type="int" />
+    <Property Name="SampleStatusId" Type="int" />
+    <Property Name="ParentName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ProcessName" Type="nvarchar" MaxLength="521" />
+    <Property Name="ContentListCount" Type="int" />
+    <Property Name="CommentsCount" Type="int" />
+    <Property Name="FilesCount" Type="int" />
+    <Property Name="Files" Type="nvarchar(max)" />
+    <Property Name="ModDate" Type="datetime" />
+    <Property Name="CollectedDateTime" Type="datetime" />
+    <Property Name="AcceptedDate" Type="datetime" />
+    <Property Name="DateCreate" Type="datetime" />
+    <Property Name="Volume" Type="float" />
+    <Property Name="BatchName" Type="nvarchar" MaxLength="71" />
+    <Property Name="Result" Type="nvarchar" MaxLength="500" />
+    <Property Name="sended_id" Type="smallint" />
+    <Property Name="wf_result_id" Type="int" />
+    <Property Name="Sended" Type="nvarchar" MaxLength="500" />
+    <Property Name="Prop1" Type="int" />
+    <Property Name="Prop2" Type="int" />
+    <Property Name="Prop3" Type="int" />
+    <Property Name="Prop4" Type="int" />
+    <Property Name="Prop5" Type="int" />
+    <Property Name="Prop6" Type="int" />
+    <Property Name="Prop7" Type="int" />
+    <Property Name="Prop8" Type="int" />
+    <Property Name="Prop9" Type="int" />
+    <Property Name="Prop10" Type="int" />
+    <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EMLab.dbo.vWfWork' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vWfWork">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="WfType" Type="nvarchar" MaxLength="30" />
+    <Property Name="WfCode" Type="varchar" MaxLength="20" />
+    <Property Name="StepName" Type="nvarchar" MaxLength="30" />
+    <Property Name="ResStatus" Type="nvarchar" MaxLength="30" />
+    <Property Name="SampleName" Type="nvarchar" MaxLength="71" />
+    <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'EMLab.dbo.vWorkflowRunList' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="vWorkflowRunList">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="TypeZId" Type="int" />
+    <Property Name="WfType" Type="nvarchar" MaxLength="30" />
+    <Property Name="Code" Type="varchar" MaxLength="20" />
+    <Property Name="CurProcessId" Type="int" />
+    <Property Name="StatusId" Type="int" />
+    <Property Name="Status" Type="nvarchar" MaxLength="30" />
+    <Property Name="DateStarted" Type="datetime" />
+    <Property Name="DateUpdated" Type="datetime" />
+    <Property Name="DateCompleted" Type="datetime" />
+    <Property Name="DateCreated" Type="datetime" />
+    <Property Name="CreatedUserName" Type="nvarchar" MaxLength="513" />
+    <Property Name="UpdatedUserName" Type="nvarchar" MaxLength="513" />
+    <Property Name="CompletedUserName" Type="nvarchar" MaxLength="513" />
+    <Property Name="CommentsCount" Type="int" />
+    <Property Name="FilesCount" Type="int" />
+    <Property Name="Files" Type="nvarchar(max)" />
+    <Property Name="RowVersion" Type="timestamp" StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="AspNetUserClaims" Type="Self.AspNetUserClaims" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserClaims">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="AspNetUserLogins" Type="Self.AspNetUserLogins" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserLogins">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+    <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetRoles">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserRoles">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserRoles">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="ChangeStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="List" Type="varchar" Mode="In" />
+    <Parameter Name="status" Type="int" Mode="In" />
+    <Parameter Name="tableId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="CreateBarcode" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="userId" Type="int" Mode="In" />
+    <Parameter Name="hospital_Id" Type="int" Mode="In" />
+    <Parameter Name="model_id" Type="int" Mode="In" />
+    <Parameter Name="sample_type_id" Type="int" Mode="In" />
+    <Parameter Name="table_Id" Type="int" Mode="In" />
+    <Parameter Name="barcode" Type="varchar" Mode="InOut" />
+  </Function>
+  <Function Name="DeleteSample" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="GetAspNetUsersName" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="nvarchar">
+    <Parameter Name="UserId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="GetParentsPropCodes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="nvarchar">
+    <Parameter Name="PropId" Type="int" Mode="In" />
+  </Function>
+  <Function Name="mb_calc_diversity" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
+    <Parameter Name="sample_id" Type="int" Mode="In" />
+    <Parameter Name="ruleCode" Type="varchar" Mode="In" />
+    <Parameter Name="refLowValue" Type="float" Mode="In" />
+    <Parameter Name="refHighValue" Type="float" Mode="In" />
+    <Parameter Name="negative_id" Type="int" Mode="In" />
+    <Parameter Name="positive_id" Type="int" Mode="In" />
+    <Parameter Name="low_id" Type="int" Mode="In" />
+    <Parameter Name="normal_id" Type="int" Mode="In" />
+    <Parameter Name="high_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="mb_get_value_id" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
+    <Parameter Name="sample_id" Type="int" Mode="In" />
+    <Parameter Name="ruleCode" Type="varchar" Mode="In" />
+    <Parameter Name="sectionCode" Type="varchar" Mode="In" />
+    <Parameter Name="taxon_id" Type="int" Mode="In" />
+    <Parameter Name="refLowValue" Type="float" Mode="In" />
+    <Parameter Name="refHighValue" Type="float" Mode="In" />
+  </Function>
+  <Function Name="prepare_mb_report_data" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="sample_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="send_email" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="sample_id" Type="int" Mode="In" />
+    <Parameter Name="attach_file_name" Type="nvarchar" Mode="In" />
+    <Parameter Name="recipients" Type="varchar(max)" Mode="In" />
+  </Function>
+  <EntityContainer Name="EMLabModelStoreContainer">
+    <EntitySet Name="__EFMigrationsHistory" EntityType="Self.__EFMigrationsHistory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="a_comment" EntityType="Self.a_comment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="a_file" EntityType="Self.a_file" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="a_prop" EntityType="Self.a_prop" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="a_tableLink" EntityType="Self.a_tableLink" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="a_userData" EntityType="Self.a_userData" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="a_userField" EntityType="Self.a_userField" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="a_userFieldList" EntityType="Self.a_userFieldList" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="a_userLayout" EntityType="Self.a_userLayout" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="c_client" EntityType="Self.c_client" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="c_doctor" EntityType="Self.c_doctor" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="c_patient" EntityType="Self.c_patient" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="mb_report" EntityType="Self.mb_report" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="mb_reportField" EntityType="Self.mb_reportField" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="mb_taxonomy" EntityType="Self.mb_taxonomy" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="r_reagent" EntityType="Self.r_reagent" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="r_reagentJournal" EntityType="Self.r_reagentJournal" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="r_reagentLedger" EntityType="Self.r_reagentLedger" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="s_clones" EntityType="Self.s_clones" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="s_custodyLog" EntityType="Self.s_custodyLog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="s_jourLine" EntityType="Self.s_jourLine" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="s_sample" EntityType="Self.s_sample" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="srv_request" EntityType="Self.srv_request" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="wf_bom" EntityType="Self.wf_bom" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="wf_process" EntityType="Self.wf_process" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="wf_result" EntityType="Self.wf_result" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="wf_run" EntityType="Self.wf_run" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="__MigrationHistory1" EntityType="Self.__MigrationHistory1" Schema="res" Table="__MigrationHistory" store:Type="Tables" />
+    <EntitySet Name="Resources" EntityType="Self.Resources" Schema="res" store:Type="Tables" />
+    <EntitySet Name="mb_data" EntityType="Self.mb_data" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [mb_data].[v] AS [v], 
+    [mb_data].[id] AS [id], 
+    [mb_data].[sample_id] AS [sample_id], 
+    [mb_data].[taxonomy_id] AS [taxonomy_id], 
+    [mb_data].[count] AS [count], 
+    [mb_data].[proportion] AS [proportion]
+    FROM [dbo].[mb_data] AS [mb_data]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vBillOfMaterial" EntityType="Self.vBillOfMaterial" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vBillOfMaterial].[id] AS [id], 
+    [vBillOfMaterial].[RunId] AS [RunId], 
+    [vBillOfMaterial].[ReagentName] AS [ReagentName], 
+    [vBillOfMaterial].[CatalogNumber] AS [CatalogNumber], 
+    [vBillOfMaterial].[LotNumber] AS [LotNumber], 
+    [vBillOfMaterial].[Barcode] AS [Barcode], 
+    [vBillOfMaterial].[ExpirationDate] AS [ExpirationDate], 
+    [vBillOfMaterial].[CreatedDate] AS [CreatedDate], 
+    [vBillOfMaterial].[UpdatedDate] AS [UpdatedDate], 
+    [vBillOfMaterial].[CreatedUser] AS [CreatedUser], 
+    [vBillOfMaterial].[UpdatedUser] AS [UpdatedUser], 
+    [vBillOfMaterial].[CommentsCount] AS [CommentsCount], 
+    [vBillOfMaterial].[FilesCount] AS [FilesCount], 
+    [vBillOfMaterial].[Files] AS [Files]
+    FROM [dbo].[vBillOfMaterial] AS [vBillOfMaterial]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vBioinformaticsRunList" EntityType="Self.vBioinformaticsRunList" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vBioinformaticsRunList].[task_id] AS [task_id], 
+    [vBioinformaticsRunList].[cmd] AS [cmd], 
+    [vBioinformaticsRunList].[sqlCompleted] AS [sqlCompleted], 
+    [vBioinformaticsRunList].[sqlFail] AS [sqlFail]
+    FROM [dbo].[vBioinformaticsRunList] AS [vBioinformaticsRunList]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vClientDoctor" EntityType="Self.vClientDoctor" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vClientDoctor].[v] AS [v], 
+    [vClientDoctor].[id] AS [id], 
+    [vClientDoctor].[client_id] AS [client_id], 
+    [vClientDoctor].[firstName] AS [firstName], 
+    [vClientDoctor].[lastName] AS [lastName], 
+    [vClientDoctor].[title] AS [title], 
+    [vClientDoctor].[clientName] AS [clientName]
+    FROM [dbo].[vClientDoctor] AS [vClientDoctor]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vClientDoctorPatient" EntityType="Self.vClientDoctorPatient" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vClientDoctorPatient].[client_id] AS [client_id], 
+    [vClientDoctorPatient].[client_name] AS [client_name], 
+    [vClientDoctorPatient].[doctor_id] AS [doctor_id], 
+    [vClientDoctorPatient].[doctor_title] AS [doctor_title], 
+    [vClientDoctorPatient].[doctor_firstName] AS [doctor_firstName], 
+    [vClientDoctorPatient].[doctor_lastName] AS [doctor_lastName], 
+    [vClientDoctorPatient].[patient_id] AS [patient_id], 
+    [vClientDoctorPatient].[patient_firstName] AS [patient_firstName], 
+    [vClientDoctorPatient].[patient_lastName] AS [patient_lastName]
+    FROM [dbo].[vClientDoctorPatient] AS [vClientDoctorPatient]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vContaiter" EntityType="Self.vContaiter" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vContaiter].[Id] AS [Id], 
+    [vContaiter].[ContainerType] AS [ContainerType], 
+    [vContaiter].[ContainerTypeDescription] AS [ContainerTypeDescription], 
+    [vContaiter].[Barcode] AS [Barcode], 
+    [vContaiter].[Name] AS [Name], 
+    [vContaiter].[WorkflowId] AS [WorkflowId], 
+    [vContaiter].[CollectedDate] AS [CollectedDate], 
+    [vContaiter].[Status] AS [Status], 
+    [vContaiter].[Location] AS [Location], 
+    [vContaiter].[LocationId] AS [LocationId], 
+    [vContaiter].[UserId] AS [UserId], 
+    [vContaiter].[BatchId] AS [BatchId], 
+    [vContaiter].[BatchName] AS [BatchName], 
+    [vContaiter].[BatchBarcode] AS [BatchBarcode], 
+    [vContaiter].[ModelId] AS [ModelId], 
+    [vContaiter].[Model] AS [Model], 
+    [vContaiter].[ContentListCount] AS [ContentListCount], 
+    [vContaiter].[CommentsCount] AS [CommentsCount], 
+    [vContaiter].[FilesCount] AS [FilesCount], 
+    [vContaiter].[DraftCount] AS [DraftCount], 
+    [vContaiter].[Prop1] AS [Prop1], 
+    [vContaiter].[Prop2] AS [Prop2], 
+    [vContaiter].[Prop3] AS [Prop3], 
+    [vContaiter].[Prop4] AS [Prop4], 
+    [vContaiter].[Prop5] AS [Prop5], 
+    [vContaiter].[Prop6] AS [Prop6], 
+    [vContaiter].[Prop7] AS [Prop7], 
+    [vContaiter].[Prop8] AS [Prop8], 
+    [vContaiter].[Prop9] AS [Prop9], 
+    [vContaiter].[Prop10] AS [Prop10], 
+    [vContaiter].[RowVersion] AS [RowVersion], 
+    [vContaiter].[DoubleBarcodeValidation] AS [DoubleBarcodeValidation]
+    FROM [dbo].[vContaiter] AS [vContaiter]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vContaiterDraft" EntityType="Self.vContaiterDraft" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vContaiterDraft].[Id] AS [Id], 
+    [vContaiterDraft].[Type] AS [Type], 
+    [vContaiterDraft].[TypeId] AS [TypeId], 
+    [vContaiterDraft].[SampleId] AS [SampleId], 
+    [vContaiterDraft].[Barcode] AS [Barcode], 
+    [vContaiterDraft].[Name] AS [Name], 
+    [vContaiterDraft].[WorkflowId] AS [WorkflowId], 
+    [vContaiterDraft].[CollectedDate] AS [CollectedDate], 
+    [vContaiterDraft].[Status] AS [Status], 
+    [vContaiterDraft].[Location] AS [Location], 
+    [vContaiterDraft].[LocationId] AS [LocationId], 
+    [vContaiterDraft].[UserId] AS [UserId], 
+    [vContaiterDraft].[BatchId] AS [BatchId], 
+    [vContaiterDraft].[BatchName] AS [BatchName], 
+    [vContaiterDraft].[BatchBarcode] AS [BatchBarcode], 
+    [vContaiterDraft].[ModelId] AS [ModelId], 
+    [vContaiterDraft].[Model] AS [Model], 
+    [vContaiterDraft].[ContentListCount] AS [ContentListCount], 
+    [vContaiterDraft].[CommentsCount] AS [CommentsCount], 
+    [vContaiterDraft].[MakeAliquot] AS [MakeAliquot], 
+    [vContaiterDraft].[Prop1] AS [Prop1], 
+    [vContaiterDraft].[Prop2] AS [Prop2], 
+    [vContaiterDraft].[Prop3] AS [Prop3], 
+    [vContaiterDraft].[Prop4] AS [Prop4], 
+    [vContaiterDraft].[Prop5] AS [Prop5], 
+    [vContaiterDraft].[Prop6] AS [Prop6], 
+    [vContaiterDraft].[Prop7] AS [Prop7], 
+    [vContaiterDraft].[Prop8] AS [Prop8], 
+    [vContaiterDraft].[Prop9] AS [Prop9], 
+    [vContaiterDraft].[Prop10] AS [Prop10], 
+    [vContaiterDraft].[RowVersion] AS [RowVersion], 
+    [vContaiterDraft].[DoubleBarcodeValidation] AS [DoubleBarcodeValidation], 
+    [vContaiterDraft].[DoubleBarcodeJourLineValidation] AS [DoubleBarcodeJourLineValidation]
+    FROM [dbo].[vContaiterDraft] AS [vContaiterDraft]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vCustodyLog" EntityType="Self.vCustodyLog" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vCustodyLog].[Id] AS [Id], 
+    [vCustodyLog].[SampleId] AS [SampleId], 
+    [vCustodyLog].[Barcode] AS [Barcode], 
+    [vCustodyLog].[SampleName] AS [SampleName], 
+    [vCustodyLog].[Status] AS [Status], 
+    [vCustodyLog].[StatusId] AS [StatusId], 
+    [vCustodyLog].[DateTime] AS [DateTime], 
+    [vCustodyLog].[Location] AS [Location], 
+    [vCustodyLog].[LocationId] AS [LocationId], 
+    [vCustodyLog].[StoredAt] AS [StoredAt], 
+    [vCustodyLog].[AmountInOut] AS [AmountInOut], 
+    [vCustodyLog].[Signature] AS [Signature], 
+    [vCustodyLog].[UserName] AS [UserName]
+    FROM [dbo].[vCustodyLog] AS [vCustodyLog]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vCustomData" EntityType="Self.vCustomData" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vCustomData].[Id] AS [Id], 
+    [vCustomData].[Prop1] AS [Prop1], 
+    [vCustomData].[Prop2] AS [Prop2], 
+    [vCustomData].[Prop3] AS [Prop3], 
+    [vCustomData].[Prop4] AS [Prop4], 
+    [vCustomData].[Prop5] AS [Prop5], 
+    [vCustomData].[PropS1] AS [PropS1], 
+    [vCustomData].[PropS2] AS [PropS2], 
+    [vCustomData].[PropS3] AS [PropS3], 
+    [vCustomData].[PropS4] AS [PropS4], 
+    [vCustomData].[PropS5] AS [PropS5], 
+    [vCustomData].[PropN1] AS [PropN1], 
+    [vCustomData].[PropN2] AS [PropN2], 
+    [vCustomData].[PropN3] AS [PropN3], 
+    [vCustomData].[PropN4] AS [PropN4], 
+    [vCustomData].[PropN5] AS [PropN5], 
+    [vCustomData].[PropD1] AS [PropD1], 
+    [vCustomData].[PropD2] AS [PropD2], 
+    [vCustomData].[PropD3] AS [PropD3], 
+    [vCustomData].[PropD4] AS [PropD4], 
+    [vCustomData].[PropD5] AS [PropD5], 
+    [vCustomData].[CommentsCount] AS [CommentsCount], 
+    [vCustomData].[FilesCount] AS [FilesCount], 
+    [vCustomData].[TypeName] AS [TypeName], 
+    [vCustomData].[TypeId] AS [TypeId]
+    FROM [dbo].[vCustomData] AS [vCustomData]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vDoctor" EntityType="Self.vDoctor" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vDoctor].[Id] AS [Id], 
+    [vDoctor].[FirstName] AS [FirstName], 
+    [vDoctor].[LastName] AS [LastName], 
+    [vDoctor].[Email] AS [Email], 
+    [vDoctor].[SendEmail] AS [SendEmail], 
+    [vDoctor].[Hospital] AS [Hospital], 
+    [vDoctor].[HospitalId] AS [HospitalId], 
+    [vDoctor].[Prop1] AS [Prop1], 
+    [vDoctor].[Prop2] AS [Prop2], 
+    [vDoctor].[Prop3] AS [Prop3], 
+    [vDoctor].[Prop4] AS [Prop4], 
+    [vDoctor].[Prop5] AS [Prop5], 
+    [vDoctor].[Prop6] AS [Prop6], 
+    [vDoctor].[Prop7] AS [Prop7], 
+    [vDoctor].[Prop8] AS [Prop8], 
+    [vDoctor].[Prop9] AS [Prop9], 
+    [vDoctor].[Prop10] AS [Prop10], 
+    [vDoctor].[PropS1] AS [PropS1], 
+    [vDoctor].[PropS2] AS [PropS2], 
+    [vDoctor].[PropS3] AS [PropS3], 
+    [vDoctor].[PropS4] AS [PropS4], 
+    [vDoctor].[PropS5] AS [PropS5], 
+    [vDoctor].[PropN1] AS [PropN1], 
+    [vDoctor].[PropN2] AS [PropN2], 
+    [vDoctor].[PropN3] AS [PropN3], 
+    [vDoctor].[PropN4] AS [PropN4], 
+    [vDoctor].[PropN5] AS [PropN5], 
+    [vDoctor].[PropD1] AS [PropD1], 
+    [vDoctor].[PropD2] AS [PropD2], 
+    [vDoctor].[PropD3] AS [PropD3], 
+    [vDoctor].[PropD4] AS [PropD4], 
+    [vDoctor].[PropD5] AS [PropD5], 
+    [vDoctor].[SampleCount] AS [SampleCount], 
+    [vDoctor].[CommentsCount] AS [CommentsCount], 
+    [vDoctor].[FilesCount] AS [FilesCount]
+    FROM [dbo].[vDoctor] AS [vDoctor]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vHospital" EntityType="Self.vHospital" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vHospital].[Id] AS [Id], 
+    [vHospital].[Name] AS [Name], 
+    [vHospital].[Prop1] AS [Prop1], 
+    [vHospital].[Prop2] AS [Prop2], 
+    [vHospital].[Prop3] AS [Prop3], 
+    [vHospital].[Prop4] AS [Prop4], 
+    [vHospital].[Prop5] AS [Prop5], 
+    [vHospital].[Prop6] AS [Prop6], 
+    [vHospital].[Prop7] AS [Prop7], 
+    [vHospital].[Prop8] AS [Prop8], 
+    [vHospital].[Prop9] AS [Prop9], 
+    [vHospital].[Prop10] AS [Prop10], 
+    [vHospital].[PropS1] AS [PropS1], 
+    [vHospital].[PropS2] AS [PropS2], 
+    [vHospital].[PropS3] AS [PropS3], 
+    [vHospital].[PropS4] AS [PropS4], 
+    [vHospital].[PropS5] AS [PropS5], 
+    [vHospital].[PropN1] AS [PropN1], 
+    [vHospital].[PropN2] AS [PropN2], 
+    [vHospital].[PropN3] AS [PropN3], 
+    [vHospital].[PropN4] AS [PropN4], 
+    [vHospital].[PropN5] AS [PropN5], 
+    [vHospital].[PropD1] AS [PropD1], 
+    [vHospital].[PropD2] AS [PropD2], 
+    [vHospital].[PropD3] AS [PropD3], 
+    [vHospital].[PropD4] AS [PropD4], 
+    [vHospital].[PropD5] AS [PropD5], 
+    [vHospital].[SampleCount] AS [SampleCount], 
+    [vHospital].[CommentsCount] AS [CommentsCount], 
+    [vHospital].[FilesCount] AS [FilesCount]
+    FROM [dbo].[vHospital] AS [vHospital]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vJourLine" EntityType="Self.vJourLine" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vJourLine].[Id] AS [Id], 
+    [vJourLine].[Type] AS [Type], 
+    [vJourLine].[TypeId] AS [TypeId], 
+    [vJourLine].[SampleId] AS [SampleId], 
+    [vJourLine].[Barcode] AS [Barcode], 
+    [vJourLine].[Well] AS [Well], 
+    [vJourLine].[Name] AS [Name], 
+    [vJourLine].[WorkflowId] AS [WorkflowId], 
+    [vJourLine].[CollectedDate] AS [CollectedDate], 
+    [vJourLine].[Status] AS [Status], 
+    [vJourLine].[Doctor] AS [Doctor], 
+    [vJourLine].[Patient] AS [Patient], 
+    [vJourLine].[Location] AS [Location], 
+    [vJourLine].[LocationId] AS [LocationId], 
+    [vJourLine].[UserId] AS [UserId], 
+    [vJourLine].[BatchId] AS [BatchId], 
+    [vJourLine].[BatchName] AS [BatchName], 
+    [vJourLine].[BatchBarcode] AS [BatchBarcode], 
+    [vJourLine].[ModelId] AS [ModelId], 
+    [vJourLine].[Model] AS [Model], 
+    [vJourLine].[HospitalName] AS [HospitalName], 
+    [vJourLine].[CommentsCount] AS [CommentsCount], 
+    [vJourLine].[FilesCount] AS [FilesCount], 
+    [vJourLine].[MakeAliquot] AS [MakeAliquot], 
+    [vJourLine].[Prop1] AS [Prop1], 
+    [vJourLine].[Prop2] AS [Prop2], 
+    [vJourLine].[Prop3] AS [Prop3], 
+    [vJourLine].[Prop4] AS [Prop4], 
+    [vJourLine].[Prop5] AS [Prop5], 
+    [vJourLine].[Prop6] AS [Prop6], 
+    [vJourLine].[Prop7] AS [Prop7], 
+    [vJourLine].[Prop8] AS [Prop8], 
+    [vJourLine].[Prop9] AS [Prop9], 
+    [vJourLine].[Prop10] AS [Prop10], 
+    [vJourLine].[RowVersion] AS [RowVersion], 
+    [vJourLine].[DoubleBarcodeValidation] AS [DoubleBarcodeValidation], 
+    [vJourLine].[DoubleBarcodeJourLineValidation] AS [DoubleBarcodeJourLineValidation]
+    FROM [dbo].[vJourLine] AS [vJourLine]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vJourLineFile" EntityType="Self.vJourLineFile" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vJourLineFile].[jourLine_id] AS [jourLine_id], 
+    [vJourLineFile].[sample_id] AS [sample_id], 
+    [vJourLineFile].[file_id] AS [file_id], 
+    [vJourLineFile].[createdDateTime] AS [createdDateTime], 
+    [vJourLineFile].[type_id] AS [type_id], 
+    [vJourLineFile].[name] AS [name], 
+    [vJourLineFile].[data] AS [data], 
+    [vJourLineFile].[aspNetUser_Id] AS [aspNetUser_Id]
+    FROM [dbo].[vJourLineFile] AS [vJourLineFile]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vPatient" EntityType="Self.vPatient" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vPatient].[id] AS [id], 
+    [vPatient].[no] AS [no], 
+    [vPatient].[firstName] AS [firstName], 
+    [vPatient].[lastName] AS [lastName], 
+    [vPatient].[dob] AS [dob], 
+    [vPatient].[email] AS [email], 
+    [vPatient].[sendEmail] AS [sendEmail], 
+    [vPatient].[hospital] AS [hospital], 
+    [vPatient].[doctor] AS [doctor], 
+    [vPatient].[Prop1] AS [Prop1], 
+    [vPatient].[Prop2] AS [Prop2], 
+    [vPatient].[Prop3] AS [Prop3], 
+    [vPatient].[Prop4] AS [Prop4], 
+    [vPatient].[Prop5] AS [Prop5], 
+    [vPatient].[Prop6] AS [Prop6], 
+    [vPatient].[Prop7] AS [Prop7], 
+    [vPatient].[Prop8] AS [Prop8], 
+    [vPatient].[Prop9] AS [Prop9], 
+    [vPatient].[Prop10] AS [Prop10], 
+    [vPatient].[PropS1] AS [PropS1], 
+    [vPatient].[PropS2] AS [PropS2], 
+    [vPatient].[PropS3] AS [PropS3], 
+    [vPatient].[PropS4] AS [PropS4], 
+    [vPatient].[PropS5] AS [PropS5], 
+    [vPatient].[PropN1] AS [PropN1], 
+    [vPatient].[PropN2] AS [PropN2], 
+    [vPatient].[PropN3] AS [PropN3], 
+    [vPatient].[PropN4] AS [PropN4], 
+    [vPatient].[PropN5] AS [PropN5], 
+    [vPatient].[PropD1] AS [PropD1], 
+    [vPatient].[PropD2] AS [PropD2], 
+    [vPatient].[PropD3] AS [PropD3], 
+    [vPatient].[PropD4] AS [PropD4], 
+    [vPatient].[PropD5] AS [PropD5], 
+    [vPatient].[SampleCount] AS [SampleCount], 
+    [vPatient].[CommentsCount] AS [CommentsCount], 
+    [vPatient].[FilesCount] AS [FilesCount]
+    FROM [dbo].[vPatient] AS [vPatient]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vProcessResult" EntityType="Self.vProcessResult" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vProcessResult].[Id] AS [Id], 
+    [vProcessResult].[RowVersion] AS [RowVersion], 
+    [vProcessResult].[ProcessDateStarted] AS [ProcessDateStarted], 
+    [vProcessResult].[ProcessDateCompleted] AS [ProcessDateCompleted], 
+    [vProcessResult].[RunDateStarted] AS [RunDateStarted], 
+    [vProcessResult].[RunDateCompleted] AS [RunDateCompleted], 
+    [vProcessResult].[SampleId] AS [SampleId], 
+    [vProcessResult].[Barcode] AS [Barcode], 
+    [vProcessResult].[Name] AS [Name], 
+    [vProcessResult].[Location] AS [Location], 
+    [vProcessResult].[Well] AS [Well], 
+    [vProcessResult].[Doctor] AS [Doctor], 
+    [vProcessResult].[Patient] AS [Patient], 
+    [vProcessResult].[IsChild] AS [IsChild], 
+    [vProcessResult].[UserName] AS [UserName], 
+    [vProcessResult].[BatchId] AS [BatchId], 
+    [vProcessResult].[Model] AS [Model], 
+    [vProcessResult].[ModelId] AS [ModelId], 
+    [vProcessResult].[EquipmentId] AS [EquipmentId], 
+    [vProcessResult].[TubeTypeId] AS [TubeTypeId], 
+    [vProcessResult].[HospitalName] AS [HospitalName], 
+    [vProcessResult].[SampleTypeId] AS [SampleTypeId], 
+    [vProcessResult].[VolumeUnitId] AS [VolumeUnitId], 
+    [vProcessResult].[SampleWorkflowStatusId] AS [SampleWorkflowStatusId], 
+    [vProcessResult].[SampleStatusId] AS [SampleStatusId], 
+    [vProcessResult].[ParentName] AS [ParentName], 
+    [vProcessResult].[SampleCurrentProcessName] AS [SampleCurrentProcessName], 
+    [vProcessResult].[SampleCommentsCount] AS [SampleCommentsCount], 
+    [vProcessResult].[ModDate] AS [ModDate], 
+    [vProcessResult].[CollectedDateTime] AS [CollectedDateTime], 
+    [vProcessResult].[AcceptedDate] AS [AcceptedDate], 
+    [vProcessResult].[DateCreate] AS [DateCreate], 
+    [vProcessResult].[Volume] AS [Volume], 
+    [vProcessResult].[BatchName] AS [BatchName], 
+    [vProcessResult].[Prop1] AS [Prop1], 
+    [vProcessResult].[Prop2] AS [Prop2], 
+    [vProcessResult].[Prop3] AS [Prop3], 
+    [vProcessResult].[Prop4] AS [Prop4], 
+    [vProcessResult].[Prop5] AS [Prop5], 
+    [vProcessResult].[Prop6] AS [Prop6], 
+    [vProcessResult].[Prop7] AS [Prop7], 
+    [vProcessResult].[Prop8] AS [Prop8], 
+    [vProcessResult].[Prop9] AS [Prop9], 
+    [vProcessResult].[Prop10] AS [Prop10], 
+    [vProcessResult].[Run] AS [Run], 
+    [vProcessResult].[Workflow] AS [Workflow], 
+    [vProcessResult].[Process] AS [Process], 
+    [vProcessResult].[ProcessTypeCode] AS [ProcessTypeCode], 
+    [vProcessResult].[ResultId] AS [ResultId], 
+    [vProcessResult].[Result] AS [Result], 
+    [vProcessResult].[CommentsCount] AS [CommentsCount], 
+    [vProcessResult].[FilesCount] AS [FilesCount], 
+    [vProcessResult].[RunCreatedUserName] AS [RunCreatedUserName], 
+    [vProcessResult].[RunCompletedUserName] AS [RunCompletedUserName], 
+    [vProcessResult].[ProcessStatusId] AS [ProcessStatusId], 
+    [vProcessResult].[ProcessStatus] AS [ProcessStatus], 
+    [vProcessResult].[ProcessCreatedUserName] AS [ProcessCreatedUserName], 
+    [vProcessResult].[ProcessCompletedUserName] AS [ProcessCompletedUserName]
+    FROM [dbo].[vProcessResult] AS [vProcessResult]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vProperty" EntityType="Self.vProperty" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vProperty].[Id] AS [Id], 
+    [vProperty].[Name] AS [Name], 
+    [vProperty].[ParentId] AS [ParentId], 
+    [vProperty].[Code] AS [Code], 
+    [vProperty].[Value] AS [Value], 
+    [vProperty].[Number] AS [Number], 
+    [vProperty].[Type] AS [Type], 
+    [vProperty].[Description] AS [Description], 
+    [vProperty].[CommentsCount] AS [CommentsCount], 
+    [vProperty].[FilesCount] AS [FilesCount]
+    FROM [dbo].[vProperty] AS [vProperty]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vPropLocation" EntityType="Self.vPropLocation" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vPropLocation].[id] AS [id], 
+    [vPropLocation].[name] AS [name], 
+    [vPropLocation].[prop_id] AS [prop_id], 
+    [vPropLocation].[LEVEL] AS [LEVEL], 
+    [vPropLocation].[treepath] AS [treepath], 
+    [vPropLocation].[limited_level] AS [limited_level], 
+    [vPropLocation].[limited_id] AS [limited_id], 
+    [vPropLocation].[limited_path] AS [limited_path]
+    FROM [dbo].[vPropLocation] AS [vPropLocation]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vReagent" EntityType="Self.vReagent" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vReagent].[Name] AS [Name], 
+    [vReagent].[Barcode] AS [Barcode], 
+    [vReagent].[KitType_id] AS [KitType_id], 
+    [vReagent].[KitName] AS [KitName], 
+    [vReagent].[Quantity] AS [Quantity], 
+    [vReagent].[Unit_id] AS [Unit_id], 
+    [vReagent].[UnitName] AS [UnitName], 
+    [vReagent].[CatalogNumber] AS [CatalogNumber], 
+    [vReagent].[StorageTemp_id] AS [StorageTemp_id], 
+    [vReagent].[StorageTemp] AS [StorageTemp], 
+    [vReagent].[Vendor_id] AS [Vendor_id], 
+    [vReagent].[VendorName] AS [VendorName]
+    FROM [dbo].[vReagent] AS [vReagent]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vSampleFile" EntityType="Self.vSampleFile" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vSampleFile].[sample_id] AS [sample_id], 
+    [vSampleFile].[file_id] AS [file_id], 
+    [vSampleFile].[createdDateTime] AS [createdDateTime], 
+    [vSampleFile].[type_id] AS [type_id], 
+    [vSampleFile].[name] AS [name], 
+    [vSampleFile].[data] AS [data], 
+    [vSampleFile].[aspNetUser_Id] AS [aspNetUser_Id]
+    FROM [dbo].[vSampleFile] AS [vSampleFile]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vSamplesBook" EntityType="Self.vSamplesBook" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vSamplesBook].[Id] AS [Id], 
+    [vSamplesBook].[Barcode] AS [Barcode], 
+    [vSamplesBook].[Name] AS [Name], 
+    [vSamplesBook].[Location] AS [Location], 
+    [vSamplesBook].[LocationId] AS [LocationId], 
+    [vSamplesBook].[Well] AS [Well], 
+    [vSamplesBook].[Doctor] AS [Doctor], 
+    [vSamplesBook].[DoctorId] AS [DoctorId], 
+    [vSamplesBook].[Patient] AS [Patient], 
+    [vSamplesBook].[PatientId] AS [PatientId], 
+    [vSamplesBook].[IsChild] AS [IsChild], 
+    [vSamplesBook].[UserId] AS [UserId], 
+    [vSamplesBook].[UserName] AS [UserName], 
+    [vSamplesBook].[BatchId] AS [BatchId], 
+    [vSamplesBook].[ModelId] AS [ModelId], 
+    [vSamplesBook].[Model] AS [Model], 
+    [vSamplesBook].[EquipmentId] AS [EquipmentId], 
+    [vSamplesBook].[TubeTypeId] AS [TubeTypeId], 
+    [vSamplesBook].[ProcessId] AS [ProcessId], 
+    [vSamplesBook].[HospitalName] AS [HospitalName], 
+    [vSamplesBook].[HospitalId] AS [HospitalId], 
+    [vSamplesBook].[SampleTypeId] AS [SampleTypeId], 
+    [vSamplesBook].[VolumeUnitId] AS [VolumeUnitId], 
+    [vSamplesBook].[SampleWorkflowStatusId] AS [SampleWorkflowStatusId], 
+    [vSamplesBook].[SampleStatusId] AS [SampleStatusId], 
+    [vSamplesBook].[ParentName] AS [ParentName], 
+    [vSamplesBook].[ProcessName] AS [ProcessName], 
+    [vSamplesBook].[ContentListCount] AS [ContentListCount], 
+    [vSamplesBook].[CommentsCount] AS [CommentsCount], 
+    [vSamplesBook].[FilesCount] AS [FilesCount], 
+    [vSamplesBook].[Files] AS [Files], 
+    [vSamplesBook].[Clones] AS [Clones], 
+    [vSamplesBook].[ModDate] AS [ModDate], 
+    [vSamplesBook].[CollectedDateTime] AS [CollectedDateTime], 
+    [vSamplesBook].[AcceptedDate] AS [AcceptedDate], 
+    [vSamplesBook].[DateCreate] AS [DateCreate], 
+    [vSamplesBook].[Volume] AS [Volume], 
+    [vSamplesBook].[BatchName] AS [BatchName], 
+    [vSamplesBook].[Result] AS [Result], 
+    [vSamplesBook].[Sended_Id] AS [Sended_Id], 
+    [vSamplesBook].[Sended] AS [Sended], 
+    [vSamplesBook].[Prop1] AS [Prop1], 
+    [vSamplesBook].[Prop2] AS [Prop2], 
+    [vSamplesBook].[Prop3] AS [Prop3], 
+    [vSamplesBook].[Prop4] AS [Prop4], 
+    [vSamplesBook].[Prop5] AS [Prop5], 
+    [vSamplesBook].[Prop6] AS [Prop6], 
+    [vSamplesBook].[Prop7] AS [Prop7], 
+    [vSamplesBook].[Prop8] AS [Prop8], 
+    [vSamplesBook].[Prop9] AS [Prop9], 
+    [vSamplesBook].[Prop10] AS [Prop10], 
+    [vSamplesBook].[PropS1] AS [PropS1], 
+    [vSamplesBook].[PropS2] AS [PropS2], 
+    [vSamplesBook].[PropS3] AS [PropS3], 
+    [vSamplesBook].[PropS4] AS [PropS4], 
+    [vSamplesBook].[PropS5] AS [PropS5], 
+    [vSamplesBook].[PropN1] AS [PropN1], 
+    [vSamplesBook].[PropN2] AS [PropN2], 
+    [vSamplesBook].[PropN3] AS [PropN3], 
+    [vSamplesBook].[PropN4] AS [PropN4], 
+    [vSamplesBook].[PropN5] AS [PropN5], 
+    [vSamplesBook].[PropD1] AS [PropD1], 
+    [vSamplesBook].[PropD2] AS [PropD2], 
+    [vSamplesBook].[PropD3] AS [PropD3], 
+    [vSamplesBook].[PropD4] AS [PropD4], 
+    [vSamplesBook].[PropD5] AS [PropD5], 
+    [vSamplesBook].[RowVersion] AS [RowVersion]
+    FROM [dbo].[vSamplesBook] AS [vSamplesBook]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vSamplesBookInProcess" EntityType="Self.vSamplesBookInProcess" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vSamplesBookInProcess].[Id] AS [Id], 
+    [vSamplesBookInProcess].[Barcode] AS [Barcode], 
+    [vSamplesBookInProcess].[Name] AS [Name], 
+    [vSamplesBookInProcess].[Location] AS [Location], 
+    [vSamplesBookInProcess].[Well] AS [Well], 
+    [vSamplesBookInProcess].[Doctor] AS [Doctor], 
+    [vSamplesBookInProcess].[Patient] AS [Patient], 
+    [vSamplesBookInProcess].[IsChild] AS [IsChild], 
+    [vSamplesBookInProcess].[UserId] AS [UserId], 
+    [vSamplesBookInProcess].[UserName] AS [UserName], 
+    [vSamplesBookInProcess].[BatchId] AS [BatchId], 
+    [vSamplesBookInProcess].[ModelId] AS [ModelId], 
+    [vSamplesBookInProcess].[Model] AS [Model], 
+    [vSamplesBookInProcess].[EquipmentId] AS [EquipmentId], 
+    [vSamplesBookInProcess].[TubeTypeId] AS [TubeTypeId], 
+    [vSamplesBookInProcess].[ProcessId] AS [ProcessId], 
+    [vSamplesBookInProcess].[HospitalName] AS [HospitalName], 
+    [vSamplesBookInProcess].[SampleTypeId] AS [SampleTypeId], 
+    [vSamplesBookInProcess].[VolumeUnitId] AS [VolumeUnitId], 
+    [vSamplesBookInProcess].[SampleWorkflowStatusId] AS [SampleWorkflowStatusId], 
+    [vSamplesBookInProcess].[SampleStatusId] AS [SampleStatusId], 
+    [vSamplesBookInProcess].[ParentName] AS [ParentName], 
+    [vSamplesBookInProcess].[ProcessName] AS [ProcessName], 
+    [vSamplesBookInProcess].[ContentListCount] AS [ContentListCount], 
+    [vSamplesBookInProcess].[CommentsCount] AS [CommentsCount], 
+    [vSamplesBookInProcess].[FilesCount] AS [FilesCount], 
+    [vSamplesBookInProcess].[Files] AS [Files], 
+    [vSamplesBookInProcess].[ModDate] AS [ModDate], 
+    [vSamplesBookInProcess].[CollectedDateTime] AS [CollectedDateTime], 
+    [vSamplesBookInProcess].[AcceptedDate] AS [AcceptedDate], 
+    [vSamplesBookInProcess].[DateCreate] AS [DateCreate], 
+    [vSamplesBookInProcess].[Volume] AS [Volume], 
+    [vSamplesBookInProcess].[BatchName] AS [BatchName], 
+    [vSamplesBookInProcess].[Result] AS [Result], 
+    [vSamplesBookInProcess].[sended_id] AS [sended_id], 
+    [vSamplesBookInProcess].[wf_result_id] AS [wf_result_id], 
+    [vSamplesBookInProcess].[Sended] AS [Sended], 
+    [vSamplesBookInProcess].[Prop1] AS [Prop1], 
+    [vSamplesBookInProcess].[Prop2] AS [Prop2], 
+    [vSamplesBookInProcess].[Prop3] AS [Prop3], 
+    [vSamplesBookInProcess].[Prop4] AS [Prop4], 
+    [vSamplesBookInProcess].[Prop5] AS [Prop5], 
+    [vSamplesBookInProcess].[Prop6] AS [Prop6], 
+    [vSamplesBookInProcess].[Prop7] AS [Prop7], 
+    [vSamplesBookInProcess].[Prop8] AS [Prop8], 
+    [vSamplesBookInProcess].[Prop9] AS [Prop9], 
+    [vSamplesBookInProcess].[Prop10] AS [Prop10], 
+    [vSamplesBookInProcess].[RowVersion] AS [RowVersion]
+    FROM [dbo].[vSamplesBookInProcess] AS [vSamplesBookInProcess]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vWfWork" EntityType="Self.vWfWork" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vWfWork].[Id] AS [Id], 
+    [vWfWork].[WfType] AS [WfType], 
+    [vWfWork].[WfCode] AS [WfCode], 
+    [vWfWork].[StepName] AS [StepName], 
+    [vWfWork].[ResStatus] AS [ResStatus], 
+    [vWfWork].[SampleName] AS [SampleName], 
+    [vWfWork].[RowVersion] AS [RowVersion]
+    FROM [dbo].[vWfWork] AS [vWfWork]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="vWorkflowRunList" EntityType="Self.vWorkflowRunList" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [vWorkflowRunList].[Id] AS [Id], 
+    [vWorkflowRunList].[TypeZId] AS [TypeZId], 
+    [vWorkflowRunList].[WfType] AS [WfType], 
+    [vWorkflowRunList].[Code] AS [Code], 
+    [vWorkflowRunList].[CurProcessId] AS [CurProcessId], 
+    [vWorkflowRunList].[StatusId] AS [StatusId], 
+    [vWorkflowRunList].[Status] AS [Status], 
+    [vWorkflowRunList].[DateStarted] AS [DateStarted], 
+    [vWorkflowRunList].[DateUpdated] AS [DateUpdated], 
+    [vWorkflowRunList].[DateCompleted] AS [DateCompleted], 
+    [vWorkflowRunList].[DateCreated] AS [DateCreated], 
+    [vWorkflowRunList].[CreatedUserName] AS [CreatedUserName], 
+    [vWorkflowRunList].[UpdatedUserName] AS [UpdatedUserName], 
+    [vWorkflowRunList].[CompletedUserName] AS [CompletedUserName], 
+    [vWorkflowRunList].[CommentsCount] AS [CommentsCount], 
+    [vWorkflowRunList].[FilesCount] AS [FilesCount], 
+    [vWorkflowRunList].[Files] AS [Files], 
+    [vWorkflowRunList].[RowVersion] AS [RowVersion]
+    FROM [dbo].[vWorkflowRunList] AS [vWorkflowRunList]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+      <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+      <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

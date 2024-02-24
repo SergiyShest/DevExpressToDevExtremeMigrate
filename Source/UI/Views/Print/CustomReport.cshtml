@@ -1,0 +1,79 @@
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@using Sasha.Lims.WebUI.Localization
+@model CachedReportSourceWeb
+@{
+	string titlePage = HtmlResourceExtensions.GetGlobalResourceText(ViewBag.TitleLocalizationKey, "CustomReport");
+	ViewBag.Title = titlePage;
+	Layout = ViewBag.DontShowMainMenu != true ? "~/Views/Shared/_SamplesLayout.cshtml" : "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+@section Head {
+	<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Samples/SamplesGridView.css?v=" + AppVersionHelper.Version)" />
+
+	<script type="text/html" id="commentIcon">
+		<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="8 8 24 24" style="enable-background: new 0 0 24 24;" xml:space="preserve">
+		<path class="dxd-icon-fill" d="M27,4H5C4.4,4,4,4.4,4,5v16c0,0.6,0.4,1,1,1h3v6l6-6h13c0.5,0,1-0.5,1-1V5C28,4.4,27.6,4,27,4z" />
+
+		</svg>
+	</script>
+	<script type="text/html" id="tcrIcon">
+		<svg data-name="Layer 2" id="a5b357d0-b6bb-4b51-acaf-aaa20a4d1704" viewBox="0 0 35 35" xmlns="http://www.w3.org/2000/svg">
+			<path class="dxd-icon-fill" d="M20.717,34.748H3.616A3.37,3.37,0,0,1,.25,31.381v-17.1a3.369,3.369,0,0,1,3.366-3.365h17.1a3.368,3.368,0,0,1,3.365,3.365v17.1A3.369,3.369,0,0,1,20.717,34.748ZM3.616,13.416a.866.866,0,0,0-.866.865v17.1a.867.867,0,0,0,.866.867h17.1a.867.867,0,0,0,.865-.867v-17.1a.865.865,0,0,0-.865-.865Z" />
+			<path class="dxd-icon-fill" d="M31.384,24.079H22.837a1.25,1.25,0,1,1,0-2.5h8.547a.867.867,0,0,0,.866-.866V3.618a.866.866,0,0,0-.866-.865h-17.1a.866.866,0,0,0-.866.865v8.548a1.25,1.25,0,0,1-2.5,0V3.618A3.369,3.369,0,0,1,14.279.253H31.384A3.369,3.369,0,0,1,34.75,3.618v17.1A3.37,3.37,0,0,1,31.384,24.079Z" />
+		</svg>
+	</script>
+	<script type="text/javascript">
+		let reportExtraData = @Html.Raw(ViewBag.ReportExtraData);
+
+		function comment() {
+			ShowUrlPopup('Comments', `/Comments/CommentForm?rowId=${reportExtraData.rowId}&tableId=${reportExtraData.tableId}`);
+		}
+
+		function tcrClones() {
+			ShowUrlPopup('Mark TCR clones', `/CancerClones/CancerClones?patientId=${reportExtraData.patientId}`);
+		}
+
+		function customizeMenuAction(s, e) {
+			e.Actions.push({
+				text: "Add comment",
+				imageTemplateName: "commentIcon",
+				visible: true,
+				disabled: reportExtraData.tableId == null || reportExtraData.rowId == null,
+				clickAction: function() {
+					comment();
+				}
+			});
+			if (reportExtraData.isTCR) {
+				e.Actions.push({
+					text: "Mark TCR clones",
+					imageTemplateName: "tcrIcon",
+					visible: true,
+					disabled: !reportExtraData.isTCR || reportExtraData.patientId == null,
+					clickAction: function() {
+						tcrClones();
+					}
+				});
+
+			}
+			var highlightEditingFieldsAction = e.GetById(DevExpress.Reporting.Viewer.ActionId.HighlightEditingFields);
+			if (highlightEditingFieldsAction)
+				highlightEditingFieldsAction.visible = false;
+		}
+
+		function customPopupCloseUp() {
+			PrintViewer.StartBuild();
+		}
+	</script>
+
+}
+@if (ViewBag.DontShowMainMenu != true)
+{
+	@section PageToolbar {
+		@Html.Partial("Blocks\\Toolbar")
+	}
+}
+@Html.DevExpress().WebDocumentViewer(
+	settings =>
+	{
+		settings.Name = "PrintViewer";
+		settings.ClientSideEvents.CustomizeMenuActions = "customizeMenuAction";
+	}).Bind(Model).GetHtml()

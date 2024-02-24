@@ -1,0 +1,21 @@
+@model Dictionary<string, string>
+@if (Model.Count > 0)
+{
+	<div class="dropdown-divider"></div>
+}
+@{
+	var controllerName = ViewContext.ParentActionViewContext?.RouteData.Values["controller"].ToString() ?? "";
+	var actionName = ViewContext.ParentActionViewContext?.RouteData.Values["action"].ToString() ?? "";
+	var isReportViewer = controllerName.Equals("Report", StringComparison.InvariantCultureIgnoreCase)
+		&& actionName.Equals("Viewer", StringComparison.InvariantCultureIgnoreCase);
+
+	var reportUrl = Request["url"];
+	var haveReportUrl = reportUrl != null;
+}
+@foreach (var item in Model)
+{
+	var active = isReportViewer && haveReportUrl && item.Value == reportUrl;
+	@Html.ActionLink(item.Key, "Viewer", "Report",
+		new { area = "", url = item.Value },
+		new { @class = "dropdown-item" +(active ? " active" : string.Empty) })
+}

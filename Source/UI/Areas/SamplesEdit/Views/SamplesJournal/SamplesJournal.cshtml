@@ -1,0 +1,552 @@
+
+@using System.Web.UI.WebControls
+@using DevExpress.Web
+@using DevExpress.Web.Mvc.UI
+@using Sasha.Lims.DataAccess.Entities.Constants
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@using Sasha.Lims.WebUI.Localization
+
+@model IQueryable<Sasha.Lims.DataAccess.Entities.Entity.vJourLine>
+
+@{
+
+	string getTitleForEditMode(JournalType edit_Mode)
+	{
+
+		switch (edit_Mode)
+		{
+			case JournalType.Management: return Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Management));
+			case JournalType.Receiving: return Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Reception));
+			case JournalType.MassCheckOut: return Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.CheckOut));
+			case JournalType.MassCheckIn: return Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.CheckIn));
+			case JournalType.MassMove: return Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Move));
+			case JournalType.MassDispose: return Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Dispose));
+			case JournalType.Aliquoting: return Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Aliquoting));
+			case JournalType.Box: return Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Box));
+
+			default: return Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.SampleJournal));
+		}
+	}
+
+	ViewBag.Title = getTitleForEditMode(ViewBag.EditMode);
+	JournalType editMode = ViewBag.EditMode;
+	Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+
+}
+
+@section Head {
+	<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Samples/SamplesGridView.css?v=" + AppVersionHelper.Version)" />
+	<script>var tableId = @((int) TableType.JourLine)</script>
+	<script src="@Url.Content("~/Scripts/Properties/commonGridView.js?v=1" + AppVersionHelper.Version)"></script>
+	<script type="text/javascript" src="@Url.Content("~/Scripts/Samples/SamplesBarcodeInput.js?v=" + AppVersionHelper.Version)"></script>
+	<script>
+		window.addEventListener("load", init);
+		window.addEventListener("message", receiveMessage, false);
+
+		function init() {
+			gridView.Refresh();
+		}
+		function receiveMessage(event) {
+
+			receiveMessageLocation(event);
+			refreshGrid(event);
+		}
+		function refreshGrid(event) {
+			if (typeof event.data === 'string' && event.data.indexOf('RefreshGrid') > -1) {
+
+				gridView.Refresh();
+			}
+		}
+		function updateToolbarButtonsState() {
+			var focusedRowIndex = gridView.GetFocusedRowIndex();
+			var selectedRowCount = gridView.GetSelectedRowCount();
+
+			var anythingSelected = selectedRowCount > 0 || focusedRowIndex > -1;
+
+			pageToolbar.GetItemByName("Delete") && pageToolbar.GetItemByName("Delete").SetEnabled(anythingSelected);
+			pageToolbar.GetItemByName("Edit").SetEnabled(anythingSelected);
+
+			var hasSelected = selectedRowCount > 0;
+			pageToolbar.GetItemByName("Process") && pageToolbar.GetItemByName("Process").SetEnabled(hasSelected);
+		//	pageToolbar.GetItemByName("Print").SetEnabled(hasSelected);
+
+			var grInput = pageToolbar.GetItemByName("GroupInput");
+			if (grInput) {
+				grInput.SetEnabled(true);
+				if (hasSelected) {
+					grInput.SetText("Group Import");
+				} else {
+					if ('@editMode' == '@JournalType.Receiving') {
+						grInput.SetText("Group Insert");
+					} else {
+						grInput.SetEnabled(false);
+					}
+				}
+			}
+			if (selectedRowCount > 1) {
+				pageToolbar.GetItemByName("Edit").SetText("Group Edit");
+			} else
+			{
+				pageToolbar.GetItemByName("Edit").SetText("Edit");
+			}
+
+
+			var enabled = focusedRowIndex > -1;
+
+			pageToolbar.GetItemByName("btCommentSample").SetEnabled(enabled);
+			pageToolbar.GetItemByName("btAttachedFiles").SetEnabled(enabled);
+		}
+
+		function onPageToolbarItemClick(s, e) {
+			var id = GetFocusedRowId();
+
+			switch (e.item.name) {
+			case "New":
+					AddNew();
+					break;
+				case "Edit":
+					GroupEdit(id);
+					break;
+			case "AddSamples":
+				AddSamplesDialog.Show();
+					break;
+			case "GroupInput":
+				GroupInput();
+				break;
+
+
+			case "btCommentSample":
+				CommentSelectedRow();
+				break;
+			case "btAttachedFiles":
+				AttachedFiles();
+				break;
+			case "btShowColumnChooser":
+				onShowChooserClick(s, e);
+				break;
+			case "Delete":
+				deleteSelectedRecords();
+				break;
+			case "Export":
+				gridView.ExportTo(ASPxClientGridViewExportFormat.Xlsx);
+				break;
+			case "Process":
+				process();
+				break;
+				default:
+					CustomCommand(e.item.name);
+					break;
+			}
+		}
+
+
+		function CustomCommand(name) {
+			if (name.startsWith('Report.')) {
+				if (name.indexOf('IDS') > 0) {
+					openReportWithManyIds(name);
+				} else {
+					openReport(GetFocusedRowId(), name);
+				}
+			}
+		}
+
+
+		function GroupEdit(id) {
+			var selectedIds = gridView.GetSelectedKeysOnPage();
+			if (id && selectedIds.length == 0)
+			{
+				selectedIds.push(id);
+			}
+			if (selectedIds.length == 0)
+			{
+				alert("Nothing edit");
+				retrun;
+			}
+
+
+			var barcodes = [];
+			var more = false;
+			for (var i = 0; i < selectedIds.length; i++) {
+
+				id = selectedIds[i];
+
+				var visibleIndex = getIndex(gridView.cp_Indexes, id);
+				var barcode = gridView.cp_Barcode[visibleIndex]
+				barcodes.push(barcode)
+				if (i > 4) {
+					more = true;
+					break;
+				}
+			}
+			var header = "";
+			if (barcodes.length == 1) {
+				header = "Edit item with barcode = " + barcodes[0]
+			} else {
+				header = "Edit " + selectedIds.length + " items with barcods: " + barcodes.join(', ')
+				if (more) { header+='...'}
+			}
+			ShowUrlPopup(header, "@Url.Action("EditJournal", "GroupEdit", new {Area = "SamplesEdit"})?ids=" + selectedIds + "&draftMode=@editMode" , document.documentElement.clientWidth - 50);
+		}
+
+
+		function AddNew() {
+
+			ShowUrlPopup("Create new", "@Url.Action("EditJournal", "GroupEdit", new {Area = "SamplesEdit"})?ids=" + "&draftMode=@editMode"  , document.documentElement.clientWidth - 50);
+
+		}
+
+		function GroupInput() {
+			gridView.GetSelectedFieldValues("Id", getSelectedFieldValuesCallback);
+			function getSelectedFieldValuesCallback(values) {
+				var selectedIds = SelectedIdsToString(values)
+				var caption;
+				if (values.length > 1) {
+					caption = "Update " + values.length + "  samples";
+
+				}
+				if (values.length == 1) {
+					caption = "Update " + values.length + "  sample";
+
+				}
+				if (values.length == 0) {
+					caption = "Import samples";
+				}
+				console.log('@editMode');
+				ShowUrlPopup(caption, "@Url.Action("Index", "GroupInput", new {Area = "SamplesEdit"})?selectedIds=" + selectedIds + "&journalType=@((int) editMode)", document.documentElement.clientWidth - 150);
+			}
+		}
+
+		function LocationEdit() {
+			var focusedId = GetFocusedRowId();
+			if (focusedId)
+				ShowUrlPopup("Select location ", '@Url.Action("Index", "SelectLocation", new {Area = "Location"})?draftId=' + focusedId, document.documentElement.clientWidth - 150);
+		}
+		//прием сообщения о новом месте из Popup Location
+		function receiveMessageLocation(event) {
+			if (typeof event.data === 'string' && event.data.indexOf('LocationId=') > -1) {
+				var arr = event.data.split('=');
+				if (arr[1] != '') {
+					var locationId = arr[1];
+					gridView.GetSelectedFieldValues("Id", getSelectedFieldValues);
+				}
+			}
+
+			function getSelectedFieldValues(values) {
+				var selectedIds = SelectedIdsToString(values)
+				gridView.PerformCallback({
+					editMode: '@ViewBag.EditMode',
+					customAction: 'assignLocation',
+					selectedIds: selectedIds,
+					newValue: locationId
+				});
+			}
+		}
+
+
+			function SendReport() {
+
+			var val = sendReportCheckBox.GetValue();
+			LoadingPanel.Show();
+				var values = gridView.GetSelectedKeysOnPage();
+				var selectedIds = SelectedIdsToString(values);
+				gridView.PerformCallback({ editMode: '@ViewBag.EditMode', customAction: 'sendReport', selectedIds: selectedIds, newValue: val });
+
+		}
+
+    function openReport(id, name) {
+		var split = name.split('.');
+		if (split.length !== 3 || split[0] !== 'Report') return;
+		var reportId = split[1];
+		var url = '@Url.Action("CustomReport", "Print", new { Area = "" })' + '?id=' + id + '&reportId=' + reportId + '&dontShowMainMenu=true';
+		ShowUrlPopup("Report", url, 980, 630);
+	}
+
+		function openReportWithManyIds(name) {
+		var values = gridView.GetSelectedKeysOnPage();
+		if (values.length == 0)
+		{
+				var rowIndex = gridView.GetFocusedRowIndex();
+		        if (rowIndex == -1) {
+					return;
+				}
+			     var rowId = gridView.GetRowKey(rowIndex);
+			values.push(rowId);
+		}
+			var ids = values.join(',');
+			var split = name.split('.');
+			if (split.length !== 3 || split[0] !== 'Report') return;
+			var reportId = split[1];
+			var url = '@Url.Action("CustomReportWithIds", "Print", new { Area = "" })' + '?ids=' + ids + '&reportId=' + reportId + '&dontShowMainMenu=true';
+		   ShowUrlPopup("Report", url, document.documentElement.clientWidth - 150);
+		}
+
+
+		function assignWells() {
+
+			gridView.GetSelectedFieldValues("Id", getSelectedFieldValues);
+			LoadingPanel.Show();
+
+			function getSelectedFieldValues(values) {
+				var selectedIds = SelectedIdsToString(values);
+				gridView.PerformCallback({ editMode: '@ViewBag.EditMode', customAction: 'assignWells', selectedIds: selectedIds });
+			}
+		}
+
+		function process() {
+
+					gridView.GetSelectedFieldValues("Id;Barcode;DoubleBarcodeValidation;DoubleBarcodeJourLineValidation", getSelectedFieldValuesToProcessCallback);
+					LoadingPanel.Show();
+					setTimeout(gridView.UnselectAllRowsOnPage(), 500);
+
+
+			function getSelectedFieldValuesToProcessCallback(values) {
+				var mess = "Are you sure to accept correction in samples?"
+				var corrected = [];
+				var incorrectBarcodeError = '';
+				for (var i = 0; i < values.length; i++) {
+					if (values[i][2] == 0 || values[i][3] == 0) {
+						if (incorrectBarcodeError.length > 0) incorrectBarcodeError += ',';
+						incorrectBarcodeError += values[i][1];
+					} else {
+						corrected.push(values[i][0]);
+					}
+				}
+				if (incorrectBarcodeError.length > 0 && corrected.length > 0) {
+					mess = 'Records with barcode:' + incorrectBarcodeError + '  are incorrect and will be excluded! Are you sure to accept correction in other ' + corrected.length+' samples?' ;
+				}
+				if (corrected.length == 0) {
+					alert('All records are incorrect!');
+					return;
+				}
+
+
+				dxConfirm(mess)
+					.success(function () {
+						var selectedIds = SelectedIdsToString(corrected);
+						gridView.PerformCallback({ customAction: 'process', selectedIds: selectedIds });
+						LoadingPanel.Show();
+						setTimeout(gridView.UnselectAllRowsOnPage(), 500);
+					});
+			}
+
+		}
+
+		function deleteSelectedRecords() {
+			dxConfirm("Are you sure to delete selected samples?")
+				.success(function () {
+
+
+					if (gridView.GetSelectedRowCount() > 0) {
+						gridView.GetSelectedFieldValues("Id", deleteSelectedFieldValuesCallback);
+						LoadingPanel.Show();
+						setTimeout(gridView.UnselectAllRowsOnPage(), 500);
+					} else {
+						if (gridView.GetFocusedRowIndex() !== -1) {
+							gridView.GetRowValues(gridView.GetFocusedRowIndex(), 'Id', deleteSelectedFieldValuesCallback);
+							LoadingPanel.Show();
+							setTimeout(gridView.UnselectAllRowsOnPage(), 500);
+						}
+					}
+
+				});
+
+			function deleteSelectedFieldValuesCallback(values) {
+
+				sendData(resDelegate, "@Url.Action("Delete", "EditSample", new {Area = "SamplesEdit"})?selectedIds=" + values);
+
+				//В зависимости от ответа сервера Вызывает обновление грида или показ ошибки
+				function resDelegate(error) {
+					if (error != "") {
+						alert(error);
+					} else {
+						gridView.Refresh();
+					}
+				}
+			}
+
+		}
+
+		function Print(ids) {
+
+			ShowUrlPopup("@Html.GetLocalizedCommonText("SampleBookPrintTitle")", '@Url.Action("Book", "Print", new {Area = ""})?ids=' + ids + '&dontShowMainMenu=true', document.documentElement.clientWidth - 150);
+		}
+
+
+
+
+		function onRowDblClick() {
+			var id = GetFocusedRowId();
+			if (!id) return;
+			GroupEdit(id);
+		}
+
+		function onGridViewBeginCallback(s, e) {
+			//e.customArgs['SelectedRows'] = selectedIds;
+		}
+
+		function onContextMenuItemClick(s, e) {
+			//e.customArgs['SelectedRows'] = selectedIds;
+		}
+
+
+	</script>
+}
+
+
+
+@Html.DevExpress().Menu(menuSettings =>
+{
+	var unit16px = System.Web.UI.WebControls.Unit.Pixel(16);
+
+	menuSettings.Name = "pageToolbar";
+
+	menuSettings.ItemAutoWidth = false;
+	menuSettings.AllowSelectItem = false;
+	menuSettings.ApplyItemStyleToTemplates = true;
+
+	menuSettings.SettingsAdaptivity.Enabled = true;
+	menuSettings.SettingsAdaptivity.EnableAutoHideRootItems = true;
+	menuSettings.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+	menuSettings.SettingsAdaptivity.CollapseRootItemsToIconsAtWindowInnerWidth = 600;
+
+	menuSettings.Width = Unit.Percentage(100);
+	menuSettings.ControlStyle.SeparatorWidth = Unit.Pixel(0);
+	menuSettings.ControlStyle.CssClass = "page-toolbar";
+
+	menuSettings.Styles.Item.CssClass = "item";
+	menuSettings.Styles.Item.VerticalAlign = VerticalAlign.Middle;
+
+	menuSettings.Images.Item.Width = unit16px;
+	menuSettings.Images.Item.Height = unit16px;
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Title";
+		item.Text = ViewBag.Title;
+		item.ClientEnabled = false;
+		item.ItemStyle.Font.Bold = true;
+		item.Alignment = MenuItemAlignment.Left;
+		item.ItemStyle.CssClass = "titleMenuItemStyle";
+	});
+
+	if (editMode == JournalType.Receiving)
+	{
+		menuSettings.Items.Add(item =>
+		{
+			item.SetTemplateContent(@Html.Partial("Blocks/PanelBatchAddBarcodeAjax", editMode).ToString());
+			item.Alignment = MenuItemAlignment.Left;
+		});
+	}
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "btShowColumnChooser";
+		item.Text = "Columns";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 2;
+		item.Image.Url = "~/Content/Images/table_v2.svg";
+	});
+
+	Html.AddReportMenuForTable(menuSettings.Items, "s_jourLine",false);
+
+	Html.AddMenuFilesAndComments(menuSettings);
+
+	if (editMode == JournalType.Receiving)
+	{
+		menuSettings.Items.Add(item =>
+		{
+			item.Name = "AddSamples";
+			item.Text = Html.GetLocalizedText<UI>
+		(nameof(UI.ButtonBatchAdd));
+			item.Alignment = MenuItemAlignment.Right;
+			item.AdaptivePriority = 7;
+			item.Image.Url = "~/Content/Images/batch_add.svg";
+		});//AddSamples
+	}
+	if (ViewBag.CanEditSamples)
+	{
+		if (JournalType.Receiving.Equals(editMode))
+		{
+			menuSettings.Items.Add(item =>
+			{
+				item.Name = "New";
+				item.Text = "Add";
+				item.Alignment = MenuItemAlignment.Right;
+				item.AdaptivePriority = 2;
+				item.Image.Url = "~/Content/Images/add.svg";
+
+			});
+
+
+			menuSettings.Items.Add(item =>
+			{
+				item.Name = "GroupInput";
+				item.Text = "Group Input";
+				item.Alignment = MenuItemAlignment.Right;
+				item.AdaptivePriority = 2;
+				item.Image.Url = "~/Content/Images/group_edit.svg";
+			});
+		}
+
+
+		menuSettings.Items.Add(item =>
+		{
+			item.Name = "Edit";
+			item.Text = Html.GetLocalizedText<UI>
+				(nameof(UI.ButtonEdit));
+			item.Alignment = MenuItemAlignment.Right;
+			item.AdaptivePriority = 3;
+			item.Image.Url = "~/Content/Images/edit.svg";
+		});
+	}
+	else
+	{
+
+	}
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Delete";
+		item.Text = Html.GetLocalizedText<UI>
+			(nameof(UI.ButtonDelete));
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 4;
+		item.Image.Url = "~/Content/Images/delete_v2.svg";
+		item.Image.Width = unit16px;
+		item.Image.Height = unit16px;
+	});
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Export";
+		item.Text = "Export";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 5;
+		item.Image.Url = "~/Content/Images/export.svg";
+	});
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Process";
+		item.Text = Html.GetLocalizedText<UI>
+			(nameof(UI.ButtonPost));
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 7;
+		item.Image.Url = "~/Content/Images/save.svg";
+	});
+
+
+	menuSettings.ClientSideEvents.ItemClick = "onPageToolbarItemClick";
+
+}).GetHtml()
+
+<form>
+	@Html.Partial("_GridViewPartial", Model)
+</form>
+@Html.Partial("Blocks\\PopupAddSamples")
+@Html.Partial("Blocks\\PopupChangeSamplesStatus")
+@Html.Partial("Blocks\\PopupChangeSamplesBatch")
+@Html.Partial("Blocks\\PopupChangeSamplesAliquot")
+@Html.Partial("Blocks\\PopupChangeSamplesSendReport")
+
+
+

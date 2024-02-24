@@ -1,0 +1,32 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Questionnaire</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" /> 
+    <link rel="stylesheet" href="~/MVC.styles.css" asp-append-version="true" /> 
+    <link rel="stylesheet" href="~/example.css" asp-append-version="true" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+</head>
+<body>
+
+    <div  style="width:100%;margin:5px">
+        <main role="main" >
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2023 - MVC 
+        </div>
+    </footer>
+
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

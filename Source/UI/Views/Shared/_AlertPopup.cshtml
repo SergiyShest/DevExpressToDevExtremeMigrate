@@ -1,0 +1,63 @@
+@using System.Web.UI.WebControls
+@using Sasha.Lims.WebUI.Infrastructure.ViewModelHelpers
+@using Sasha.Lims.WebUI.Localization
+<script>
+	window.alert = function (text) {
+		if (text && text.length)
+			AlertLabel.SetText(text);
+		AlertPopup.Show();
+	};
+
+	function AlertHide() {
+		AlertPopup.Hide();
+	}
+
+</script>
+
+
+@Html.DevExpress().PopupControl(settings =>
+{
+	settings.Name = "AlertPopup";
+	settings.HeaderText = "Alert";
+
+	settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+	settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+
+	settings.SetContent(() =>
+	{
+		Html.DevExpress().FormLayout(form =>
+		{
+			form.Name = "AlertForm";
+			form.ColCount = 1;
+			form.SettingsItems.ShowCaption = DefaultBoolean.False;
+			form.Items.Add(i =>
+			{
+				i.NestedExtension().Label(label =>
+				{
+					label.Name = "AlertLabel";
+					label.Properties.EnableClientSideAPI = true;
+				});
+
+			});
+			form.Items.Add(i =>
+			{
+				i.HorizontalAlign = FormLayoutHorizontalAlign.Right;
+				i.NestedExtension().Button(button =>
+				{
+					button.Name = "AlertYes";
+					button.Text = "Ok";
+					button.ClientSideEvents.Click = "function(){ AlertHide(); }";
+				});
+			});
+			//form.Items.Add(i =>
+			//{
+			//	i.NestedExtension().Button(button =>
+			//	{
+			//		button.Name = "ConfirmNo";
+			//		button.Text = Html.GetLocalizedText<UI>(nameof(UI.ButtonNo));
+			//		button.ClientSideEvents.Click = "function(){ ConfirmPopup.Hide(); }";
+			//	});
+			//});
+		}).Render();
+	});
+}).GetHtml()

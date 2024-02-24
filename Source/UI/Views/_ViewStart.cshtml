@@ -1,0 +1,11 @@
+@using System.Globalization
+@using System.Threading
+@{
+	if (ViewContext.ViewBag.CurrentCulture != null)
+	{
+		Thread.CurrentThread.CurrentCulture = (CultureInfo) ViewContext.ViewBag.CurrentCulture;
+		Thread.CurrentThread.CurrentUICulture = (CultureInfo) ViewContext.ViewBag.CurrentCulture;
+	}
+
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}

@@ -1,0 +1,27 @@
+@using Sasha.Lims.WebUI.Controllers
+@using Sasha.Lims.WebUI.Infrastructure.ViewModelHelpers
+
+@model int?
+
+@{
+	IComboBoxWithReference instance = new ProcessListController.Reader();
+}
+
+@Html.DevExpress().ComboBox(cbSet =>
+{
+	cbSet.Name = "ProcessId";
+	//cbSet.Width = 285;
+	cbSet.Properties.DropDownWidth = 350;
+	cbSet.Properties.DropDownStyle = DropDownStyle.DropDownList;
+	cbSet.CallbackRouteValues = new {Controller = "ProcessList", Action = "_ComboBoxPartial" };
+	cbSet.Properties.CallbackPageSize = 15;
+
+	cbSet.Properties.TextFormatString = instance.TextFormat;
+	cbSet.Properties.ValueField = instance.Columns.KeyColumn.Path;
+	cbSet.Properties.ValueType = instance.Columns.KeyColumn.ValueType;
+	cbSet.Properties.TextField = instance.Columns.ValueColumns.First().Path;
+	cbSet.Properties.FilterMinLength = 0;
+
+	cbSet.Properties.Columns.AddColumns(instance.Columns);
+
+}).BindList(instance.GetRangeMethod, instance.GetItemByKeyMethod).Bind(Model).GetHtml()

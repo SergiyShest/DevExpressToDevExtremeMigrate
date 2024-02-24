@@ -1,0 +1,157 @@
+@using System.Drawing
+@using System.Web.UI.WebControls
+@using DevExpress.Utils
+@using DevExpress.Web
+@using DevExpress.Web.ASPxThemes
+@using DevExpress.Web.Mvc.UI
+@using Sasha.Lims.Core.Helpers
+@using Sasha.Lims.DataAccess.Entities.Constants
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+
+@model Sasha.Lims.Core.BusinessObjects.RunBo
+
+@functions {
+	private void FillContextMenuItems(object sender, ASPxGridViewContextMenuEventArgs e)
+	{
+		var dataHelper = new Sasha.Lims.Core.Helpers.DataHelper();
+		if (e.MenuType == GridViewContextMenuType.Rows)
+		{
+			var item = e.Items.FindByCommand(GridViewContextMenuCommand.DeleteRow);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.NewRow);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.Refresh);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.EditRow);
+			e.Items.Remove(item);
+			item = e.Items.Add("Edit", "Edit");
+			item.Image.IconID = IconID.EditCustomization16x16;
+			item = e.Items.Add("Add Samples", "Samples");
+			item.Image.IconID = IconID.EditCustomization16x16;
+
+			SettingHelper.AddChangeStatusContextMenuItems(e, DataHelper.GetAvailableStatuses(TableType.WorkflowProcess));//создание меню для изменения статуса
+		}
+	}
+}
+
+
+@{
+
+	var gridView = Html.DevExpress().GridView(settings =>
+	{
+
+		SettingHelper.InitCommonGridSettings(settings);
+		settings.CallbackRouteValues = new { Action = "CallbackRouteValues", Controller = "Run", Area = "Workflow", rowId = ViewBag.RowId };
+
+
+		settings.SettingsBehavior.AllowFocusedRow = true;
+		settings.Styles.AlternatingRow.Enabled = DefaultBoolean.True;
+
+
+		settings.Width = Unit.Percentage(100);
+
+		settings.SettingsPager.PageSizeItemSettings.Visible = false;
+		settings.SettingsPager.Visible = false;
+		settings.SettingsPager.Summary.Visible = false;
+		settings.SettingsBehavior.AllowSort = false;
+		settings.Settings.ShowFilterRowMenu = false;
+		settings.Settings.ShowFilterRow = false;
+		settings.Settings.ShowFilterRow = false;
+
+		settings.Settings.ShowGroupPanel = false;
+		settings.Settings.ShowFooter = false;
+
+		settings.SettingsBehavior.ProcessFocusedRowChangedOnServer = false;
+		settings.SettingsBehavior.AllowFocusedRow = true;
+		settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+		settings.SettingsExport.EnableClientSideExportAPI = true;
+
+		settings.SettingsContextMenu.Enabled = true;
+		settings.SettingsContextMenu.EnableRowMenu = DefaultBoolean.True;
+		settings.FillContextMenuItems = FillContextMenuItems;
+		settings.ClientSideEvents.ContextMenuItemClick = "onContextMenuItemClick";
+
+
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Id";
+			columnSettings.Caption = "Id";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 100;
+			columnSettings.Visible = false;
+		}); //Id
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Order";
+			columnSettings.Caption = "Order";
+			columnSettings.MinWidth = 20;
+			columnSettings.Width = 30;
+
+		}); //Id
+
+		SettingHelper.AddImageColumn(settings, ViewContext, "StatusTxt", "Status");
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Name";
+			columnSettings.Caption = "Process Name";
+			columnSettings.MinWidth = 100;
+			columnSettings.Width = 200;
+		}); //Process Name
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "SamplesCount";
+			columnSettings.Caption = "Samples";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 50;
+		}); //Samples.Count
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "DateCreated";
+			columnSettings.Caption = "Date Created";
+		}); //DateCreated
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "DateStarted";
+			columnSettings.Caption = "Date Started";
+		}); //ResStarted
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "StartedUser";
+			columnSettings.Caption = "Started User";
+		}); //StartedUser
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "CompletedUser";
+			columnSettings.Caption = "Completed User";
+		}); //Completed User
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "DateCompleted";
+			columnSettings.Caption = "Date Completed";
+		}); //DateCompleted
+
+		Html.AddColmmentCountColumn(settings, false);
+		Html.AddFilesCountColumn(settings, true);
+		//	Html.AddColmmentCountColumn(settings, false); //Comment
+		SettingHelper.AddCustomColumns(settings, ViewContext.Controller);
+
+
+		settings.ClientSideEvents.SelectionChanged = "onGridViewSelectionChanged";
+		settings.ClientSideEvents.BeginCallback = "onGridViewBeginCallback";
+		settings.ClientSideEvents.ColumnResized = "function(s, e) {	e.processOnServer = true; }"; // force event to save cookie
+		settings.ClientSideEvents.CustomizationWindowCloseUp = "onGridCustomizationWindowCloseUp";
+		settings.ClientSideEvents.RowDblClick = "onRowDblClick";
+	});
+
+	@gridView.Bind(Model.ProcessList).GetHtml()
+}

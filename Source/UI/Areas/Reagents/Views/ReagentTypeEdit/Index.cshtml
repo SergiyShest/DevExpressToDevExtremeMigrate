@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	@{
+		ViewBag.Title = "Edit reagent type";
+		Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+	}
+	<meta charset="utf-8" />
+	<title>Edit reagent type</title>
+</head>
+    <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/21.2.7/css/dx.common.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/21.2.7/css/dx.greenmist.css" />
+	@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdn3.devexpress.com/jslib/21.1.6/js/dx.all.js"></script>
+	<script src="https://unpkg.com/devextreme-aspnet-data@2.8.2/js/dx.aspnet.data.js"></script>*@
+<body>
+	<script>
+		window.addEventListener("message", receiveMessage, false);
+		
+
+		function receiveMessage(event) {
+
+			if (typeof event.data === 'string') {
+				console.log(event.data)
+				if (event.data.indexOf('SelectedIdsForAdd=') > -1) {//прием сообщения о новом месте  из Popup Location
+					var arr = event.data.split('=');
+					if (arr[1] != '') {
+						var ids = arr[1]
+						console.log(ids)
+						window.globalEvent.$emit('addded-reagents', ids);
+					}
+				}
+			}
+		}
+
+
+
+		const Id = '@ViewBag.Id';
+		const ForCopy = '@ViewBag.ForCopy' == "True";
+
+		function AddReagents(KitId) {
+			ShowUrlPopup("Select Reagent",
+				'@Url.Action("SelectReagentTypeForAdd", "ReagentTypeJournal", new {Area = "Reagents"})?kitId=' + KitId ,
+				document.documentElement.clientWidth - 150);
+		}
+	</script>
+
+	<div id="app"></div>
+	<script src="~/Scripts/vue-apps/reagent-type-edit.js?v=1"></script>
+</body>
+</html>
+
+

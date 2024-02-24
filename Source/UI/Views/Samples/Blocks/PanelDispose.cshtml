@@ -1,0 +1,29 @@
+@using System.Web.UI.WebControls
+@using Sasha.Lims.WebUI.Localization
+
+@using (Html.BeginForm("Dispose", "Samples", new { editMode = ViewBag.EditMode }, FormMethod.Post))
+{
+	@Html.DevExpress().FormLayout(s =>
+{
+	s.Name = "DisposePanel";
+	s.Width = Unit.Percentage(100);
+	s.Items.Add(i =>
+	{
+		i.ShowCaption = DefaultBoolean.False;
+		i.Name = "grpDispose";
+		i.SetNestedContent(() =>
+		{
+			Html.DevExpress().Button(
+				buttonSettings =>
+				{
+					buttonSettings.Name = "btnDispose";
+					buttonSettings.ControlStyle.CssClass = "button";
+					buttonSettings.Width = 80;
+					buttonSettings.Text = Html.GetLocalizedCommonText("ButtonDispose");
+					buttonSettings.UseSubmitBehavior = true;
+				}
+			).Render();
+		});
+	});
+}).GetHtml();
+}

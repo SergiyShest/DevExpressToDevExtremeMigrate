@@ -1,0 +1,42 @@
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@using Sasha.Lims.WebUI.Localization
+@using Sasha.Lims.WebUI.Controllers
+
+@{
+	ViewData["Title"] = Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.UserFieldTypes));
+	Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+}
+
+@section Head {
+	<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Samples/SamplesGridView.css?v=" + AppVersionHelper.Version)" />
+	<script type="text/javascript" src="@Url.Content("~/Scripts/ReagentsGridView.js?v=" + AppVersionHelper.Version)"></script>
+}
+
+@section PageToolbar {
+	@Html.Partial("Toolbar", ViewData["Title"])
+}
+
+function onGridViewEndCallback(s, e) {
+pageToolbar.GetItemByName("Amount").SetText(s.cpRowCount);
+}
+
+<script type="text/javascript">
+		window.editMode = 0;
+		window.getGridView = function() {
+			return @UserFieldTypesController.GridViewName;
+	}
+
+
+	function onGridViewEndCallback(s, e) {
+		if (getGridView().cpEditError != null) {
+			alert(getGridView().cpEditError);
+			getGridView().cpEditError = null;
+		}
+	}
+
+</script>
+
+@using (Html.BeginForm())
+{
+	@Html.Action("GridViewPartial")
+}

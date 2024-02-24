@@ -1,0 +1,189 @@
+
+@using System.Web.UI.WebControls
+@using DevExpress.Utils
+@using DevExpress.Web
+@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@using DevExpress.Web.Rendering
+@using Sasha.Lims.WebUI.Controllers
+@using Sasha.Lims.DataAccess.Entities.Constants
+@using Sasha.Lims.WebUI.Areas.SamplesEdit.Controllers
+@using Sasha.Lims.WebUI.Infrastructure.ViewModelHelpers
+@using Sasha.Lims.WebUI.Localization
+@using Sasha.Lims.Core.Helpers
+
+@model Sasha.Lims.WebUI.Models.RunListViewModel
+@{
+	ViewBag.Title = "Edit Bill of Material";
+	Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+<style>
+
+	.container {
+		overflow: hidden;
+		background-color: #eee;
+		border: unset;
+		padding: 5px;
+		margin: 0px;
+		height: 100vh;
+	}
+
+	.column2 {
+		width: 100%;
+	}
+
+	.column {
+		width: 210px;
+		margin: 3px;
+	}
+
+	.columnB {
+		margin: 3px;
+	}
+
+	.flexrow {
+		display: flex;
+		flex-direction: row;
+		margin: 3px;
+	}
+</style>
+<script>
+	window.addEventListener("load", init);
+
+	function init() {
+			var error = '@MvcHtmlString.Create(ViewBag.GeneralError?.Replace("\r\n", "</br>"))';
+			if (error.length>1) {
+			var errorDiv=	document.getElementById('errors');
+				errorDiv.innerHTML = error;
+
+			}
+			else {
+		var close = '@ViewBag.Close';
+		if (close == 'True') {
+			CloseForm()
+		}
+		}
+	}
+
+	function CloseForm() {
+
+		window.parent.postMessage("CloseUrlForm", '*');//send message parent window for  close this form
+	}
+
+	function SaveForm() {
+
+		var form = document.getElementById('form');
+		form.submit();
+		window.parent.postMessage("RefreshGrid", '*'); //send message parent window for RefreshGrid
+	}
+</script>
+
+
+<form id="form" method="post" action="@Url.Action("Save", "WorkflowRunList")?act=@ViewBag.Action">
+	<input type="hidden" name="RunId" value="@Model.StatusId" />
+	<input type="hidden" name="Id" value="@Model.Id" />
+
+
+	@Html.DevExpress().FormLayout(settings =>
+{
+	settings.Name = "FormEditRunList";
+
+	settings.SettingsItems.ShowCaption = DefaultBoolean.True;
+	settings.SettingsItemCaptions.Location = LayoutItemCaptionLocation.Left;
+
+	settings.Items.AddGroupItem(group =>
+	{
+		group.GroupBoxDecoration = GroupBoxDecoration.None;
+		group.ColCount = 2;
+
+		group.Items.Add(m => m.TypeId, s =>
+		{
+			//s.FieldName = "TypeId";
+
+			s.Caption = "Type";
+			s.NestedExtension().ComboBox(cb =>
+			{
+				cb.ReadOnly = Model.Id!= 0;
+				cb.Properties.TextField = "DisplayText";
+				cb.Properties.ValueField = "Id";
+				cb.Properties.NullText = "[Null]";
+				cb.Properties.ValueType = typeof(int);
+				cb.Properties.DataSource = ((WorkflowRunListController)ViewContext.Controller).GetProperties("WorkflowType");
+			});
+		});
+		group.Items.Add(m => m.Code, s =>
+		{
+			s.Caption = "Code";
+		});
+		group.Items.Add(m => m.StatusId, s =>
+		{
+			s.Caption = "Statys";
+			s.NestedExtension().ComboBox(cb =>
+			{
+				cb.Properties.TextField = "Name";
+				cb.Properties.ValueField = "Id";
+				cb.Properties.NullText = "[Null]";
+				cb.Properties.ValueType = typeof(int);
+				cb.Properties.DataSource = DataHelper.GetAvailableStatuses(TableType.WorkflowRun);
+			});
+		});
+
+	});
+
+	settings.Items.AddGroupItem(group =>
+	{
+		group.HorizontalAlign = FormLayoutHorizontalAlign.Right;
+		group.GroupBoxDecoration = GroupBoxDecoration.None;
+		group.ColCount = 2;
+
+		group.Items.Add(i =>
+		{
+			i.HorizontalAlign = FormLayoutHorizontalAlign.Right;
+			i.ShowCaption = DefaultBoolean.False;
+			i.NestedExtensionType = FormLayoutNestedExtensionItemType.Button;
+			var button = (ButtonSettings)i.NestedExtensionSettings;
+			button.Name = "update";
+			button.Text = "Save";
+			button.ClientSideEvents.Click = "function (s,e) {SaveForm();}";
+		});
+		group.Items.Add(i =>
+		{
+			i.HorizontalAlign = FormLayoutHorizontalAlign.Right;
+			i.ShowCaption = DefaultBoolean.False;
+			i.NestedExtensionType = FormLayoutNestedExtensionItemType.Button;
+			var button = (ButtonSettings)i.NestedExtensionSettings;
+			button.Name = "cancel";
+			button.Text = "Cancel";
+			button.ClientSideEvents.Click = "function (s,e) {CloseForm();}";
+		});
+	});
+
+}).GetHtml()
+	<div id="errors" style="color:red"></div>
+
+	@*<div class="flexrow" style="justify-content: space-between;">
+
+				<div class="columnB" style="margin-left: auto;">
+					@Html.DevExpress().Button(button =>
+					{
+						button.Height = 20;
+						button.Name = "Save";
+						button.Text = "Save";
+						button.ClientSideEvents.Click = "SaveForm";
+					}).GetHtml()
+				</div>
+				<div class="columnB">
+					@Html.DevExpress().Button(button =>
+					{
+						button.Height = 20;
+						button.Name = "ClosePopup";
+						button.Text = "Close";
+						button.ClientSideEvents.Click = "CloseForm";
+					}).GetHtml()
+				</div>
+
+			</div>
+		</div>*@
+
+
+</form>

@@ -1,0 +1,49 @@
+@model Sasha.Lims.WebUI.Models.SampleViewModel
+
+@using Sasha.Lims.WebUI.Localization
+@using System.Web.Optimization
+
+@{
+	ViewData["Title"] = Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Plate));
+	Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+
+@section Head {
+	@Html.DevExpress().GetStyleSheets(
+		new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+		new StyleSheet { ExtensionSuite = ExtensionSuite.Editors },
+		new StyleSheet { ExtensionSuite = ExtensionSuite.GridView },
+		new StyleSheet { ExtensionSuite = ExtensionSuite.TreeList }
+		)
+	@Html.DevExpress().GetScripts(
+		new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+		new Script { ExtensionSuite = ExtensionSuite.Editors },
+		new Script { ExtensionSuite = ExtensionSuite.GridView },
+		new Script { ExtensionSuite = ExtensionSuite.TreeList }
+		)
+	<script type="text/javascript" src="@Url.Content("~/Scripts/Script.js?v=1.2")"></script>
+
+	@*@Styles.Render("~/bundles/samplesEditorPlate")*@
+	@Scripts.Render("~/scripts/samplesEditorPlate")
+
+	@Styles.Render("~/bundles/samplesWellDiagram")
+	@Scripts.Render("~/scripts/samplesWellDiagram")
+}
+
+<script type="text/javascript">
+	function printWellsDiagram() {
+		window.print();
+	}
+</script>
+
+
+
+@Html.DevExpress().Button(settings => {
+	settings.Name = "btn";
+	settings.Text = "Print";
+	settings.ClientSideEvents.Click = "printWellsDiagram";
+	settings.ControlStyle.CssClass = "noprint";
+	settings.UseSubmitBehavior = false;
+}).GetHtml()
+
+@Html.Action("WellsDiagramPartial")

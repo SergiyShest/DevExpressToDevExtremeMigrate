@@ -1,0 +1,298 @@
+@using System.Drawing
+@using System.Web.UI.WebControls
+@using Sasha.Lims.WebUI.Controllers
+@using Sasha.Lims.WebUI.Localization
+@model GridViewDetailRowTemplateContainer
+
+@functions {
+	private int? GetBinderInt(string propName)
+	{
+		int? modelId = null;
+		var model = DataBinder.Eval(Model.DataItem, propName);
+		if (model != null)
+		{
+			modelId = Convert.ToInt32(model);
+		}
+		return modelId;
+	}
+}
+
+
+@{
+	var user = ViewBag.getUser();
+	bool vBio = false;
+	IEnumerable<string> role = user.Roles;
+
+
+	var id = DataBinder.Eval(Model.DataItem, "Id");
+	var modelId = GetBinderInt("ModelId");
+	var userTitle = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_User));
+
+	Html.DevExpress().FormLayout(formLayoutSettings =>
+	{
+
+
+		formLayoutSettings.Name = "FormLayoutProducts_" + id + "_test";
+		formLayoutSettings.AlignItemCaptionsInAllGroups = false;
+		formLayoutSettings.UseDefaultPaddings = false;
+		formLayoutSettings.ColumnCount = 3;
+		formLayoutSettings.ClientSideEvents.Init = "function(e,s) {FormLayoutProducts_" + id + "_test.SetWidth(document.documentElement.clientWidth);}";
+
+		formLayoutSettings.Styles.Style.BackColor = Color.AliceBlue;
+
+
+// 1st col grouroup main info
+formLayoutSettings.Items.AddGroupItem(g1 =>
+		{
+			g1.Name = "first_detail_group";
+			g1.Caption = "General";
+			g1.GroupBoxDecoration = GroupBoxDecoration.Box;
+			g1.GridSettings.WrapCaptionAtWidth = 200;
+
+	// name
+	g1.Items.Add(g1itm =>
+			{
+				g1itm.Name = "Name_" + id;
+				g1itm.Caption = "Sample name";
+				g1itm.RequiredMarkDisplayMode = FieldRequiredMarkMode.Hidden;
+				g1itm.NestedExtension().Label(s =>
+				{
+					s.Text = DataBinder.Eval(Model.DataItem, "Name")?.ToString();
+					s.Width = Unit.Percentage(50);
+				});
+			});
+
+
+	// barcode
+	g1.Items.Add(g1itm =>
+			{
+				g1itm.Name = "Barcode_" + id;
+				g1itm.Caption = "Barcode";
+				g1itm.RequiredMarkDisplayMode = FieldRequiredMarkMode.Hidden;
+				g1itm.NestedExtension().Button(button =>
+				{
+					var keyValue = id;
+					var barcode = DataBinder.Eval(Model.DataItem, "Barcode")?.ToString();
+
+					button.UseSubmitBehavior = true;
+					button.CausesValidation = false;
+					button.RenderMode = ButtonRenderMode.Link;
+					button.Name = "btndet_barcode_" + keyValue;
+					button.Text = barcode;
+					button.ImagePosition = ImagePosition.Right;
+					button.Images.Image.IconID = IconID.PrintPrintSvgGray16x16;
+					button.Images.Image.Url = "~/Content/Images/print.svg";
+					button.Images.Image.Width = Unit.Pixel(16);
+					button.Images.Image.Height = Unit.Pixel(16);
+					button.Styles.Style.HorizontalAlign = HorizontalAlign.Left;
+
+					button.RouteValues = new { Controller = "Print", Action = "Book", ids = keyValue.ToString() };
+				});
+			});
+
+	// Accepted Date
+	g1.Items.Add(g1itm =>
+			{
+				g1itm.Name = "AcceptedDate_" + id;
+				g1itm.Caption = "Accepted date";
+				g1itm.RequiredMarkDisplayMode = FieldRequiredMarkMode.Hidden;
+				g1itm.NestedExtension().Label(s =>
+				{
+					s.Text = DataBinder.Eval(Model.DataItem, "AcceptedDate")?.ToString();
+					s.Width = Unit.Percentage(50);
+				});
+			});
+
+	//user
+	g1.Items.Add(g1itm =>
+			{
+				g1itm.Name = "UserName_" + id;
+				g1itm.Caption = Html.GetLocalizedText<ViewModelFields>
+(nameof(ViewModelFields.Sample_User)); ;
+				g1itm.RequiredMarkDisplayMode = FieldRequiredMarkMode.Hidden;
+				g1itm.NestedExtension().Label(s =>
+				{
+					s.Text = DataBinder.Eval(Model.DataItem, "UserName")?.ToString();
+					s.Width = Unit.Percentage(50);
+				});
+			});
+
+			g1.Items.Add(g1itm =>
+			{
+				g1itm.ShowCaption = DefaultBoolean.False;
+				g1itm.HorizontalAlign = FormLayoutHorizontalAlign.Left;
+				g1itm.SetNestedContent(() =>
+				{
+					var keyValue = id;
+					Html.RenderAction("Index", "CustomReportList", new { id = keyValue, tableName = "s_sample", customParameter = modelId });
+				});
+			});
+		});
+
+// 2d col grouroup
+formLayoutSettings.Items.AddGroupItem(g2 =>
+		{
+			g2.Name = "second_detail_group";
+			g2.Caption = "Detail";
+			g2.GroupBoxDecoration = GroupBoxDecoration.Box;
+			g2.GridSettings.WrapCaptionAtWidth = 300;
+	//		g2.SpanRules.Add(new SpanRule { BreakpointName = "S", ColumnSpan = 1, RowSpan = 1 });
+
+	// Model type
+	g2.Items.Add(g1itm =>
+			{
+				g1itm.Name = "ModelType_" + id;
+				g1itm.Caption = "Model type";
+				g1itm.RequiredMarkDisplayMode = FieldRequiredMarkMode.Hidden;
+				g1itm.NestedExtension().Label(s =>
+				{
+					s.Text = PropertiesController.PropertiesReader.GetProperties("Models", modelId)?.FirstOrDefault()?.DisplayText ?? string.Empty;
+					s.Width = Unit.Percentage(50);
+				});
+			});
+
+	// sample type
+	g2.Items.Add(g1itm =>
+			{
+				g1itm.Name = "SampleType_" + id;
+				g1itm.Caption = "Sample type";
+				g1itm.RequiredMarkDisplayMode = FieldRequiredMarkMode.Hidden;
+				g1itm.NestedExtension().Label(s =>
+				{
+					s.Text = PropertiesController.PropertiesReader.GetProperties("SampleType", GetBinderInt("SampleTypeId"))?.FirstOrDefault()?.DisplayText ?? string.Empty;
+					s.Width = Unit.Percentage(50);
+				});
+			});
+
+	// tube type
+	g2.Items.Add(g1itm =>
+			{
+				g1itm.Name = "TubeType_" + id;
+				g1itm.Caption = "Tube type";
+				g1itm.RequiredMarkDisplayMode = FieldRequiredMarkMode.Hidden;
+				var tubeTypeId = GetBinderInt("TubeTypeId");
+
+				if (PropertiesController.PropertiesReader.GetProperties("TubeType", tubeTypeId)?.FirstOrDefault()?.Code == "PLATE")
+				{
+					g1itm.NestedExtension().HyperLink(s =>
+					{
+				//s.NavigateUrl = Url.HttpRouteUrl("Default", new { controller = "SamplesApproved", action = "WellsDiagram", plateId = item.Id });
+				s.Properties.Text = (PropertiesController.PropertiesReader.GetProperties("TubeType", tubeTypeId)?.FirstOrDefault()?.DisplayText ?? string.Empty).Trim();
+						s.Properties.Target = "_blank";
+					});
+				}
+				else
+				{
+					g1itm.NestedExtension().Label(s =>
+					{
+						s.Text = PropertiesController.PropertiesReader.GetProperties("TubeType", tubeTypeId)?.FirstOrDefault()?.DisplayText ?? string.Empty;
+						s.Width = Unit.Percentage(50);
+					});
+				}
+
+			});
+
+	// value
+	g2.Items.Add(g1itm =>
+			{
+				g1itm.Name = "Value_" + id;
+				g1itm.Caption = "Value";
+				g1itm.RequiredMarkDisplayMode = FieldRequiredMarkMode.Hidden;
+				g1itm.NestedExtension().Label(s =>
+				{
+					var volumeUnitId = GetBinderInt("VolumeUnitId");
+					var units = PropertiesController.PropertiesReader.GetProperties("ValueUnit", volumeUnitId)?.FirstOrDefault()?.DisplayText ?? string.Empty;
+					s.Text = DataBinder.Eval(Model.DataItem, "Volume") + " " + units;
+					s.Width = Unit.Percentage(50);
+				});
+			});
+
+
+
+	// location
+	g2.Items.Add(g2itm =>
+			{
+				g2itm.Name = "Location_" + id;
+				g2itm.Caption = "Location";
+				g2itm.RequiredMarkDisplayMode = FieldRequiredMarkMode.Hidden;
+				g2itm.NestedExtension().Label(s =>
+				{
+			//	var location = PropertiesController.PropertiesReader.GetProperties("Location", item.LocationId)?.FirstOrDefault();
+			//	var locationValue = (location?.DisplayText ?? string.Empty).Trim();
+			//	if (!string.IsNullOrWhiteSpace(locationValue))
+			{
+				//		locationValue = "[" + locationValue + "]";
+			}
+					s.Text = DataBinder.Eval(Model.DataItem, "Location")?.ToString();
+			//s.Width = Unit.Percentage(50);
+		});
+			});
+
+	// well
+	g2.Items.Add(g2itm =>
+			{
+				g2itm.Name = "Well_" + id;
+				g2itm.Caption = "Well";
+				g2itm.RequiredMarkDisplayMode = FieldRequiredMarkMode.Hidden;
+				g2itm.NestedExtension().Label(s =>
+				{
+					s.Text = DataBinder.Eval(Model.DataItem, "Well")?.ToString();
+					s.Width = Unit.Percentage(50);
+				});
+			});
+
+
+		});
+
+// 3d col grouroup hospital, doctor patient
+formLayoutSettings.Items.AddGroupItem(g3 =>
+		{
+			g3.Name = "3d_detail_group";
+			g3.Caption = "Client";
+			g3.GroupBoxDecoration = GroupBoxDecoration.Box;
+			g3.GridSettings.WrapCaptionAtWidth = 300;
+	// hospital
+	g3.Items.Add(g3itm =>
+			{
+				g3itm.Name = "Hospital" + id;
+				g3itm.Caption = "Hospital";
+				g3itm.RequiredMarkDisplayMode = FieldRequiredMarkMode.Hidden;
+				g3itm.NestedExtension().Label(s =>
+				{
+					s.Text = DataBinder.Eval(Model.DataItem, "HospitalName")?.ToString();
+					s.Width = Unit.Percentage(50);
+				});
+
+			});
+	// doctor
+	g3.Items.Add(g3itm =>
+			{
+				g3itm.Name = "Doctor_" + id;
+				g3itm.Caption = "Doctor";
+				g3itm.RequiredMarkDisplayMode = FieldRequiredMarkMode.Hidden;
+				g3itm.NestedExtension().Label(s =>
+				{
+					s.Text = DataBinder.Eval(Model.DataItem, "Doctor")?.ToString();
+					s.Width = Unit.Percentage(50);
+				});
+			});
+
+	// patient
+	g3.Items.Add(g3itm =>
+			{
+				g3itm.Name = "Patient_" + id;
+				g3itm.Caption = "Patient";
+				g3itm.RequiredMarkDisplayMode = FieldRequiredMarkMode.Hidden;
+				g3itm.NestedExtension().Label(s =>
+				{
+					s.Text = DataBinder.Eval(Model.DataItem, "Patient")?.ToString();
+					s.Width = Unit.Percentage(50);
+				});
+			});
+
+		});
+
+	}).Render();
+
+
+}

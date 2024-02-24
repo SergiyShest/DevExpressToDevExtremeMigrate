@@ -1,0 +1,179 @@
+
+@using DevExpress.Web
+@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@using DevExpress.Utils
+@using System.Web.UI.WebControls
+
+
+@using Sasha.Lims.Core.Helpers
+@using Sasha.Lims.DataAccess.Entities.Constants
+@using Sasha.Lims.WebUI.Controllers
+
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+
+
+@model IQueryable<Sasha.Lims.DataAccess.Entities.Entity.vJourLine>
+@functions {
+	private void FillContextMenuItems(object sender, ASPxGridViewContextMenuEventArgs e)
+	{
+		if (e.MenuType == GridViewContextMenuType.Rows)
+		{
+			var item = e.Items.FindByCommand(GridViewContextMenuCommand.DeleteRow);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.NewRow);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.Refresh);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.EditRow);
+			e.Items.Remove(item);
+			item = e.Items.Add("Edit", "Edit");
+			item.Image.Url = "~/Content/Images/edit.svg";
+			SettingHelper.AddChangeStatusContextMenuItems(e, DataHelper.GetAvailableStatuses(TableType.JourLine));//создание меню для изменения статуса
+		}
+	}
+}
+@{
+
+	var gridView = Html.DevExpress().GridView(settings =>
+	{
+		SettingHelper.InitAdvancedGridSettings(settings, "SamplesJournal", ViewContext);
+
+
+		settings.CallbackRouteValues = new { Controller = "SamplesJournal", Action = "CallbackRouteValues", editMode = ViewBag.EditMode };
+		//settings.SettingsContextMenu.EnableRowMenu = DefaultBoolean.False;
+		//settings.FillContextMenuItems = FillContextMenuItems;
+		settings.ClientSideEvents.ContextMenuItemClick = "onContextMenuItemClick";
+
+
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Id";
+			columnSettings.Caption = "Id";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 50;
+			columnSettings.Visible = false;
+		}); //Id
+
+		settings.Columns.Add("Type", "Type");
+		//settings.Columns.Add("TypeId", "TypeId");
+		//settings.Columns.Add("SampleId", "SampleId");
+		settings.Columns.Add("Barcode", "Barcode");
+		settings.Columns.Add("Well", "Well");
+		settings.Columns.Add("Name", "Name");
+		//settings.Columns.Add("WorkflowId", "WorkflowId");
+		settings.Columns.Add("CollectedDate", "Collected Date");
+		settings.Columns.Add("Status", "Status");
+		settings.Columns.Add("Doctor", "Doctor");
+		settings.Columns.Add("Patient", "Patient");
+		settings.Columns.Add("Location", "Location");
+		settings.Columns.Add("SampleType", "Sample Type");
+		//settings.Columns.Add("UserId", "UserId");
+		//settings.Columns.Add("BatchId", "BatchId");
+		settings.Columns.Add("BatchName", "Batch Name");
+		settings.Columns.Add("BatchBarcode", "Batch Barcode");
+		settings.Columns.Add("ModelId", "ModelId");
+		settings.Columns.Add("Model", "Model");
+		settings.Columns.Add("HospitalName", "Hospital Name");
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "DoubleBarcodeValidation";
+			columnSettings.Caption = "Such a barcode already exists in the system";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 50;
+			columnSettings.Visible = false;
+		}); //DoubleBarcodeValidation
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "DoubleBarcodeJourLineValidation";
+			columnSettings.Caption = "Double Barcode in drafts";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 50;
+			columnSettings.Visible = false;
+		}); //Id
+		Html.AddColmmentCountColumn(settings, false); //Comment
+		Html.AddFilesCountColumn(settings, false); //Files
+		SettingHelper.AddCustomColumnsAdv(settings, TableType.JourLine);
+
+		settings.HtmlRowPrepared = (s, e) =>
+		{
+			if (e.RowType == GridViewRowType.Data)
+			{
+				if (Convert.ToInt32(e.GetValue("DoubleBarcodeJourLineValidation")) == 0)
+				{
+					e.Row.BackColor = System.Drawing.Color.Chocolate;
+					e.Row.ToolTip = "Double Barcode in this drafts";
+				}
+				if (Convert.ToInt32(e.GetValue("DoubleBarcodeValidation")) == 0)
+				{
+					e.Row.BackColor = System.Drawing.Color.Red;
+					e.Row.ToolTip = "Such a barcode already exists in the system ";
+				}
+			}
+		};
+
+		//Command columns settings
+		SettingHelper.AddCommandColumn(settings);
+		settings.CustomJSProperties = (sender, e) =>
+		{
+			var Grid = sender as MVCxGridView;
+			//var dictionary = new Dictionary<object, string>();
+
+			//for (int i = 0; i < Grid.SettingsPager.PageSize; i++)
+			//{
+			//	var visibleIndex = i + Grid.VisibleStartIndex;
+			//	if (visibleIndex >= Grid.VisibleRowCount)
+			//		break;
+
+			//	object[] rowValues = (object[])Grid.GetRowValues(visibleIndex, Grid.KeyFieldName, "RowVersion");
+			//	dictionary[(rowValues[0] ?? 0).ToString()] = Convert.ToBase64String((byte[])(rowValues[1] ?? new byte[] { }));
+			//}
+			//e.Properties["cpRowVersions"] = new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(dictionary);
+			//e.Properties["cpRowCount"] = Grid.VisibleRowCount;
+
+			if (ViewData["EditError"] != null)
+				e.Properties["cpEditError"] = ViewData["EditError"];
+			//----------------------------------------------------
+
+			string[] dataFields = new string[] { "Status", "ModelId", "Barcode", "Id" };
+			var serverData = Grid.GetCurrentPageRowValues(dataFields);
+			if (serverData.Any())//массив для поиска по видимому индексу
+			{
+				e.Properties["cp_Status"] = serverData.Select(s => (s as object[])[0]).ToArray();
+				e.Properties["cp_ModelId"] = serverData.Select(s => (s as object[])[1]).ToArray();
+				e.Properties["cp_Barcode"] = serverData.Select(s => (s as object[])[2]).ToArray();
+				e.Properties["cp_Indexes"] = serverData.Select(s => (s as object[])[3]).ToArray();
+			}
+
+
+		};
+
+		settings.ClientSideEvents.SelectionChanged = "onGridViewSelectionChanged";
+		settings.ClientSideEvents.BeginCallback = "onGridViewBeginCallback";
+		settings.ClientSideEvents.EndCallback = "onGridViewEndCallback";
+		settings.ClientSideEvents.CustomizationWindowCloseUp = "onGridCustomizationWindowCloseUp";
+		settings.ClientSideEvents.RowDblClick = "onRowDblClick";
+		settings.ClientSideEvents.Init = "onGridViewInit";
+		settings.ClientSideEvents.FocusedRowChanged = "onFocusedRowChanged";
+
+	});
+	if (Model == null)
+	{
+		@gridView.GetHtml()
+	}
+	else
+	{
+		@gridView.BindToEF(string.Empty, string.Empty, (s, e) =>
+		{
+			e.QueryableSource = Model;
+			e.KeyExpression = "Id";
+		}, (s, e) =>
+		{
+			// Handle internal exception
+			var mess = e.Exception?.InnerException.Message ?? e.Exception.Message;
+			mess = "<div style='color:red'>" + mess + "</div>";
+			ViewContext.Writer.Write(mess); //пишу ошибку прямо на экран
+		}).GetHtml()
+	}
+}

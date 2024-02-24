@@ -1,0 +1,86 @@
+@using Sasha.Lims.WebUI.Localization
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>@(ViewBag?.Title ?? string.Empty) - @(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.MainTitle)))</title>
+	@Html.DevExpress().GetStyleSheets(
+		new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+		new StyleSheet { ExtensionSuite = ExtensionSuite.Icons },
+		new StyleSheet { ExtensionSuite = ExtensionSuite.Editors },
+		new StyleSheet { ExtensionSuite = ExtensionSuite.GridView },
+		new StyleSheet { ExtensionSuite = ExtensionSuite.TreeList },
+		new StyleSheet { ExtensionSuite = ExtensionSuite.Report }
+		)
+	@Html.DevExpress().GetScripts(
+		new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+		new Script { ExtensionSuite = ExtensionSuite.Icons },
+		new Script { ExtensionSuite = ExtensionSuite.Editors },
+		new Script { ExtensionSuite = ExtensionSuite.GridView },
+		new Script { ExtensionSuite = ExtensionSuite.TreeList },
+		new Script { ExtensionSuite = ExtensionSuite.Report }
+		)
+	<link href="~/Content/Site.css?v=1.0" rel="stylesheet" type="text/css" />
+	<link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+	@RenderSection("Head", false)
+	<script type="text/javascript" src="@Url.Content("~/Scripts/Script.js?v=1.2")"></script>
+	<script src="~/Scripts/modernizr-2.6.2.js"></script>
+	<script type="text/javascript">
+	document.addEventListener("keydown", function (event) {
+		if (event.code == "F1")
+		{  console.log(event.code);
+			event.preventDefault();
+			ShowHelp();
+		}
+       function ShowHelp() {
+		var currentPath = document.location.pathname.replace('/','-');
+		ShowUrlPopup("Help", '@Url.Action("Index", "Help",new { Area = "Help"} )?path=' + currentPath, document.documentElement.clientWidth - 50);
+	}
+	})
+	</script>
+</head>
+<body>
+	@if (ViewBag.DontShowMainMenu != true)
+	{
+
+		@*@Html.Partial("_MainMenu")*@
+		@Html.Partial("_MainMenuAdv")
+	}else{
+	<style>
+		body {
+			padding-top: 3px
+		}
+	</style>
+	}
+	@*<div class="container body-content">*@
+	<div class="form">
+		@if (IsSectionDefined("PageToolbar"))
+		{
+			@Html.DevExpress().Panel(settings =>
+			{
+				settings.Name = "pageToolbarPanel";
+				settings.ControlStyle.CssClass = "page-toolbar-wrapper";
+				settings.ClientSideEvents.Init = "onPageToolbarInit";
+				settings.SetContent(() => ViewContext.Writer.Write(RenderSection("PageToolbar", false)));
+			}).GetHtml()
+		}
+
+		<div class="content" id="pageContent">
+			@RenderBody()
+			@Html.Partial("_AlertPopup")
+			@Html.Partial("_ConfirmPopup")
+			@Html.Partial("_UrlPopup")
+			@Html.Partial("_UrlPopupAbout")
+		</div>
+		@*<hr />
+			<footer>
+			<p>&copy; @DateTime.Now.Year - Sasha LIMS Portal</p>
+			</footer>*@
+	</div>
+	@*<script src="~/Scripts/jquery-3.2.1.min.js"></script>*@
+	<script src="~/Scripts/bootstrap.min.js"></script>
+	@RenderSection("Scripts", false)
+</body>
+</html>

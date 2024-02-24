@@ -1,0 +1,8 @@
+
+
+
+@Html.DevExpress().WebDocumentViewer(
+	settings =>
+	{
+		settings.Name = "PrintViewer";
+	}).Bind(Model).GetHtml()

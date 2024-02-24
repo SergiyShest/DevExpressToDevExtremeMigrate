@@ -1,0 +1,56 @@
+@using DevExpress.Web;
+@using Sasha.Lims.WebUI.Infrastructure
+
+
+
+@Html.DevExpress().FileManager(settings =>
+{
+
+	settings.Name = "fileManager";
+	settings.CallbackRouteValues = new { Controller = "FileManager", Action = "FileManagerPartial" , tableId = ViewBag.tableId, rowId = ViewBag.rowId };
+	settings.DownloadRouteValues = new { Controller = "FileManager", Action = "FileManagerPartialDownload", tableId = ViewBag.tableId, rowId = ViewBag.rowId };
+
+	settings.Settings.ThumbnailFolder = Url.Content("~/Content/FileManager/Thumbnails");//папка с превьюшками (согласно документации генерится автоматически и должна быть внутри приложения)
+
+	settings.SettingsBreadcrumbs.Position = BreadcrumbsPosition.Top;
+
+	
+
+	settings.Settings.AllowedFileExtensions = AppSettings.AvaiableFileExtensions;
+	settings.SettingsContextMenu.Enabled = true;
+
+	settings.SettingsFileList.ShowParentFolder = false;
+
+	settings.SettingsFolders.Visible = false;
+	settings.SettingsFolders.EnableCallBacks = false;
+	settings.SettingsFolders.ShowFolderIcons = true;
+	settings.SettingsFolders.ShowLockedFolderIcons = true;
+
+	settings.SettingsToolbar.Items.Add(new FileManagerToolbarDownloadButton());
+	settings.SettingsToolbar.Items.Add(new FileManagerToolbarRenameButton());
+	settings.SettingsToolbar.Items.Add(new FileManagerToolbarDeleteButton());
+	settings.SettingsToolbar.ShowPath = false;
+	settings.SettingsToolbar.ShowFilterBox = true;
+	settings.SettingsToolbar.Visible = true;
+
+	settings.SettingsEditing.AllowRename = true;
+	settings.SettingsEditing.AllowDelete = true;
+	settings.SettingsEditing.AllowDownload = true;
+
+	settings.SettingsUpload.Enabled = true;
+	settings.SettingsUpload.UseAdvancedUploadMode = true;
+	settings.SettingsUpload.AdvancedModeSettings.EnableMultiSelect = true;
+
+	settings.ClientSideEvents.FilesUploading = "uploadStarted";
+
+	settings.FileUploading = (s, e) =>
+	{
+		Boolean.TryParse(HttpContext.Current.Request.Form["overwrite"], out bool isOverride);
+		if (isOverride)
+		{
+			var existFile = (s as  ASPxFileManager).SelectedFolder.GetFiles().FirstOrDefault(f => f.Name.Equals(e.FileName, StringComparison.InvariantCultureIgnoreCase));
+			if (existFile != null)
+				File.Delete(Path.Combine(Server.MapPath("~"), existFile.RelativeName)); // A path depends on the RootFolder in the file manager
+		}
+	};
+}).BindToFolder(Model.DirName).GetHtml()

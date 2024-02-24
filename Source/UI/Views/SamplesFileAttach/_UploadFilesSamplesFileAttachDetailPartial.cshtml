@@ -1,0 +1,69 @@
+
+<style type="text/css">
+	.filesTable {
+		width: 100%;
+	}
+
+	.col2, .col3 {
+		width: 20%;
+	}
+
+	.del_btn {
+		cursor: pointer;
+	}
+</style>
+
+@using System.Web.UI.WebControls
+@using Sasha.Lims.Core.DTO
+@using Sasha.Lims.WebUI.Controllers
+@using Sasha.Lims.WebUI.Infrastructure.Binders
+@using Sasha.Lims.WebUI.Models
+
+@{
+	var sampleId = ((SampleViewModel)Model).SampleId ?? 0;
+}
+
+@using (Html.BeginForm("_UploadFilesSamplesFileAttachDetailPartial", "SamplesFileAttach", FormMethod.Post, new { @class = "upload", id = $"form_ucMultiSelection_{sampleId}" }))
+{
+	<div class="uploadContainer">
+		@Html.DevExpress().UploadControl(
+			settings => {
+
+				settings.Name = $"ucMultiSelection_[{((SampleViewModel)Model).SampleId ?? 0}]";
+				settings.CallbackRouteValues = new { Controller = "SamplesFileAttach", Action = "MultiSelectionFileUpload", sampleId = sampleId };
+				settings.UploadMode = UploadControlUploadMode.Standard;
+				settings.Width = Unit.Percentage(100);
+				settings.ShowProgressPanel = true;
+				settings.ShowUploadButton = true;
+				settings.AdvancedModeSettings.EnableMultiSelect = true;
+				settings.AdvancedModeSettings.EnableFileList = true;
+				settings.AdvancedModeSettings.EnableDragAndDrop = true;
+				settings.NullText = "Select multiple files...";
+
+				settings.ClientSideEvents.FileUploadComplete = "function(s,e) { onFileUploadComplete(e); }";
+
+			}).GetHtml()
+
+		<br />
+
+		<p class="Note">
+			<span>Uploaded files</span>:
+		</p>
+
+	</div>
+	<div class="filesContainer">
+
+		<table id="filesTable_@(sampleId)" class="filesTable">
+			<tbody>
+
+			</tbody>
+		</table>
+
+		<hr />
+
+		@{
+			Html.RenderAction("_SampleFilesAttachedCardViewPartial", "SamplesFileAttach", new { sampleId = sampleId });
+		}
+
+	</div>
+}

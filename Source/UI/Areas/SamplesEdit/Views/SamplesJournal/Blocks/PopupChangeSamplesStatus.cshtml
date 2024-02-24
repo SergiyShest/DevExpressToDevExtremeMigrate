@@ -1,0 +1,81 @@
+@using System.Web.UI.WebControls
+@using DevExpress.Utils
+@using DevExpress.Web
+@using DevExpress.Web.Mvc.UI
+@using Sasha.Lims.WebUI.Controllers
+@using Sasha.Lims.WebUI.Infrastructure.ViewModelHelpers
+@using Sasha.Lims.WebUI.Localization
+
+@Html.DevExpress().PopupControl(
+	settings =>
+	{
+		settings.Name = "ChangeSamplesStatusDialog";
+		settings.Width = 320;
+		settings.AllowDragging = true;
+		settings.CloseAction = CloseAction.CloseButton;
+		settings.CloseOnEscape = true;
+		settings.PopupAnimationType = AnimationType.None;
+		settings.HeaderText = "Change samples statuses";
+		settings.Modal = true;
+		settings.AutoUpdatePosition = true;
+		settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+		settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+		settings.SetContent(() =>
+		{
+			//using (Html.BeginForm("ChangeSamplesGroupDialog", "SamplesJournal", new { editMode = ViewBag.EditMode, customAction = "StatusChange" }, FormMethod.Post, new { id = "popupForm2", @class = "edit_form" })){
+
+			@Html.DevExpress().FormLayout(s => {
+				s.Name = "ModalModeFormLayout_SamplesStatus";
+				s.RequiredMarkDisplayMode = RequiredMarkMode.None;
+				s.Width = Unit.Percentage(100);
+				s.Height = Unit.Percentage(100);
+
+				s.NestedExtensionWidth = Unit.Percentage(100);
+
+				s.Items.Add(i =>
+				{
+					i.Name = "SampleStatusIdForGroup";
+					i.Caption = "SampleStatus:";
+					i.NestedExtension().ComboBox(cb =>
+					{
+						cb.Name = "ChangeSamplesStatusCombo";
+						cb.Properties.ValueField = "Key";
+						cb.Properties.TextField = "Value";
+						cb.Properties.NullText = "[Null]";
+						cb.Properties.ValueType = typeof(int);
+						cb.Properties.DataSource = PropertiesController.PropertiesReader.GetProperties("SampleStatus"); ;
+					});
+				});
+
+				s.Items.Add(i =>
+				{
+					i.ShowCaption = DefaultBoolean.False;
+					var dialogName = "ChangeSamplesStatusDialog";
+					i.SetNestedContent(() =>
+					{
+						Html.DevExpress().Button(bs =>
+						{
+							bs.Name = "btnUpdate_" + dialogName;
+							bs.ControlStyle.CssClass = "button";
+							bs.Width = 80;
+							bs.Text = Html.GetLocalizedText<UI>(nameof(UI.ButtonOk));
+							bs.UseSubmitBehavior = false;
+							bs.ClientSideEvents.Click = "function(s, e){ ChangeStatus();" + dialogName + ".Hide(); }";
+						}).Render();
+						Html.DevExpress().Button(bs =>
+						{
+							bs.Name = "btnCancel_" + dialogName;
+							bs.ControlStyle.CssClass = "button";
+							bs.Width = 80;
+							bs.Text = Html.GetLocalizedText<UI>(nameof(UI.ButtonCancel));
+							bs.ClientSideEvents.Click = "function(s, e){ " + dialogName + ".Hide(); }";
+							bs.Style[HtmlTextWriterStyle.MarginLeft] = "5px";
+						}).Render();
+					});
+				});
+			}).Render();
+
+		});
+
+		settings.ClientSideEvents.CloseUp = "function(s, e){ ASPxClientEdit.ClearEditorsInContainer(null, '', false); }";
+	}).GetHtml()

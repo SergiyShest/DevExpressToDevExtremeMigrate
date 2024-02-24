@@ -1,0 +1,74 @@
+<style>
+</style>
+<script>
+	window.addEventListener("message", receiveMessage, false);
+	//получение сообщения из открываемого окна
+	function receiveMessage(event) {
+		if (typeof event.data !== 'string' && !(event.data instanceof String)) return;
+		if (event.data == 'CloseUrlForm') {
+			UrlPopup.Hide();
+			if (typeof gridView !== 'undefined') {
+				gridView.Refresh();
+			}
+		}
+		if (event.data.includes('SetPopUpHeader=')) {
+			var text = event.data.substring('SetPopUpHeader='.length);
+			UrlPopup.SetHeaderText(text);
+		}
+		if (event.data.includes('SetHeaderImageUrl=')) {
+			var imgUrl = event.data.substring('SetHeaderImageUrl='.length);
+			UrlPopup.SetHeaderImageUrl(imgUrl);
+		}
+	}
+	//Вызов всплывающего окна с произвольным URL
+	function ShowUrlPopup(header, url, width, height) {
+		//var imgPath=	window.location.host + "/Content/Images/Status/Pass.png";
+		//console.log(imgPath);
+		//	UrlPopup.SetHeaderImageUrl(imgPath);
+		UrlPopup.SetContentUrl(url);
+		UrlPopup.SetHeaderText(header);
+		if (width == null && height == null) {
+			UrlPopup.SetMaximized(true);
+
+		} else {
+			if (width == null) width = document.documentElement.clientWidth - 50;
+			if (height == null) height = document.documentElement.clientHeight - 50;
+
+			UrlPopup.SetWidth(width);
+			UrlPopup.SetHeight(height);
+			UrlPopup.SetMaximized(false);
+		}
+		UrlPopup.Show();
+	}
+</script>
+@Html.DevExpress().PopupControl(settings =>
+{
+	settings.Name = "UrlPopup";
+	settings.Width = 520;
+	settings.AllowDragging = true;
+	settings.CloseAction = CloseAction.CloseButton;
+	settings.CloseOnEscape = true;
+
+	settings.Modal = false;
+	settings.AutoUpdatePosition = true;
+	settings.AllowResize = true;
+	settings.ShowCollapseButton = true;
+
+	settings.ShowMaximizeButton = true;
+	settings.Styles.Header.CssClass = "titleMenuItemStyle disabled ";
+	settings.PopupHorizontalAlign = PopupHorizontalAlign.WindowCenter;
+	settings.PopupVerticalAlign = PopupVerticalAlign.WindowCenter;
+	settings.ClientSideEvents.Closing = "function(s,e){ s.SetContentHtml(null);} ";
+	settings.ClientSideEvents.CloseUp = "function(s,e){ " +
+	                                    " if (typeof customPopupCloseUp!='undefined' )" +
+	                                    " customPopupCloseUp(); }";
+
+}).GetHtml()
+
+@Html.DevExpress().LoadingPanel(
+		settings =>
+		{
+			settings.Name = "LoadingPanel";
+		settings.Modal = true;
+		settings.Text = "Data loading...";
+}).GetHtml()

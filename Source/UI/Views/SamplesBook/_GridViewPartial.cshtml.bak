@@ -1,0 +1,244 @@
+@using System.Web.UI.WebControls
+@using DevExpress.Web.Mvc.UI
+@using DevExpress.XtraGrid
+@using Sasha.Lims.DataAccess.Entities.Constants
+@using Sasha.Lims.WebUI.Controllers
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@using Sasha.Lims.WebUI.Infrastructure.ViewModelHelpers
+@using Sasha.Lims.WebUI.Localization
+@using Sasha.Lims.WebUI.Models
+@model IQueryable<Sasha.Lims.DataAccess.Entities.Entity.vSamplesBook>
+
+@functions {
+	private void AddPropComboBoxColumn(GridViewSettings settings,string fieldName,  string viewModelFieldName, PropsType propsType)
+	{
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = fieldName;
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(viewModelFieldName);
+			columnSettings.Settings.SortMode = ColumnSortMode.DisplayText;
+
+			columnSettings.EditorProperties().ComboBox(comboBoxProperties =>
+			{
+				comboBoxProperties.ShowImageInEditBox = true;
+				comboBoxProperties.ItemImage.Width = 16;
+				comboBoxProperties.ItemImage.Height = 16;
+				comboBoxProperties.ValueField = "Key";
+				comboBoxProperties.TextField = "Value";
+				comboBoxProperties.BindList(
+					PropertiesController.PropertiesReader.GetProperties((int)propsType));
+			});
+		});
+	}
+
+	private void FillContextMenuItems(object sender, ASPxGridViewContextMenuEventArgs e)
+	{
+		if (e.MenuType == GridViewContextMenuType.Columns)
+		{
+		var item=	e.Items.FindByCommand(GridViewContextMenuCommand.ShowFooter);
+			e.Items.Remove(item);
+		}
+
+	}
+
+}
+@{
+	SamplesBookController controller = (SamplesBookController)ViewContext.Controller;
+	var gridView = Html.DevExpress().GridView(settings =>
+	{
+
+		SettingHelper.InitCommonGridSettings(settings);
+		settings.Name = "gridViewSamplesApproved";
+		settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Visible;
+		settings.Settings.VerticalScrollBarMode = ScrollBarMode.Visible;
+		settings.Settings.VerticalScrollableHeight = 300;
+
+		settings.SettingsContextMenu.EnableColumnMenu = DefaultBoolean.True;
+		settings.FillContextMenuItems = FillContextMenuItems;
+		settings.SettingsPager.FirstPageButton.Visible = true;
+		settings.SettingsPager.LastPageButton.Visible = true;
+		settings.SettingsPager.PageSizeItemSettings.Visible = true;
+		settings.SettingsPager.PageSizeItemSettings.Items = new string[] {"10", "15", "20", "50", "100"};
+		settings.SettingsPager.PageSize = 20;
+
+		settings.SettingsCookies.StorePaging = true;
+
+		settings.Settings.ShowHeaderFilterButton = true;
+		settings.Settings.ShowFilterBar = GridViewStatusBarMode.Visible;
+		settings.Styles.PagerBottomPanel.HorizontalAlign = HorizontalAlign.Right;
+		settings.SettingsPager.Summary.Visible = true;
+		settings.SettingsPager.Summary.Position = PagerButtonPosition.Left;
+		settings.SettingsPager.FirstPageButton.Visible = false;
+		settings.SettingsPager.LastPageButton.Visible = false;
+		settings.Settings.ShowFilterRowMenu = true;
+		settings.Settings.ShowFilterRowMenuLikeItem = true;
+		settings.SettingsPager.PageSizeItemSettings.Position = PagerPageSizePosition.Left;
+		settings.CallbackRouteValues = new {Controller = "SamplesBook", Action = "CallbackRouteValues"};
+
+		SampleApprovedViewModel vm = null;
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Id";
+			columnSettings.Caption = "Id";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 100;
+			columnSettings.Visible = false;
+		}); //Id
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Barcode";
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Barcode));
+			columnSettings.MinWidth = 100;
+			columnSettings.Width = 100;
+
+		}); //Barcode
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Name";
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Name));
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 150;
+		}); //Name
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Location";
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Location));
+			columnSettings.MinWidth = 200;
+		}); //Location
+
+		//todo:эта колокнка генерит множестово запросов нужно переделать
+		//settings.Columns.AddColumnForVmField(vm, m => m.BatchId);
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "BatchName";
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Box));
+			columnSettings.MinWidth = 200;
+		}); //BatchName
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Well";
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Well));
+		}); //Well
+
+		Html.AddColmmentCountColumn(settings, false); //Comment
+
+		AddPropComboBoxColumn(settings, "SampleWorkflowStatusId", nameof(ViewModelFields.Sample_WorkflowStatus), PropsType.WorkflowStatus);
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "ProcessName";
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Process));
+		}); //ProcessName
+
+		settings.Columns.AddColumnForVmField(vm, m => m.Volume);
+
+		settings.Columns.AddColumnForVmField(vm, m => m.CollectedDateTime);
+
+		AddPropComboBoxColumn(settings, "SampleStatusId", nameof(ViewModelFields.Sample_SampleStatus), PropsType.SampleStatuses);
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "UserName";
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_User));
+		}); //UserId
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "IsChild";
+			columnSettings.Caption = "Aliquot";
+			columnSettings.ColumnType = MVCxGridViewColumnType.CheckBox;
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 100;
+		}); //Aliquot
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "ParentName";
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Parent));
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 100;
+		}); //PatentSampleName
+
+		settings.Columns.AddColumnForVmField(vm, m => m.ModelId);
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Patient";
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Patient));
+		}); // Patient
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Doctor";
+			columnSettings.Caption = Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Doctor));
+
+		}); //Doctor
+
+		foreach (var c in controller.CustomFields)
+		{
+			settings.Columns.AddColumnForMetadata(c);
+		}
+
+		//Command columns settings
+		settings.CommandColumn.Visible = true;
+		settings.CommandColumn.ShowSelectCheckbox = true;
+		settings.CommandColumn.SelectAllCheckboxMode = GridViewSelectAllCheckBoxMode.Page;
+		settings.CommandColumn.VisibleIndex = 0;
+		settings.CommandColumn.Width = Unit.Pixel(52);
+
+
+		settings.SettingsDetail.AllowOnlyOneMasterRowExpanded = false;
+		settings.SettingsDetail.ShowDetailRow = true;
+
+		settings.SetDetailRowTemplateContent(c => Html.RenderPartial("GridRowDetails", c));
+
+		settings.SettingsDataSecurity.AllowReadUnlistedFieldsFromClientApi = DefaultBoolean.True;
+
+		settings.CustomJSProperties = (sender, e) =>
+		{
+			var Grid = sender as MVCxGridView;
+			var dictionary = new System.Collections.Generic.Dictionary<object, string>();
+
+			for (int i = 0; i < Grid.SettingsPager.PageSize; i++)
+			{
+				var visibleIndex = i + Grid.VisibleStartIndex;
+				if (visibleIndex >= Grid.VisibleRowCount)
+					break;
+
+				object[] rowValues = (object[]) Grid.GetRowValues(visibleIndex, Grid.KeyFieldName, "RowVersion");
+				dictionary[(rowValues[0] ?? 0).ToString()] = Convert.ToBase64String((byte[]) (rowValues[1] ?? new byte[] {}));
+			}
+
+			e.Properties["cpRowVersions"] = new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(dictionary);
+			e.Properties["cpRowCount"] = Grid.VisibleRowCount;
+
+			if (ViewData["EditError"] != null)
+				e.Properties["cpEditError"] = ViewData["EditError"];
+		};
+
+
+
+		settings.ClientSideEvents.Init = "onGridViewInit";
+		settings.ClientSideEvents.SelectionChanged = "onGridViewSelectionChanged";
+		settings.ClientSideEvents.BeginCallback = "onGridViewBeginCallback";
+		settings.ClientSideEvents.ColumnResized = "function(s, e) {	e.processOnServer = true; }"; // force event to save cookie
+		settings.ClientSideEvents.CustomizationWindowCloseUp = "onGridCustomizationWindowCloseUp";
+
+	});
+
+	@gridView.BindToEF(string.Empty, string.Empty, (s, e) =>
+{
+	e.QueryableSource = Model;
+	e.KeyExpression = "Id";
+}, (s, e) =>
+{
+	// Handle internal exception
+	var mess=e.Exception?.InnerException.Message ?? e.Exception.Message;
+	mess = "<div style='color:red'>" + mess + "</div>";
+					 ViewContext.Writer.Write(mess);//пишу прямо на экран
+}).GetHtml()
+}

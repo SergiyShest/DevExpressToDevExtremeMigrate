@@ -1,0 +1,127 @@
+@model Sasha.Lims.WebUI.Models.SampleViewModel
+@using System.Web.Optimization
+@using System.Web.UI.WebControls
+@using Sasha.Lims.WebUI.Localization
+@using View = DevExpress.Web.View
+
+@{
+	ViewData["Title"] = Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Plate));
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section Head {
+
+	@Html.DevExpress().GetStyleSheets(
+		new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+		new StyleSheet { ExtensionSuite = ExtensionSuite.Editors },
+		new StyleSheet { ExtensionSuite = ExtensionSuite.GridView },
+		new StyleSheet { ExtensionSuite = ExtensionSuite.TreeList }
+		)
+	@Html.DevExpress().GetScripts(
+		new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+		new Script { ExtensionSuite = ExtensionSuite.Editors },
+		new Script { ExtensionSuite = ExtensionSuite.GridView },
+		new Script { ExtensionSuite = ExtensionSuite.TreeList }
+		)
+	<script type="text/javascript" src="@Url.Content("~/Scripts/Script.js?v=1.2")"></script>
+
+	@*@Styles.Render("~/bundles/samplesEditorPlate")*@
+	@Scripts.Render("~/scripts/samplesEditorPlate")
+
+	@Styles.Render("~/bundles/samplesWellDiagram")
+	@Scripts.Render("~/scripts/samplesWellDiagram")
+
+}
+
+@*<h2>Samples approved</h2>*@
+
+@Html.DevExpress().Menu(menuSettings =>
+{
+	menuSettings.Name = "pageToolbar";
+
+	menuSettings.ItemAutoWidth = false;
+	menuSettings.AllowSelectItem = false;
+	menuSettings.ApplyItemStyleToTemplates = true;
+
+	menuSettings.SettingsAdaptivity.Enabled = true;
+	menuSettings.SettingsAdaptivity.EnableAutoHideRootItems = true;
+	menuSettings.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+	menuSettings.SettingsAdaptivity.CollapseRootItemsToIconsAtWindowInnerWidth = 600;
+
+	menuSettings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+	menuSettings.ControlStyle.SeparatorWidth = System.Web.UI.WebControls.Unit.Pixel(0);
+	menuSettings.ControlStyle.CssClass = "page-toolbar";
+
+	menuSettings.Styles.Item.CssClass = "item";
+	menuSettings.Styles.Item.VerticalAlign = System.Web.UI.WebControls.VerticalAlign.Middle;
+
+	menuSettings.Images.Item.Width = System.Web.UI.WebControls.Unit.Pixel(16);
+	menuSettings.Images.Item.Height = System.Web.UI.WebControls.Unit.Pixel(16);
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Title";
+		item.Text = ViewData["Title"] as string;
+		item.ClientEnabled = false;
+		item.ItemStyle.Font.Bold = true;
+		item.Alignment = MenuItemAlignment.Left;
+		item.ItemStyle.CssClass = "titleMenuItemStyle";
+	});
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Clear";
+		item.Text = "Clear";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 6;
+		item.Image.Url = "~/Content/Images/delete.svg";
+	});
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Process";
+		item.Text = Html.GetLocalizedText<UI>(nameof(UI.ButtonPost));
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 6;
+		item.Image.Url = "~/Content/Images/upbar.svg";
+	});
+
+	menuSettings.ClientSideEvents.ItemClick = "onPageToolbarItemClick";
+}).GetHtml()
+@Html.DevExpress().RoundPanel(settings =>
+{
+	settings.Name = "roundPanel";
+	settings.AllowCollapsingByHeaderClick = true;
+	settings.ShowCollapseButton = true;
+	settings.ShowHeader = true;
+	settings.View = View.Standard;
+	settings.EnableAnimation = true;
+	settings.Width = Unit.Percentage(100);
+	settings.HeaderText = "Wells diagram";
+	settings.Collapsed = true;
+
+	settings.SetContent(() =>
+	{
+		ViewContext.Writer.Write("<script type=\"text/javascript\">function printWellsDiagram() {window.print();}</script>");
+		Html.DevExpress().Button(b =>
+		{
+			b.Name = "btn";
+			b.Text = "Print";
+			b.ClientSideEvents.Click = "printWellsDiagram";
+			b.ControlStyle.CssClass = "noprint";
+			b.UseSubmitBehavior = false;
+		}).Render();
+		Html.RenderAction("WellsDiagramPartial");
+	});
+}).GetHtml()
+@*<div style="display: none;">
+		@Html.Action("WellsDiagramPartial")
+	</div>*@
+@Html.Action("PlatePanelEditingPartial")
+@using (Html.BeginForm())
+{
+
+	//@Html.Action("EditSamplePartial")
+	@Html.Action("SamplesGridViewEditingPartial")
+}

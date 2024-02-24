@@ -1,0 +1,83 @@
+@using Sasha.Lims.WebUI.Controllers
+
+@model Sasha.Lims.WebUI.Models.SampleViewModel
+
+@Html.DevExpress().FormLayout(settings =>
+{
+
+	//settings.
+	settings.Name = "FormGroupChanges";
+
+	settings.SettingsItems.ShowCaption = DefaultBoolean.True;
+	settings.SettingsItemCaptions.Location = LayoutItemCaptionLocation.Left;
+
+
+	settings.Items.AddGroupItem(group =>
+	{
+		group.ShowCaption = DefaultBoolean.False;
+		group.GroupBoxDecoration = GroupBoxDecoration.Box;
+
+		group.Caption = "Group changes";
+		group.Name = "FormGroupChangesGroupItem";
+
+		group.ColCount =2;
+
+
+		//group.Items.Add(i =>
+		//{
+		//	////
+		//	i.Caption = "Location:";
+		//	//i.FieldName = "LocationId";
+		//	i.Name = "gpEditingLocation";
+
+		//	i.NestedExtension().DropDownEdit(cb =>
+		//	{
+		//		cb.Properties.ClientSideEvents.Init = "onInitTreeViewLocations";
+		//		cb.Properties.ClientSideEvents.DropDown = "onDropDownTreeViewLocations";
+		//		cb.Properties.NullText = "(No Selection)";
+		//		cb.ReadOnly = true;
+		//		cb.SetDropDownWindowTemplateContent(c =>
+		//		{
+		//			Html.RenderAction("LocationsTreeListPartial", new { selectedId = Model?.LocationId });
+		//		});
+		//	});
+		//});
+
+
+		group.Items.Add(i =>
+		{
+			i.Name = "gpSampleStatusId";
+			i.Caption = "SampleStatus:";
+			i.NestedExtension().ComboBox(cb =>
+			{
+				//cb.Properties.Columns.Add("Key");
+				//cb.Properties.Columns.Add("Key");
+				//cb.Properties.TextFormatString = "{0} {1}";
+				//cb.Properties.TextField = "Name";
+				//cb.Properties.ValueField = "Id";
+				cb.Properties.ValueField = "Key";
+				cb.Properties.TextField = "Value";
+				cb.Properties.NullText = "[Null]";
+				cb.Properties.ValueType = typeof(int);
+				cb.Properties.DataSource = PropertiesController.PropertiesReader.GetProperties("SampleStatus"); ;
+			});
+		});
+
+		group.Items.Add(i =>
+		{
+			i.Caption = "";
+			i.Name = "SaveGroupChangesBtnItem";
+
+			i.NestedExtension().Button(s => {
+				s.Name = "SaveGroupChangesBtn";
+				s.Text = "Save";
+				s.UseSubmitBehavior = false;
+				s.ClientSideEvents.Click = "SaveGroupChanges";
+				s.ControlStyle.CssClass = "btnInline";
+			});
+		});
+
+	});
+
+}).GetHtml()
+

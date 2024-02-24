@@ -1,0 +1,237 @@
+
+@using System.Drawing
+@using System.Web.UI.WebControls
+@using DevExpress.Utils
+@using DevExpress.Web
+@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@using DevExpress.XtraPrinting.Native
+
+@using Sasha.Lims.Core.Helpers
+@using Sasha.Lims.DataAccess.Entities.Constants
+
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+
+
+@functions {
+	private void FillContextMenuItems(object sender, ASPxGridViewContextMenuEventArgs e)
+	{
+		if (e.MenuType == GridViewContextMenuType.Rows)
+		{
+			var item = e.Items.FindByCommand(GridViewContextMenuCommand.CollapseDetailRow);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.ExpandDetailRow);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.DeleteRow);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.NewRow);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.Refresh);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.EditRow);
+			e.Items.Remove(item);
+
+			item = e.Items.Add("Edit", "Edit");
+			item.Image.Url = "~/Content/Images/edit.svg";
+			item.Image.Width = Unit.Pixel(16);
+
+			item = e.Items.Add("Wells", "Wells");
+			item.Image.Url = "~/Content/Images/sample-aliquot.svg";
+			item.Image.Width = Unit.Pixel(16);
+			item.ClientEnabled = false;
+
+
+			//item = e.Items.Add("Undo Edit", "UndoEdit");
+			//item.Image.Url = "~/Content/Images/check_out.svg";
+			//item.Image.Width = Unit.Pixel(16);
+			//item.ClientEnabled = false;
+
+			//item = e.Items.Add("Commit Edit", "CommitEdit");
+			//item.Image.Url = "~/Content/Images/process.svg";
+			//item.Image.Width = Unit.Pixel(16);
+			//item.ClientEnabled = false;
+
+			item = e.Items.Add("Make Aliquote", "MakeAliquote");
+			item.Image.Url = "~/Content/Images/aliquoting.svg";
+			item.Image.Width = Unit.Pixel(16);
+
+			item = e.Items.Add("Location", "LocationEdit");
+			item.Image.Url = "~/Content/Images/move_to_box.svg";
+			item.Image.Width = Unit.Pixel(16);
+
+
+			item = e.Items.Add("Show Log", "ShowLog");
+			item.Image.Url = "~/Content/Images/move.svg";
+			item.Image.Width = Unit.Pixel(16);
+
+
+			//SettingHelper.AddChangeStatusContextMenuItems(e, DataHelper.GetAvailableStatuses(TableType.Sample));//создание меню для изменения статуса
+		}
+	}
+}
+@{
+
+	var gridView = Html.DevExpress().GridView(settings =>
+	{
+		SettingHelper.InitAdvancedGridSettings(settings, "ContainerJournal", ViewContext);
+		settings.CallbackRouteValues = new { Controller = "ContainerJournal", Action = "CallbackRouteValues", editMode = ViewBag.EditMode };
+		settings.SettingsContextMenu.Enabled = true;
+		settings.SettingsContextMenu.EnableRowMenu = DefaultBoolean.True;
+		settings.FillContextMenuItems = FillContextMenuItems;
+		settings.ClientSideEvents.ContextMenu = "OnGridContextMenu";
+		settings.ClientSideEvents.ContextMenuItemClick = "onContextMenuItemClick";
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Id";
+			columnSettings.Caption = "Id";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 50;
+			columnSettings.Visible = false;
+		}); //Id
+
+		settings.Columns.Add(column =>
+		{
+			column.FieldName = "DraftCount";
+			column.Caption = "Is Editing";
+			column.SetDataItemTemplateContent(c =>
+			{
+				var status = DataBinder.Eval(c.DataItem, "DraftCount");
+				if (status == null || Convert.ToInt32(status) == 0) return;
+				string imageUrl = new UrlHelper(HttpContext.Current.Request.RequestContext).Content("~/Content/Images/edit.svg");
+				ViewContext.Writer.Write("<img src=\"{0}\" style=\"width:20px\" />", imageUrl);
+			});
+		}); // Status img
+
+		settings.Columns.Add("Barcode", "Barcode");
+		settings.Columns.Add("Name", "Name");
+		settings.Columns.Add("ContainerType", "ContainerType");
+		settings.Columns.Add("CollectedDate", "Collected Date");
+		settings.Columns.Add("Status", "Status");
+		settings.Columns.Add("ContentListCount", "Content Count");
+		settings.Columns.Add("Location", "Location");
+
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "DoubleBarcodeValidation";
+			columnSettings.Caption = "Such a barcode already exists in the system";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 50;
+			columnSettings.Visible = false;
+		}); //DoubleBarcodeValidation
+
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "DraftCount";
+			columnSettings.Caption = "Draft Count";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 50;
+			columnSettings.Visible = false;
+		}); //DoubleBarcodeValidation
+		Html.AddColmmentCountColumn(settings, false); //Comment
+		Html.AddFilesCountColumn(settings, false); //
+
+		settings.HtmlRowPrepared = (s, e) =>
+		{
+			if (e.RowType == GridViewRowType.Data)
+			{
+				if (Convert.ToInt32(e.GetValue("DraftCount")) > 0)
+				{
+					e.Row.ForeColor = Color.Gray;
+					e.Row.Font.Bold = true;
+
+					e.Row.ToolTip = "Has Draft";
+				}
+				if (Convert.ToInt32(e.GetValue("DoubleBarcodeValidation")) == 0)
+				{
+					e.Row.ForeColor = System.Drawing.Color.Red;
+					e.Row.Font.Bold = true;
+					e.Row.ToolTip = "Such a barcode already exists in the system ";
+				}
+			}
+		};
+
+		//Command columns settings
+		settings.CommandColumn.Visible = true;
+		settings.CommandColumn.ShowSelectCheckbox = (ViewBag.GroupMode == true);
+		settings.CommandColumn.SelectAllCheckboxMode = (ViewBag.GroupMode == true) ? GridViewSelectAllCheckBoxMode.Page : GridViewSelectAllCheckBoxMode.None;
+		settings.CommandColumn.VisibleIndex = 0;
+		settings.CommandColumn.Width = Unit.Pixel(50);
+
+		settings.SettingsBehavior.AllowFocusedRow = (ViewBag.GroupMode != true);
+
+
+
+		settings.SettingsDetail.AllowOnlyOneMasterRowExpanded = true;
+		settings.SettingsDetail.ShowDetailRow = true;
+		//скрытие кнопки показать DetailRow если в этом ряду не чего показывать
+		settings.Init = (s, e) =>
+		{
+			MVCxGridView grid = (MVCxGridView)s;
+			grid.DetailRowGetButtonVisibility += (sender, args) =>
+			{
+				var detailRowHandlerGrid = (MVCxGridView)sender;
+				var value = Convert.ToInt32(detailRowHandlerGrid.GetRowValuesByKeyValue(args.KeyValue, "DraftCount"));
+				if (value == 0)
+					args.ButtonState = GridViewDetailRowButtonState.Hidden;
+			};
+
+		};
+
+		settings.SetDetailRowTemplateContent(c =>
+		{
+			var count = Convert.ToInt32(DataBinder.Eval(c.DataItem, "DraftCount"));
+			var p = c.Parent;
+
+			if (count > 0)
+			{
+				ViewContext.Writer.Write(
+								"Unsaved changes: <b></b>"
+								);
+				Html.RenderAction("ContainerDraftPartial", new { id = DataBinder.Eval(c.DataItem, "Id") });
+			}
+		});
+
+		settings.CustomJSProperties = (sender, e) =>
+		{
+			var Grid = sender as MVCxGridView;
+
+			string[] dataFields = new string[] { "Status", "DraftCount", "ContentListCount",  "Barcode" ,"Id"};
+			var serverData = Grid.GetCurrentPageRowValues(dataFields);
+			if (serverData.Any())//массив для поиска по видимому индексу
+			{
+				e.Properties["cp_Status"] = serverData.Select(s => (s as object[])[0]).ToArray();
+				e.Properties["cp_DraftCount"] = serverData.Select(s => (s as object[])[1]).ToArray();
+				e.Properties["cp_ContentListCount"] = serverData.Select(s => (s as object[])[2]).ToArray();
+				e.Properties["cp_Barcode"] = serverData.Select(s => (s as object[])[3]).ToArray();
+				e.Properties["cp_Indexes"] = serverData.Select(s => (s as object[])[4]).ToArray();
+			}
+		};
+		settings.ClientSideEvents.SelectionChanged = "onGridViewSelectionChanged";
+		settings.ClientSideEvents.BeginCallback = "onGridViewBeginCallback";
+		settings.ClientSideEvents.EndCallback = "onGridViewEndCallback";
+		settings.ClientSideEvents.CustomizationWindowCloseUp = "onGridCustomizationWindowCloseUp";
+		settings.ClientSideEvents.RowDblClick = "onRowDblClick";
+		settings.ClientSideEvents.Init = "onGridViewInit";
+		settings.ClientSideEvents.FocusedRowChanged = "onFocusedRowChanged";
+	});
+	if (Model == null)
+	{
+		@gridView.GetHtml()
+	}
+	else
+	{
+		@gridView.BindToEF(string.Empty, string.Empty, (s, e) =>
+		{
+			e.QueryableSource = Model;
+			e.KeyExpression = "Id";
+		}, (s, e) =>
+		{
+			// Handle internal exception
+			var mess = e.Exception?.InnerException.Message ?? e.Exception.Message;
+			mess = "<div style='color:red'>" + mess + "</div>";
+			ViewContext.Writer.Write(mess); //пишу ошибку прямо на экран
+		}).GetHtml()
+	}
+}

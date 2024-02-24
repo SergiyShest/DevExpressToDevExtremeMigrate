@@ -1,0 +1,68 @@
+
+@{
+	ViewBag.Title = "Index";
+
+	Layout = "~/Views/Shared/_LayoutEmpty.cshtml";
+}
+@section Head
+{
+	@{
+		var mdiIconCssUrl = "https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css";
+	}
+	<link href="@mdiIconCssUrl" rel="stylesheet">
+}
+@section Scripts
+{
+	<script>
+		window.addEventListener("message", receiveMessage, false);
+		const IsEditDraft = '@ViewBag.IsEditDraft' == "True";
+		const DraftMode = '@ViewBag.DraftMode';
+		const ids = '@ViewBag.ids';
+
+		let locationId = null;
+		function LocationEdit(locationId) {
+
+			ShowUrlPopup("Select location ", '@Url.Action("Index", "SelectLocation", new {Area = "Location"})?locationId=' + locationId, document.documentElement.clientWidth - 150);
+		}
+
+		function receiveMessage(event) {
+			if (typeof event.data === 'string') {
+				if (event.data.indexOf('LocationId=') > -1) {//прием сообщения о новом месте  из Popup Location
+					var arr = event.data.split('=');
+					if (arr[1] != '') {
+						locationId = arr[1];
+						window.globalEvent.$emit('change-location', (locationId));
+					}
+				}
+				if (event.data.indexOf('PatientId=') > -1) {//прием сообщения о новом пациетне
+					var arr = event.data.split('=');
+					if (arr[1] != '') {
+						patientId = arr[1];
+						window.globalEvent.$emit('change-patient', (patientId));
+					}
+				}
+			}
+		}
+
+		let patientId = null;
+		function FindPatient(patientFirstName,
+			patientLastName,
+			patientDateOfBirth,
+			patientEmail,
+			patientNo) {
+
+			ShowUrlPopup("Select Patient",
+				'@Url.Action("SelectPatient", "PatientJournal", new {Area = "Common"})?patientFirstName=' + patientFirstName +
+				'&patientLastName=' + patientLastName +
+				'&patientDateOfBirth=' + patientDateOfBirth +
+				'&patientEmail=' + patientEmail +
+				'&patientNo=' + patientNo,
+				document.documentElement.clientWidth - 150);
+		}
+
+
+
+	</script>
+	<script src="~/Scripts/vue-apps/group-edit.js?v=4"></script>
+}
+<div id="app"></div>

@@ -1,0 +1,39 @@
+@using DevExpress.Web
+@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+@using Sasha.Lims.WebUI.Areas.SamplesEdit.Controllers
+
+
+@{
+	bool existsSample = ViewBag?.ExistsSample ?? false;
+	bool isBox = ViewBag?.IsBox ?? false;
+
+	SamplesJournalController controller = (SamplesJournalController)ViewContext.Controller;
+	ItemsRequestedByFilterConditionMethod fnListBatches = isBox ? (ItemsRequestedByFilterConditionMethod)controller.GetBatchesRangeNonDisposedBoxes : controller.GetBatchesRangeNonDisposed;
+}
+
+@Html.DevExpress().ComboBox(cbSet =>
+{
+	cbSet.Name = "BatchComboBox";
+	//if (existsSample)
+	//{
+	//	cbSet.Name += "_Disabled";
+	//}
+
+	//cbSet.Width = 285;
+	cbSet.Properties.DropDownWidth = 350;
+	cbSet.Properties.DropDownStyle = DropDownStyle.DropDownList;
+	cbSet.CallbackRouteValues = new {Controller = "SamplesJournal", Action = "_BatchComboBoxPartial" ,Area= "SamplesEdit" };
+	cbSet.Properties.CallbackPageSize = 15;
+	cbSet.Properties.TextField = "Name";
+	cbSet.Properties.TextFormatString = "{0} ({1})";
+	cbSet.Properties.ValueField = "Id";
+	cbSet.Properties.ValueType = typeof(int);
+	cbSet.Properties.FilterMinLength = 0;
+	cbSet.Enabled = !existsSample;
+
+	cbSet.Properties.Columns.Add("Name", "Name");
+	cbSet.Properties.Columns.Add("Barcode", "Bar code");
+	cbSet.Properties.Columns.Add("ModelId", "Model");
+}).BindList(fnListBatches, controller.GetBatchById).Bind(Model, "BatchId").GetHtml()
+

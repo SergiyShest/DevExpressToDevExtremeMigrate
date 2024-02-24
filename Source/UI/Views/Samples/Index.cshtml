@@ -1,0 +1,257 @@
+@model IEnumerable<Sasha.Lims.WebUI.Models.SampleViewModel>
+@using System.Web.Optimization
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@using Sasha.Lims.WebUI.Localization
+@using Sasha.Lims.DataAccess.Entities.Constants
+@using Sasha.Lims.WebUI.Controllers
+
+@{
+	object objEditMode = ViewBag?.EditMode;
+	JournalType journalType = objEditMode is JournalType ? (JournalType)objEditMode : objEditMode != null && Enum.TryParse(objEditMode.ToString(), out journalType) ? journalType : JournalType.Management;
+
+	string getTitleForEditMode(JournalType editMode)
+	{
+		switch (editMode)
+		{
+			case JournalType.Management: return Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Management));
+			case JournalType.Receiving: return Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Reception));
+			case JournalType.MassCheckOut: return Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.CheckOut));
+			case JournalType.MassCheckIn: return Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.CheckIn));
+			case JournalType.MassMove: return Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Move));
+			case JournalType.MassDispose: return Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Dispose));
+			case JournalType.Aliquoting: return Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Aliquoting));
+			case JournalType.Box: return Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.Box));
+
+			default: return Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.SampleJournal));
+		}
+	}
+
+	ViewBag.Title = getTitleForEditMode(journalType);
+	Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+	ViewBag.EditMode = journalType;
+}
+
+@section Head {
+	<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/Samples/SamplesGridView.css?v=" + AppVersionHelper.Version)" />
+	<script type="text/javascript" src="@Url.Content("~/Scripts/Samples/SamplesGridView.js?v=" + AppVersionHelper.Version)"></script>
+	<script type="text/javascript" src="@Url.Content("~/Scripts/LocationDropdown.js?v=" + AppVersionHelper.Version)"></script>
+	<script type="text/javascript" src="@Url.Content("~/Scripts/Samples/SamplesBarcodeInput.js?v=" + AppVersionHelper.Version)"></script>
+	@Scripts.Render("~/scripts/samplesGroupEditor")
+}
+<script>
+	window.editMode = @((int)journalType);
+	window.exportUrl = '@Url.Action(nameof(SamplesController.Export))';
+
+	window.addEventListener("message", receiveMessage, false);
+
+	function receiveMessage(event) {
+		if (typeof event.data !== 'string' && !(event.data instanceof String)) return;
+		if (event.data.indexOf('CommentCountChanged') > -1) {
+			var re = /count=(\d+)&rowId=(\d+)/i;
+			var found = event.data.match(re);
+			var contrName = "comment_Count_" + found[2];
+			var controls = ASPxClientControl.GetControlCollection();
+			var control = controls.GetByName(contrName);
+			if (control != null) {
+				control.SetText(found[1]);
+			}
+		}
+		if (event.data.indexOf('Refresh') > -1) {
+			SamplesGridView.Refresh();
+		}
+	}
+
+	function CommentSelectedRow() {
+		var visibleIndex = SamplesGridView.GetFocusedRowIndex();
+		if (visibleIndex == -1) return;
+		var key = SamplesGridView.GetRowKey(visibleIndex);
+		comment(key);
+	}
+
+	function updateToolbarButtonsState() {
+
+		var anythingSelected = SamplesGridView.GetSelectedRowCount() > 0 || SamplesGridView.GetFocusedRowIndex() > -1;
+		var hasRows = SamplesGridView.GetVisibleRowsOnPage() > 0;
+		pageToolbar.GetItemByName("Process") && pageToolbar.GetItemByName("Process").SetEnabled(hasRows);
+		pageToolbar.GetItemByName("Delete") && pageToolbar.GetItemByName("Delete").SetEnabled(anythingSelected);
+
+		pageToolbar.GetItemByName("Edit") && pageToolbar.GetItemByName("Edit").SetEnabled(anythingSelected);
+
+		try {
+			if (pageToolbar.GetItemByName("GroupInput"))
+			{
+				pageToolbar.GetItemByName("GroupInput").SetEnabled(true);
+				if (SamplesGridView.GetSelectedRowCount() > 0) {
+					pageToolbar.GetItemByName("GroupInput").SetText("Group change");
+				} else {
+					if ('@objEditMode' == '@JournalType.Receiving') {
+					pageToolbar.GetItemByName("GroupInput").SetText("Group input");
+				} else {
+					pageToolbar.GetItemByName("GroupInput").SetEnabled(false);
+				}
+			}
+			}
+		} catch (err) {
+			console.error(err);
+		}
+
+		pageToolbar.GetItemByName("GroupEdit") && pageToolbar.GetItemByName("GroupEdit").SetEnabled(hasRows);
+		pageToolbar.GetItemByName("Clear") && pageToolbar.GetItemByName("Clear").SetEnabled(hasRows);
+
+		// report menu
+		var menuReport = pageToolbar.GetItemByName("btShowRepx");
+		if (menuReport) { menuReport.SetEnabled(anythingSelected);
+
+		if (anythingSelected) {
+			SamplesGridView.GetRowValues(SamplesGridView.GetFocusedRowIndex(),
+				'ModelId',
+				function(value) {
+					var items = menuReport.items;
+					if (items == null || value == null) return;
+					for (var i = 0; i < items.length; i++) {
+						var split = items[i].name.split('.');
+						var customParameters = null;
+						if (split.length === 3) {
+							customParameters = split[2].split('$');
+						}
+						items[i].SetEnabled(
+							value != null &&
+							split.length === 3 &&
+							customParameters != null &&
+							customParameters.length > 0 &&
+							(split[2] === '0' || split[2] === 'IDS' || contains(value, customParameters)));
+					}
+				});
+		}
+		}
+	}
+
+
+	function comment(key) {
+		ShowUrlPopup("Comments", '@Url.Action("CommentForm", "Comments")?rowId=' + key + '&tableId=1502', 900, 600);
+	}
+
+	function GroupInput() {
+		SamplesGridView.GetSelectedFieldValues("Id", getSelectedFieldValuesCallback);
+
+		function getSelectedFieldValuesCallback(selectedIds) {
+		//	var selectedIds = SelectedIdsToString(values)
+			var caption;
+			if (selectedIds.length > 1) {
+				caption = "Update " + selectedIds.length + "  samples";
+
+			}
+			if (selectedIds.length == 1) {
+				caption = "Update " + selectedIds.length + "  sample";
+
+			}
+			if (selectedIds.length == 0) {
+				caption = "Insert samples";
+			}
+
+			ShowUrlPopup(caption, "@Url.Action("GroupInput", "EditSample", new {Area = "SamplesEdit"})?selectedIds=" + selectedIds+"&journalType=@((int)journalType)", document.documentElement.clientWidth - 100);
+		}
+	}
+
+	function openReport(id, name) {
+		var split = name.split('.');
+		if (split.length !== 3 || split[0] !== 'Report') return;
+		var reportId = split[1];
+		var url = '@Url.Action("CustomReport", "Print")' + '?id=' + id + '&reportId=' + reportId + '&dontShowMainMenu=true';
+		ShowUrlPopup("Report", url, 980, 630);
+	}
+
+	function openReportWithManyIds(name) {
+		return function(values) {
+			if (values.length === 0) {
+				var rowIndex = SamplesGridView.GetFocusedRowIndex();
+				if (rowIndex == -1) {
+					return;
+				}
+				var rowId = SamplesGridView.GetRowKey(rowIndex);
+				openReport(rowId, name);
+				return;
+			}
+			var ids = values.join(',');
+			var split = name.split('.');
+			if (split.length !== 3 || split[0] !== 'Report') return;
+			var reportId = split[1];
+			var url = '@Url.Action("CustomReportWithIds", "Print")' + '?ids=' + ids + '&reportId=' + reportId + '&dontShowMainMenu=true';
+			ShowUrlPopup("Report", url, 980, 630);
+		}
+	}
+
+	function GenerateBarcode() {
+
+
+		var model = ModelId.GetValue();
+		if (model == null) {
+			alert("Select Model please");
+		}
+		else {
+
+			var sampleType = SampleTypeId.GetValue();
+
+			sendData(setBarcodeDelegate, "@Url.Action("GetBarcode", "Samples", new {Area = ""})?hospitalId=" + 0 + "&model=" + model + "&sampleTypeId=" + sampleType);
+		function setBarcodeDelegate(barcode) {
+			Barcode.SetValue(barcode);
+		}
+}
+
+//универсальная функция отправки получения данных
+      function sendData(execFunction, path, data = null) {
+	      LoadingPanel.Show();
+	      this.loadingData = true;
+	      var execFunctionRef = execFunction;
+
+	      fetch(path,
+			      {
+				      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+				      mode: 'cors', // no-cors, *cors, same-origin
+				      body: JSON.stringify(data), //sending data
+				      headers: {
+					      'Content-Type': 'application/json'
+				      }
+			      })
+		      .then((response) => {
+			      return response.json();
+		      })
+		      .then((retData) => {
+			      execFunctionRef(retData);
+			      LoadingPanel.Hide();
+		      }).catch(error => {
+			      alert("Error while getting server data: " + error);
+			      LoadingPanel.Hide();
+		      });
+
+      }
+
+	}
+
+</script>
+
+
+
+@section PageToolbar {
+	@Html.Partial("Blocks\\ToolbarSamplesEdit", ViewBag.Title as string)
+}
+
+@switch (journalType)
+{
+	case JournalType.MassCheckIn:@Html.Partial("Blocks\\PanelCheckIn") break;
+case JournalType.MassMove: @Html.Partial("Blocks\\PanelMove")break;
+//case JournalType.Box: @Html.Partial("Blocks\\PanelBoxing")					break;
+}
+
+@using (Html.BeginForm())
+{
+	@*@Html.AntiForgeryToken()*@
+	@Html.Action("GridViewPartial")
+}
+
+@Html.Partial("Blocks\\PopupAddSamples")
+@Html.Partial("Blocks\\PopupChangeSamplesStatus")
+@Html.Partial("Blocks\\PopupChangeSamplesLocation")
+@Html.Partial("Blocks\\PopupChangeSamplesBatch")
+@Html.Partial("Blocks\\PopupChangeSamplesAliquot")
+@Html.Partial("Blocks\\PopupChangeSamplesSendReport")

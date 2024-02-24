@@ -1,0 +1,135 @@
+@using Sasha.Lims.WebUI.Controllers
+
+@model Sasha.Lims.WebUI.Models.SampleViewModel
+
+@Html.DevExpress().FormLayout(settings =>
+{
+
+	//settings.
+	settings.Name = "FormBox";
+
+	settings.SettingsItems.ShowCaption = DefaultBoolean.True;
+	settings.SettingsItemCaptions.Location = LayoutItemCaptionLocation.Left;
+
+
+	settings.Items.AddGroupItem(group =>
+	{
+		group.ShowCaption = DefaultBoolean.False;
+		group.ColCount = 10;
+
+		group.Items.Add(m => m.Id, s =>
+		{
+			s.ClientVisible = false;
+		});
+
+		group.Items.Add(m => m.SampleId, s =>
+		{
+			s.ClientVisible = false;
+		});
+
+		group.Items.Add(m => m.LocationId, s =>
+		{
+			s.ClientVisible = false;
+		});
+
+
+		group.Items.Add(m => m.Barcode, s =>
+		{
+			s.Caption = "Barcode";
+		});
+
+		group.Items.Add(m => m.Name, s =>
+		{
+			s.Caption = "Name";
+		});
+
+		group.Items.Add( m=>m.TubeTypeId, i =>
+		{
+			i.Caption = "TubeType:";
+			i.NestedExtension().ComboBox(cb =>
+			{
+				cb.Properties.TextField = "Name";
+				cb.Properties.ValueField = "Id";
+				cb.Properties.NullText = "[Null]";
+				cb.Properties.ValueType = typeof(int);
+				cb.Properties.DataSource = ((SamplesBoxController)ViewContext.Controller).GetBoxTubeTypes();
+			});
+		});
+
+
+		group.Items.Add(i =>
+		{
+			////
+			i.Caption = "Location:";
+			//i.FieldName = "LocationId";
+			i.Name = "EditingLocation";
+
+			i.NestedExtension().DropDownEdit(cb =>
+			{
+				cb.Properties.ClientSideEvents.Init = "onInitTreeViewLocations";
+				cb.Properties.ClientSideEvents.DropDown = "onDropDownTreeViewLocations";
+				cb.Properties.NullText = "(No Selection)";
+				cb.ReadOnly = true;
+				cb.SetDropDownWindowTemplateContent(c =>
+				{
+					Html.RenderAction("LocationsTreeListPartial", new { selectedId = Model?.LocationId });
+				});
+			});
+		});
+
+
+		group.Items.Add(m => m.SampleStatusId, i =>
+		{
+
+			i.Caption = "SampleStatus:";
+			i.NestedExtension().ComboBox(cb =>
+			{
+				cb.Properties.TextField = "Name";
+				cb.Properties.ValueField = "Id";
+				cb.Properties.NullText = "[Null]";
+				cb.Properties.ValueType = typeof(int);
+				cb.Properties.DataSource = ((SamplesBoxController)ViewContext.Controller).GetProperties("SampleStatus"); ;
+			});
+		});
+
+		group.Items.Add(i =>
+		{
+			i.Caption = "";
+
+			i.NestedExtension().Button(s => {
+				s.Name = "BoxSave";
+				s.Text = "Save";
+				s.UseSubmitBehavior = false;
+				s.ClientSideEvents.Click = "SaveSamplesEditorChanges";
+				s.ControlStyle.CssClass = "btnInline";
+			});
+		});
+
+		group.Items.Add(i =>
+		{
+			i.Caption = "";
+
+			//i.NestedExtension().HyperLink(p =>
+			//{
+			//	p.NavigateUrl = Url.HttpRouteUrl("Default", new {controller = "SamplesBox", action = "WellsDiagram"});
+			//	p.Properties.Target = "_blank";
+			//	p.Properties.Text = "Diagram";
+			//});
+		});
+
+	});
+
+
+
+	//SaveSamplesEditorChanges
+
+
+	/*
+	settings.Items.AddGroupItem(group =>
+	{
+		group.ShowCaption = DefaultBoolean.False;
+		//group.ClientVisible = false;
+	});*/
+
+}).GetHtml()
+

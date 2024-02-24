@@ -1,0 +1,26 @@
+﻿[
+  {
+    "outputFile": "Content/bundledSamplesApproved.css",
+    "inputFile": "Content/bundledSamplesApproved.scss"
+  },
+  {
+    "outputFile": "Content/Samples/SamplesApprovedGridView.css",
+    "inputFile": "Content/Samples/SamplesApprovedGridView.scss"
+  },
+  {
+    "outputFile": "Content/Samples/SamplesEditor.css",
+    "inputFile": "Content/Samples/SamplesEditor.scss"
+  },
+  {
+    "outputFile": "Content/bundledSamplesEditor.css",
+    "inputFile": "Content/bundledSamplesEditor.scss"
+  },
+  {
+    "outputFile": "Content/Samples/SamplesWellDiagram.css",
+    "inputFile": "Content/Samples/SamplesWellDiagram.scss"
+  },
+  {
+    "outputFile": "Content/bundledSamplesWellDiagram.css",
+    "inputFile": "Content/bundledSamplesWellDiagram.scss"
+  }
+]

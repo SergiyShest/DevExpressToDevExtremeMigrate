@@ -1,0 +1,120 @@
+@using System.Web.UI.WebControls
+@{
+	var treeList = Html.DevExpress().TreeList(treeListSettings =>
+	{
+		treeListSettings.Name = "treeListLocations";
+		treeListSettings.CallbackRouteValues = new
+		{
+			Controller = "Samples",
+			Action = "LocationsTreeListPartial" };
+		treeListSettings.ParentFieldName = "ParentId";
+		treeListSettings.KeyFieldName = "Id";
+		treeListSettings.Width = Unit.Percentage(100);
+
+		treeListSettings.SettingsSelection.AllowSelectAll = true;
+		treeListSettings.SettingsBehavior.AutoExpandAllNodes = true;
+		treeListSettings.SettingsBehavior.FocusNodeOnExpandButtonClick = false;
+		treeListSettings.SettingsBehavior.AllowFocusedNode = true;
+		treeListSettings.SettingsBehavior.ExpandCollapseAction = TreeListExpandCollapseAction.Button;
+		treeListSettings.SettingsSelection.Enabled = false;
+		treeListSettings.SettingsSelection.Recursive = false;
+		//treeListSettings. = false;
+		treeListSettings.SettingsPager.Mode = DevExpress.Web.ASPxTreeList.TreeListPagerMode.ShowAllNodes;
+
+		treeListSettings.SettingsLoadingPanel.Delay = 0;
+		treeListSettings.Settings.ShowColumnHeaders = false;
+		treeListSettings.Settings.GridLines = System.Web.UI.WebControls.GridLines.None;
+		treeListSettings.Settings.ShowTreeLines = true;
+
+		//treeListSettings.AutoGenerateColumns = true;
+		treeListSettings.Columns.Add(column => { column.FieldName = "Code"; column.Visible = false; });
+		treeListSettings.Columns.Add(column => { column.FieldName = "Value"; column.Visible = false; });
+		treeListSettings.Columns.Add(column => { column.FieldName = "Path"; column.Visible = false; });
+		treeListSettings.Columns.Add(column => { column.FieldName = "Name"; });
+
+		treeListSettings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+		treeListSettings.RootValue = null;
+		//treeListSettings.Styles.AlternatingNode.Enabled = DefaultBoolean.True;
+		//treeListSettings.Styles.AlternatingNode.BackColor = System.Drawing.ColorTranslator.FromHtml("#FFFFFF");
+		//treeListSettings.Styles.Node.BackColor = System.Drawing.ColorTranslator.FromHtml("#f5f3f4");
+
+		treeListSettings.ClientSideEvents.FocusedNodeChanged = "onFocusedNodeChangedTreeViewLocations";
+		treeListSettings.ClientSideEvents.NodeDblClick = "onCustomButtonClickTreeViewLocations";
+		//treeListSettings.ClientSideEvents.NodeClick = "onClickNodeTreeViewLocations";
+
+		//TreeListCommandColumn commandColumnSelect = new TreeListCommandColumn();
+		//commandColumnSelect.ButtonType = System.Web.UI.WebControls.ButtonType.Image;
+		////commandColumnSelect.Width = 60;
+		////commandColumnSelect.Caption = "Select";
+		//commandColumnSelect.HeaderStyle.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+		//commandColumnSelect.CellStyle.HorizontalAlign = System.Web.UI.WebControls.HorizontalAlign.Center;
+
+		//TreeListCommandColumnCustomButton selBtn = new TreeListCommandColumnCustomButton();
+		//selBtn.ID = "btnSelect";
+		//selBtn.Text = "Select";
+		//selBtn.Image.Height = 16;
+		//selBtn.Image.Width = 16;
+		//selBtn.Image.Url = "~/Content/Images/arrow3left.svg";
+		//selBtn.Image.ToolTip = "Select";
+		//commandColumnSelect.CustomButtons.Clear();
+		//commandColumnSelect.CustomButtons.Add(selBtn);
+		//treeListSettings.Columns.Add(commandColumnSelect);
+
+
+		////treeListSettings.Settings.VerticalScrollBarMode = ScrollBarMode.Auto;
+		////treeListSettings.ClientSideEvents.FocusedNodeChanged = "onFocusedNodeChangedTreeViewLocations";
+		////treeListSettings.ClientSideEvents.NodeClick = "onClickNodeTreeViewLocations";
+		//treeListSettings.SettingsBehavior.AllowFocusedNode = true;
+
+		//treeListSettings.ClientSideEvents.CustomButtonClick = "onCustomButtonClickTreeViewLocations";
+
+		//treeListSettings.CommandColumnButtonInitialize = (sender, args) =>
+		//{
+		//    ASPxTreeList tl = sender as ASPxTreeList;
+		//    TreeListNode node = tl.FindNodeByKeyValue(args.NodeKey);
+		//    if (node.Level == 5){
+		//        //if ((args.ButtonType == TreeListCommandColumnButtonType.Edit) || (args.ButtonType == TreeListCommandColumnButtonType.Delete))
+		//        args.Visible = DefaultBoolean.True;
+		//    }
+		//    else
+		//    {
+		//        args.Visible = DefaultBoolean.True;
+		//    }
+		//};
+
+		treeListSettings.PreRender = (sender, e) =>
+		{
+			var treeListRootNode = ((MVCxTreeList)sender).Nodes[0];
+
+			SetExpandedNodeProperty(treeListRootNode, (int) (ViewBag.LocationSelectedId ?? 0));
+
+
+			void SetExpandedNodeProperty(TreeListNode node, int locationId)
+			{
+				var fieldId = (int)(node.GetValue("Id") ?? 0);
+				if (locationId > 0 && locationId == fieldId)
+				{
+					ExpandParentNode(node);
+				}
+
+				node.Expanded = false;
+
+				foreach (TreeListNode childNode in node.ChildNodes)
+				{
+					SetExpandedNodeProperty(childNode, locationId);
+				}
+			}
+
+			void ExpandParentNode(TreeListNode node)
+			{
+				if (node.ParentNode != null)
+				{
+					node.ParentNode.Expanded = true;
+					ExpandParentNode(node.ParentNode);
+				}
+			}
+		};
+
+	});
+}
+@treeList.Bind(Model).GetHtml()

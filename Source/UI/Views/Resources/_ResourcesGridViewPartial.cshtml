@@ -1,0 +1,120 @@
+@using System.Web.UI.WebControls
+@using Sasha.Lims.WebUI.Infrastructure.Consts
+
+@{
+	var gridView = Html.DevExpress().GridView(gridViewSettings =>
+	{
+		gridViewSettings.Name = "ResourceGridView";
+		gridViewSettings.Width = Unit.Percentage(100);
+
+		//gridViewSettings.ControlStyle.CssClass = "grid-view";
+
+		gridViewSettings.SettingsBehavior.AllowFocusedRow = true;
+		gridViewSettings.SettingsBehavior.AllowSelectByRowClick = false;
+		gridViewSettings.SettingsBehavior.AllowEllipsisInText = true;
+		gridViewSettings.SettingsBehavior.AllowDragDrop = false;
+
+		gridViewSettings.Settings.VerticalScrollBarMode = ScrollBarMode.Hidden;
+		//gridViewSettings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;
+
+		gridViewSettings.SettingsPager.Visible = true;
+		gridViewSettings.Styles.PagerBottomPanel.HorizontalAlign = HorizontalAlign.Right;
+		gridViewSettings.SettingsPager.Position = PagerPosition.Bottom;
+		gridViewSettings.SettingsPager.Summary.Visible = false;
+
+		gridViewSettings.Settings.ShowFilterRow = true;
+		gridViewSettings.Settings.ShowFilterRowMenu = true;
+		gridViewSettings.SettingsBehavior.FilterRowMode = GridViewFilterRowMode.Auto;
+
+		gridViewSettings.CommandColumn.Visible = true;
+		gridViewSettings.CommandColumn.ShowSelectCheckbox = true;
+		gridViewSettings.CommandColumn.SelectAllCheckboxMode = GridViewSelectAllCheckBoxMode.None;
+		gridViewSettings.CommandColumn.VisibleIndex = 0;
+		gridViewSettings.CommandColumn.Width = Unit.Pixel(52);
+
+		//gridViewSettings.SettingsEditing.Mode = GridViewEditingMode.EditFormAndDisplayRow;
+		gridViewSettings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+		gridViewSettings.EditFormLayoutProperties.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+		gridViewSettings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 600;
+		gridViewSettings.SetEditFormTemplateContent(c =>
+		{
+			Html.RenderAction("ResourcePartial", "Resources", new { id = DataBinder.Eval(c.DataItem, "ResourceId") });
+		});
+
+		//gridViewSettings.SettingsPopup.CustomizationWindow.VerticalAlign = PopupVerticalAlign.WindowCenter;
+		//gridViewSettings.SettingsPopup.CustomizationWindow.HorizontalAlign = PopupHorizontalAlign.WindowCenter;
+		gridViewSettings.SettingsPopup.EditForm.HorizontalAlign = PopupHorizontalAlign.WindowCenter;
+		gridViewSettings.SettingsPopup.EditForm.VerticalAlign = PopupVerticalAlign.WindowCenter;
+
+		gridViewSettings.CallbackRouteValues = new {Controller = "Resources", Action = "ResourcesGridViewPartial" };
+		gridViewSettings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Resources", Action = "ResourcesGridViewPartialAddNew" };
+		gridViewSettings.SettingsEditing.UpdateRowRouteValues = new { Controller = "Resources", Action = "ResourcesGridViewPartialUpdate" };
+		gridViewSettings.CustomBindingRouteValuesCollection.Add(
+			GridViewOperationType.Paging,
+			new {Controller = "Resources", Action = "ResourcesGridViewPagingAction"}
+			);
+		gridViewSettings.CustomBindingRouteValuesCollection.Add(
+			GridViewOperationType.Sorting,
+			new {Controller = "Resources", Action = "ResourcesGridViewSortingAction"}
+			);
+		gridViewSettings.CustomBindingRouteValuesCollection.Add(
+			GridViewOperationType.Filtering,
+			new {Controller = "Resources", Action = "ResourcesGridViewFilteringAction"}
+			);
+
+		gridViewSettings.CustomActionRouteValues = new { Controller = "Resources", Action = "ResourcesCustomActionPartial" };
+
+		//Select checkbox enabled
+		gridViewSettings.CommandButtonInitialize = (sender, e) =>
+		{
+			if (e.VisibleIndex == -1) return;
+			//bool isOddRow = e.VisibleIndex % 2 == 0;
+			if (e.ButtonType == ColumnCommandButtonType.SelectCheckbox)
+			{
+				var fieldValue = (sender as MVCxGridView)?.GetRowValues(e.VisibleIndex, "Culture");
+				var enabledSelect = !(string.IsNullOrWhiteSpace(fieldValue?.ToString()) || fieldValue?.ToString() == AppConsts.CULTURE_DEFAULT);
+				e.Visible = enabledSelect;
+				e.Enabled = enabledSelect;
+			}
+		};
+
+		gridViewSettings.ClientSideEvents.SelectionChanged = "onGridViewSelectionChanged";
+		gridViewSettings.ClientSideEvents.BeginCallback = "onGridViewBeginCallback";
+		gridViewSettings.ClientSideEvents.Init = "onGridViewInit";
+		gridViewSettings.Columns.Add(columnSettings => {
+			columnSettings.FieldName = "ResourceId";
+			columnSettings.Caption = "Id";
+			columnSettings.Width = Unit.Pixel(120);
+			columnSettings.EditFormSettings.Visible = DefaultBoolean.False;
+		});
+
+		gridViewSettings.Columns.Add(columnSettings => {
+			columnSettings.FieldName = "Name";
+			columnSettings.Caption = "Name";
+			//columnSettings.Width = Unit.Pixel(150);
+		});
+
+		gridViewSettings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Culture";
+			columnSettings.Caption = "Culture";
+			//columnSettings.Width = Unit.Pixel(150);
+		});
+		gridViewSettings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Value";
+			columnSettings.Caption = "Value";
+			//columnSettings.Width = Unit.Pixel(150);
+		});
+		gridViewSettings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "NameSpace";
+			columnSettings.Caption = "NameSpace";
+			//columnSettings.Width = Unit.Pixel(150);
+		});
+	});
+
+}
+
+
+@gridView.BindToCustomData(Model).GetHtml()

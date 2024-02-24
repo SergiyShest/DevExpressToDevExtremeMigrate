@@ -1,0 +1,31 @@
+@using Sasha.Lims.WebUI.Localization
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>@(ViewBag?.Title ?? string.Empty) - @(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.MainTitle)))</title>
+	<link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+	<link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+	<script src="~/Scripts/modernizr-2.6.2.js"></script>
+	@RenderSection("Head", false)
+</head>
+<body id="body">
+
+	@Html.Partial("_MainMenuAdv")
+
+	<div id="wrap">
+		<div id="main" class="body-content">
+			@RenderBody()
+			@Html.Partial("_AlertPopup")
+			@Html.Partial("_ConfirmPopup")
+			@Html.Partial("_UrlPopup")
+			@Html.Partial("_UrlPopupAbout")
+		</div>
+	</div>
+	<footer class="footer">
+		<p>&copy; @DateTime.Now.Year - @(Html.GetLocalizedText<LimsSiteMap>(nameof(LimsSiteMap.MainTitle)))</p>
+	</footer>
+	<script src="~/Scripts/bootstrap.min.js"></script>
+</body>
+</html>

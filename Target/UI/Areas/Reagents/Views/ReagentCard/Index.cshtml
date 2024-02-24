@@ -1,0 +1,79 @@
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+	Layout = "_LayoutEmpty";
+}
+<link rel="stylesheet" href="/example.css">
+<script src="~/lib/vue2.js" ></script>
+<script src="~/BaseMixinSDN.js" asp-append-version="true"></script>
+<script src="~/vueComponents.js" asp-append-version="true"></script>
+
+<div style="display:flex;flex-direction:column;align-items:flex-start;align-content:flex-start;align-self:stretch">
+	<h1></h1>
+
+	<div id="app" style="display: flex;flex-direction: column;width: 450px;">
+		<div id="items"  class="grid-container">
+		    /<kf-number text = 'Id' v-model = 'Item.Id'  ></kf-number>
+<kf-number text = 'TypeId' v-model = 'Item.TypeId'  ></kf-number>
+<kf-input text = 'Name' v-model = 'Item.Name'  ></kf-input>
+<kf-input text = 'Barcode' v-model = 'Item.Barcode'  ></kf-input>
+<kf-number text = 'Quantity' v-model = 'Item.Quantity'  ></kf-number>
+<kf-number text = 'Unit_id' v-model = 'Item.Unit_id'  ></kf-number>
+<kf-input text = 'Unit Name' v-model = 'Item.UnitName'  ></kf-input>
+<kf-input text = 'CatalogNumber' v-model = 'Item.CatalogNumber'  ></kf-input>
+<kf-input text = 'Storage Temperature' v-model = 'Item.StorageTemp'  ></kf-input>
+<kf-input text = 'VendorName' v-model = 'Item.VendorName'  ></kf-input>
+<kf-input text = 'Location' v-model = 'Item.Location'  ></kf-input>
+<kf-number text = 'Initial Quantity' v-model = 'Item.InitialQuantity'  ></kf-number>
+<kf-input text = 'Size' v-model = 'Item.Size'  ></kf-input>
+<kf-input text = 'TypeName' v-model = 'Item.TypeName'  ></kf-input>
+<kf-input text = 'Batch' v-model = 'Item.Batch'  ></kf-input>
+
+		</div>
+
+		<div style="display:flex;flex-direction:row;">
+
+			<kf-button id="saveButton" v-if="mode!='view'"		 v-on:click.native="SaveClick"	text="Coхранить"		image="copy"  ></kf-button>
+			<kf-button id="closeButton" v-if="mode!='view'"	     v-on:click.native="CloseClick"	text="Закрыть"			image="delete" style="margin-left:auto"  ></kf-button>
+		</div>
+	</div>
+</div>
+
+<script>
+
+    $(window).on("load",function () {
+	@Html.Raw(TempData["StartupScript"])
+		});
+		 let Mode = '@ViewBag.Mode'
+	     let Id = '@ViewBag.Id';
+
+
+	 let vue_ = new Vue({
+		 el: "#app",
+		 mixins: [baseMixin],
+		 data() {
+			 return {
+				 Item: {  }
+			 }
+		 }
+		 ,
+		 methods: {
+			 Get() {
+				 const pathEnd = "/Reagents/ReagentCard/Get?id="+Id;
+				 this.FetchJson( pathEnd,this.Ok)
+			 },
+			 Ok(data) {
+				 console.log(data)
+				 this.Item = data;
+			 },
+
+			CloseClick() {
+			 
+		  }
+		 },
+		 mounted: function () {
+          this.Get()
+
+
+		 }
+	 });
+</script>
