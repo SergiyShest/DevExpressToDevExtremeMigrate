@@ -12,7 +12,7 @@
 			<div style="width: 100px;margin-left:15px">Дата:</div>
 			oт<input id="d1From" type="date" v-model="from" style="margin:3px">
 			до<input id="d1To" type="date" v-model="to" style="margin:3px">
-			<kf-button id="findButton"   v-on:click.native="FindDate" text="Найти" image="find"></kf-button>
+			<kf-button id="findButton"  v-if="mode!='view'" v-on:click.native="FindDate" text="Найти" image="find"></kf-button>
 		</div>
 
 		<div style="display:flex;flex-direction:row;">
@@ -72,7 +72,6 @@
 			}
 			,
 			 EditClick() {
-				 console.log('edit')
 				if (checkItem(focusedRowKey)) {
 					xPopup('Карточка $Header$', '/Common/DoctorCard/Index?id=' + focusedRowKey  , 1024, 916);
 				}
@@ -104,8 +103,8 @@
 		 }
 	 });
 	  // Registering components
-      //  app.component('kf-field', KfField);
-        app.component('kf-button', KfButton);
+       //  app.component('kf-field', KfField);
+       app.component('kf-button', KfButton);
       //  app.component('kf-input', KfInput);
       //  app.component('kf-date', KfDate);
       //  app.component('kf-select', KfSelect);

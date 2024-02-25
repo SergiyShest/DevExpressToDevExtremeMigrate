@@ -3,44 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\ui\\areas\\common\\views\\doctorjournal\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|solutionrelative:ui\\areas\\common\\views\\doctorjournal\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\ui\\areas\\common\\controllers\\doctorjournalcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|solutionrelative:ui\\areas\\common\\controllers\\doctorjournalcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8DD5A7E8-DA8B-4976-A8C6-9DC07409EB87}|Core\\Core.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\core\\namedint.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8DD5A7E8-DA8B-4976-A8C6-9DC07409EB87}|Core\\Core.csproj|solutionrelative:core\\namedint.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\ui\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|solutionrelative:ui\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\ui\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|solutionrelative:ui\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\ui\\wwwroot\\js\\xpopup.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|solutionrelative:ui\\wwwroot\\js\\xpopup.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\ui\\areas\\reagents\\controllers\\reagenttypecardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|solutionrelative:ui\\areas\\reagents\\controllers\\reagenttypecardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\ui\\wwwroot\\js\\basemixin.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|solutionrelative:ui\\wwwroot\\js\\basemixin.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\ui\\areas\\reagents\\views\\reagentjournal\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|solutionrelative:ui\\areas\\reagents\\views\\reagentjournal\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\ui\\areas\\reagents\\views\\reagenttypejournal\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|solutionrelative:ui\\areas\\reagents\\views\\reagenttypejournal\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\ui\\areas\\common\\views\\doctorcard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|solutionrelative:ui\\areas\\common\\views\\doctorcard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -50,45 +14,19 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "DoctorJournalController.cs",
-              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\Areas\\Common\\Controllers\\DoctorJournalController.cs",
-              "RelativeDocumentMoniker": "UI\\Areas\\Common\\Controllers\\DoctorJournalController.cs",
-              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\Areas\\Common\\Controllers\\DoctorJournalController.cs",
-              "RelativeToolTip": "UI\\Areas\\Common\\Controllers\\DoctorJournalController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAABDAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-02-25T05:15:01.231Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\Areas\\Common\\Views\\DoctorJournal\\Index.cshtml",
-              "RelativeDocumentMoniker": "UI\\Areas\\Common\\Views\\DoctorJournal\\Index.cshtml",
-              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\Areas\\Common\\Views\\DoctorJournal\\Index.cshtml",
-              "RelativeToolTip": "UI\\Areas\\Common\\Views\\DoctorJournal\\Index.cshtml",
-              "ViewState": "AQIAAD8AAAAAAAAAAAAAAEoAAAAYAAAA",
+              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\Areas\\Common\\Views\\DoctorCard\\Index.cshtml",
+              "RelativeDocumentMoniker": "UI\\Areas\\Common\\Views\\DoctorCard\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\Areas\\Common\\Views\\DoctorCard\\Index.cshtml",
+              "RelativeToolTip": "UI\\Areas\\Common\\Views\\DoctorCard\\Index.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAABCAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-02-25T05:14:15.089Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "NamedInt.cs",
-              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Core\\NamedInt.cs",
-              "RelativeDocumentMoniker": "Core\\NamedInt.cs",
-              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Core\\NamedInt.cs",
-              "RelativeToolTip": "Core\\NamedInt.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAIAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-02-25T04:59:06.194Z",
+              "WhenOpened": "2024-02-25T05:24:23.429Z",
               "EditorCaption": ""
             },
             {
@@ -130,92 +68,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "ReagentTypeCardController.cs",
-              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\Areas\\Reagents\\Controllers\\ReagentTypeCardController.cs",
-              "RelativeDocumentMoniker": "UI\\Areas\\Reagents\\Controllers\\ReagentTypeCardController.cs",
-              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\Areas\\Reagents\\Controllers\\ReagentTypeCardController.cs",
-              "RelativeToolTip": "UI\\Areas\\Reagents\\Controllers\\ReagentTypeCardController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-02-24T07:20:54.133Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "xPopup.js",
-              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\wwwroot\\js\\xPopup.js",
-              "RelativeDocumentMoniker": "UI\\wwwroot\\js\\xPopup.js",
-              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\wwwroot\\js\\xPopup.js",
-              "RelativeToolTip": "UI\\wwwroot\\js\\xPopup.js",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABkAAAABAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-02-24T06:56:07.635Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "site.js",
-              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\wwwroot\\js\\site.js",
-              "RelativeDocumentMoniker": "UI\\wwwroot\\js\\site.js",
-              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\wwwroot\\js\\site.js",
-              "RelativeToolTip": "UI\\wwwroot\\js\\site.js",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAACIAAAABAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-02-24T06:52:33.778Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "BaseMixin.js",
-              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\wwwroot\\js\\BaseMixin.js",
-              "RelativeDocumentMoniker": "UI\\wwwroot\\js\\BaseMixin.js",
-              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\wwwroot\\js\\BaseMixin.js",
-              "RelativeToolTip": "UI\\wwwroot\\js\\BaseMixin.js",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-02-24T06:51:35.493Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\Areas\\Reagents\\Views\\ReagentTypeJournal\\Index.cshtml",
-              "RelativeDocumentMoniker": "UI\\Areas\\Reagents\\Views\\ReagentTypeJournal\\Index.cshtml",
-              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\Areas\\Reagents\\Views\\ReagentTypeJournal\\Index.cshtml",
-              "RelativeToolTip": "UI\\Areas\\Reagents\\Views\\ReagentTypeJournal\\Index.cshtml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-02-24T06:32:01.325Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\Areas\\Reagents\\Views\\ReagentJournal\\Index.cshtml",
-              "RelativeDocumentMoniker": "UI\\Areas\\Reagents\\Views\\ReagentJournal\\Index.cshtml",
-              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\Areas\\Reagents\\Views\\ReagentJournal\\Index.cshtml",
-              "RelativeToolTip": "UI\\Areas\\Reagents\\Views\\ReagentJournal\\Index.cshtml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-02-24T06:17:53.305Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "_Layout.cshtml",
-              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\Views\\Shared\\_Layout.cshtml",
-              "RelativeDocumentMoniker": "UI\\Views\\Shared\\_Layout.cshtml",
-              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\Views\\Shared\\_Layout.cshtml",
-              "RelativeToolTip": "UI\\Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AQIAACIAAAAAAAAAAAAAADUAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-02-24T06:11:25.223Z",
-              "EditorCaption": ""
             }
           ]
         }

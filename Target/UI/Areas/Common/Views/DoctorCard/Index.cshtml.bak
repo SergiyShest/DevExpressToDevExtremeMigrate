@@ -32,14 +32,15 @@
 <script type="module" >
 
     $(window).on("load",function () {
-	@Html.Raw(TempData["StartupScript"])
+			@Html.Raw(TempData["StartupScript"])
 		});
 		 let Mode = '@ViewBag.Mode'
 	     let Id = '@ViewBag.Id';
 		import { KfField, KfInput, KfDate, KfSelect, KfNumber, KfCheck, KfTextarea, KfText, KfButton } from '/js/vue3Components.js';
 		import { baseMixin } from '/js/BaseMixin.js';
 		const { ref } = Vue;
-	        const app = Vue.createApp({
+
+	const app = Vue.createApp({
 		 mixins: [baseMixin],
 		 data() {
 			 return {
@@ -57,7 +58,7 @@
 				 this.Item = data;
 			 },
 			 SaveClick() {
-                          alert('SaveClick')
+
 			 },
 
 			CloseClick() {
@@ -65,7 +66,7 @@
 		  }
 		 },
 		 mounted: function () {
-          this.Get()
+         this.Get()
 
 
 		 }
