@@ -5,14 +5,14 @@
 
 
 <div style="display:flex;flex-direction:column;align-items:flex-start;align-content:flex-start;align-self:stretch">
-	<h1>$MainHeader$</h1>
+	<h1>Doctor journal</h1>
 
 	<div id="app" style="display: flex;flex-direction: column;width: 450px;">
 		<div style="display: flex;align-items:center">
-			<div style="width: 100px;margin-left:15px">$DateHeader$:</div>
+			<div style="width: 100px;margin-left:15px">Дата:</div>
 			oт<input id="d1From" type="date" v-model="from" style="margin:3px">
 			до<input id="d1To" type="date" v-model="to" style="margin:3px">
-			<kf-button id="findButton"  v-if="mode!='view'" v-on:click.native="FindDate" text="Найти" image="find"></kf-button>
+			<kf-button id="findButton"   v-on:click.native="FindDate" text="Найти" image="find"></kf-button>
 		</div>
 
 		<div style="display:flex;flex-direction:row;">
@@ -38,7 +38,7 @@
 	 function setDataSource() {
 		 const dataSource = DevExpress.data.AspNet.createStore({
 			 key: "Id",
-			 loadUrl: document.location.origin + "/Contract/DkJournal/Get",
+			 loadUrl: document.location.origin + "/Common/DoctorJournal/Get",
 		 });
 		 var grid = $("#grid").dxDataGrid("instance");
 		 grid.option("dataSource", dataSource);
@@ -60,7 +60,7 @@
 			 FindDate() {
 				 localStorage.setItem('dateFrom', this.from);
 				 localStorage.setItem('dateTo', this.to);
-				 const pathEnd = "/Contract/DkJournal/SetFilter";
+				 const pathEnd = "/Common/DoctorJournal/SetFilter";
 				 const data = { from: this.from, to: this.to };
 				 this.FetchJson( pathEnd,this.Ok, data)
 			 },
@@ -68,24 +68,25 @@
 			    setDataSource();
 			 },
 			AddClick() {
-				xPopup ('Карточка $Header$', '/Contract/DkCard/Index' + '?page_mode=modal', 1024, 916);
+				xPopup ('Карточка $Header$', '/Common/DoctorCard/Index' + '?page_mode=modal', 1024, 916);
 			}
 			,
 			 EditClick() {
+				 console.log('edit')
 				if (checkItem(focusedRowKey)) {
-					xPopup('Карточка $Header$', '/Contract/DkCard/Index?id=' + focusedRowKey  , 1024, 916);
+					xPopup('Карточка $Header$', '/Common/DoctorCard/Index?id=' + focusedRowKey  , 1024, 916);
 				}
 
 			},
 			 CopyClick() {
 				if (checkItem(focusedRowKey)) {
-					   xPopup('Карточка $Header$', '/Contract/DkCard/Index?id=' + focusedRowKey + '&mode=copy', 1024, 916);
+					   xPopup('Карточка $Header$', '/Common/DoctorCard/Index?id=' + focusedRowKey + '&mode=copy', 1024, 916);
 				}
 			},
 
 			 DeleteClick() {
 			  if (checkItem(focusedRowKey)) {
-				  path = '/Contract/DkCard/Delete?id='+ focusedRowKey
+				  path = '/Common/DoctorCard/Delete?id='+ focusedRowKey
 				   this.FetchJson(path,this.Ok)
 			  }
 		  }
@@ -103,8 +104,8 @@
 		 }
 	 });
 	  // Registering components
-       //  app.component('kf-field', KfField);
-       app.component('kf-button', KfButton);
+      //  app.component('kf-field', KfField);
+        app.component('kf-button', KfButton);
       //  app.component('kf-input', KfInput);
       //  app.component('kf-date', KfDate);
       //  app.component('kf-select', KfSelect);
@@ -139,7 +140,49 @@
         focusedRowEnabled: true,
         onFocusedRowChanged: OnFocusedRowChanged,
 
-        columns:[$columns$]
+        columns:[{caption:'Id',
+dataField:'Id',
+dataType:'text',
+ width:'50px',
+}
+,
+{caption:'FirstName',
+dataField:'FirstName',
+dataType:'text',
+ width:'50px',
+}
+,
+{caption:'LastName',
+dataField:'LastName',
+dataType:'text',
+ width:'50px',
+}
+,
+{caption:'Email',
+dataField:'Email',
+dataType:'text',
+ width:'50px',
+}
+,
+{caption:'Send Email',
+dataField:'SendEmail',
+dataType:'boolean',
+ width:'50px',
+}
+,
+{caption:'Hospital',
+dataField:'Hospital',
+dataType:'text',
+ width:'50px',
+}
+,
+{caption:'HospitalId',
+dataField:'HospitalId',
+dataType:'text',
+ width:'50px',
+visible:false,
+}
+]
 
     });
 

@@ -1,0 +1,318 @@
+@using Sasha.Lims.Core.Helpers
+@using System.Web.UI.WebControls
+@using DevExpress.Web
+@using DevExpress.Web.Mvc.UI
+@using Sasha.Lims.DataAccess.Entities.Constants
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@using Sasha.Lims.WebUI.Localization
+
+@model IQueryable<Sasha.Lims.DataAccess.Entities.Entity.vHospital>
+
+@{
+	
+	ViewBag.Title = "Hospital journal";
+	Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+}
+
+<h1>Hospital journal</h1>
+@section Head {
+	<script>var tableId=@ViewBag.TypeId</script>
+	<script src="@Url.Content("~/Scripts/Properties/commonGridView.js?v=" + AppVersionHelper.Version)"></script>
+
+	<script>
+		window.addEventListener("load", init);
+		window.addEventListener("message", receiveMessage, false);
+
+		function init() {
+			gridView.PerformCallback({ filterExpession:'@ViewBag.filterExpression'});
+		}
+
+		var SelectedOrFocusedIdsStr = '';
+
+		function onGridViewSelectionOrFocusChanged() {
+			updateToolbarButtonsState();
+
+		}
+
+		// перед поднятием контекстного меню над основным гридом
+		function OnGridContextMenu(s, e) {
+
+
+		}
+
+		function onGridViewSelectionChanged(s, e) {
+
+
+		}
+
+		function updateToolbarButtonsState() {
+			var hasFocused= gridView.GetFocusedRowIndex() > -1
+		   pageToolbar.GetItemByName("Delete").SetEnabled(hasFocused);
+
+			pageToolbar.GetItemByName("Edit").SetEnabled(hasFocused);
+
+		}
+
+		function onPageToolbarItemClick(s, e) {
+			switch (e.item.name) {
+
+			case "Edit":
+				edit();
+				break;
+
+				case "Add":
+					add();
+					break;
+				case "Delete":
+					deleteSelectedRecords();
+					break;
+				case "btCommentSample":
+					CommentSelectedRow();
+					break;
+				case "btAttachedFiles":
+					AttachedFiles();
+					break;
+				case "btShowColumnChooser":
+					onShowChooserClick(s, e);
+					break;
+				case "Samples":
+					Samples();
+					break;
+			case "Export":
+				gridView.ExportTo(ASPxClientGridViewExportFormat.Xlsx);
+				break;
+			default:
+			}
+		}
+
+		function onContextMenuItemClick(item, row) {
+
+			switch (row.item.name) {
+
+				case "Edit":
+					edit();
+					break;
+				case "Samples":
+					Samples();
+					break;
+
+
+
+			}
+		}
+
+
+		function refreshGrid(event) {
+			if (typeof event.data === 'string' && event.data.indexOf('RefreshGrid') > -1) {
+				gridView.Refresh();
+			}
+		}
+
+		//прием сообщения
+		function receiveMessage(event) {
+			refreshGrid(event);
+		}
+
+		function deleteSelectedRecords() {
+
+			dxConfirm("Are you sure to delete selected @(ViewBag.TypeName)s?")
+				.success(function () {
+					var selectedIds = GetSelectedOrFocusedRowsId();
+					var selectedOrFocusedIdsStr = SelectedIdsToString(selectedIds);
+
+					gridView.PerformCallback({ customAction: 'delete', selectedIds: selectedOrFocusedIdsStr });
+				});
+		}
+
+		function add() {
+			ShowUrlPopup("Add @ViewBag.TypeName", '@Url.Action("Index", "EditCustom", new {Area = "Custom"})?id=&typeId=@ViewBag.TypeId', document.documentElement.clientWidth - 50);
+		}
+
+		function edit() {
+
+			var ind = gridView.GetFocusedRowIndex();
+			if (ind < 0) return;
+			var id= gridView.GetRowKey(ind)
+			ShowUrlPopup("Edit @ViewBag.TypeName", '@Url.Action("Index", "EditCustom", new {Area = "Custom" })?id=' + id + '&typeId=@ViewBag.TypeId&custJourn=false' , document.documentElement.clientWidth - 50);
+		}
+
+		function onRowDblClick() {
+			if ('@ViewBag.ShowSelectCancelButtons' != 'True') {
+				edit();
+			} else {
+				Select_();
+			}
+
+		}
+
+		function Samples() {
+
+			var ind = gridView.GetFocusedRowIndex();
+			if (ind < 0) return;
+			var id = gridView.GetRowKey(ind)
+	
+			
+			ShowUrlPopup("Samples", '@Url.Action("Select", "SamplesBook", new {Area = "" })?hospitalId=' + id +'&dontShowMainMenu=true', document.documentElement.clientWidth - 150);
+		}
+
+		function onGridViewBeginCallback(s, e) {
+
+			//LoadingPanel.Show();
+
+		}
+
+		function onGridViewEndCallback(s, e) {
+			LoadingPanel.Hide();
+			updateToolbarButtonsState();
+		}
+
+
+
+	</script>
+}
+
+
+@Html.DevExpress().Menu(menuSettings =>
+{
+	var unit16px = System.Web.UI.WebControls.Unit.Pixel(16);
+
+	menuSettings.Name = "pageToolbar";
+
+	menuSettings.ItemAutoWidth = false;
+	menuSettings.AllowSelectItem = false;
+	menuSettings.ApplyItemStyleToTemplates = true;
+
+	menuSettings.SettingsAdaptivity.Enabled = true;
+	menuSettings.SettingsAdaptivity.EnableAutoHideRootItems = true;
+	menuSettings.SettingsAdaptivity.EnableCollapseRootItemsToIcons = true;
+	menuSettings.SettingsAdaptivity.CollapseRootItemsToIconsAtWindowInnerWidth = 600;
+
+	menuSettings.Width = Unit.Percentage(100);
+	menuSettings.ControlStyle.SeparatorWidth = Unit.Pixel(0);
+	menuSettings.ControlStyle.CssClass = "page-toolbar";
+
+	menuSettings.Styles.Item.CssClass = "item";
+	menuSettings.Styles.Item.VerticalAlign = VerticalAlign.Middle;
+
+	menuSettings.Images.Item.Width = unit16px;
+	menuSettings.Images.Item.Height = unit16px;
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Title";
+		item.Text = ViewBag.Title;
+		item.ClientEnabled = false;
+		item.ItemStyle.Font.Bold = true;
+		item.Alignment = MenuItemAlignment.Left;
+		item.ItemStyle.CssClass = "titleMenuItemStyle";
+	});// Title
+
+
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "btShowColumnChooser";
+		item.Text = "Columns";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 2;
+		item.Image.Url = "~/Content/Images/table_v2.svg";
+	});// btShowColumnChooser
+
+
+	Html.AddMenuFilesAndComments(menuSettings);
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Add";
+		item.Text = Html.GetLocalizedText<UI>(nameof(UI.ButtonAdd));
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 3;
+		item.Image.Url = "~/Content/Images/add.svg";
+
+	});
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Edit";
+		item.Text = Html.GetLocalizedText<UI>(nameof(UI.ButtonEdit));
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 3;
+		item.Image.Url = "~/Content/Images/edit.svg";
+
+	});
+
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Samples";
+		item.Text = "Samples";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 4;
+
+		item.Image.Url = "~/Content/Images/aliquoting.svg";
+		item.Image.Width = unit16px;
+		item.Image.Height = unit16px;
+	});
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Delete";
+		item.Text = "Delete";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 4;
+		item.Image.Url = "~/Content/Images/delete_v2.svg";
+		item.Image.Width = unit16px;
+		item.Image.Height = unit16px;
+	});
+	menuSettings.Items.Add(item =>
+	{
+		item.Name = "Export";
+		item.Text = "Export";
+		item.Alignment = MenuItemAlignment.Right;
+		item.AdaptivePriority = 5;
+		item.Image.Url = "~/Content/Images/export.svg";
+	});
+
+	menuSettings.ClientSideEvents.ItemClick = "onPageToolbarItemClick";
+
+}).GetHtml()
+
+
+<form>
+	@Html.Partial("_gridViewPartial", Model)
+
+
+</form>
+
+	@if (ViewBag.ShowSelectCancelButtons == true)
+	{
+	<script>
+
+		function Select_() {
+			var ind = gridView.GetFocusedRowIndex();
+			if (ind < 0) return ;
+			var id = gridView.GetRowKey(ind)
+			window.parent.postMessage("@ViewBag.varName=" + id, '*'); //send message parent window for  close this form
+			cancelForm();
+		}
+		function cancelForm() {
+			window.parent.postMessage("CloseUrlForm", '*'); //send message parent window for  close this form
+		}
+	</script>
+
+
+		<div style="display: flex;
+		justify-content: flex-end;
+		margin: 5px">
+			<button name="SelectPatientBtn" id="SelectPatientBtn"
+					onclick="Select_()"
+					class="dxbButton_@DataHelper.Current.UiTheme dxbButtonSys dxbTSys dx-button"
+					style="-webkit-user-select:none;padding:6px;margin: 3px; width: 50px;">
+				OK
+			</button>
+			<button onclick="cancelForm()" class="dxbButton_@DataHelper.Current.UiTheme dxbButtonSys dxbTSys dx-button" style="-webkit-user-select:none;padding:6px;margin: 3px; width: 50px;">
+				Close
+			</button>
+		</div>
+	}
+
+
+
+

@@ -1,0 +1,106 @@
+@using System.Drawing
+@using System.Web.UI.WebControls
+@using DevExpress.Utils
+@using DevExpress.Web
+@using DevExpress.Web.Mvc
+@using DevExpress.Web.Mvc.UI
+
+
+@using Sasha.Lims.WebUI.Infrastructure.Helpers
+@functions {
+	private void FillContextMenuItems(object sender, ASPxGridViewContextMenuEventArgs e)
+	{
+		if (e.MenuType == GridViewContextMenuType.Rows)
+		{
+			var item = e.Items.FindByCommand(GridViewContextMenuCommand.DeleteRow);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.NewRow);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.Refresh);
+			e.Items.Remove(item);
+			item = e.Items.FindByCommand(GridViewContextMenuCommand.EditRow);
+			e.Items.Remove(item);
+			item = e.Items.Add("Edit", "Edit");
+			item.Image.Url = "~/Content/Images/edit.svg";
+			item = e.Items.Add("Samples", "Samples");
+			item.Image.Url = "~/Content/Images/aliquoting.svg";
+		}
+	}
+}
+@{
+	var gridView = Html.DevExpress().GridView(settings =>
+	{
+
+		SettingHelper.InitAdvancedGridSettings(settings, "HospitalJournal", ViewContext);
+//settings.CallbackRouteValues = new { Controller = "PatientJournal", Action = "CallbackRouteValues"};
+//	patientFirstName = ViewBag.patientFirstName,
+//	patientLastName = ViewBag.patientLastName,
+//	patientDateOfBirth = ViewBag.patientDateOfBirth,
+//	patientEmail = ViewBag.patientEmail,
+//	patientNo = ViewBag.patientNo
+//};
+settings.KeyFieldName = "id";
+		settings.SettingsContextMenu.EnableRowMenu = DefaultBoolean.True;
+		settings.FillContextMenuItems = FillContextMenuItems;
+		settings.ClientSideEvents.ContextMenuItemClick = "onContextMenuItemClick";
+
+		settings.Settings.HorizontalScrollBarMode = ScrollBarMode.Auto;//все колонки сжимаются
+        settings.SettingsPager.PageSize = 50;
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Id";
+			columnSettings.Caption = "Id";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 50;
+		});
+		settings.Columns.Add(columnSettings =>
+		{
+			columnSettings.FieldName = "Name";
+			columnSettings.Caption = "Hospital Name";
+			columnSettings.MinWidth = 50;
+			columnSettings.Width = 50;
+		});
+
+
+		settings.DataBound = (s, e) =>
+		{
+			if (ViewData["filterExpression"] != null)
+				((ASPxGridView)s).FilterExpression = ViewData["filterExpression"].ToString();
+		};
+
+		SettingHelper.AddCustomColumnsAdv(settings, Sasha.Lims.DataAccess.Entities.Constants.TableType.Hospital);
+		settings.Columns.Add("SampleCount", "Samples Count");
+		Html.AddColmmentCountColumn(settings, false); //Comment
+        Html.AddFilesCountColumn(settings, false); //Files
+        SettingHelper.AddCommandColumn(settings);
+		settings.ClientSideEvents.SelectionChanged = "onGridViewSelectionChanged";
+		settings.ClientSideEvents.BeginCallback = "onGridViewBeginCallback";
+		settings.ClientSideEvents.EndCallback = "onGridViewEndCallback";
+		settings.ClientSideEvents.CustomizationWindowCloseUp = "onGridCustomizationWindowCloseUp";
+		settings.ClientSideEvents.RowDblClick = "onRowDblClick";
+		settings.ClientSideEvents.Init = "onGridViewInit";
+		settings.ClientSideEvents.FocusedRowChanged = "onFocusedRowChanged";
+
+
+	});
+	if (Model == null)
+	{
+		@gridView.GetHtml()
+	}
+	else
+	{
+
+		
+		@gridView.BindToEF(string.Empty, string.Empty, (s, e) =>
+			{
+				e.QueryableSource = Model;
+				e.KeyExpression = "Id";
+			}, (s, e) =>
+			{
+				// Handle internal exception
+				var mess = e.Exception?.InnerException.Message ?? e.Exception.Message;
+				mess = "<div style='color:red'>" + mess + "</div>";
+				ViewContext.Writer.Write(mess); //пишу ошибку прямо на экран
+			}).GetHtml()
+	}
+}
