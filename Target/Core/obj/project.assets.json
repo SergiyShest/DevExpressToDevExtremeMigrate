@@ -60,11 +60,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Saergey\\source\\repos\\DevExprToDevExtremeMigration\\Target\\Core\\Core.csproj",
+      "projectUniqueName": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Core\\Core.csproj",
       "projectName": "Core",
-      "projectPath": "C:\\Users\\Saergey\\source\\repos\\DevExprToDevExtremeMigration\\Target\\Core\\Core.csproj",
+      "projectPath": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Core\\Core.csproj",
       "packagesPath": "C:\\Users\\Saergey\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Saergey\\source\\repos\\DevExprToDevExtremeMigration\\Target\\Core\\obj\\",
+      "outputPath": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Core\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Saergey\\AppData\\Roaming\\NuGet\\NuGet.Config",

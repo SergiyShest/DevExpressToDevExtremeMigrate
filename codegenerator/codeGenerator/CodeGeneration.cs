@@ -11,42 +11,46 @@ using System.Diagnostics;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 
-namespace CodeGenerator  
+namespace CodeGenerator
 {
     public class Generator
     {
         ILogger log = LogManager.GetCurrentClassLogger();
 
-        public string TestTarget { get; set; } = "..\\Target\\Tests2e2\\test_e2e";
+        public string TestTarget { get; set; } = "..\\..\\..\\..\\..\\Target\\Tests2e2\\test_e2e";
 
-        public string TargetMenu { get; set; } = $"..\\Target\\UI\\Views\\Shared\\_Layout.cshtml";
+        public string TargetMenu { get; set; } = $"..\\..\\..\\..\\..\\Target\\UI\\Views\\Shared\\_Layout.cshtml";
 
-        public string SourcePath { get; set; } = $"e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI";
+        public string SourcePath { get; set; } = $"..\\..\\..\\..\\..\\Source\\UI";
 
-        public string TargetPath { get; set; } = $"..\\Target\\UI\\repos\\Core\\MVC";
+        public string TargetPath { get; set; } = $"..\\..\\..\\..\\..\\Target\\UI";
 
-        public bool CreateControllers { get; set; } = true;
+        public bool CreateControllers { get; set; } = false;
 
+        public bool CreateCardControllers { get; set; } = false;
         public bool CreateViews { get; set; } = true;
 
-        public bool CreateTests { get; set; } = true;
+        public bool CreateCardViews { get; set; } = true;
 
-        public bool CreateMenu { get; set; } = true;
+        public bool CreateTests { get; set; } = false;
+
+        public bool CreateMenu { get; set; } = false;
 
         public void Convert()
         {
             var infoCollector = new InfoCollector(SourcePath);
             foreach (var info in infoCollector.InfoList)
             {
+                if (info.AlwaysSkip == true) continue;
                 try
                 {
                     GeneratePathsForInfo(info);
-                   if(CreateControllers) GenerateJournalController(info);
-                   if(CreateViews) GenerateJournalView(info);
-					GenerateCardController(info);
-					GenerateCardView(info);
-					if (CreateMenu) GenerateMenu(info);
-                    log.Info("Succsess "+info.Name);
+                    if (CreateControllers) GenerateJournalController(info);
+                    if (CreateViews) GenerateJournalView(info);
+                    if (CreateCardControllers) GenerateCardController(info);
+                    if (CreateCardViews) GenerateCardView(info);
+                    if (CreateMenu) GenerateMenu(info);
+                    log.Info("Succsess " + info.Name);
                 }
                 catch (Exception ex)
                 {
@@ -54,7 +58,7 @@ namespace CodeGenerator
                     log.Error(ex, info.Path);
                 }
             }
-      if(CreateTests) GenerateJournalTests(infoCollector.InfoList);
+            if (CreateTests) GenerateJournalTests(infoCollector.InfoList);
 
         }
 
@@ -70,7 +74,7 @@ namespace CodeGenerator
             }
             info.Name = dirs[dirs.Count - 1];
             var newViewPath = Path.Combine(dirs.ToArray());
-            info.JournalViewPath = Path.Combine(TargetPath, newViewPath);
+            info.JournalViewPath = Path.GetFullPath(Path.Combine(TargetPath, newViewPath));
 
             info.JournalControllerName = dirs[dirs.Count - 1] + "Controller";
             var isInArea = false;
@@ -83,7 +87,7 @@ namespace CodeGenerator
             else
             {
                 dirs.RemoveAt(0);
-                info.DataPath = dirs.Last() ;
+                info.DataPath = dirs.Last();
             }
 
 
@@ -101,7 +105,7 @@ namespace CodeGenerator
                 info.NameSpace = "UI.Controllers";
             }
 
-            info.ControllerPath = Path.Combine(TargetPath, newControllerPath);
+            info.ControllerPath = Path.GetFullPath(Path.Combine(TargetPath, newControllerPath));
 
         }
 
@@ -128,7 +132,8 @@ namespace CodeGenerator
 
         }
 
-        public void GenerateCardController(Info info){
+        public void GenerateCardController(Info info)
+        {
             var controllerContent = File.ReadAllText("templates/targetCardController.Template", Encoding.GetEncoding(1251));
             if (info.EntityFullName != null)
             {
@@ -145,14 +150,15 @@ namespace CodeGenerator
             var controllerName = Path.Combine(info.ControllerPath, info.CardControllerName + ".cs");
             SaveFile(controllerName, controllerContent);
         }
-        public void GenerateCardView(Info info){
+        public void GenerateCardView(Info info)
+        {
             var viewContent = File.ReadAllText("templates/targetCard.Template", Encoding.GetEncoding(1251));
-			viewContent = viewContent.Replace("/Contract/Dk", "/" + info.DataPath);
+            viewContent = viewContent.Replace("/Contract/Dk", "/" + info.DataPath);
             viewContent = viewContent.Replace("$items$", "/" + info.FieldsStr);
 
-			var viewFullName = Path.Combine(info.CardViewPath, "Index.cshtml");
-			SaveFile(viewFullName, viewContent);
-		}
+            var viewFullName = Path.Combine(info.CardViewPath, "Index.cshtml");
+            SaveFile(viewFullName, viewContent);
+        }
         public void GenerateJournalView(Info info)
         {
             var viewContent = File.ReadAllText("templates/targetJournal.Template", Encoding.GetEncoding(1251));
@@ -178,10 +184,10 @@ namespace CodeGenerator
                 testContent = testContent.Replace("/Common/DoctorJournal", "/" + info.HtmlRequestPath);
                 testContent = testContent.Replace("$MainHeader$", info.MainHeader);
                 var testName = info.Name + "_SypressTests.js";
-                var viewFullName = Path.Combine(TestTarget + "\\tests\\e2e\\specs\\"+testName);
+                var viewFullName = Path.Combine(TestTarget + "\\tests\\e2e\\specs\\" + testName);
                 SaveFile(viewFullName, testContent, true, Encoding.UTF8);
                 packageJson["scripts"][$"run:e2e.{info.Name}"] = $"cypress run --spec 'tests/e2e/specs/{testName}'";
-                
+
             }
             string updatedJson = JsonConvert.SerializeObject(packageJson, Formatting.Indented);
             File.WriteAllText(jsonConfigPath, updatedJson);
@@ -196,17 +202,20 @@ namespace CodeGenerator
             string newItem = $"<a id=\"{info.Name.ToLower()}-dropdown-item\"   class=\"dropdown-item\" asp-area=\"{info.Area}\" asp-controller=\"{info.Name}\" asp-action=\"Index\">{info.MainHeader ?? info.Name}</a>";
             var content = File.ReadAllText(TargetMenu, Encoding.GetEncoding(1251));
             var menuItemsTags = Utils.GetTagContentById(content, navMenuId);
-            if (menuItemsTags == null){
+            if (menuItemsTags == null)
+            {
                 throw new Exception($"сформируй в файле teg id={navMenuId}");
             }
             var tagItem = Utils.GetTagContentById(menuItemsTags, navItemId);//ищу существующий пункт меню
-            if (tagItem == null){ 
+            if (tagItem == null)
+            {
                 menuItemsTags = menuItemsTags + Environment.NewLine + newItem;//добавляю если нет 
-            } 
-            else{
+            }
+            else
+            {
                 menuItemsTags = Utils.ChangeTagContentById(menuItemsTags, navItemId, newItem);//заменяю если есть
             }
-            content=Utils.ChangeTagContentById(content, navMenuId, menuItemsTags);
+            content = Utils.ChangeTagContentById(content, navMenuId, menuItemsTags);
             SaveFile(TargetMenu, content);
         }
 

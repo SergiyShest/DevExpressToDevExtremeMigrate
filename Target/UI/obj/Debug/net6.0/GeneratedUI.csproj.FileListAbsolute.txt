@@ -1,8 +1,0 @@
-C:\Users\Saergey\source\repos\GeneratedUI\obj\Debug\net6.0\GeneratedUI.csproj.AssemblyReference.cache
-C:\Users\Saergey\source\repos\GeneratedUI\obj\Debug\net6.0\GeneratedUI.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Saergey\source\repos\GeneratedUI\obj\Debug\net6.0\GeneratedUI.AssemblyInfoInputs.cache
-C:\Users\Saergey\source\repos\GeneratedUI\obj\Debug\net6.0\GeneratedUI.AssemblyInfo.cs
-C:\Users\Saergey\source\repos\GeneratedUI\obj\Debug\net6.0\GeneratedUI.csproj.CoreCompileInputs.cache
-C:\Users\Saergey\source\repos\GeneratedUI\obj\Debug\net6.0\GeneratedUI.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\Saergey\source\repos\GeneratedUI\obj\Debug\net6.0\GeneratedUI.RazorAssemblyInfo.cache
-C:\Users\Saergey\source\repos\GeneratedUI\obj\Debug\net6.0\GeneratedUI.RazorAssemblyInfo.cs

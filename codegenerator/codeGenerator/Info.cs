@@ -3,7 +3,11 @@
 namespace CodeGenerator
 {
 	public class Info
+
 	{
+
+		public bool AlwaysSkip { get; set; }
+
 		public string Name { get; internal set; }
 
 		public string Area { get; internal set; }
@@ -20,9 +24,22 @@ namespace CodeGenerator
 				return EntityFullName;
 			}
 
-		}
+        }
+		string _cardEntityName;
+        public string CardEntityName
+        {
+            get
+            {
+               
+                if (_cardEntityName ==null)
+                    return EntityName;
+                return _cardEntityName;
+            }
+			set { _cardEntityName = value; }
 
-		public string EntityPath
+        }
+
+        public string EntityPath
 		{
 			get
 			{

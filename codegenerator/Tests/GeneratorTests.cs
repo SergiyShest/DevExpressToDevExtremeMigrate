@@ -6,7 +6,6 @@ using NLog;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using NUnit.Framework.Internal;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Tests
 {
@@ -68,10 +67,11 @@ namespace Tests
 			}
 
 		}
+        #endregion
 
-		#region MyRegion
+        #region MyRegion
 
-		[Test]
+        [Test]
 		public void TestCodeGenerator()
 		{
 			var cg = new Generator();
@@ -100,6 +100,11 @@ namespace Tests
 		public void TestInfoCollectorTestAll(string dir)
 		{  AssertCollector assertCollector = new AssertCollector();
 			var infoCollector = new InfoCollector(dir);
+			var data = infoCollector.InfoList.Select(info => new { name = info.Path ,info.EntityName,info.MainHeader,info.CardEntityName,info.AlwaysSkip}); ;
+
+            var serialized= JsonConvert.SerializeObject(data);
+			File.WriteAllText("C:tmp/collect.json", serialized );
+
 			foreach (var info in infoCollector.InfoList)
 			{
 				if (!string.IsNullOrEmpty(info.Path) &&
@@ -148,17 +153,25 @@ namespace Tests
 			generator.GenerateCardController(info);
 			Assert.That(File.Exists(expected));
 		}
-        [TestCase("e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI\\Areas\\Common\\Views\\DoctorJournal",
-         "c:\\Users\\Saergey\\source\\repos\\Core\\MVC\\Areas\\Common\\Views\\Index.cshtml")]
-        [TestCase("e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI\\Areas\\Common\\Views\\PatientJournal",
-                 "c:\\Users\\Saergey\\source\\repos\\Core\\MVC\\Areas\\Common\\Views\\Index.cshtml")]
-        [TestCase("e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI\\Views\\SamplesBook",
-		         "c:\\Users\\Saergey\\source\\repos\\Core\\MVC\\Views\\SamplesBookCard\\Index.cshtml")]
+        [TestCase("..\\..\\..\\..\\..\\Source\\UI\\Areas\\Common\\Views\\DoctorJournal",
+                 "..\\..\\..\\..\\..\\Target\\UI\\Areas\\Common\\Views\\DoctorCard\\Index.cshtml")]
+        //[TestCase("e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI\\Areas\\Common\\Views\\PatientJournal",
+        //         "c:\\Users\\Saergey\\source\\repos\\Core\\MVC\\Areas\\Common\\Views\\Index.cshtml")]
+        //[TestCase("e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI\\Views\\SamplesBook",
+		      //   "c:\\Users\\Saergey\\source\\repos\\Core\\MVC\\Views\\SamplesBookCard\\Index.cshtml")]
 		public void GenerateCardViewTests(string dir, string expected)
 		{
-			var generator = new Generator();
+            expected =   Path.GetFullPath(expected);
+            dir = Path.GetFullPath( dir);
+            var generator = new Generator();
 			var info = CollectDataFromDir(dir);
 			generator.GeneratePathsForInfo(info);
+
+            generator.GenerateMenu(info);
+            generator.GenerateJournalController(info);
+            generator.GenerateJournalView(info);
+            generator.GenerateCardView(info);
+            generator.GenerateCardController(info);
 			generator.GenerateCardView(info);
 			Assert.That(File.Exists(expected));
 		}
@@ -205,16 +218,18 @@ namespace Tests
 
 		}
 
-		#endregion
+	
 
 		#endregion
+
 		#region service
 		private static Info CollectDataFromDir(string dir)
 		{
 
 			var assertCollector = new AssertCollector();
 			var infoCollector = new InfoCollector("not exists dir");
-			infoCollector.SourcePath = "e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI";
+
+			infoCollector.SourcePath = Path.GetFullPath( "..\\..\\..\\..\\..\\Source\\UI");
 			var info = infoCollector.CollectInfo(dir);
 			assertCollector.Assert(!string.IsNullOrEmpty(info.Path), "Path should not be empty or null.");
 			//            assertCollector.Assert(!string.IsNullOrEmpty(info.MainHeader), "MainHeader should not be empty or null.");
