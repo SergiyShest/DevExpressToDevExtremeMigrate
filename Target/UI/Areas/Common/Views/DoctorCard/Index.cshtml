@@ -13,6 +13,13 @@
 			<kf-input text = 'LastName' v-model = 'Item.LastName'  ></kf-input>
 			<kf-input text = 'Email' v-model = 'Item.Email'  ></kf-input>
 			<kf-input text = 'Hospital' v-model = 'Item.Hospital'  ></kf-input>
+            {{HospitalId}}
+			<kf-lookup text='Hospital' 
+			v-model='HospitalId' 
+			load-url="/Common/HospitalJournal/Get"
+			display-expr="Name"
+			 :columns="columns"
+			></kf-lookup>
 			<kf-input text = 'PropS1' v-model = 'Item.PropS1'  ></kf-input>
 			<kf-input text = 'PropS2' v-model = 'Item.PropS2'  ></kf-input>
 			<kf-input text = 'PropS3' v-model = 'Item.PropS3'  ></kf-input>
@@ -20,7 +27,24 @@
 			<kf-input text = 'PropS5' v-model = 'Item.PropS5'  ></kf-input>
 
 		</div>
-
+		<div class="demo-container">
+			<div id="form">
+				<div class="dx-fieldset">
+					<div class="dx-field">
+						<div class="dx-field-label">DropDownBox with embedded TreeView</div>
+						<div class="dx-field-value">
+							<div id="treeBox"></div>
+						</div>
+					</div>
+					<div class="dx-field">
+						<div class="dx-field-label">DropDownBox with embedded DataGrid</div>
+						<div class="dx-field-value">
+							<div id="gridBox"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div style="display:flex;flex-direction:row;">
 
 			<kf-button id="saveButton" v-if="mode!='view'"		 v-on:click.native="SaveClick"	text="Coхранить"		image="copy"  ></kf-button>
@@ -36,13 +60,17 @@
 		});
 		 let Mode = '@ViewBag.Mode'
 	     let Id = '@ViewBag.Id';
-		import { KfField, KfInput, KfDate, KfSelect, KfNumber, KfCheck, KfTextarea, KfText, KfButton } from '/js/vue3Components.js';
+	   // load components ( remove unused please)
+	import { KfField, KfInput, KfDate, KfSelect, KfNumber, KfCheck, KfTextarea, KfText, KfButton, KfGridLookUp } from '/js/vue3Components.js';
+
 		import { baseMixin } from '/js/BaseMixin.js';
 		const { ref } = Vue;
 	        const app = Vue.createApp({
 		 mixins: [baseMixin],
 		 data() {
 			 return {
+				 columns: ['Id', 'Name' ],
+				 HospitalId:2,
 				 Item: {  }
 			 }
 		 }
@@ -53,7 +81,6 @@
 				 this.FetchJson( pathEnd,this.Ok)
 			 },
 			 Ok(data) {
-				 console.log(data)
 				 this.Item = data;
 			 },
 			 SaveClick() {
@@ -70,7 +97,7 @@
 
 		 }
 	 });
-	// Registering components
+	// Registering components ( remove unused please)
 	  app.component('kf-field', KfField);
 	  app.component('kf-button', KfButton);
 	  app.component('kf-input', KfInput);
@@ -80,7 +107,201 @@
 	  app.component('kf-check', KfCheck);
 	  app.component('kf-textarea', KfTextarea);
 	  app.component('kf-text', KfText);
-
+	  app.component('kf-lookup', KfGridLookUp);
 	// Mounting Vue app
 	const vue_ = app.mount('#app');
+
+
+
+	let products = [{
+		"ID": 1,
+		"CompanyName": "Premier Buy",
+		"Address": "7601 Penn Avenue South",
+		"City": "Richfield",
+		"State": "Minnesota",
+		"Zipcode": 55423,
+		"Phone": "(612) 291-1000",
+		"Fax": "(612) 291-2001",
+		"Website": "http://www.nowebsitepremierbuy.dx"
+	}, {
+		"ID": 2,
+		"CompanyName": "ElectrixMax",
+		"Address": "263 Shuman Blvd",
+		"City": "Naperville",
+		"State": "Illinois",
+		"Zipcode": 60563,
+		"Phone": "(630) 438-7800",
+		"Fax": "(630) 438-7801",
+		"Website": "http://www.nowebsiteelectrixmax.dx"
+	}, {
+		"ID": 3,
+		"CompanyName": "Video Emporium",
+		"Address": "1201 Elm Street",
+		"City": "Dallas",
+		"State": "Texas",
+		"Zipcode": 75270,
+		"Phone": "(214) 854-3000",
+		"Fax": "(214) 854-3001",
+		"Website": "http://www.nowebsitevideoemporium.dx"
+	}, {
+		"ID": 4,
+		"CompanyName": "Screen Shop",
+		"Address": "1000 Lowes Blvd",
+		"City": "Mooresville",
+		"State": "North Carolina",
+		"Zipcode": 28117,
+		"Phone": "(800) 445-6937",
+		"Fax": "(800) 445-6938",
+		"Website": "http://www.nowebsitescreenshop.dx"
+	}, {
+		"ID": 5,
+		"CompanyName": "Braeburn",
+		"Address": "1 Infinite Loop",
+		"City": "Cupertino",
+		"State": "California",
+		"Zipcode": 95014,
+		"Phone": "(408) 996-1010",
+		"Fax": "(408) 996-1012",
+		"Website": "http://www.nowebsitebraeburn.dx"
+	}, {
+		"ID": 6,
+		"CompanyName": "PriceCo",
+		"Address": "30 Hunter Lane",
+		"City": "Camp Hill",
+		"State": "Pennsylvania",
+		"Zipcode": 17011,
+		"Phone": "(717) 761-2633",
+		"Fax": "(717) 761-2334",
+		"Website": "http://www.nowebsitepriceco.dx"
+	}, {
+		"ID": 7,
+		"CompanyName": "Ultimate Gadget",
+		"Address": "1557 Watson Blvd",
+		"City": "Warner Robbins",
+		"State": "Georgia",
+		"Zipcode": 31093,
+		"Phone": "(995) 623-6785",
+		"Fax": "(995) 623-6786",
+		"Website": "http://www.nowebsiteultimategadget.dx"
+	}, {
+		"ID": 8,
+		"CompanyName": "EZ Stop",
+		"Address": "618 Michillinda Ave.",
+		"City": "Arcadia",
+		"State": "California",
+		"Zipcode": 91007,
+		"Phone": "(626) 265-8632",
+		"Fax": "(626) 265-8633",
+		"Website": "http://www.nowebsiteezstop.dx"
+	}, {
+		"ID": 9,
+		"CompanyName": "Clicker",
+		"Address": "1100 W. Artesia Blvd.",
+		"City": "Compton",
+		"State": "California",
+		"Zipcode": 90220,
+		"Phone": "(310) 884-9000",
+		"Fax": "(310) 884-9001",
+		"Website": "http://www.nowebsiteclicker.dx"
+	}, {
+		"ID": 10,
+		"CompanyName": "Store of America",
+		"Address": "2401 Utah Ave. South",
+		"City": "Seattle",
+		"State": "Washington",
+		"Zipcode": 98134,
+		"Phone": "(206) 447-1575",
+		"Fax": "(206) 447-1576",
+		"Website": "http://www.nowebsiteamerica.dx"
+	}, {
+		"ID": 11,
+		"CompanyName": "Zone Toys",
+		"Address": "1945 S Cienega Boulevard",
+		"City": "Los Angeles",
+		"State": "California",
+		"Zipcode": 90034,
+		"Phone": "(310) 237-5642",
+		"Fax": "(310) 237-5643",
+		"Website": "http://www.nowebsitezonetoys.dx"
+	}, {
+		"ID": 12,
+		"CompanyName": "ACME",
+		"Address": "2525 E El Segundo Blvd",
+		"City": "El Segundo",
+		"State": "California",
+		"Zipcode": 90245,
+		"Phone": "(310) 536-0611",
+		"Fax": "(310) 536-0612",
+		"Website": "http://www.nowebsiteacme.dx"
+	}]
+
+
+
+
+
+	$(() => {
+		let dataGrid;
+
+		const data_Source = DevExpress.data.AspNet.createStore({
+			key: "Id",
+			loadUrl: document.location.origin + "/Common/HospitalJournal/Get",
+			onLoaded: function (data) {
+				const selectedValue = $('#gridBox').dxDropDownBox('option', 'value');
+				if (selectedValue) {
+					const selectedItem = data.find(item => item.Id === selectedValue);
+					if (selectedItem) {
+						$('#gridBox').dxDropDownBox('option', 'value', selectedItem);
+					}
+				}
+			}
+		});
+
+		$('#gridBox').dxDropDownBox({
+			value: 2,
+			valueExpr: 'Id',
+			//deferRendering: false,
+			placeholder: 'Select a value...',
+			inputAttr: { 'aria-label': 'Owner' },
+			displayExpr(item) {
+				return item && `${item.Id}`;
+			},
+			dropDownOptions: {
+				width: 800
+			},
+			showClearButton: true,
+			dataSource: data_Source,
+			contentTemplate(e) {
+				const value = e.component.option('value');
+				const $dataGrid = $('<div>').dxDataGrid({
+					dataSource: e.component.getDataSource(),
+					columns: ['Id', 'Name', 'SampleCount'],
+					hoverStateEnabled: true,
+					paging: { enabled: true, pageSize: 10 },
+					filterRow: { visible: true },
+					scrolling: { mode: 'virtual' },
+					selection: { mode: 'single' },
+					selectedRowKeys: [value],
+					height: '100%',
+					showBorders: true,
+					onSelectionChanged(selectedItems) {
+						const keys = selectedItems.selectedRowKeys;
+						const hasSelection = keys.length;
+
+						e.component.option('value', hasSelection ? keys[0] : null);
+					},
+				});
+
+				dataGrid = $dataGrid.dxDataGrid('instance');
+
+				e.component.on('valueChanged', (args) => {
+					dataGrid.selectRows(args.value, false);
+					e.component.close();
+				});
+
+				return $dataGrid;
+			},
+		});
+	});
+
+
 </script>

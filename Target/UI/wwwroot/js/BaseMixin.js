@@ -106,9 +106,9 @@ export const baseMixin = {
 				})
 				.then((retData) => {
 					if(retData){
-					{console.log(retData)	
+				
 					fetchRef(retData)
-				}
+				
 			}
 					this.loadingData = false;
 	

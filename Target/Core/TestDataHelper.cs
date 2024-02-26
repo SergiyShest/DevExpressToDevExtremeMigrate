@@ -1,4 +1,5 @@
 ﻿using Core;
+using Newtonsoft.Json;
 using System.Reflection;
 
 namespace DAL.Core
@@ -8,12 +9,21 @@ namespace DAL.Core
       public  static IQueryable<T> GetFilledEntities<T>(int count) where T : class, IEntity
         {
             List<T> entityList = new List<T>();
-            for (int i = 1; i <= count; i++)
+            var fileName = typeof(T).Name+".json";
+            //if (File.Exists(fileName))
+            //{
+            // entityList = JsonConvert.DeserializeObject<List<T>>(fileName);
+            //}
+            //else
             {
-                T entity = Activator.CreateInstance<T>();
-                entity.Id = i;
-                FillRandomValues(entity);
-                entityList.Add(entity);
+                for (int i = 1; i <= count; i++)
+                {
+                    T entity = Activator.CreateInstance<T>();
+                    entity.Id = i;
+                    FillRandomValues(entity);
+                    entityList.Add(entity);
+                }
+//                File.WriteAllText(fileName, JsonConvert.SerializeObject(entityList));
             }
             IQueryable<T> queryableEntities = entityList.AsQueryable();
             return queryableEntities;

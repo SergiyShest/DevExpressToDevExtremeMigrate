@@ -1,112 +1,115 @@
-function ConvertDate(value){
-  return value
+function ConvertDate(value) {
+    return value
 }
 function numOnBlur(control) {
-  control.type = "text";
-  control.value = formatNum(control.value)
+    control.type = "text";
+    control.value = formatNum(control.value)
 
 }
 
 function numOnFocus(control) {
-  control.value = reFormatNum(control.value)
-  control.type = "number";
+    control.value = reFormatNum(control.value)
+    control.type = "number";
 
 }
 
 function formatNum(val) {
-  return numeral(val).format('0,0.00').replaceAll(',', ' ');
+    return numeral(val).format('0,0.00').replaceAll(',', ' ');
 }
 
 function reFormatNum(val) {
-  return val.replaceAll(' ', '');
+    return val.replaceAll(' ', '');
 }
 
 // Свойства (Props)
 // text - тип String, текст для отображения.
-// req - тип Boolean, указывает, требуется ли заполнение поля.
+// requre - тип Boolean, указывает, требуется ли заполнение поля.
 // valudateonload - тип Boolean или String (возможные значения: true, false), указывает, должна ли производиться валидация при загрузке.
 // requretext - тип String, текст сообщения об ошибке при отсутствии значения в обязательном поле.
 // rules - список правил валидации.
 // inputStyle - тип Object или String, стили для поля ввода.
 // inputClass - тип String, класс для поля ввода по умолчанию.
-    const componentBase = {
-        props: {
-            'text': String,
-            'requre': Boolean,
-            'valudateonload': { type: [Boolean, String], default: false },
-            'readonly': Boolean,
-            'requretext': { type: String, default: 'Значение должно быть заполнено!!!' },
-            'rules': { type: Array, default: () => [] },
-            'inputStyle': { type: [Object, String] },
-            'inputClass': { type: String, default: 'def-inp' },
+export const componentBase = {
+    props: {
+        'text': String,
+        'requre': Boolean,
+        'valudateonload': { type: [Boolean, String], default: false },
+        'readonly': Boolean,
+        'requretext': { type: String, default: 'Значение должно быть заполнено!!!' },
+        'rules': { type: Array, default: () => [] },
+        'inputStyle': { type: [Object, String] },
+        'inputClass': { type: String, default: 'def-inp' },
+    },
+    data() {
+        return {
+            valueInt: null,
+            valid: true,
+            externalReadonly: false,
+            notValidText: null,
+            inputClasses: {},
+        };
+    },
+    methods: {
+        valChanged(event) {
+            this.virtChange(event.target.value);
         },
-        data() {
-            return {
-                valueInt: null,
-                valid: true,
-                externalReadonly: false,
-                notValidText: null,
-                inputClasses: {},
-            };
+        virtChange(val) {
+            this.valueInt = val;
+            this.$emit('input', val);
         },
-        methods: {
-            valChanged(event) {
-                this.virtChange(event.target.value);
-            },
-            virtChange(val) {
-                this.valueInt = val;
-                this.$emit('input', val);
-            },
-            SetReadonly(val) {
-                this.externalReadonly = val;
-            },
-            Validate(val) {
-                if (typeof val !== "undefined") {
-                    val = this.value.value;
-                }
-                this.valid = true;
-                const errList = [];
-                this.notValidText = '';
+        SetReadonly(val) {
+            this.externalReadonly = val;
+        },
+        Validate(val) {
+            if (typeof val !== "undefined") {
+                val = this.value.value;
+            }
+            this.valid = true;
+            const errList = [];
+            this.notValidText = '';
 
-                if (this.requre && !val) {
-                    this.valid = false;
-                    this.notValidText = this.requretext;
-                } else {
-                    try {
-                        if (this.rules) {
-                            this.rules.forEach(element => {
-                                const valResult = element(val);
-                                if (valResult !== true) {
-                                    errList.push(valResult);
-                                    this.valid = false;
-                                }
-                            });
-                            if (!this.valid) {
-                                this.notValidText = errList.join('\n');
+            if (this.requre && !val) {
+                this.valid = false;
+                this.notValidText = this.requretext;
+            } else {
+                try {
+                    if (this.rules) {
+                        this.rules.forEach(element => {
+                            const valResult = element(val);
+                            if (valResult !== true) {
+                                errList.push(valResult);
+                                this.valid = false;
                             }
+                        });
+                        if (!this.valid) {
+                            this.notValidText = errList.join('\n');
                         }
-                    } catch (error) {
-                        console.error("Error while validation rules executing: " + error);
                     }
-                }
-
-                console.log(this.text + ' valid = ' + this.valid);
-            },
-            mounted() {
-                this.valueInt = this.value;
-                if (this.valudateonload == true) {
-                    this.Validate(this.value);
+                } catch (error) {
+                    console.error("Error while validation rules executing: " + error);
                 }
             }
+
+            console.log(this.text + ' valid = ' + this.valid);
         },
-        watch: {
-            value(newValue) {
-                this.valueInt = newValue;
-                this.Validate(newValue);
+        mounted() {
+            this.valueInt = this.value;
+            if (this.valudateonload == true) {
+                this.Validate(this.value);
             }
         }
-    };
-export const KfField ={
+    },
+    watch: {
+        value(newValue) {
+            this.valueInt = newValue;
+            this.Validate(newValue);
+        }
+    }
+};
+//end component base
+//============================================================================================================================
+//Компонент kf-field
+export const KfField = {
     mixins: [componentBase],
     props: {
         'value': { type: String },
@@ -127,8 +130,8 @@ export const KfField ={
           v-on:input="valChanged($event)"
       />
   `
-}//kf-field
-
+}//end kf-field
+//============================================================================================================================
 export const KfInput = {
     mixins: [componentBase],
     props: {
@@ -153,7 +156,7 @@ export const KfInput = {
  </div>
 `
 }//kf-input
-
+//============================================================================================================================
 // Компонент kf-date
 export const KfDate = {
     mixins: [componentBase],
@@ -178,7 +181,7 @@ export const KfDate = {
         </div>
     `
 }//kf-date
-
+//============================================================================================================================
 // Компонент kf-select
 export const KfSelect = {
     mixins: [componentBase],
@@ -205,7 +208,9 @@ export const KfSelect = {
         </div>
     `
 };//kf-select
-export const KfNumber =  {
+//============================================================================================================================
+// Компонент kf-number
+export const KfNumber = {
     mixins: [componentBase],
     props: {
         'value': { type: [Number, String] },
@@ -243,7 +248,8 @@ export const KfNumber =  {
  </div>
 `
 }//kf-number
-
+//============================================================================================================================
+// Компонент kf-check
 export const KfCheck = {
     mixins: [componentBase],
     props: {
@@ -275,7 +281,8 @@ export const KfCheck = {
  </div>
 `
 }//kf-check
-
+//============================================================================================================================
+// Компонент kf-textarea
 export const KfTextarea = {
     mixins: [componentBase],
     props: {
@@ -305,7 +312,8 @@ export const KfTextarea = {
  </div>
 `
 }//kf-textarea
-
+//============================================================================================================================
+// Компонент kf-text
 export const KfText = {
     mixins: [componentBase],
     props: {
@@ -318,24 +326,195 @@ export const KfText = {
  </div>
 `
 }//kf-text не редактируемый текст (class=" bold")
-
-
-
+//============================================================================================================================
+// Компонент kf-button
 export const KfButton = {
-  props: {
-      'text': null,
-      'image':null
-  },
-  computed: {
-      imgSrc() {
-          if(this.image) return /images/ + this.image+".png";
-    }
-  },
-  template: `<button
+    props: {
+        'text': null,
+        'image': null
+    },
+    computed: {
+        imgSrc() {
+            if (this.image) return /images/ + this.image + ".png";
+        }
+    },
+    template: `<button
 class="kf-button"
 
 >
 <img v-if="image" :src="imgSrc" class="kf-button-image" />{{text}}<slot></slot>
 </button>`
-}//kf-button  
+}//kf-button
+//============================================================================================================================
+// Компонент kf-lookup
 
+var products = [{
+    "Id": 1,
+    "Name": "SSSSSSSSS",
+    "SampleCount": 173849318,
+
+},
+    {
+        "Id": 2,
+        "Name": "AAAAAAAAAAAAAAAAAAAAAA",
+        "SampleCount": 1816514654,
+ 
+    },
+    {
+        "Id": 3,
+        "Name": "d9de71b7-",
+        "SampleCount": 1141119574,
+
+    },
+    {
+        "Id": 4,
+        "Name": "30766077",
+        "SampleCount": 1440962658,
+
+
+    },
+    {
+        "Id": 5,
+        "Name": "d6da401f",
+        "SampleCount": 1683189633,
+
+    }
+]
+
+let dataGrid;
+const makeAsyncDataSource = function (jsonFile) {
+    return new DevExpress.data.CustomStore({
+        loadMode: 'raw',
+        key: 'Id',
+        load() {
+            return products;
+        },
+    });
+};
+function setDataSource(el, path) {
+    const dataSource = DevExpress.data.AspNet.createStore({
+        key: "Id",
+        loadUrl: document.location.origin + path,
+    });
+    var grid = $(el).dxDropDownBox("instance");
+    grid.option("dataSource", dataSource);
+}
+function createLookUp(el, columns, val, dropDownWidth, pageSize, displayExpr, valChanged) {
+    el.dxDropDownBox({
+        value: val,
+        valueExpr: 'Id',
+        placeholder: 'Select a value...',
+        displayExpr: displayExpr,
+        showClearButton: true,
+ //       dataSource: makeAsyncDataSource('customers.json'),
+        onValueChanded: valChanged,
+        dropDownOptions: {
+            width: dropDownWidth
+        },
+        contentTemplate(e) {
+            const v = e.component.option('value');
+            let firstShow = true
+            const $dataGrid = $('<div>').dxDataGrid({
+                dataSource: e.component.getDataSource(),
+                columns: columns,
+                export: { enabled: false },
+                stateStoring: { enabled: false },
+                columnChooser: { enabled: false },
+
+                hoverStateEnabled: true,
+                paging: { enabled: true, pageSize: pageSize },
+                filterRow: { visible: true },
+                height: 500,
+               selection: { mode: 'multiple', },
+              //  selection: { mode: 'single', },
+                selectedRowKeys: v,
+                onSelectionChanged: function (selectedItems) {
+                    console.log(selectedItems)
+                    if (false) {
+                        firstShow = false;
+                    }
+                    else {
+                        const keys = selectedItems.selectedRowKeys;
+                        e.component.option('value', keys);
+                    }
+                },
+               });
+
+            dataGrid = $dataGrid.dxDataGrid('instance');
+
+            e.component.on('valueChanged', (args) => {
+                const { value } = args;
+                dataGrid.selectRows(value, false);
+            });
+
+            return $dataGrid;
+        },
+    });
+}
+
+
+
+function CreateGuid() {
+    function _p8(s) {
+        var p = (Math.random().toString(16) + "000000000").substr(2, 8);
+        return s ? "-" + p.substr(0, 4) + "-" + p.substr(4, 4) : p;
+    }
+    return _p8() + _p8(true) + _p8(true) + _p8();
+}
+
+
+export const KfGridLookUp = {
+    mixins: [componentBase],
+    props: {
+        'value': { type: [String, Number] },
+        "items": { type: Array, default: null },
+        "loadUrl": String,
+        "pageSize": { type: Number, default: 10 },
+
+        "dropDownWidth": { type: Number, default: 700 },
+        "displayExpr": { type: [String, Object], default: "Name" },
+        "columns": { type: Array, default: null },
+    },
+    data() {
+        return {
+            lookUpId: CreateGuid()
+        }
+    },
+
+    methods: {
+        vChange(val) {
+            this.$emit('input', val)//event to parent
+        }
+
+    },
+    template: `
+      <div class="flex-row" >
+         <div class="coll" >{{ text }}<span v-if="requre" style="color:red">*</span>:</div>
+          <div 
+          v-bind:id="lookUpId"
+          :title="notValidText" 
+          v-bind:value="value"
+          v-bind:readonly="readonly"
+          v-on:input="valChanged($event)"
+          />
+         <img v-if="!valid" src="invalid.png"/> 
+      </div>
+  `,
+    mounted: function () {
+        console.log(this.value + '   ' + this.displayExpr)
+        const el = $('#' + this.lookUpId)
+        const vch = this.vChange
+        const vChanged = function (x) {
+            console.log(x);
+            if (x.value && x.value.length > 0) {
+                vch(x.value[0])
+            } else {
+                vch(null)
+            }
+        }
+        createLookUp(el, this.columns, this.value, this.dropDownWidth, this.pageSize, this.displayExpr, vChanged)
+
+        setDataSource(el, this.loadUrl)
+
+    }
+}

@@ -184,7 +184,7 @@ const defaultDxOptions = {
     }
 }
 
-DevExpress.ui.dxDataGrid.defaultOptions({
-    device: { deviceType: "desktop" },
-    options: defaultDxOptions
-});
+//DevExpress.ui.dxDataGrid.defaultOptions({
+//    device: { deviceType: "desktop" },
+//    options: defaultDxOptions
+//});

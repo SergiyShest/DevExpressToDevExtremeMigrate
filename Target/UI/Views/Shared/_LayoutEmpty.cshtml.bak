@@ -4,13 +4,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Questionnaire</title>
+    <title>@ViewData["Title"] - form </title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <script src="/lib/jquery/dist/jquery.min.js"></script>
+
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" /> 
-    <link rel="stylesheet" href="~/MVC.styles.css" asp-append-version="true" /> 
-    <link rel="stylesheet" href="~/example.css" asp-append-version="true" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+
 </head>
 <body>
 
@@ -20,13 +18,15 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - MVC 
-        </div>
-    </footer>
-
-
-    @RenderSection("Scripts", required: false)
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/lib/dx/dx.all.js"></script>
+    <script src="/lib/dx/dx.aspnet.data.js"></script>
+    <script src="~/lib/vue.js"></script>
+    <script src="~/lib/numeral.js"></script>
+    <script src="~/js/dxBase.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+@*     <script src="~/js/xPopup.js" asp-append-version="true"></script> *@
+    <div id="dxPopup"></div>
 </body>
 </html>

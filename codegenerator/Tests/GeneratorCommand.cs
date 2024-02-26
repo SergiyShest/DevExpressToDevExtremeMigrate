@@ -80,8 +80,8 @@ namespace Tests
 		}
 
 
-        [TestCase("..\\..\\..\\..\\..\\Source\\UI\\Areas\\Common\\Views\\DoctorJournal")]
-
+      //[TestCase("..\\..\\..\\..\\..\\Source\\UI\\Areas\\Common\\Views\\DoctorJournal")]
+        [TestCase("..\\..\\..\\..\\..\\Source\\UI\\Areas\\Common\\Views\\HospitalJournal")]
 		public void GeneratePart(string dir)
 		{
             dir = Path.GetFullPath( dir);

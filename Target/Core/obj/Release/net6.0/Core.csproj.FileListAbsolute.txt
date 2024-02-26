@@ -22,3 +22,4 @@ C:\Users\Saergey\source\repos\DevExpressToDevExtremeMigration\Target\Core\obj\Re
 C:\Users\Saergey\source\repos\DevExpressToDevExtremeMigration\Target\Core\obj\Release\net6.0\refint\Core.dll
 C:\Users\Saergey\source\repos\DevExpressToDevExtremeMigration\Target\Core\obj\Release\net6.0\Core.pdb
 C:\Users\Saergey\source\repos\DevExpressToDevExtremeMigration\Target\Core\obj\Release\net6.0\ref\Core.dll
+C:\Users\Saergey\source\repos\DevExpressToDevExtremeMigration\Target\Core\obj\Release\net6.0\Core.sourcelink.json

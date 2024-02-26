@@ -8,18 +8,7 @@
 
 	<div id="app" style="display: flex;flex-direction: column;width: 450px;">
 		<div id="items"  class="grid-container">
-		    <kf-number text = 'Id' v-model = 'Item.Id'  ></kf-number>
-			<kf-input text = 'FirstName' v-model = 'Item.FirstName'  ></kf-input>
-			<kf-input text = 'LastName' v-model = 'Item.LastName'  ></kf-input>
-			<kf-input text = 'Email' v-model = 'Item.Email'  ></kf-input>
-			<kf-input text = 'Hospital' v-model = 'Item.Hospital'  ></kf-input>
-			<kf-lookup text='Hospital' v-model= 'HospitalId'></kf-lookup>
-			<kf-input text = 'PropS1' v-model = 'Item.PropS1'  ></kf-input>
-			<kf-input text = 'PropS2' v-model = 'Item.PropS2'  ></kf-input>
-			<kf-input text = 'PropS3' v-model = 'Item.PropS3'  ></kf-input>
-			<kf-input text = 'PropS4' v-model = 'Item.PropS4'  ></kf-input>
-			<kf-input text = 'PropS5' v-model = 'Item.PropS5'  ></kf-input>
-
+		    $items$
 		</div>
 
 		<div style="display:flex;flex-direction:row;">
@@ -37,23 +26,20 @@
 		});
 		 let Mode = '@ViewBag.Mode'
 	     let Id = '@ViewBag.Id';
-	   // load components ( remove unused please)
-	import { KfField, KfInput, KfDate, KfSelect, KfNumber, KfCheck, KfTextarea, KfText, KfButton, KfGridLookUp } from '/js/vue3Components.js';
-
+		import { KfField, KfInput, KfDate, KfSelect, KfNumber, KfCheck, KfTextarea, KfText, KfButton } from '/js/vue3Components.js';
 		import { baseMixin } from '/js/BaseMixin.js';
 		const { ref } = Vue;
 	        const app = Vue.createApp({
 		 mixins: [baseMixin],
 		 data() {
 			 return {
-				 HospitalId:2,
 				 Item: {  }
 			 }
 		 }
 		 ,
 		 methods: {
 			 Get() {
-				 const pathEnd = "/Common/DoctorCard/Get?id="+Id;
+				 const pathEnd = "/Contract/DkCard/Get?id="+Id;
 				 this.FetchJson( pathEnd,this.Ok)
 			 },
 			 Ok(data) {
@@ -74,7 +60,7 @@
 
 		 }
 	 });
-	// Registering components ( remove unused please)
+	// Registering components
 	  app.component('kf-field', KfField);
 	  app.component('kf-button', KfButton);
 	  app.component('kf-input', KfInput);
@@ -84,7 +70,7 @@
 	  app.component('kf-check', KfCheck);
 	  app.component('kf-textarea', KfTextarea);
 	  app.component('kf-text', KfText);
-	 app.component('kf-lookup', KfGridLookUp);
+
 	// Mounting Vue app
 	const vue_ = app.mount('#app');
 </script>

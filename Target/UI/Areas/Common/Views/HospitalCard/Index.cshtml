@@ -8,17 +8,13 @@
 
 	<div id="app" style="display: flex;flex-direction: column;width: 450px;">
 		<div id="items"  class="grid-container">
-		    <kf-number text = 'Id' v-model = 'Item.Id'  ></kf-number>
-			<kf-input text = 'FirstName' v-model = 'Item.FirstName'  ></kf-input>
-			<kf-input text = 'LastName' v-model = 'Item.LastName'  ></kf-input>
-			<kf-input text = 'Email' v-model = 'Item.Email'  ></kf-input>
-			<kf-input text = 'Hospital' v-model = 'Item.Hospital'  ></kf-input>
-			<kf-lookup text='Hospital' v-model= 'HospitalId'></kf-lookup>
-			<kf-input text = 'PropS1' v-model = 'Item.PropS1'  ></kf-input>
-			<kf-input text = 'PropS2' v-model = 'Item.PropS2'  ></kf-input>
-			<kf-input text = 'PropS3' v-model = 'Item.PropS3'  ></kf-input>
-			<kf-input text = 'PropS4' v-model = 'Item.PropS4'  ></kf-input>
-			<kf-input text = 'PropS5' v-model = 'Item.PropS5'  ></kf-input>
+		    /<kf-number text = 'Id' v-model = 'Item.Id'  ></kf-number>
+<kf-input text = 'Hospital Name' v-model = 'Item.Name'  ></kf-input>
+<kf-input text = 'PropS1' v-model = 'Item.PropS1'  ></kf-input>
+<kf-input text = 'PropS2' v-model = 'Item.PropS2'  ></kf-input>
+<kf-input text = 'PropS3' v-model = 'Item.PropS3'  ></kf-input>
+<kf-input text = 'PropS4' v-model = 'Item.PropS4'  ></kf-input>
+<kf-input text = 'PropS5' v-model = 'Item.PropS5'  ></kf-input>
 
 		</div>
 
@@ -46,14 +42,13 @@
 		 mixins: [baseMixin],
 		 data() {
 			 return {
-				 HospitalId:2,
 				 Item: {  }
 			 }
 		 }
 		 ,
 		 methods: {
 			 Get() {
-				 const pathEnd = "/Common/DoctorCard/Get?id="+Id;
+				 const pathEnd = "/Common/HospitalCard/Get?id="+Id;
 				 this.FetchJson( pathEnd,this.Ok)
 			 },
 			 Ok(data) {
