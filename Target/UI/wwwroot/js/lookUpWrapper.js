@@ -94,7 +94,7 @@ function CreateGuid() {
     return _p8() + _p8(true) + _p8(true) + _p8();
 }
 
-export const KfGridLookUp = {
+export const KfGridLookUp =  {
     mixins: [componentBase],
     props: {
         'value': { type: [String, Number] },

@@ -238,32 +238,21 @@
 
 
 
-
 	$(() => {
 		let dataGrid;
 
 		const data_Source = DevExpress.data.AspNet.createStore({
 			key: "Id",
 			loadUrl: document.location.origin + "/Common/HospitalJournal/Get",
-			onLoaded: function (data) {
-				const selectedValue = $('#gridBox').dxDropDownBox('option', 'value');
-				if (selectedValue) {
-					const selectedItem = data.find(item => item.Id === selectedValue);
-					if (selectedItem) {
-						$('#gridBox').dxDropDownBox('option', 'value', selectedItem);
-					}
-				}
-			}
 		});
 
 		$('#gridBox').dxDropDownBox({
 			value: 2,
 			valueExpr: 'Id',
-			//deferRendering: false,
 			placeholder: 'Select a value...',
 			inputAttr: { 'aria-label': 'Owner' },
 			displayExpr(item) {
-				return item && `${item.Id}`;
+				return item && `${item.Id} ${item.Name}`;
 			},
 			dropDownOptions: {
 				width: 800
@@ -301,7 +290,17 @@
 				return $dataGrid;
 			},
 		});
-	});
 
+		// Перемещаем логику установки выбранного значения сюда, чтобы она вызывалась каждый раз после загрузки данных
+		data_Source.load().done(function (data) {
+			const selectedValue = $('#gridBox').dxDropDownBox('option', 'value');
+			if (selectedValue) {
+				const selectedItem = data.find(item => item.Id === selectedValue);
+				if (selectedItem) {
+					$('#gridBox').dxDropDownBox('option', 'value', selectedItem);
+				}
+			}
+		});
+	});
 
 </script>
