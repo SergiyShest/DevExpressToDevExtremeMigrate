@@ -20,7 +20,7 @@ namespace Tests2e2
 					RedirectStandardOutput = true,
 					RedirectStandardError = true,
 					UseShellExecute = false,
-					CreateNoWindow = false,
+					CreateNoWindow = true,
 					WorkingDirectory = workingDirectory,
 					StandardOutputEncoding = encoding,
 					StandardErrorEncoding = encoding

@@ -7,37 +7,14 @@
     "build": "vue-cli-service build",
     "test:e2e": "vue-cli-service test:e2e",
     "run:e2e": "cypress open ",
-    "run:e2e.CommonPatientTests": "cypress run --spec 'tests/e2e/specs/CommonPatientTests.js'",
     "lint": "vue-cli-service lint",
     "run:e2e.DoctorJournal": "cypress run --spec 'tests/e2e/specs/DoctorJournal_SypressTests.js'",
-    "run:e2e.PatientJournal": "cypress run --spec 'tests/e2e/specs/PatientJournal_SypressTests.js'",
-    "run:e2e.SamplesBook": "cypress run --spec 'tests/e2e/specs/SamplesBook_SypressTests.js'",
-    "run:e2e.CustodyLogJournal": "cypress run --spec 'tests/e2e/specs/CustodyLogJournal_SypressTests.js'",
-    "run:e2e.HospitalJournal": "cypress run --spec 'tests/e2e/specs/HospitalJournal_SypressTests.js'",
-    "run:e2e.TmpJournal": "cypress run --spec 'tests/e2e/specs/TmpJournal_SypressTests.js'",
-    "run:e2e.CustomJournal": "cypress run --spec 'tests/e2e/specs/CustomJournal_SypressTests.js'",
-    "run:e2e.CustomListJournal": "cypress run --spec 'tests/e2e/specs/CustomListJournal_SypressTests.js'",
-    "run:e2e.QuestionnaireJournal": "cypress run --spec 'tests/e2e/specs/QuestionnaireJournal_SypressTests.js'",
-    "run:e2e.ReagentJournal": "cypress run --spec 'tests/e2e/specs/ReagentJournal_SypressTests.js'",
-    "run:e2e.ReagentLogJournal": "cypress run --spec 'tests/e2e/specs/ReagentLogJournal_SypressTests.js'",
-    "run:e2e.ReagentTypeJournal": "cypress run --spec 'tests/e2e/specs/ReagentTypeJournal_SypressTests.js'",
-    "run:e2e.ContainerJournal": "cypress run --spec 'tests/e2e/specs/ContainerJournal_SypressTests.js'",
-    "run:e2e.SamplesJournal": "cypress run --spec 'tests/e2e/specs/SamplesJournal_SypressTests.js'"
+    "run:e2e.PatientJournal": "cypress run --spec 'tests/e2e/specs/PatientJournal_SypressTests.js'"
   },
   "dependencies": {
-    "core-js": "^3.8.3",
-    "vue": "^2.6.14"
+        "cypress": "^9.7.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.16",
-    "@babel/eslint-parser": "^7.12.16",
-    "@vue/cli-plugin-babel": "~5.0.0",
-    "@vue/cli-plugin-e2e-cypress": "~5.0.0",
-    "@vue/cli-plugin-eslint": "~5.0.0",
-    "@vue/cli-service": "~5.0.0",
-    "cypress": "^9.7.0",
-    "eslint": "^7.32.0",
-    "eslint-plugin-vue": "^8.0.3",
-    "vue-template-compiler": "^2.6.14"
+
   }
 }

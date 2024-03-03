@@ -3,28 +3,32 @@
   "WorkspaceRootPath": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\tests2e2\\test_e2e\\tests\\e2e\\specs\\doctorjournal_sypresstests.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|solutionrelative:tests2e2\\test_e2e\\tests\\e2e\\specs\\doctorjournal_sypresstests.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+      "AbsoluteMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\tests2e2\\sypresstests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|solutionrelative:tests2e2\\sypresstests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\tests2e2\\test_e2e\\tests\\e2e\\specs\\hospitaljournal_sypresstests.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|solutionrelative:tests2e2\\test_e2e\\tests\\e2e\\specs\\hospitaljournal_sypresstests.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+      "AbsoluteMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\tests2e2\\testsutils.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|solutionrelative:tests2e2\\testsutils.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\ui\\areas\\common\\views\\doctorjournal\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|solutionrelative:ui\\areas\\common\\views\\doctorjournal\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\ui\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|solutionrelative:ui\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\tests2e2\\test_e2e\\tests\\e2e\\specs\\doctorjournal_sypresstests.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|solutionrelative:tests2e2\\test_e2e\\tests\\e2e\\specs\\doctorjournal_sypresstests.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\tests2e2\\test_e2e\\tests\\e2e\\specs\\doctorjournaltests.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|solutionrelative:tests2e2\\test_e2e\\tests\\e2e\\specs\\doctorjournaltests.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\tests2e2\\sypresstests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|solutionrelative:tests2e2\\sypresstests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\ui\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|solutionrelative:ui\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\tests2e2\\test_e2e\\tests\\e2e\\specs\\commonpatienttests.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|solutionrelative:tests2e2\\test_e2e\\tests\\e2e\\specs\\commonpatienttests.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+      "AbsoluteMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\tests2e2\\nlog.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|solutionrelative:tests2e2\\nlog.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,7 +38,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 10,
+          "SelectedChildIndex": 12,
           "Children": [
             {
               "$type": "Bookmark",
@@ -74,80 +78,89 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "UI\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "UI\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AQIAADMAAAAAAAAAAAAAAFEAAAAeAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-03-03T02:30:50.38Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "nlog.config",
+              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\nlog.config",
+              "RelativeDocumentMoniker": "Tests2e2\\nlog.config",
+              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\nlog.config",
+              "RelativeToolTip": "Tests2e2\\nlog.config",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAHAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2024-03-03T02:14:34.19Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "HospitalJournal_SypressTests.js",
-              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\test_e2e\\tests\\e2e\\specs\\HospitalJournal_SypressTests.js",
-              "RelativeDocumentMoniker": "Tests2e2\\test_e2e\\tests\\e2e\\specs\\HospitalJournal_SypressTests.js",
-              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\test_e2e\\tests\\e2e\\specs\\HospitalJournal_SypressTests.js",
-              "RelativeToolTip": "Tests2e2\\test_e2e\\tests\\e2e\\specs\\HospitalJournal_SypressTests.js",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAA6AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-03-02T04:30:30.826Z",
+              "Title": "TestsUtils.cs",
+              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\TestsUtils.cs",
+              "RelativeDocumentMoniker": "Tests2e2\\TestsUtils.cs",
+              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\TestsUtils.cs",
+              "RelativeToolTip": "Tests2e2\\TestsUtils.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABwAAAAEAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-03T02:13:16.668Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "DoctorJournal_SypressTests.js",
-              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\test_e2e\\tests\\e2e\\specs\\DoctorJournal_SypressTests.js",
-              "RelativeDocumentMoniker": "Tests2e2\\test_e2e\\tests\\e2e\\specs\\DoctorJournal_SypressTests.js",
-              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\test_e2e\\tests\\e2e\\specs\\DoctorJournal_SypressTests.js",
-              "RelativeToolTip": "Tests2e2\\test_e2e\\tests\\e2e\\specs\\DoctorJournal_SypressTests.js",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABwAAAA2AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-03-02T04:28:02.209Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "DoctorJournalTests.js",
-              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\test_e2e\\tests\\e2e\\specs\\DoctorJournalTests.js",
-              "RelativeDocumentMoniker": "Tests2e2\\test_e2e\\tests\\e2e\\specs\\DoctorJournalTests.js",
-              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\test_e2e\\tests\\e2e\\specs\\DoctorJournalTests.js",
-              "RelativeToolTip": "Tests2e2\\test_e2e\\tests\\e2e\\specs\\DoctorJournalTests.js",
-              "ViewState": "AQIAAAkAAAAAAAAAAAAAABYAAAA5AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-03-02T04:27:59.25Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "CommonPatientTests.js",
-              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\test_e2e\\tests\\e2e\\specs\\CommonPatientTests.js",
-              "RelativeDocumentMoniker": "Tests2e2\\test_e2e\\tests\\e2e\\specs\\CommonPatientTests.js",
-              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\test_e2e\\tests\\e2e\\specs\\CommonPatientTests.js",
-              "RelativeToolTip": "Tests2e2\\test_e2e\\tests\\e2e\\specs\\CommonPatientTests.js",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAxAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-03-02T04:18:29.269Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
               "Title": "SypressTests.cs",
               "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\SypressTests.cs",
               "RelativeDocumentMoniker": "Tests2e2\\SypressTests.cs",
               "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\SypressTests.cs",
               "RelativeToolTip": "Tests2e2\\SypressTests.cs",
-              "ViewState": "AQIAAAcAAAAAAAAAAAAUwBEAAABBAAAA",
+              "ViewState": "AQIAAAQAAAAAAAAAAAAwwBYAAAADAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-02T03:54:40.532Z",
+              "WhenOpened": "2024-03-03T02:02:48.915Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "DoctorJournalTests.js",
+              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\test_e2e\\tests\\e2e\\specs\\DoctorJournalTests.js",
+              "RelativeDocumentMoniker": "Tests2e2\\test_e2e\\tests\\e2e\\specs\\DoctorJournalTests.js",
+              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\test_e2e\\tests\\e2e\\specs\\DoctorJournalTests.js",
+              "RelativeToolTip": "Tests2e2\\test_e2e\\tests\\e2e\\specs\\DoctorJournalTests.js",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-03-03T02:02:16.515Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "launchSettings.json",
-              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\Properties\\launchSettings.json",
-              "RelativeDocumentMoniker": "UI\\Properties\\launchSettings.json",
-              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\Properties\\launchSettings.json",
-              "RelativeToolTip": "UI\\Properties\\launchSettings.json",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAUAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-03-02T03:53:39.647Z",
+              "Title": "DoctorJournal_SypressTests.js",
+              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\test_e2e\\tests\\e2e\\specs\\DoctorJournal_SypressTests.js",
+              "RelativeDocumentMoniker": "Tests2e2\\test_e2e\\tests\\e2e\\specs\\DoctorJournal_SypressTests.js",
+              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\test_e2e\\tests\\e2e\\specs\\DoctorJournal_SypressTests.js",
+              "RelativeToolTip": "Tests2e2\\test_e2e\\tests\\e2e\\specs\\DoctorJournal_SypressTests.js",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABkAAAAEAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-03-03T02:01:29.944Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\Areas\\Common\\Views\\DoctorJournal\\Index.cshtml",
+              "RelativeDocumentMoniker": "UI\\Areas\\Common\\Views\\DoctorJournal\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\Areas\\Common\\Views\\DoctorJournal\\Index.cshtml",
+              "RelativeToolTip": "UI\\Areas\\Common\\Views\\DoctorJournal\\Index.cshtml",
+              "ViewState": "AQIAAFcAAAAAAAAAAAAAAGoAAAAsAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-03-03T01:57:01.099Z",
               "EditorCaption": ""
             }
           ]

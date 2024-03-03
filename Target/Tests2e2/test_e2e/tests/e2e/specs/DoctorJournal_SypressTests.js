@@ -2,7 +2,7 @@
 
  it('Проверка наличия заголовка', () => {
      cy.visit('https://localhost:7210/Common/DoctorJournal')
-    cy.contains('H1', 'Custody Log')
+     cy.contains('H1', 'Doctor')
     
   })  
   
@@ -13,7 +13,6 @@
     cy.get('#d1To').type('2024-12-31').blur();
     cy.get('#findButton').click();
     cy.wait(2000);
-    const info=cy.get('.dx-info');
 
     cy.get('.dx-info').invoke('text').then((text) => {
       // регулярное выражение для извлечения числа из текста Page 1 of 1 (0 items)

@@ -5,8 +5,8 @@ using NUnit.Framework.Internal;
 using System.Diagnostics;
 using System.Text;
 
-namespace Tests2e2
-{
+namespace Tests2e2 { 
+    [TestFixture]
 	public class SypressTests
 	{
 
@@ -17,7 +17,7 @@ namespace Tests2e2
 		{
 			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-			string command = "dotnet exec mvc.dll --urls=https://localhost:7210";
+			string command = "dotnet exec ui.dll --urls=https://localhost:7210";
 			string workingDirectory =  Path.GetFullPath( @"..\..\..\..\UI\bin\Release\net6.0\publish\");
 
 			mvcProcess = TestsUtils.RunProcess(command, workingDirectory);
