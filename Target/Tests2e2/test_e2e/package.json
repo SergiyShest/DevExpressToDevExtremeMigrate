@@ -3,16 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "test:e2e": "vue-cli-service test:e2e",
+
     "run:e2e": "cypress open ",
-    "lint": "vue-cli-service lint",
-    "run:e2e.DoctorJournal": "cypress run --spec 'tests/e2e/specs/DoctorJournal_SypressTests.js'",
-    "run:e2e.PatientJournal": "cypress run --spec 'tests/e2e/specs/PatientJournal_SypressTests.js'"
+    "run:e2e.DoctorJournal": "cypress run --spec     \"cypress/e2e/DoctorJournal_SypressTests.cy.js\"",
+    "run:e2e.Doctor": "cypress run            --spec \"cypress/e2e/DoctorJournal_SypressTests.cy.js\""
   },
   "dependencies": {
-        "cypress": "^9.7.0"
+        "cypress": "^13.6.6"
   },
   "devDependencies": {
 

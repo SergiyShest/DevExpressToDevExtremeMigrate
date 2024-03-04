@@ -24,6 +24,7 @@ namespace Tests2e2 {
 			Thread.Sleep(1000);
 
 		}
+		
 		[OneTimeTearDown]
 		public void TearDown()
 		{
@@ -33,7 +34,6 @@ namespace Tests2e2 {
 				mvcProcess.WaitForExit(); // Ждем, чтобы убедиться, что процесс завершен
 				mvcProcess.Dispose();
 			}
-
 		}
 
 		[TestCaseSource(nameof(GetTests))]
@@ -54,7 +54,6 @@ namespace Tests2e2 {
 			{
 				Console.WriteLine("Тесты успешно выполнены.");
 			}
-
         } 
 
         public static IEnumerable<TestCaseData> GetTests()
@@ -79,9 +78,5 @@ namespace Tests2e2 {
            
         }
 
-
     }
-
-
-
 }
