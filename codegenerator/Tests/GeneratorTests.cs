@@ -81,13 +81,13 @@ namespace Tests
 
 
 		// [TestCaseSource(nameof(GetDirectories))]
-		[TestCase("e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI\\Areas\\Common\\Views\\PatientJournal")]
+		[TestCase("..\\..\\..\\..\\..\\Source\\UI\\Areas\\Common\\Views\\PatientJournal")]
 		public void TestInfoCollector(string dir)
 		{
 			CollectDataFromDir(dir);
 		}
 
-		[TestCase("e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI", "vPatient", "dob")]
+		[TestCase("..\\..\\..\\..\\..\\Source\\UI", "vPatient", "dob")]
 
 		public void TestEntityData(string dir, string entityName, string expected)
 		{
@@ -96,7 +96,7 @@ namespace Tests
 		}
 
 
-		 [TestCase("e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI")]
+		 [TestCase("..\\..\\..\\..\\..\\Source\\UI")]
 		public void TestInfoCollectorTestAll(string dir)
 		{  AssertCollector assertCollector = new AssertCollector();
 			var infoCollector = new InfoCollector(dir);
@@ -122,12 +122,12 @@ namespace Tests
 		}
 
 
-		[TestCase("e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI\\Areas\\Common\\Views\\DoctorJournal",
-				 "c:\\Users\\Saergey\\source\\repos\\Core\\MVC\\Areas\\Common\\Controllers\\DoctorJournalController.cs")]
-		[TestCase("e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI\\Areas\\Common\\Views\\PatientJournal",
-				 "c:\\Users\\Saergey\\source\\repos\\Core\\MVC\\Areas\\Common\\Controllers\\PatientJournalController.cs")]
-		[TestCase("e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI\\Views\\SamplesBook",
-				  "c:\\Users\\Saergey\\source\\repos\\Core\\MVC\\Controllers\\SamplesBookController.cs")]
+		[TestCase("..\\..\\..\\..\\..\\Source\\UI\\Areas\\Common\\Views\\DoctorJournal",
+				 "..\\..\\..\\..\\..\\Target\\UI\\Areas\\Common\\Controllers\\DoctorJournalController.cs")]
+		[TestCase("..\\..\\..\\..\\..\\Source\\UI\\Areas\\Common\\Views\\PatientJournal",
+				 "..\\..\\..\\..\\..\\Target\\UI\\Areas\\Common\\Controllers\\PatientJournalController.cs")]
+		[TestCase("..\\..\\..\\..\\..\\Source\\UI\\Views\\SamplesBook",
+				  "..\\..\\..\\..\\..\\Target\\UI\\Controllers\\SamplesBookController.cs")]
 		public void GenerateJournalControllerTests(string dir, string expected)
 		{
 
@@ -138,12 +138,12 @@ namespace Tests
 			Assert.That(File.Exists(expected));
 		}
 
-		[TestCase("e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI\\Areas\\Common\\Views\\DoctorJournal",
-				 "c:\\Users\\Saergey\\source\\repos\\Core\\MVC\\Areas\\Common\\Controllers\\DoctorCardController.cs")]
-		[TestCase("e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI\\Areas\\Common\\Views\\PatientJournal",
-		        "c:\\Users\\Saergey\\source\\repos\\Core\\MVC\\Areas\\Common\\Controllers\\PatientJournalController.cs")]
-		[TestCase("e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI\\Views\\SamplesBook",
-                  "c:\\Users\\Saergey\\source\\repos\\Core\\MVC\\Controllers\\SamplesBookCardController.cs")]
+		[TestCase("..\\..\\..\\..\\..\\Source\\UI\\Areas\\Common\\Views\\DoctorJournal",
+				 "..\\..\\..\\..\\..\\Target\\UI\\Areas\\Common\\Controllers\\DoctorCardController.cs")]
+		[TestCase("..\\..\\..\\..\\..\\Source\\UI\\Areas\\Common\\Views\\PatientJournal",
+		        "..\\..\\..\\..\\..\\Target\\UI\\Areas\\Common\\Controllers\\PatientJournalController.cs")]
+		[TestCase("..\\..\\..\\..\\..\\Source\\UI\\Views\\SamplesBook",
+                  "..\\..\\..\\..\\..\\Target\\UI\\Controllers\\SamplesBookCardController.cs")]
 		public void GenerateCardControllerTests(string dir, string expected)
 		{
 
@@ -155,10 +155,10 @@ namespace Tests
 		}
         [TestCase("..\\..\\..\\..\\..\\Source\\UI\\Areas\\Common\\Views\\DoctorJournal",
                  "..\\..\\..\\..\\..\\Target\\UI\\Areas\\Common\\Views\\DoctorCard\\Index.cshtml")]
-        //[TestCase("e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI\\Areas\\Common\\Views\\PatientJournal",
-        //         "c:\\Users\\Saergey\\source\\repos\\Core\\MVC\\Areas\\Common\\Views\\Index.cshtml")]
-        //[TestCase("e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI\\Views\\SamplesBook",
-		      //   "c:\\Users\\Saergey\\source\\repos\\Core\\MVC\\Views\\SamplesBookCard\\Index.cshtml")]
+        [TestCase("..\\..\\..\\..\\..\\Source\\UI\\Areas\\Common\\Views\\PatientJournal",
+                 "..\\..\\..\\..\\..\\Target\\UI\\Areas\\Common\\Views\\Index.cshtml")]
+        [TestCase("..\\..\\..\\..\\..\\Source\\UI\\Views\\SamplesBook",
+		         "..\\..\\..\\..\\..\\Target\\UI\\Views\\SamplesBookCard\\Index.cshtml")]
 		public void GenerateCardViewTests(string dir, string expected)
 		{
             expected =   Path.GetFullPath(expected);
@@ -176,12 +176,12 @@ namespace Tests
 			Assert.That(File.Exists(expected));
 		}
 
-		[TestCase("e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI\\Areas\\Common\\Views\\DoctorJournal",
-				 "c:\\Users\\Saergey\\source\\repos\\Core\\MVC\\Areas\\Common\\Views\\DoctorJournal\\Index.cshtml")]
-		[TestCase("e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI\\Areas\\Common\\Views\\PatientJournal",
-				 "c:\\Users\\Saergey\\source\\repos\\Core\\MVC\\Areas\\Common\\Views\\PatientJournal\\Index.cshtml")]
-		[TestCase("e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI\\Views\\SamplesBook",
-				  "c:\\Users\\Saergey\\source\\repos\\Core\\MVC\\Views\\SamplesBook\\Index.cshtml")]
+		[TestCase("..\\..\\..\\..\\..\\Source\\UI\\Areas\\Common\\Views\\DoctorJournal",
+				 "..\\..\\..\\..\\..\\Target\\UI\\Areas\\Common\\Views\\DoctorJournal\\Index.cshtml")]
+		[TestCase("..\\..\\..\\..\\..\\Source\\UI\\Areas\\Common\\Views\\PatientJournal",
+				 "..\\..\\..\\..\\..\\Target\\UI\\Areas\\Common\\Views\\PatientJournal\\Index.cshtml")]
+		[TestCase("..\\..\\..\\..\\..\\Source\\UI\\Views\\SamplesBook",
+				  "..\\..\\..\\..\\..\\Target\\UI\\Views\\SamplesBook\\Index.cshtml")]
 		public void CenerateJournalViewTests(string dir, string expected)
 		{
 
@@ -192,9 +192,9 @@ namespace Tests
 			Assert.That(File.Exists(expected));
 		}
 
-		[TestCase("e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI\\Areas\\Common\\Views\\DoctorJournal")]
-		[TestCase("e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI\\Areas\\Common\\Views\\PatientJournal")]
-		[TestCase("e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI\\Views\\SamplesBook")]
+		[TestCase("..\\..\\..\\..\\..\\Source\\UI\\Areas\\Common\\Views\\DoctorJournal")]
+		[TestCase("..\\..\\..\\..\\..\\Source\\UI\\Areas\\Common\\Views\\PatientJournal")]
+		[TestCase("..\\..\\..\\..\\..\\Source\\UI\\Views\\SamplesBook")]
 		public void CenerateSypressJournalTests(string dir)
 		{
 
@@ -206,9 +206,9 @@ namespace Tests
 
 		}
 
-		[TestCase("e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI\\Areas\\Common\\Views\\DoctorJournal")]
-		[TestCase("e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI\\Areas\\Common\\Views\\PatientJournal")]
-		[TestCase("e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI\\Views\\SamplesBook")]
+		[TestCase("..\\..\\..\\..\\..\\Source\\UI\\Areas\\Common\\Views\\DoctorJournal")]
+		[TestCase("..\\..\\..\\..\\..\\Source\\UI\\Areas\\Common\\Views\\PatientJournal")]
+		[TestCase("..\\..\\..\\..\\..\\Source\\UI\\Views\\SamplesBook")]
 		public void CenerateMenuTests(string dir)
 		{
 			var generator = new Generator();
@@ -242,7 +242,7 @@ namespace Tests
 
 		public static IEnumerable<TestCaseData> GetDirectories()
 		{
-			string sourcePath = $"e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI\\";
+			string sourcePath = $"..\\..\\..\\..\\..\\Source\\UI\\";
 
 			var dirs = Utils.FindDirectoriesByTemplate(sourcePath, "*grid*.cshtml").Where(x => x.ToLower().Contains("journal"));
 			foreach (var dir in dirs)

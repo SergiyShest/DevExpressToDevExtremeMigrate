@@ -1,0 +1,22 @@
+{
+  "name": "js_tests",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "run:e2e": "cypress open ",
+    "run:e2e.DoctorJournal": "cypress run --spec \"cypress/e2e/DoctorJournal.tests.cy.js\"",
+    "run:e2e.Doctor": "cypress run            --spec \"cypress/e2e/DoctorJournal_SypressTests.cy.js\"",
+    "run:e2e.HospitalJournal": "cypress run --spec \"cypress/e2e/HospitalJournal.tests.cy.js\"",
+    "run:e2e.CustodyLogJournal": "cypress run --spec \"cypress/e2e/CustodyLogJournal.tests.cy.js\"",
+    "run:e2e.PatientJournal": "cypress run --spec \"cypress/e2e/PatientJournal.tests.cy.js\"",
+    "run:e2e.TmpJournal": "cypress run --spec \"cypress/e2e/TmpJournal.tests.cy.js\"",
+    "run:e2e.ReagentJournal": "cypress run --spec \"cypress/e2e/ReagentJournal.tests.cy.js\"",
+    "run:e2e.ReagentLogJournal": "cypress run --spec \"cypress/e2e/ReagentLogJournal.tests.cy.js\"",
+    "run:e2e.ReagentTypeJournal": "cypress run --spec \"cypress/e2e/ReagentTypeJournal.tests.cy.js\"",
+    "run:e2e.ContainerJournal": "cypress run --spec \"cypress/e2e/ContainerJournal.tests.cy.js\"",
+    "run:e2e.SamplesJournal": "cypress run --spec \"cypress/e2e/SamplesJournal.tests.cy.js\""
+  },
+  "dependencies": {
+    "cypress": "^13.6.6"
+  }
+}

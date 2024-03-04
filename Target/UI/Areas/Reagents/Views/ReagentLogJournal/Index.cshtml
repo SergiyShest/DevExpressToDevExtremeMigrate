@@ -2,9 +2,7 @@
 @{
 	Layout = "_Layout";
 }
-<script src="~/lib/vue2.js" ></script>
-<script src="~/BaseMixinSDN.js" asp-append-version="true"></script>
-<script src="~/vueComponents.js" asp-append-version="true"></script>
+
 
 <div style="display:flex;flex-direction:column;align-items:flex-start;align-content:flex-start;align-self:stretch">
 	<h1></h1>
@@ -27,14 +25,16 @@
 	<div id="grid" />
 </div>
 
-<script>
+    <script type="module">
 
     $(window).on("load",function () {
 	@Html.Raw(TempData["StartupScript"])
 		});
-		 let Mode = '@ViewBag.Mode'
-		 let focusedRowKey = null;
-
+	 let Mode = '@ViewBag.Mode'
+	 let focusedRowKey = null;
+         import { KfField, KfInput, KfDate, KfSelect, KfNumber, KfCheck, KfTextarea, KfText, KfButton } from '/js/vue3Components.js';
+         import { baseMixin } from '/js/BaseMixin.js';
+         const { ref } = Vue;
 	 function setDataSource() {
 		 const dataSource = DevExpress.data.AspNet.createStore({
 			 key: "Id",
@@ -47,8 +47,7 @@
 			focusedRowKey = e.component.option('focusedRowKey');
 		}
 
-	 let vue_ = new Vue({
-		 el: "#app",
+	  const app = Vue.createApp({
 		 mixins: [baseMixin],
 		 data() {
 			 return {
@@ -103,6 +102,19 @@
 
 		 }
 	 });
+	  // Registering components
+       //  app.component('kf-field', KfField);
+       app.component('kf-button', KfButton);
+      //  app.component('kf-input', KfInput);
+      //  app.component('kf-date', KfDate);
+      //  app.component('kf-select', KfSelect);
+      //  app.component('kf-number', KfNumber);
+      //  app.component('kf-check', KfCheck);
+      //  app.component('kf-textarea', KfTextarea);
+      //  app.component('kf-text', KfText);
+
+        // Mounting Vue app
+		const vue_ = app.mount('#app');
 
 
 	 function onRowClick(e) {

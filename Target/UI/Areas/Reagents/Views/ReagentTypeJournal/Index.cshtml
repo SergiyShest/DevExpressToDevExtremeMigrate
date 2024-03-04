@@ -3,6 +3,7 @@
 	Layout = "_Layout";
 }
 
+
 <div style="display:flex;flex-direction:column;align-items:flex-start;align-content:flex-start;align-self:stretch">
 	<h1></h1>
 
@@ -15,10 +16,10 @@
 		</div>
 
 		<div style="display:flex;flex-direction:row;">
-			<kf-button id="addButton"		v-if="mode!='view'"		v-on:click.native="AddClick"	text="Добавить"			image="add"></kf-button>
-			<kf-button id="editButton"		v-if="mode!='view'"		v-on:click.native="EditClick"	text="Редактировать"	image="edit"></kf-button>
-			<kf-button id="copyButton"		v-if="mode!='view'"		v-on:click.native="CopyClick"	text="Копировать"		image="copy"></kf-button>
-			<kf-button id="deleteButton"	v-if="mode!='view'"		v-on:click.native="DeleteClick"	text="Удалить"			image="delete"></kf-button>
+			<kf-button id="addButton" v-if="mode!='view'"		v-on:click.native="AddClick"	text="Добавить"			image="add"></kf-button>
+			<kf-button id="editButton" v-if="mode!='view'"		v-on:click.native="EditClick"	text="Редактировать"	image="edit"></kf-button>
+			<kf-button id="copyButton" v-if="mode!='view'"		v-on:click.native="CopyClick"	text="Копировать"		image="copy"></kf-button>
+			<kf-button id="deleteButton" v-if="mode!='view'"	v-on:click.native="DeleteClick"	text="Удалить"			image="delete"></kf-button>
 		</div>
 	</div>
 	<div id="grid" />
@@ -26,15 +27,14 @@
 
     <script type="module">
 
-    $(window).on("load", function () {
-    @Html.Raw(TempData["StartupScript"])
-                    });
-    let Mode = '@ViewBag.Mode';
-    let focusedRowKey = null;
-    let Id = '@ViewBag.Id';
-    import { KfField, KfInput, KfDate, KfSelect, KfNumber, KfCheck, KfTextarea, KfText, KfButton } from '/js/vue3Components.js';
-    import { baseMixin } from '/js/BaseMixin.js';
-    const { ref } = Vue;
+    $(window).on("load",function () {
+	@Html.Raw(TempData["StartupScript"])
+		});
+	 let Mode = '@ViewBag.Mode'
+	 let focusedRowKey = null;
+         import { KfField, KfInput, KfDate, KfSelect, KfNumber, KfCheck, KfTextarea, KfText, KfButton } from '/js/vue3Components.js';
+         import { baseMixin } from '/js/BaseMixin.js';
+         const { ref } = Vue;
 	 function setDataSource() {
 		 const dataSource = DevExpress.data.AspNet.createStore({
 			 key: "Id",
@@ -101,22 +101,20 @@
 			this.FindDate()
 
 		 }
-});
+	 });
 	  // Registering components
-        app.component('kf-field', KfField);
-        app.component('kf-button', KfButton);
-        app.component('kf-input', KfInput);
-        app.component('kf-date', KfDate);
-        app.component('kf-select', KfSelect);
-        app.component('kf-number', KfNumber);
-        app.component('kf-check', KfCheck);
-        app.component('kf-textarea', KfTextarea);
-        app.component('kf-text', KfText);
+       //  app.component('kf-field', KfField);
+       app.component('kf-button', KfButton);
+      //  app.component('kf-input', KfInput);
+      //  app.component('kf-date', KfDate);
+      //  app.component('kf-select', KfSelect);
+      //  app.component('kf-number', KfNumber);
+      //  app.component('kf-check', KfCheck);
+      //  app.component('kf-textarea', KfTextarea);
+      //  app.component('kf-text', KfText);
 
         // Mounting Vue app
 		const vue_ = app.mount('#app');
-
-
 
 
 	 function onRowClick(e) {

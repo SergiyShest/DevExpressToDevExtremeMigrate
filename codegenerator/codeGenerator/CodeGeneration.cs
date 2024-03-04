@@ -17,7 +17,7 @@ namespace CodeGenerator
     {
         ILogger log = LogManager.GetCurrentClassLogger();
 
-        public string TestTarget { get; set; } = "..\\..\\..\\..\\..\\Target\\Tests2e2\\test_e2e";
+        public string TestTarget { get; set; } = "..\\..\\..\\..\\..\\Target\\Tests2e2\\js_tests";
 
         public string TargetMenu { get; set; } = $"..\\..\\..\\..\\..\\Target\\UI\\Views\\Shared\\_Layout.cshtml";
 
@@ -25,16 +25,16 @@ namespace CodeGenerator
 
         public string TargetPath { get; set; } = $"..\\..\\..\\..\\..\\Target\\UI";
 
-        public bool CreateControllers { get; set; } = false;
+        public bool CreateControllers { get; set; } = true;
 
-        public bool CreateCardControllers { get; set; } = false;
+        public bool CreateCardControllers { get; set; } = true;
         public bool CreateViews { get; set; } = true;
 
         public bool CreateCardViews { get; set; } = true;
 
-        public bool CreateTests { get; set; } = false;
+        public bool CreateTests { get; set; } = true;
 
-        public bool CreateMenu { get; set; } = false;
+        public bool CreateMenu { get; set; } = true;
 
         public void Convert()
         {
@@ -50,7 +50,7 @@ namespace CodeGenerator
                     if (CreateCardControllers) GenerateCardController(info);
                     if (CreateCardViews) GenerateCardView(info);
                     if (CreateMenu) GenerateMenu(info);
-                    log.Info("Succsess " + info.Name);
+                    log.Info("Success " + info.Name);
                 }
                 catch (Exception ex)
                 {
@@ -174,7 +174,7 @@ namespace CodeGenerator
 
         public void GenerateJournalTests(IEnumerable<Info> infoList)
         {
-            var testContent = File.ReadAllText("templates/SypressTestJournal.Template", Encoding.GetEncoding(1251));
+            var testContent = File.ReadAllText("templates/CypressTestJournal.Template", Encoding.GetEncoding(1251));
             var jsonConfigPath = Path.Combine(TestTarget, "package.json");
             string jsonConfig = File.ReadAllText(jsonConfigPath);
             JObject packageJson = JObject.Parse(jsonConfig);
@@ -183,10 +183,10 @@ namespace CodeGenerator
             {
                 testContent = testContent.Replace("/Common/DoctorJournal", "/" + info.HtmlRequestPath);
                 testContent = testContent.Replace("$MainHeader$", info.MainHeader);
-                var testName = info.Name + "_SypressTests.js";
-                var viewFullName = Path.Combine(TestTarget + "\\tests\\e2e\\specs\\" + testName);
+                var testName = info.Name + ".tests.cy.js";
+                var viewFullName = Path.Combine(TestTarget + "\\cypress\\e2e\\" + testName);
                 SaveFile(viewFullName, testContent, true, Encoding.UTF8);
-                packageJson["scripts"][$"run:e2e.{info.Name}"] = $"cypress run --spec 'tests/e2e/specs/{testName}'";
+                packageJson["scripts"][$"run:e2e.{info.Name}"] = $"cypress run --spec \"cypress/e2e/{testName}\"";
 
             }
             string updatedJson = JsonConvert.SerializeObject(packageJson, Formatting.Indented);
@@ -206,14 +206,14 @@ namespace CodeGenerator
             {
                 throw new Exception($"сформируй в файле teg id={navMenuId}");
             }
-            var tagItem = Utils.GetTagContentById(menuItemsTags, navItemId);//ищу существующий пункт меню
+            var tagItem = Utils.GetTagContentById(menuItemsTags, navItemId,"a");//ищу существующий пункт меню
             if (tagItem == null)
             {
                 menuItemsTags = menuItemsTags + Environment.NewLine + newItem;//добавляю если нет 
             }
             else
             {
-                menuItemsTags = Utils.ChangeTagContentById(menuItemsTags, navItemId, newItem);//заменяю если есть
+                menuItemsTags = Utils.ChangeTagContentById(menuItemsTags, navItemId, newItem,"a");//заменяю если есть
             }
             content = Utils.ChangeTagContentById(content, navMenuId, menuItemsTags);
             SaveFile(TargetMenu, content);

@@ -1,13 +1,12 @@
-using Newtonsoft.Json;
+
 using Newtonsoft.Json.Linq;
-using NUnit.Framework.Interfaces;
 using NUnit.Framework.Internal;
 using System.Diagnostics;
 using System.Text;
 
 namespace Tests2e2 { 
     [TestFixture]
-	public class SypressTests
+	public class CypressTests
 	{
 
 		Process mvcProcess;
@@ -39,7 +38,7 @@ namespace Tests2e2 {
 		[TestCaseSource(nameof(GetTests))]
 		public void ViewTests(string command )
 		{
-			string workingDirectory = Path.GetFullPath(@"..\..\..\..\Tests2e2\test_e2e");
+			string workingDirectory = Path.GetFullPath(@"..\..\..\..\Tests2e2\js_tests");
 			var process = TestsUtils.RunProcess("npm run "+command, workingDirectory);
 			process.WaitForExit();
 			int exitCode = process.ExitCode;
@@ -58,7 +57,7 @@ namespace Tests2e2 {
 
         public static IEnumerable<TestCaseData> GetTests()
         {
-            string jsonConfigPath = Path.GetFullPath(@"..\..\..\..\Tests2e2\test_e2e\package.json");
+            string jsonConfigPath = Path.GetFullPath(@"..\..\..\..\Tests2e2\js_tests\package.json");
             string jsonConfig = File.ReadAllText(jsonConfigPath);
             JObject packageJson = JObject.Parse(jsonConfig);
             var scripts = packageJson["scripts"];

@@ -13,7 +13,7 @@ namespace CodeGenerator
         NLog.ILogger log = LogManager.GetCurrentClassLogger();
 
         public List<Info> InfoList = new List<Info>();  
-        public InfoCollector(string sourcePath = $"e:\\source\\repos\\lims_portal2\\Sasha\\Sasha.Lims.WebUI\\")
+        public InfoCollector(string sourcePath = "..\\..\\..\\..\\..\\Source\\UI")
         {
             SourcePath = sourcePath;
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
