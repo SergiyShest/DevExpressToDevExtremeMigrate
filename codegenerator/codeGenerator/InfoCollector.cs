@@ -6,29 +6,35 @@ using System.Text;
 
 namespace CodeGenerator
 {
-   public class InfoCollector
+    public class InfoCollector
     {
 
+        public string SourcePath { get; set; } = $"..\\..\\..\\..\\..\\Source\\UI";
+        public string TargetPath { get; set; } = $"..\\..\\..\\..\\..\\Target\\UI";
 
+        //Path to catalog where entity placed
+        public static string EntityPath { get; set; } = "\\DataAccessLayer\\Sasha.Lims.DataAccess.Entities";
 
-        public string SourcePath { get; set; }
+        ILogger log = LogManager.GetCurrentClassLogger();
 
-        NLog.ILogger log = LogManager.GetCurrentClassLogger();
-        Generator _generator;
         public List<Info> InfoList { get; set; } = new List<Info>();
 
-        public InfoCollector(string sourcePath, Generator generator)
+        public InfoCollector(string sourcePath)
         {
-            _generator = generator;
             SourcePath = Path.GetFullPath(sourcePath);
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+        }
+
+
+        public void CollectInfoFromSourcePath()
+        {
             var dirs = Utils.FindDirectoriesByTemplate(SourcePath, "*grid*.cshtml").ToList();//.Where(x => x.ToLower().Contains("journal")
 
             foreach (var dir in dirs)
             {
                 try
                 {
-                        InfoList.Add(CollectInfo(dir));
+                    InfoList.Add(CollectInfo(dir));
                 }
                 catch (Exception ex)
                 {
@@ -37,47 +43,47 @@ namespace CodeGenerator
             }
         }
 
+
         public Info CollectInfo(string dir)
         {
             var files = Directory.GetFiles(dir, "*cshtml").ToList();
             var indexFileName = FindIndex(files);
 
-            string currentView = File.ReadAllText(indexFileName, Encoding.GetEncoding(1251));
-            var gridFileName = FindGrid(currentView, files);
+            string indexFileContent = File.ReadAllText(indexFileName, Encoding.GetEncoding(1251));
+            var gridFileName = FindGrid(indexFileContent, files);
             string contentGrid = File.ReadAllText(gridFileName, Encoding.GetEncoding(1251));
             var info = new Info()
             {
                 Path = dir
             };
 
-            info.MainHeader = Utils.ExtractFirstTextFromHtml(currentView);
+            info.MainHeader = Utils.ExtractFirstTextFromHtml(indexFileContent);
 
             info.EntityFullName = Utils.GetEntity(dir);
             if (string.IsNullOrEmpty(info.EntityFullName)) //try find entity in context
             {
-                info.EntityFullName = Utils.ExtractEntity(currentView);
+                info.EntityFullName = Utils.ExtractEntity(indexFileContent);
             }
             if (string.IsNullOrEmpty(info.EntityFullName)) //try find entity in grid
             {
                 info.EntityFullName = Utils.ExtractEntity(contentGrid);
             }
+            GeneratePathsForInfo(info, TargetPath);
             if (string.IsNullOrEmpty(info.EntityFullName)) //try find entity in current Controller
             {
-                _generator.GeneratePathsForInfo(info);
                 var controllerName = Path.Combine(info.ControllerPath, info.CardControllerName + ".cs");
                 if (File.Exists(controllerName))
                 {
-                    string contentCurentController = File.ReadAllText(controllerName, Encoding.GetEncoding(1251));
-                    info.EntityFullName = Utils.ExtractEntityFromController(contentCurentController);
+                    string contentController = File.ReadAllText(controllerName, Encoding.GetEncoding(1251));
+                    info.EntityFullName = Utils.ExtractEntityFromController(contentController);
                 }
             }
 
             info.Columns = Utils.ExtractColumns(contentGrid);
             if (!string.IsNullOrEmpty(info.EntityName))
             {
-
                 info.EntityDateField = Utils.ExtractEntityDate(SourcePath, info.EntityName);
-                info.Fields = Utils.ExtractFields(SourcePath, info.EntityName, info.Columns);
+                info.Fields = Utils.ExtractFields(SourcePath, info.EntityName, info.Columns, EntityPath);
             }
             else
             {
@@ -86,7 +92,6 @@ namespace CodeGenerator
 
             return info;
         }
-
 
         public static void Collect(Info info, string sourcePath)
         {
@@ -102,11 +107,55 @@ namespace CodeGenerator
             {
                 info.EntityDateField = Utils.ExtractEntityDate(sourcePath, info.EntityName);
                 var entName = info.CardEntityName ?? info.EntityName;
-                info.Fields = Utils.ExtractFields(sourcePath, entName, info.Columns);
+                info.Fields = Utils.ExtractFields(sourcePath, entName, info.Columns, EntityPath);
             }
         }
 
+        public static void GeneratePathsForInfo(Info info, string targetPath)
+        {
+            var di = new DirectoryInfo(info.Path);
+            List<string> dirs = new List<string>();
+            while (!di.Name.ToLower().EndsWith("ui"))
+            {
+                dirs.Insert(0, di.Name);
+                di = di.Parent;
+            }
+            info.Name = dirs[dirs.Count - 1];
+            var newViewPath = Path.Combine(dirs.ToArray());
+            info.JournalViewPath = Path.Combine(targetPath, newViewPath);
 
+            info.JournalControllerName = dirs[dirs.Count - 1] + "Controller";
+            var isInArea = false;
+            if (dirs.Count > 2)
+            {
+                dirs.RemoveRange(dirs.Count - 2, 2);
+                info.DataPath = dirs.Last() + "/" + info.Name;
+                isInArea = true;
+            }
+            else
+            {
+                dirs.RemoveAt(0);
+                info.DataPath = dirs.Last();
+            }
+
+
+            string newControllerPath;
+            if (isInArea)
+            {
+                info.Area = dirs.Last();
+                dirs.Add("Controllers");
+                newControllerPath = Path.Combine(dirs.ToArray());
+                info.NameSpace = "UI." + string.Join(".", dirs.ToArray());
+            }
+            else
+            {
+                newControllerPath = "Controllers";
+                info.NameSpace = "UI.Controllers";
+            }
+
+            info.ControllerPath = Path.Combine(targetPath, newControllerPath);
+
+        }
 
         private static string FindIndex(List<string> files)
         {
@@ -132,6 +181,5 @@ namespace CodeGenerator
         }
 
     }
-
 
 }

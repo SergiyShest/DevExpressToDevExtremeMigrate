@@ -14,7 +14,11 @@
     "run:e2e.ReagentLogJournal": "cypress run --spec \"cypress/e2e/ReagentLogJournal.tests.cy.js\"",
     "run:e2e.ReagentTypeJournal": "cypress run --spec \"cypress/e2e/ReagentTypeJournal.tests.cy.js\"",
     "run:e2e.ContainerJournal": "cypress run --spec \"cypress/e2e/ContainerJournal.tests.cy.js\"",
-    "run:e2e.SamplesJournal": "cypress run --spec \"cypress/e2e/SamplesJournal.tests.cy.js\""
+    "run:e2e.SamplesJournal": "cypress run --spec \"cypress/e2e/SamplesJournal.tests.cy.js\"",
+    "run:e2e.SamplesBook": "cypress run --spec \"cypress/e2e/SamplesBook.tests.cy.js\"",
+    "run:e2e.Process": "cypress run --spec \"cypress/e2e/Process.tests.cy.js\"",
+    "run:e2e.Run": "cypress run --spec \"cypress/e2e/Run.tests.cy.js\"",
+    "run:e2e.SelectSamples": "cypress run --spec \"cypress/e2e/SelectSamples.tests.cy.js\""
   },
   "dependencies": {
     "cypress": "^13.6.6"

@@ -5,7 +5,7 @@
 
 
 <div style="display:flex;flex-direction:column;align-items:flex-start;align-content:flex-start;align-self:stretch">
-	<h1></h1>
+	<h1>vReagent</h1>
 
 	<div id="app" style="display: flex;flex-direction: column;width: 450px;">
 		<div style="display: flex;align-items:center">
@@ -68,18 +68,18 @@
 			    setDataSource();
 			 },
 			AddClick() {
-				xPopup ('Карточка $Header$', '/Reagents/ReagentCard/Index' + '?page_mode=modal', 1024, 916);
+				xPopup ('Карточка vReagent', '/Reagents/ReagentCard/Index' + '?page_mode=modal', 1024, 916);
 			}
 			,
 			 EditClick() {
 				if (checkItem(focusedRowKey)) {
-					xPopup('Карточка $Header$', '/Reagents/ReagentCard/Index?id=' + focusedRowKey  , 1024, 916);
+					xPopup('Карточка vReagent', '/Reagents/ReagentCard/Index?id=' + focusedRowKey  , 1024, 916);
 				}
 
 			},
 			 CopyClick() {
 				if (checkItem(focusedRowKey)) {
-					   xPopup('Карточка $Header$', '/Reagents/ReagentCard/Index?id=' + focusedRowKey + '&mode=copy', 1024, 916);
+					   xPopup('Карточка vReagent', '/Reagents/ReagentCard/Index?id=' + focusedRowKey + '&mode=copy', 1024, 916);
 				}
 			},
 
@@ -133,7 +133,7 @@
         },
         "export": {//выгрузка в excel
             enabled: true,
-            fileName: "$HeaderReport$",
+            fileName: "Отчет ",
             allowExportSelectedData: true
         },
         focusedRowEnabled: true,

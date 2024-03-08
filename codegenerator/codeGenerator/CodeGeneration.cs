@@ -4,7 +4,7 @@ using NLog;
 using System.Diagnostics;
 using System.Text;
 
- using System.IO;
+using System.IO;
 using System.Net;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
@@ -21,8 +21,9 @@ namespace CodeGenerator
 {
     public class Generator
     {
-        #region properties
+        #region Properties
         ILogger log = LogManager.GetCurrentClassLogger();
+        #region Pathces
 
         public string TestTarget { get; set; } = "..\\..\\..\\..\\..\\Target\\Tests2e2\\js_tests";
 
@@ -32,20 +33,23 @@ namespace CodeGenerator
 
         public string TargetPath { get; set; } = $"..\\..\\..\\..\\..\\Target\\UI";
 
-        public bool CreateJournControllers { get; set; } = false;
+        #endregion
+
+        #region Switches
+        public bool CreateJournalControllers { get; set; } = false;
 
         public bool CreateCrdControllers { get; set; } = false;
 
-        public bool CreateJournViews { get; set; } = true;
-
-        public bool CreateTests { get; set; } = false;
+        public bool CreateJournalViews { get; set; } = true;
 
         public bool CreateMenu { get; set; } = false;
 
-        public bool GenerateCard { get; set; } = false;
+        public bool CreateCard { get; set; } = false;
+
+        public bool CreateTests { get; set; } = false;
 
         public FileSaveMode SaveMode { get; set; } = FileSaveMode.Replace;
-
+        #endregion
         public List<Info> InfoList { get; set; }
 
         public enum FileSaveMode
@@ -57,15 +61,9 @@ namespace CodeGenerator
 
         #endregion
 
-        public Generator(string entityName = null)
+        public Generator()
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            LoadInfo(entityName);
-        }
-
-        public void CollectInfo()
-        {
-            InfoList = new InfoCollector(SourcePath, this).InfoList;
         }
 
         public void LoadInfo(string entityName = null, string fileName = "templates/collector.json")
@@ -82,11 +80,11 @@ namespace CodeGenerator
             }
         }
 
-        public void Convert()
+        public void Generate()
         {
             if (InfoList == null)
             {
-                throw new Exception("Нужно собрать иформaцию");
+                throw new Exception("Нужно собрать иформaцию. Выполните сначала функцию LoadInfo");
             }
 
             foreach (var info in InfoList)
@@ -94,14 +92,15 @@ namespace CodeGenerator
                 if (info.AlwaysSkip == true) continue;
                 try
                 {
-                    GeneratePathsForInfo(info);
-                    if (CreateJournControllers) GenerateJournalController(info);
-                    if (CreateJournViews) GenerateJournalView(info);
+                    InfoCollector.GeneratePathsForInfo(info, TargetPath);
+                    if (CreateJournalControllers) GenerateJournalController(info);
+                    if (CreateJournalViews) GenerateJournalView(info);
                     if (CreateCrdControllers) GenerateCardController(info);
-                    if (GenerateCard) GenerateCardView(info);
+                    if (CreateCard) GenerateCardView(info);
                     if (CreateMenu) GenerateMenu(info);
                     log.Info("Success " + info.Name);
                 }
+
                 catch (Exception ex)
                 {
                     Debug.WriteLine(info.Path + " " + ex.ToString());
@@ -109,54 +108,6 @@ namespace CodeGenerator
                 }
             }
             if (CreateTests) GenerateJournalTests(InfoList);
-        }
-
-        public void GeneratePathsForInfo(Info info)
-        {
-
-
-            var di = new DirectoryInfo(info.Path);
-            List<string> dirs = new List<string>();
-            while (!di.Name.ToLower().EndsWith("ui"))
-            {
-                dirs.Insert(0, di.Name);
-                di = di.Parent;
-            }
-            info.Name = dirs[dirs.Count - 1];
-            var newViewPath = Path.Combine(dirs.ToArray());
-            info.JournalViewPath = Path.Combine(TargetPath, newViewPath);
-
-            info.JournalControllerName = dirs[dirs.Count - 1] + "Controller";
-            var isInArea = false;
-            if (dirs.Count > 2)
-            {
-                dirs.RemoveRange(dirs.Count - 2, 2);
-                info.DataPath = dirs.Last() + "/" + info.Name;
-                isInArea = true;
-            }
-            else
-            {
-                dirs.RemoveAt(0);
-                info.DataPath = dirs.Last();
-            }
-
-
-            string newControllerPath;
-            if (isInArea)
-            {
-                info.Area = dirs.Last();
-                dirs.Add("Controllers");
-                newControllerPath = Path.Combine(dirs.ToArray());
-                info.NameSpace = "UI." + string.Join(".", dirs.ToArray());
-            }
-            else
-            {
-                newControllerPath = "Controllers";
-                info.NameSpace = "UI.Controllers";
-            }
-
-            info.ControllerPath = Path.Combine(TargetPath, newControllerPath);
-
         }
 
         public void GenerateJournalController(Info info)
@@ -225,8 +176,6 @@ namespace CodeGenerator
                 viewContent = File.ReadAllText("templates/targetJournal.Template", Encoding.GetEncoding(1251));
             }
 
-
-
             viewContent = viewContent.Replace("$MainHeader$", info.MainHeader ?? info.EntityName);
             viewContent = viewContent.Replace("$columns$", info.ColumnsStr);
             viewContent = viewContent.Replace("$DateHeader$", info.DateHeader);
@@ -264,7 +213,7 @@ namespace CodeGenerator
 
             }
             string updatedJson = JsonConvert.SerializeObject(packageJson, Formatting.Indented);
-            SaveFile(jsonConfigPath, updatedJson,true);
+            SaveFile(jsonConfigPath, updatedJson, true);
 
 
         }
@@ -278,7 +227,7 @@ namespace CodeGenerator
             var menuItemsTags = Utils.GetTagContentById(content, navMenuId);
             if (menuItemsTags == null)
             {
-                throw new Exception($"сформируй в файле teg id={navMenuId}");
+                throw new Exception($"Create teg id={navMenuId}");
             }
             var tagItem = Utils.GetTagContentById(menuItemsTags, navItemId, "a");//ищу существующий пункт меню
             if (tagItem == null)

@@ -6,21 +6,23 @@ using NLog;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using NUnit.Framework.Internal;
 using System.Text;
+using static CodeGenerator.Generator;
 
 namespace Tests
 {
 
 	public class GeneratorCommand
 	{
-		NLog.ILogger log = LogManager.GetCurrentClassLogger();
 
-		#region tests
-
+        /// <summary>
+        /// סבמנ 
+        /// </summary>
+        /// <param name="dir"></param>
         [TestCase("..\\..\\..\\..\\..\\Source\\UI")]
         public void CollectInfo(string dir)
         {
 
-            var infoCollector = new InfoCollector(dir, new Generator());
+            var infoCollector = new InfoCollector(dir);
 
             var data = infoCollector.InfoList.Select(info => new { info.Path, info.EntityName, info.MainHeader, info.CardHeader, info.CardEntityName, info.AlwaysSkip });
             String json = JsonConvert.SerializeObject(data);
@@ -31,8 +33,18 @@ namespace Tests
         [Test]
 		public void GenerateAll()
 		{
-			var cg = new Generator();
-			cg.Convert();
+			var generator = new Generator();
+			generator.LoadInfo();
+            generator.CreateJournalControllers = true;
+            generator.CreateCrdControllers  = true;
+            generator.CreateJournalViews  = true;
+            generator.CreateMenu  = true;
+            generator.CreateCard  = true;
+            generator.CreateTests  = true;
+            generator.SaveMode  = FileSaveMode.Replace;
+
+
+        generator.Generate();
 		}
 
 
@@ -42,40 +54,21 @@ namespace Tests
 		{
             dir = Path.GetFullPath( dir);
             var generator = new Generator();
-			var info = CollectDataFromDir(dir);
-			generator.GeneratePathsForInfo(info);
+            var infoCollector = new  InfoCollector(dir);
+            infoCollector.CollectInfoFromSourcePath();
+			if (infoCollector.InfoList.Count != 1) { throw new ApplicationException($" In this test expected 1 info, bat wos {infoCollector.InfoList.Count}"); }
+			var info = infoCollector.InfoList[0];	
 			generator.GenerateJournalController(info);
 			generator.GenerateJournalView(info);
 			generator.GenerateCardView(info);
 			generator.GenerateCardController(info);
 			generator.GenerateCardView(info);
 			generator.GenerateMenu(info);
-
-           generator.GenerateJournalTests(new List<Info> { info });
+            generator.GenerateJournalTests(new List<Info> { info });
 		}
 
 
-        #endregion
 
-        #region service
-        private static Info CollectDataFromDir(string dir)
-		{
-
-			var assertCollector = new AssertCollector();
-
-			var infoCollector = new InfoCollector("not exists dir",new Generator());
-
-			infoCollector.SourcePath = Path.GetFullPath( "..\\..\\..\\..\\..\\Source\\UI");
-			var info = infoCollector.CollectInfo(dir);
-			assertCollector.Assert(!string.IsNullOrEmpty(info.Path), "Path should not be empty or null.");
-			assertCollector.Assert(!string.IsNullOrEmpty(info.EntityFullName), "EntityName should not be empty or null.");
-			assertCollector.Assert(info.Columns.Count > 0, "Columns should contain at least one element.");
-
-			assertCollector.ReportFailures();
-			return info;
-		}
-
-		#endregion
 	}
 }
 

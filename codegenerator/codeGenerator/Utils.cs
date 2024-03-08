@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Reflection.Metadata.Ecma335;
 using System.Text.RegularExpressions;
@@ -13,7 +14,7 @@ namespace CodeGenerator
             try
             {
                 // Рекурсивно ищем все файлы с шаблоном 
-                var matchingFiles = Directory.GetFiles(rootDirectory+"/Areas",template, SearchOption.AllDirectories);
+                var matchingFiles = Directory.GetFiles(rootDirectory,template, SearchOption.AllDirectories);
 
                 // Извлекаем директории из найденных файлов
                 var matchingDirectories = matchingFiles.Select(Path.GetDirectoryName).Distinct().ToArray();
@@ -206,11 +207,17 @@ namespace CodeGenerator
 			}
 		}
 
-		internal static List<FieldDescription> ExtractFields(string dir, string entityName, List < ColumnDescription > columnDescr)
+		internal static List<FieldDescription> ExtractFields(string dir, string entityName, List < ColumnDescription > columnDescr,string entityPath)
 		{
             var res =  new List<FieldDescription>();
 			var directory = new DirectoryInfo(dir);
-			var matchingFiles = Directory.GetFiles(directory.Parent.FullName+"\\DataAccessLayer\\Sasha.Lims.DataAccess.Entities", entityName + ".cs", SearchOption.AllDirectories);
+
+            while (directory.FullName.ToUpper().Contains("\\UI"))
+            {
+                directory = directory.Parent;
+            }
+
+            var matchingFiles = Directory.GetFiles(directory.FullName+ entityPath, entityName + ".cs", SearchOption.AllDirectories);
 			if (matchingFiles.Length > 0)
 			{
 				foreach (var matchingFile in matchingFiles)

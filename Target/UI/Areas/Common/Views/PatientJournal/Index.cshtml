@@ -68,18 +68,18 @@
 			    setDataSource();
 			 },
 			AddClick() {
-				xPopup ('Карточка $Header$', '/Common/PatientCard/Index' + '?page_mode=modal', 1024, 916);
+				xPopup ('Карточка vPatient', '/Common/PatientCard/Index' + '?page_mode=modal', 1024, 916);
 			}
 			,
 			 EditClick() {
 				if (checkItem(focusedRowKey)) {
-					xPopup('Карточка $Header$', '/Common/PatientCard/Index?id=' + focusedRowKey  , 1024, 916);
+					xPopup('Карточка vPatient', '/Common/PatientCard/Index?id=' + focusedRowKey  , 1024, 916);
 				}
 
 			},
 			 CopyClick() {
 				if (checkItem(focusedRowKey)) {
-					   xPopup('Карточка $Header$', '/Common/PatientCard/Index?id=' + focusedRowKey + '&mode=copy', 1024, 916);
+					   xPopup('Карточка vPatient', '/Common/PatientCard/Index?id=' + focusedRowKey + '&mode=copy', 1024, 916);
 				}
 			},
 
@@ -133,7 +133,7 @@
         },
         "export": {//выгрузка в excel
             enabled: true,
-            fileName: "$HeaderReport$",
+            fileName: "Отчет ",
             allowExportSelectedData: true
         },
         focusedRowEnabled: true,

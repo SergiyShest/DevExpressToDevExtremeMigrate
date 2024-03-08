@@ -8,7 +8,7 @@
 
 	<div id="app" style="display: flex;flex-direction: column;width: 450px;">
 		<div id="items"  class="grid-container">
-		    /<kf-number text = 'Id' v-model = 'Item.Id'  ></kf-number>
+		    <kf-number text = 'Id' v-model = 'Item.Id'  ></kf-number>
 <kf-input text = 'Name' v-model = 'Item.Name'  ></kf-input>
 <kf-input text = 'VendorName' v-model = 'Item.VendorName'  ></kf-input>
 <kf-number text = 'Reagent Id' v-model = 'Item.ReagentId'  ></kf-number>
@@ -53,7 +53,7 @@
 		 ,
 		 methods: {
 			 Get() {
-				 const pathEnd = "/Reagents/ReagentLogCard/Get?id="+Id;
+				 const pathEnd = "/Contract/DkCard/Get?id="+Id;
 				 this.FetchJson( pathEnd,this.Ok)
 			 },
 			 Ok(data) {

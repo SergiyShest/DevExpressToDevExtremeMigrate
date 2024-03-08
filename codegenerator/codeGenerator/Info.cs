@@ -64,15 +64,13 @@ namespace CodeGenerator
 
         }
 
-
-
         public string EntityFullName { get; set; }
 
         public string MainHeader { get; set; }
 
         public string CardHeader { get; set; }
 
-        #region IsGuide будет использован упрощенный шаблон при генерации формы журнала
+        #region IsGuide при генерации формы журнала будет использован шаблон без дополнительных кнопок для редактирования.
         bool? _isGuide;
         public bool? IsGuide
         {
@@ -109,6 +107,7 @@ namespace CodeGenerator
                 return columns.ToString();
             }
         }
+       
         /// <summary>
         /// список полей в  форме редактирования
         /// </summary>

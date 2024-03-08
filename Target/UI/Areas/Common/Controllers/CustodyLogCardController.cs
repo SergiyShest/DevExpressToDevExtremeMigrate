@@ -1,6 +1,5 @@
 using Entity;
 using Sasha.Lims.DataAccess.Entities.Entity;
-using Sasha.Lims.DataAccess.Entities.Entity;
 using Entity.Controllers;
 using Microsoft.AspNetCore.Mvc;
 

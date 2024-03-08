@@ -1,14 +1,13 @@
 using Entity;
-using Sasha.Lims.DataAccess.Entities.Entity;
 using Entity.Controllers;
 using Microsoft.AspNetCore.Mvc;
 namespace UI.Areas.Common.Controllers{
     [Area("Common")]
-    public class TmpJournalController : GenericJournalController<vPatient>
+    public class TmpJournalController : GenericJournalController<vAnswer2>
     {
         public TmpJournalController(IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor) { }
 
-        protected override IQueryable<vPatient> FilterAction(IQueryable<vPatient> answers) {
+        protected override IQueryable<vAnswer2> FilterAction(IQueryable<vAnswer2> answers) {
             var dateFrom = base.HttpContext.Session.GetString("dateFrom");
             var dateTo = base.HttpContext.Session.GetString("dateTo");
             if (!string.IsNullOrEmpty(dateFrom) && DateTime.TryParse(dateFrom, out DateTime dateFr))
