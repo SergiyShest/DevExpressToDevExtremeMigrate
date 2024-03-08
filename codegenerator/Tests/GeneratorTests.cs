@@ -69,15 +69,9 @@ namespace Tests
 		}
         #endregion
 
-        #region MyRegion
+        #region tests 2
 
-        [Test]
-		public void TestCodeGenerator()
-		{
-			var cg = new Generator();
-			cg.Convert();
-			//  Assert.That(File.Exists(cg.ResultFilePath));
-		}
+       
 
 
 		// [TestCaseSource(nameof(GetDirectories))]
@@ -97,32 +91,34 @@ namespace Tests
 
 
 		 [TestCase("..\\..\\..\\..\\..\\Source\\UI")]
-		public void TestInfoCollectorTestAll(string dir)
-		{  AssertCollector assertCollector = new AssertCollector();
-			var infoCollector = new InfoCollector(dir);
-			var data = infoCollector.InfoList.Select(info => new { name = info.Path ,info.EntityName,info.MainHeader,info.CardEntityName,info.AlwaysSkip}); ;
+        public void TestInfoCollectorTestAll(string dir)
+        {
+            AssertCollector assertCollector = new AssertCollector();
+            var infoCollector = new InfoCollector(dir, new Generator());
 
-            var serialized= JsonConvert.SerializeObject(data);
-			File.WriteAllText("C:tmp/collect.json", serialized );
-
-			foreach (var info in infoCollector.InfoList)
-			{
-				if (!string.IsNullOrEmpty(info.Path) &&
-				 !string.IsNullOrEmpty(info.MainHeader) &&
-				 !string.IsNullOrEmpty(info.EntityFullName) &&
-				 info.Columns.Count > 0)
-				{
-					log.Debug(info.Path);
-				}
-				assertCollector.Assert(!string.IsNullOrEmpty(info.MainHeader), "MainHeader :" + info.Path);
-				assertCollector.Assert(!string.IsNullOrEmpty(info.EntityName), "EntityName :" +  info.Path);
-				assertCollector.Assert(info.Columns.Count > 0, "Columns.Count > 0 :;" +  info.Path);
-			}
-			assertCollector.ReportFailures();
-		}
+            var data = infoCollector.InfoList.Select(info => new { name = info.Path, info.EntityName, info.MainHeader, info.CardHeader, info.CardEntityName,info.AlwaysSkip });
+            String json = JsonConvert.SerializeObject(data);
+            File.WriteAllText("C:\\tmp\\collector.json", json);
 
 
-		[TestCase("..\\..\\..\\..\\..\\Source\\UI\\Areas\\Common\\Views\\DoctorJournal",
+            foreach (var info in infoCollector.InfoList)
+            {
+                if (!string.IsNullOrEmpty(info.Path) &&
+                 !string.IsNullOrEmpty(info.MainHeader) &&
+                 !string.IsNullOrEmpty(info.EntityFullName) &&
+                 info.Columns.Count > 0)
+                {
+                    log.Debug(info.Path);
+                }
+                assertCollector.Assert(!string.IsNullOrEmpty(info.MainHeader), "MainHeader :" + info.Path);
+                assertCollector.Assert(!string.IsNullOrEmpty(info.EntityName), "EntityName :" + info.Path);
+                assertCollector.Assert(info.Columns.Count > 0, "Columns.Count > 0 :;" + info.Path);
+            }
+            assertCollector.ReportFailures();
+        }
+
+
+        [TestCase("..\\..\\..\\..\\..\\Source\\UI\\Areas\\Common\\Views\\DoctorJournal",
 				 "..\\..\\..\\..\\..\\Target\\UI\\Areas\\Common\\Controllers\\DoctorJournalController.cs")]
 		[TestCase("..\\..\\..\\..\\..\\Source\\UI\\Areas\\Common\\Views\\PatientJournal",
 				 "..\\..\\..\\..\\..\\Target\\UI\\Areas\\Common\\Controllers\\PatientJournalController.cs")]
@@ -227,7 +223,7 @@ namespace Tests
 		{
 
 			var assertCollector = new AssertCollector();
-			var infoCollector = new InfoCollector("not exists dir");
+			var infoCollector = new InfoCollector("not exists dir",new Generator());
 
 			infoCollector.SourcePath = Path.GetFullPath( "..\\..\\..\\..\\..\\Source\\UI");
 			var info = infoCollector.CollectInfo(dir);

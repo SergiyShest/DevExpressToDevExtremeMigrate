@@ -16,14 +16,23 @@ namespace Tests
 
 		#region tests
 
+        [TestCase("..\\..\\..\\..\\..\\Source\\UI")]
+        public void CollectInfo(string dir)
+        {
 
+            var infoCollector = new InfoCollector(dir, new Generator());
+
+            var data = infoCollector.InfoList.Select(info => new { info.Path, info.EntityName, info.MainHeader, info.CardHeader, info.CardEntityName, info.AlwaysSkip });
+            String json = JsonConvert.SerializeObject(data);
+            File.WriteAllText("C:\\tmp\\collector.json", json);
+
+        }
 
         [Test]
 		public void GenerateAll()
 		{
 			var cg = new Generator();
 			cg.Convert();
-			//  Assert.That(File.Exists(cg.ResultFilePath));
 		}
 
 
@@ -46,19 +55,19 @@ namespace Tests
 		}
 
 
-		#endregion
+        #endregion
 
-		#region service
-		private static Info CollectDataFromDir(string dir)
+        #region service
+        private static Info CollectDataFromDir(string dir)
 		{
 
 			var assertCollector = new AssertCollector();
-			var infoCollector = new InfoCollector("not exists dir");
+
+			var infoCollector = new InfoCollector("not exists dir",new Generator());
 
 			infoCollector.SourcePath = Path.GetFullPath( "..\\..\\..\\..\\..\\Source\\UI");
 			var info = infoCollector.CollectInfo(dir);
 			assertCollector.Assert(!string.IsNullOrEmpty(info.Path), "Path should not be empty or null.");
-			//            assertCollector.Assert(!string.IsNullOrEmpty(info.MainHeader), "MainHeader should not be empty or null.");
 			assertCollector.Assert(!string.IsNullOrEmpty(info.EntityFullName), "EntityName should not be empty or null.");
 			assertCollector.Assert(info.Columns.Count > 0, "Columns should contain at least one element.");
 

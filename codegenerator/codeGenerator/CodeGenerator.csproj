@@ -13,6 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="templates\collector.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="templates\CypressTestJournal.Template">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

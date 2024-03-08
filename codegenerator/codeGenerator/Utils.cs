@@ -13,7 +13,7 @@ namespace CodeGenerator
             try
             {
                 // Рекурсивно ищем все файлы с шаблоном 
-                var matchingFiles = Directory.GetFiles(rootDirectory,template, SearchOption.AllDirectories);
+                var matchingFiles = Directory.GetFiles(rootDirectory+"/Areas",template, SearchOption.AllDirectories);
 
                 // Извлекаем директории из найденных файлов
                 var matchingDirectories = matchingFiles.Select(Path.GetDirectoryName).Distinct().ToArray();
@@ -59,6 +59,20 @@ namespace CodeGenerator
             }
         }
 
+
+        static Dictionary<string,string> specialСases = new Dictionary<string,string>();
+
+        internal static string GetEntity(string dir)
+        {
+            var name = new DirectoryInfo(dir).Name;
+            var key = specialСases.Keys.FirstOrDefault(x => x == name);
+            if (key != null)
+            {
+                return specialСases[key];
+            }
+            return null;
+        }
+
         public static string ExtractFirstTextFromHtml(string content,string tag="h1")
         {
 
@@ -79,14 +93,21 @@ namespace CodeGenerator
 
         internal static string ExtractEntity(string content)
         {
-            string searchPattern = @"@model\s+IQueryable<([\w\.]+)>";
+            string searchPattern = @"@model\s+\w+<([\w\.]+)>";
+            return ExtractValue(content, searchPattern);
+        }
+
+        internal static string ExtractEntityFromController(string content)
+        {
+            string searchPattern = @"@model\s+GenericCardController<([\w\.]+)>";
             return ExtractValue(content, searchPattern);
         }
 
         public static string? ExtractEntityDate(string dir,string entityName)
         {
             var directory = new DirectoryInfo(dir);
-			var matchingFiles = Directory.GetFiles(directory.Parent.FullName+"\\DataAccessLayer\\Sasha.Lims.DataAccess.Entities", entityName+".cs", SearchOption.AllDirectories); 
+            var path= directory.Parent.FullName;
+			var matchingFiles = Directory.GetFiles(path, entityName+".cs", SearchOption.AllDirectories); 
             if(matchingFiles.Length > 0)
             {
                 foreach (var matchingFile in matchingFiles) 
@@ -187,7 +208,7 @@ namespace CodeGenerator
 
 		internal static List<FieldDescription> ExtractFields(string dir, string entityName, List < ColumnDescription > columnDescr)
 		{
-            var res=  new List<FieldDescription>();
+            var res =  new List<FieldDescription>();
 			var directory = new DirectoryInfo(dir);
 			var matchingFiles = Directory.GetFiles(directory.Parent.FullName+"\\DataAccessLayer\\Sasha.Lims.DataAccess.Entities", entityName + ".cs", SearchOption.AllDirectories);
 			if (matchingFiles.Length > 0)

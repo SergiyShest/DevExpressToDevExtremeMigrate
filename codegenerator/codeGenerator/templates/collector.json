@@ -1,0 +1,106 @@
+[
+  {
+    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Areas\\Common\\Views\\CustodyLogJournal",
+    "EntityName": "vCustodyLog",
+    "MainHeader": "Custody Log",
+    "CardHeader": null,
+    "CardEntityName": "vCustodyLog",
+    "AlwaysSkip": false
+  },
+  {
+    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Areas\\Common\\Views\\DoctorJournal",
+    "EntityName": "vDoctor",
+    "MainHeader": "Doctor journal",
+    "CardHeader": null,
+    "CardEntityName": "vDoctor",
+    "AlwaysSkip": false
+  },
+  {
+    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Areas\\Common\\Views\\HospitalJournal",
+    "EntityName": "vHospital",
+    "MainHeader": "Hospital journal",
+    "CardHeader": null,
+    "CardEntityName": "vHospital",
+    "AlwaysSkip": false
+  },
+  {
+    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Areas\\Common\\Views\\PatientJournal",
+    "EntityName": "vPatient",
+    "MainHeader": "Patient journal",
+    "CardHeader": null,
+    "CardEntityName": "vPatient",
+    "AlwaysSkip": false
+  },
+  {
+    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Areas\\Common\\Views\\TmpJournal",
+    "EntityName": "vPatient",
+    "MainHeader": "Patients journal",
+    "CardHeader": null,
+    "CardEntityName": "vPatient",
+    "AlwaysSkip": false
+  },
+  {
+    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Areas\\Reagents\\Views\\ReagentJournal",
+    "EntityName": "vReagent",
+    "MainHeader": null,
+    "CardHeader": null,
+    "CardEntityName": "vReagent",
+    "AlwaysSkip": false
+  },
+  {
+    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Areas\\Reagents\\Views\\ReagentLogJournal",
+    "EntityName": "vReagentLog",
+    "MainHeader": null,
+    "CardHeader": null,
+    "CardEntityName": "vReagentLog",
+    "AlwaysSkip": false
+  },
+  {
+    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Areas\\Reagents\\Views\\ReagentTypeJournal",
+    "EntityName": "vReagentType",
+    "MainHeader": null,
+    "CardHeader": null,
+    "CardEntityName": "vReagentType",
+    "AlwaysSkip": false
+  },
+  {
+    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Areas\\SamplesEdit\\Views\\ContainerJournal",
+    "EntityName": "vContaiter",
+    "MainHeader": null,
+    "CardHeader": null,
+    "CardEntityName": "vContaiter",
+    "AlwaysSkip": false
+  },
+  {
+    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Areas\\SamplesEdit\\Views\\SamplesJournal",
+    "EntityName": "vJourLine",
+    "MainHeader": null,
+    "CardHeader": null,
+    "CardEntityName": "vJourLine",
+    "AlwaysSkip": false
+  },
+  {
+    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Areas\\Workflow\\Views\\Process",
+    "EntityName": null,
+    "MainHeader": null,
+    "CardHeader": null,
+    "CardEntityName": null,
+    "AlwaysSkip": false
+  },
+  {
+    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Areas\\Workflow\\Views\\Run",
+    "EntityName": null,
+    "MainHeader": null,
+    "CardHeader": null,
+    "CardEntityName": null,
+    "AlwaysSkip": false
+  },
+  {
+    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Areas\\Workflow\\Views\\SelectSamples",
+    "EntityName": "vSamplesBook",
+    "MainHeader": null,
+    "CardHeader": null,
+    "CardEntityName": "vSamplesBook",
+    "AlwaysSkip": false
+  }
+]

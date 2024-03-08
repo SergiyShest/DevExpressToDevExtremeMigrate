@@ -1,4 +1,10 @@
-using System.IO;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using NLog;
+using System.Diagnostics;
+using System.Text;
+
+ using System.IO;
 using System.Net;
 using System.Data.SqlClient;
 using System.Text.RegularExpressions;
@@ -15,6 +21,7 @@ namespace CodeGenerator
 {
     public class Generator
     {
+        #region properties
         ILogger log = LogManager.GetCurrentClassLogger();
 
         public string TestTarget { get; set; } = "..\\..\\..\\..\\..\\Target\\Tests2e2\\js_tests";
@@ -25,30 +32,73 @@ namespace CodeGenerator
 
         public string TargetPath { get; set; } = $"..\\..\\..\\..\\..\\Target\\UI";
 
-        public bool CreateControllers { get; set; } = true;
+        public bool CreateJournControllers { get; set; } = false;
 
-        public bool CreateCardControllers { get; set; } = true;
-        public bool CreateViews { get; set; } = true;
+        public bool CreateCrdControllers { get; set; } = false;
 
-        public bool CreateCardViews { get; set; } = true;
+        public bool CreateJournViews { get; set; } = true;
 
-        public bool CreateTests { get; set; } = true;
+        public bool CreateTests { get; set; } = false;
 
-        public bool CreateMenu { get; set; } = true;
+        public bool CreateMenu { get; set; } = false;
+
+        public bool GenerateCard { get; set; } = false;
+
+        public FileSaveMode SaveMode { get; set; } = FileSaveMode.Replace;
+
+        public List<Info> InfoList { get; set; }
+
+        public enum FileSaveMode
+        {
+            Replace,
+            SaveWithNewName,
+            SkipExisting
+        }
+
+        #endregion
+
+        public Generator(string entityName = null)
+        {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            LoadInfo(entityName);
+        }
+
+        public void CollectInfo()
+        {
+            InfoList = new InfoCollector(SourcePath, this).InfoList;
+        }
+
+        public void LoadInfo(string entityName = null, string fileName = "templates/collector.json")
+        {
+            if (File.Exists(fileName))
+            {
+                var fileContent = File.ReadAllText(fileName);
+                InfoList = JsonConvert.DeserializeObject<List<Info>>(fileContent);
+                foreach (var info in InfoList)
+                {
+                    if (entityName == null || info.EntityName == entityName)
+                        InfoCollector.Collect(info, SourcePath);
+                }
+            }
+        }
 
         public void Convert()
         {
-            var infoCollector = new InfoCollector(SourcePath);
-            foreach (var info in infoCollector.InfoList)
+            if (InfoList == null)
+            {
+                throw new Exception("Нужно собрать иформaцию");
+            }
+
+            foreach (var info in InfoList)
             {
                 if (info.AlwaysSkip == true) continue;
                 try
                 {
                     GeneratePathsForInfo(info);
-                    if (CreateControllers) GenerateJournalController(info);
-                    if (CreateViews) GenerateJournalView(info);
-                    if (CreateCardControllers) GenerateCardController(info);
-                    if (CreateCardViews) GenerateCardView(info);
+                    if (CreateJournControllers) GenerateJournalController(info);
+                    if (CreateJournViews) GenerateJournalView(info);
+                    if (CreateCrdControllers) GenerateCardController(info);
+                    if (GenerateCard) GenerateCardView(info);
                     if (CreateMenu) GenerateMenu(info);
                     log.Info("Success " + info.Name);
                 }
@@ -58,12 +108,12 @@ namespace CodeGenerator
                     log.Error(ex, info.Path);
                 }
             }
-            if (CreateTests) GenerateJournalTests(infoCollector.InfoList);
-
+            if (CreateTests) GenerateJournalTests(InfoList);
         }
 
         public void GeneratePathsForInfo(Info info)
         {
+
 
             var di = new DirectoryInfo(info.Path);
             List<string> dirs = new List<string>();
@@ -74,14 +124,14 @@ namespace CodeGenerator
             }
             info.Name = dirs[dirs.Count - 1];
             var newViewPath = Path.Combine(dirs.ToArray());
-            info.JournalViewPath = Path.GetFullPath(Path.Combine(TargetPath, newViewPath));
+            info.JournalViewPath = Path.Combine(TargetPath, newViewPath);
 
             info.JournalControllerName = dirs[dirs.Count - 1] + "Controller";
             var isInArea = false;
             if (dirs.Count > 2)
             {
                 dirs.RemoveRange(dirs.Count - 2, 2);
-                info.DataPath = dirs.Last() + "/" + info.Name.Replace("Journal", "");
+                info.DataPath = dirs.Last() + "/" + info.Name;
                 isInArea = true;
             }
             else
@@ -105,7 +155,7 @@ namespace CodeGenerator
                 info.NameSpace = "UI.Controllers";
             }
 
-            info.ControllerPath = Path.GetFullPath(Path.Combine(TargetPath, newControllerPath));
+            info.ControllerPath = Path.Combine(TargetPath, newControllerPath);
 
         }
 
@@ -134,12 +184,13 @@ namespace CodeGenerator
 
         public void GenerateCardController(Info info)
         {
+
             var controllerContent = File.ReadAllText("templates/targetCardController.Template", Encoding.GetEncoding(1251));
             if (info.EntityFullName != null)
             {
-                controllerContent = controllerContent.Replace("using Entity;", "using Entity;\r\nusing " + info.EntityPath + ";");
-                controllerContent = controllerContent.Replace("vAnswer2", info.EntityName);
+                controllerContent = controllerContent.Replace("using MVC.Controllers;", "using MVC.Controllers;\r\nusing " + info.EntityPath + ";");
             }
+            controllerContent = controllerContent.Replace("vAnswer2", info.EntityName);
             controllerContent = controllerContent.Replace("DkCardController", info.CardControllerName);
 
             var area = string.Empty;
@@ -150,22 +201,45 @@ namespace CodeGenerator
             var controllerName = Path.Combine(info.ControllerPath, info.CardControllerName + ".cs");
             SaveFile(controllerName, controllerContent);
         }
+
         public void GenerateCardView(Info info)
         {
             var viewContent = File.ReadAllText("templates/targetCard.Template", Encoding.GetEncoding(1251));
-            viewContent = viewContent.Replace("/Contract/Dk", "/" + info.DataPath);
-            viewContent = viewContent.Replace("$items$", "/" + info.FieldsStr);
+            var dataPath = info.DataPath.Replace(info.JournalControllerName.Replace("Controller", ""), info.CardControllerName.Replace("Controller", ""));
+            viewContent = viewContent.Replace("$dataPath$", dataPath);
+            viewContent = viewContent.Replace("$items$", info.FieldsStr);
 
             var viewFullName = Path.Combine(info.CardViewPath, "Index.cshtml");
             SaveFile(viewFullName, viewContent);
         }
+
         public void GenerateJournalView(Info info)
         {
-            var viewContent = File.ReadAllText("templates/targetJournal.Template", Encoding.GetEncoding(1251));
-            viewContent = viewContent.Replace("$MainHeader$", info.MainHeader);
+            string viewContent;
+            if (info.IsGuide == true)
+            {
+                viewContent = File.ReadAllText("templates/targetJournalGuid.Template", Encoding.GetEncoding(1251));
+            }
+            else
+            {
+                viewContent = File.ReadAllText("templates/targetJournal.Template", Encoding.GetEncoding(1251));
+            }
+
+
+
+            viewContent = viewContent.Replace("$MainHeader$", info.MainHeader ?? info.EntityName);
             viewContent = viewContent.Replace("$columns$", info.ColumnsStr);
             viewContent = viewContent.Replace("$DateHeader$", info.DateHeader);
-            viewContent = viewContent.Replace("/Contract/Dk", "/" + info.DataPath);
+            var cardPath = info.DataPath.Replace("Journal", "");
+            viewContent = viewContent.Replace("/Contract/DkCard", "/" + cardPath + "Card");
+
+            viewContent = viewContent.Replace("$HeaderReport$", "Отчет " + info.CardHeader ?? info.EntityName);
+
+            viewContent = viewContent.Replace("$Header$", info.CardHeader ?? info.EntityName);
+
+            viewContent = viewContent.Replace("$storageKey$", info.Path.Replace($"\\", ""));
+
+            viewContent = viewContent.Replace("/Contract/DkJournal", "/" + info.DataPath);
 
             var viewFullName = Path.Combine(info.JournalViewPath, "Index.cshtml");
             SaveFile(viewFullName, viewContent);
@@ -190,7 +264,7 @@ namespace CodeGenerator
 
             }
             string updatedJson = JsonConvert.SerializeObject(packageJson, Formatting.Indented);
-            File.WriteAllText(jsonConfigPath, updatedJson);
+            SaveFile(jsonConfigPath, updatedJson,true);
 
 
         }
@@ -206,47 +280,77 @@ namespace CodeGenerator
             {
                 throw new Exception($"сформируй в файле teg id={navMenuId}");
             }
-            var tagItem = Utils.GetTagContentById(menuItemsTags, navItemId,"a");//ищу существующий пункт меню
+            var tagItem = Utils.GetTagContentById(menuItemsTags, navItemId, "a");//ищу существующий пункт меню
             if (tagItem == null)
             {
                 menuItemsTags = menuItemsTags + Environment.NewLine + newItem;//добавляю если нет 
             }
             else
             {
-                menuItemsTags = Utils.ChangeTagContentById(menuItemsTags, navItemId, newItem,"a");//заменяю если есть
+                menuItemsTags = Utils.ChangeTagContentById(menuItemsTags, navItemId, newItem, "a");//заменяю если есть
             }
             content = Utils.ChangeTagContentById(content, navMenuId, menuItemsTags);
             SaveFile(TargetMenu, content);
         }
 
-        private void SaveFile(string filePath, string content, bool replace = true, Encoding? encoding = null)
+        private void SaveFile(string filePath, string content, bool? replace = null, Encoding? encoding = null)
         {
             if (encoding == null) encoding = Encoding.GetEncoding(1251);
 
             string directoryPath = Path.GetDirectoryName(filePath);
             string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
             string fileExtension = Path.GetExtension(filePath);
-            if (replace)
+
+
+            if (replace == true)
             {
                 if (File.Exists(filePath)) File.Delete(filePath);
             }
             else
             {
-                int i = 0;
-                while (File.Exists(filePath))
+                switch (SaveMode)
                 {
-                    i++;
-                    // Формируем новое имя файла с суффиксом числа
-                    string newFileName = $"{fileNameWithoutExtension}_{i}{fileExtension}";
-                    filePath = Path.Combine(directoryPath, newFileName);
+                    case FileSaveMode.Replace: if (File.Exists(filePath)) File.Delete(filePath); break;
+                    case FileSaveMode.SaveWithNewName:
+                        {
+                            int i = 0;
+                            while (File.Exists(filePath))
+                            {
+                                i++;
+                                // Формируем новое имя файла с суффиксом числа
+                                string newFileName = $"{fileNameWithoutExtension}_{i}{fileExtension}";
+                                filePath = Path.Combine(directoryPath, newFileName);
+                            }
+                        }
+
+                        break;
+                    case FileSaveMode.SkipExisting: break;//если файл существует то он будет перезаписан
+
                 }
             }
+
             if (!Directory.Exists(directoryPath))
             {
                 Directory.CreateDirectory(directoryPath);
             }
-            File.WriteAllText(filePath, content, encoding);
+            if (!File.Exists(filePath))
+            {
+                File.WriteAllText(filePath, content, encoding);
+            }
         }
+
+        public void SaveInfoToFile(string path)
+        {
+            var list = InfoList.Select(x => new { x.MainHeader, x.Name, x.Path, x.EntityName });
+            StringBuilder sb = new StringBuilder();
+            foreach (var item in list)
+            {
+                sb.AppendLine($"{item.MainHeader};{item.Name};{item.Path};{item.EntityName}");
+            }
+            File.WriteAllText(path, sb.ToString(), Encoding.GetEncoding(1251));
+
+        }
+
 
     }
 }
