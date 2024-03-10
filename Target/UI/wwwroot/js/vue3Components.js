@@ -205,11 +205,7 @@ export const KfNumber = {
             this.$emit('input', val)//event to parent
         }
     },
-    mounted: function () {
-//        this.valueInt = formatNum(this.modelValue, this.scale)
-//        console.log(this.valueInt)
-//        this.Validate(this.modelValue)
-    },
+
     template: `
  <div class="flex-row" >
  <div class="title-col" >{{ text }}<span v-if="requre" style="color:red">*</span>:</div>
@@ -319,7 +315,6 @@ export const KfButton = {
     },
     template: `<button
 class="kf-button"
-
 >
 <img v-if="image" :src="imgSrc" class="kf-button-image" />{{text}}<slot></slot>
 </button>`
@@ -337,6 +332,7 @@ function setDataSource(el, path) {
     var grid = $(el).dxDropDownBox("instance");
     grid.option("dataSource", dataSource);
 }
+
 function createLookUp(el, columns, val, dropDownWidth, pageSize, displayExpr, valChanged) {
     el.dxDropDownBox({
         value: val,
@@ -389,8 +385,6 @@ function createLookUp(el, columns, val, dropDownWidth, pageSize, displayExpr, va
         },
     });
 }
-
-
 
 function CreateGuid() {
     function _p8(s) {

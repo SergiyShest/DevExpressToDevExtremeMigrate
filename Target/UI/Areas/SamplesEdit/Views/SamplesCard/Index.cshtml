@@ -6,30 +6,30 @@
 <div style="display:flex;flex-direction:column;align-items:flex-start;align-content:flex-start;align-self:stretch">
 	<h1></h1>
 
-	<div id="app" style="display: flex;flex-direction: column;width: 450px;">
+	<div id="app" style="display: flex;flex-direction: column;width: 850px;">
 		<div id="items"  class="grid-container">
-		    <kf-number text = 'Id' v-model = 'Item.Id'  ></kf-number>
-<kf-input text = 'Type' v-model = 'Item.Type'  ></kf-input>
-<kf-input text = 'Barcode' v-model = 'Item.Barcode'  ></kf-input>
-<kf-input text = 'Well' v-model = 'Item.Well'  ></kf-input>
-<kf-input text = 'Name' v-model = 'Item.Name'  ></kf-input>
-<kf-input text = 'Status' v-model = 'Item.Status'  ></kf-input>
-<kf-input text = 'Doctor' v-model = 'Item.Doctor'  ></kf-input>
-<kf-input text = 'Patient' v-model = 'Item.Patient'  ></kf-input>
-<kf-input text = 'Location' v-model = 'Item.Location'  ></kf-input>
-<kf-input text = 'BatchName' v-model = 'Item.BatchName'  ></kf-input>
-<kf-input text = 'Model' v-model = 'Item.Model'  ></kf-input>
-<kf-input text = 'HospitalName' v-model = 'Item.HospitalName'  ></kf-input>
-<kf-input text = 'BatchBarcode' v-model = 'Item.BatchBarcode'  ></kf-input>
-<kf-number text = 'Such a barcode already exists in the system' v-model = 'Item.DoubleBarcodeValidation'  ></kf-number>
-<kf-number text = 'Double Barcode in drafts' v-model = 'Item.DoubleBarcodeJourLineValidation'  ></kf-number>
-<kf-input text = 'SampleType' v-model = 'Item.SampleType'  ></kf-input>
+		    <kf-number text = 'Id' v-model = 'Item.Id' scale="0"   ></kf-number>
+<kf-input text = 'Type' v-model = 'Item.Type'    ></kf-input>
+<kf-input text = 'Barcode' v-model = 'Item.Barcode'    ></kf-input>
+<kf-input text = 'Well' v-model = 'Item.Well'    ></kf-input>
+<kf-input text = 'Name' v-model = 'Item.Name'    ></kf-input>
+<kf-input text = 'Status' v-model = 'Item.Status'    ></kf-input>
+<kf-input text = 'Doctor' v-model = 'Item.Doctor'    ></kf-input>
+<kf-input text = 'Patient' v-model = 'Item.Patient'    ></kf-input>
+<kf-input text = 'Location' v-model = 'Item.Location'    ></kf-input>
+<kf-input text = 'BatchName' v-model = 'Item.BatchName'    ></kf-input>
+<kf-input text = 'Model' v-model = 'Item.Model'    ></kf-input>
+<kf-input text = 'HospitalName' v-model = 'Item.HospitalName'    ></kf-input>
+<kf-input text = 'BatchBarcode' v-model = 'Item.BatchBarcode'    ></kf-input>
+<kf-number text = 'Such a barcode already exists in the system' v-model = 'Item.DoubleBarcodeValidation' scale="0"   ></kf-number>
+<kf-number text = 'Double Barcode in drafts' v-model = 'Item.DoubleBarcodeJourLineValidation' scale="0"   ></kf-number>
+<kf-input text = 'SampleType' v-model = 'Item.SampleType'    ></kf-input>
 
 		</div>
 
 		<div style="display:flex;flex-direction:row;">
 
-			<kf-button id="saveButton" v-if="mode!='view'"		 v-on:click.native="SaveClick"	text="Coхранить"		image="copy"  ></kf-button>
+			<kf-button id="saveButton" v-if="mode!='view'"		 v-on:click.native="SaveClick"	text="Coхранить"		image="save"  ></kf-button>
 			<kf-button id="closeButton" v-if="mode!='view'"	     v-on:click.native="CloseClick"	text="Закрыть"			image="delete" style="margin-left:auto"  ></kf-button>
 		</div>
 	</div>
@@ -57,7 +57,7 @@
 		 ,
 		 methods: {
 			 Get() {
-				 const pathEnd = "/Contract/DkCard/Get?id="+Id;
+				 const pathEnd = "SamplesEdit/SamplesCard/Get?id="+Id;
 				 this.FetchJson( pathEnd,this.Ok)
 			 },
 			 Ok(data) {
@@ -88,7 +88,7 @@
 	  app.component('kf-check', KfCheck);
 	  app.component('kf-textarea', KfTextarea);
 	  app.component('kf-text', KfText);
-	 app.component('kf-lookup', KfGridLookUp);
+	  app.component('kf-lookup', KfGridLookUp);
 	// Mounting Vue app
 	const vue_ = app.mount('#app');
 </script>

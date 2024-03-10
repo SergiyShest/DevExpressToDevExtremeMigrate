@@ -70,7 +70,7 @@ namespace CodeGenerator
         {
             if (File.Exists(fileName))
             {
-                var infoCollector= new InfoCollector(SourcePath);
+                var infoCollector = new InfoCollector(SourcePath);
                 var fileContent = File.ReadAllText(fileName);
                 InfoList = JsonConvert.DeserializeObject<List<Info>>(fileContent);
                 foreach (var info in InfoList)
@@ -99,7 +99,9 @@ namespace CodeGenerator
                     if (CreateCrdControllers) GenerateCardController(info);
                     if (CreateCard) GenerateCardView(info);
                     if (CreateMenu) GenerateMenu(info);
+                    if (CreateTests) GenerateJournalTests(info);
                     log.Info("Success " + info.Name);
+
                 }
 
                 catch (Exception ex)
@@ -108,23 +110,23 @@ namespace CodeGenerator
                     log.Error(ex, info.Path);
                 }
             }
-            if (CreateTests) GenerateJournalTests(InfoList);
+
         }
 
         public void GenerateJournalController(Info info)
         {
             string controllerContent;
-            if(info.EntityDateField==null)
-               controllerContent = File.ReadAllText("templates/targetJournalControllerWitoutFliter.Template", Encoding.GetEncoding(1251));
+            if (info.EntityDateField == null)
+                controllerContent = File.ReadAllText("templates/targetJournalControllerWitoutFliter.Template", Encoding.GetEncoding(1251));
             else
             {
-               controllerContent = File.ReadAllText("templates/targetJournalController.Template", Encoding.GetEncoding(1251));
+                controllerContent = File.ReadAllText("templates/targetJournalController.Template", Encoding.GetEncoding(1251));
             }
 
             if (info.EntityFullName != null)
             {
                 controllerContent = controllerContent.Replace("using Entity;", "using Entity;\r\nusing " + info.EntityPath + ";");
-                controllerContent = controllerContent.Replace("vAnswer2", info.EntityName);
+                controllerContent = controllerContent.Replace("$entity$", info.EntityName);
             }
             controllerContent = controllerContent.Replace("DkJournalController", info.JournalControllerName);
 
@@ -149,7 +151,7 @@ namespace CodeGenerator
             {
                 controllerContent = controllerContent.Replace("using MVC.Controllers;", "using MVC.Controllers;\r\nusing " + info.EntityPath + ";");
             }
-            controllerContent = controllerContent.Replace("vAnswer2", info.EntityName);
+            controllerContent = controllerContent.Replace("$entity$", info.EntityName);
             controllerContent = controllerContent.Replace("DkCardController", info.CardControllerName);
 
             var area = string.Empty;
@@ -164,7 +166,7 @@ namespace CodeGenerator
         public void GenerateCardView(Info info)
         {
             var viewContent = File.ReadAllText("templates/targetCard.Template", Encoding.GetEncoding(1251));
-            var dataPath = info.DataPath.Replace(info.JournalControllerName.Replace("Controller", ""), info.CardControllerName.Replace("Controller", ""));
+            var dataPath = info.JournalControllerPath.Replace(info.JournalControllerName.Replace("Controller", ""), info.CardControllerName.Replace("Controller", ""));
             viewContent = viewContent.Replace("$cardControllerPath$", dataPath);
             viewContent = viewContent.Replace("$items$", info.FieldsStr);
 
@@ -187,8 +189,8 @@ namespace CodeGenerator
             viewContent = viewContent.Replace("$MainHeader$", info.MainHeader ?? info.EntityName);
             viewContent = viewContent.Replace("$columns$", info.ColumnsStr);
             viewContent = viewContent.Replace("$DateHeader$", info.DateHeader);
-            var cardPath = info.DataPath.Replace("Journal", "");
-            viewContent = viewContent.Replace("/Contract/DkCard", "/" + cardPath + "Card");
+            var cardPath = info.JournalControllerPath.Replace("Journal", "");
+            viewContent = viewContent.Replace("$cardControllerPath$", "/" + cardPath + "Card");
 
             viewContent = viewContent.Replace("$HeaderReport$", "Отчет " + info.CardHeader ?? info.EntityName);
 
@@ -196,30 +198,28 @@ namespace CodeGenerator
 
             viewContent = viewContent.Replace("$storageKey$", info.Path.Replace($"\\", ""));
 
-            viewContent = viewContent.Replace("/Contract/DkJournal", "/" + info.DataPath);
+            viewContent = viewContent.Replace("$journalControllerPath$", "/" + info.JournalControllerPath);
 
             var viewFullName = Path.Combine(info.JournalViewPath, "Index.cshtml");
             SaveFile(viewFullName, viewContent);
 
         }
 
-        public void GenerateJournalTests(IEnumerable<Info> infoList)
-        {
+        public void GenerateJournalTests(Info info)
+        {   //сохранение js теста
             var testContent = File.ReadAllText("templates/CypressTestJournal.Template", Encoding.GetEncoding(1251));
+            testContent = testContent.Replace("$HtmlRequestPath$", info.HtmlRequestPath);
+            testContent = testContent.Replace("$MainHeader$", info.MainHeader);
+            var testName = info.Name + ".tests.cy.js";
+            var viewFullName = Path.Combine(TestTarget + "\\cypress\\e2e\\" + testName);
+            SaveFile(viewFullName, testContent, true, Encoding.UTF8);
+            
+            //внесение изменений в package.json
             var jsonConfigPath = Path.Combine(TestTarget, "package.json");
             string jsonConfig = File.ReadAllText(jsonConfigPath);
             JObject packageJson = JObject.Parse(jsonConfig);
+            packageJson["scripts"][$"run:e2e.{info.Name}"] = $"cypress run --spec \"cypress/e2e/{testName}\"";
 
-            foreach (var info in infoList)
-            {
-                testContent = testContent.Replace("/Common/DoctorJournal", "/" + info.HtmlRequestPath);
-                testContent = testContent.Replace("$MainHeader$", info.MainHeader);
-                var testName = info.Name + ".tests.cy.js";
-                var viewFullName = Path.Combine(TestTarget + "\\cypress\\e2e\\" + testName);
-                SaveFile(viewFullName, testContent, true, Encoding.UTF8);
-                packageJson["scripts"][$"run:e2e.{info.Name}"] = $"cypress run --spec \"cypress/e2e/{testName}\"";
-
-            }
             string updatedJson = JsonConvert.SerializeObject(packageJson, Formatting.Indented);
             SaveFile(jsonConfigPath, updatedJson, true);
 

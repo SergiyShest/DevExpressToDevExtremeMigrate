@@ -110,13 +110,13 @@ namespace CodeGenerator
             if (dirs.Count > 2)
             {
                 dirs.RemoveRange(dirs.Count - 2, 2);
-                info.DataPath = dirs.Last() + "/" + info.Name;
+                info.JournalControllerPath = dirs.Last() + "/" + info.Name;
                 isInArea = true;
             }
             else
             {
                 dirs.RemoveAt(0);
-                info.DataPath = dirs.Last();
+                info.JournalControllerPath = dirs.Last();
             }
 
 

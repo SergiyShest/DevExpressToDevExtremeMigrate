@@ -3,16 +3,28 @@
   "WorkspaceRootPath": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\ui\\areas\\reagents\\views\\reagenttypecard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|solutionrelative:ui\\areas\\reagents\\views\\reagenttypecard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\tests2e2\\cypresstests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|solutionrelative:tests2e2\\cypresstests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\ui\\wwwroot\\js\\vue3components.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|solutionrelative:ui\\wwwroot\\js\\vue3components.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\tests2e2\\js_tests\\cypress\\e2e\\containerjournal.tests.cy.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|solutionrelative:tests2e2\\js_tests\\cypress\\e2e\\containerjournal.tests.cy.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\ui\\wwwroot\\css\\vuecomponents.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|solutionrelative:ui\\wwwroot\\css\\vuecomponents.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\ui\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|solutionrelative:ui\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\ui\\wwwroot\\js\\lookupwrapper.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|solutionrelative:ui\\wwwroot\\js\\lookupwrapper.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,8 +34,60 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 11,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ContainerJournal.tests.cy.js",
+              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\js_tests\\cypress\\e2e\\ContainerJournal.tests.cy.js",
+              "RelativeDocumentMoniker": "Tests2e2\\js_tests\\cypress\\e2e\\ContainerJournal.tests.cy.js",
+              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\js_tests\\cypress\\e2e\\ContainerJournal.tests.cy.js",
+              "RelativeToolTip": "Tests2e2\\js_tests\\cypress\\e2e\\ContainerJournal.tests.cy.js",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-03-10T05:57:34.552Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CypressTests.cs",
+              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\CypressTests.cs",
+              "RelativeDocumentMoniker": "Tests2e2\\CypressTests.cs",
+              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\CypressTests.cs",
+              "RelativeToolTip": "Tests2e2\\CypressTests.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-10T05:46:43.018Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "vueComponents.css",
+              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\wwwroot\\css\\vueComponents.css",
+              "RelativeDocumentMoniker": "UI\\wwwroot\\css\\vueComponents.css",
+              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\wwwroot\\css\\vueComponents.css",
+              "RelativeToolTip": "UI\\wwwroot\\css\\vueComponents.css",
+              "ViewState": "AQIAABgAAAAAAAAAAAAAADUAAAAbAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2024-03-10T05:35:23.893Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "lookUpWrapper.js",
+              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\wwwroot\\js\\lookUpWrapper.js",
+              "RelativeDocumentMoniker": "UI\\wwwroot\\js\\lookUpWrapper.js",
+              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\wwwroot\\js\\lookUpWrapper.js",
+              "RelativeToolTip": "UI\\wwwroot\\js\\lookUpWrapper.js",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-03-10T05:28:33.181Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
@@ -62,13 +126,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "site.js",
               "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\wwwroot\\js\\site.js",
               "RelativeDocumentMoniker": "UI\\wwwroot\\js\\site.js",
               "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\wwwroot\\js\\site.js",
               "RelativeToolTip": "UI\\wwwroot\\js\\site.js",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABkAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAB0AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2024-03-10T04:07:11.066Z",
               "EditorCaption": ""
@@ -81,23 +145,35 @@
               "RelativeDocumentMoniker": "UI\\wwwroot\\js\\vue3Components.js",
               "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\wwwroot\\js\\vue3Components.js",
               "RelativeToolTip": "UI\\wwwroot\\js\\vue3Components.js",
-              "ViewState": "AQIAAIkAAAAAAAAAAAAAAMgAAAAGAAAA",
+              "ViewState": "AQIAAL0AAAAAAAAAAAAAADQBAAAVAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2024-03-10T03:08:57.487Z",
               "EditorCaption": ""
-            },
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "FloatingWindowState": {
+        "Id": "a4e7579b-f0fe-4a73-b3f1-c2f211025c1e",
+        "Display": 0,
+        "X": 328,
+        "Y": 109,
+        "Width": 1466,
+        "Height": 1080,
+        "WindowState": 2
+      },
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": -1,
+          "Children": [
             {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\Areas\\Reagents\\Views\\ReagentTypeCard\\Index.cshtml",
-              "RelativeDocumentMoniker": "UI\\Areas\\Reagents\\Views\\ReagentTypeCard\\Index.cshtml",
-              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\Areas\\Reagents\\Views\\ReagentTypeCard\\Index.cshtml",
-              "RelativeToolTip": "UI\\Areas\\Reagents\\Views\\ReagentTypeCard\\Index.cshtml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAqAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-03-10T02:46:21.947Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
             }
           ]
         }

@@ -1,4 +1,3 @@
-
 using Newtonsoft.Json.Linq;
 using NUnit.Framework.Internal;
 using System.Diagnostics;
@@ -21,7 +20,6 @@ namespace Tests2e2 {
 
 			mvcProcess = TestsUtils.RunProcess(command, workingDirectory);
 			Thread.Sleep(1000);
-
 		}
 		
 		[OneTimeTearDown]
@@ -47,7 +45,6 @@ namespace Tests2e2 {
 			if (exitCode != 0)
 			{
 				Assert.Fail($"Тесты завершились с ошибкой. Exit Code: {exitCode}");
-				// Здесь вы можете вызвать Environment.Exit(exitCode), чтобы завершить приложение
 			}
 			else
 			{

@@ -45,6 +45,22 @@
   border: red solid 2px;
 }
 
+
+.kf-button {
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    align-items: center;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    margin: 3px;
+}
+.kf-button-image {
+    width: 16px;
+    height: 16px;
+    margin: 3px;
+}
+
 .tab-button {
   padding: 6px 10px;
   border-top-left-radius: 3px;

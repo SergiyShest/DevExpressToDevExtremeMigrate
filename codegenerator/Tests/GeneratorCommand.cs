@@ -35,16 +35,14 @@ namespace Tests
 		{
 			var generator = new Generator();
 			generator.LoadInfo();
-            generator.CreateJournalControllers = true;
-            generator.CreateCrdControllers  = true;
-            generator.CreateJournalViews  = true;
-            generator.CreateMenu  = true;
-            generator.CreateCard  = true;
+            generator.CreateJournalControllers = false;
+            generator.CreateCrdControllers  = false;
+            generator.CreateJournalViews  = false;
+            generator.CreateMenu  = false;
+            generator.CreateCard  = false;
             generator.CreateTests  = true;
             generator.SaveMode  = FileSaveMode.Replace;
-
             generator.Generate();
-        
 		}
 
         [TestCase("..\\..\\..\\..\\..\\Source\\UI\\Areas\\Reagents\\Views\\ReagentTypeJournal")]
@@ -64,7 +62,7 @@ namespace Tests
 			generator.GenerateCardController(info);
 			generator.GenerateCardView(info);
 			generator.GenerateMenu(info);
-            generator.GenerateJournalTests(new List<Info> { info });
+            generator.GenerateJournalTests( info);
 		}
 
 

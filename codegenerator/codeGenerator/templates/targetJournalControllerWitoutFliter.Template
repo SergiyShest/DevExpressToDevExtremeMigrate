@@ -3,7 +3,7 @@ using Entity.Controllers;
 using Microsoft.AspNetCore.Mvc;
 namespace tmp{
     [Area("")]
-    public class DkJournalController : GenericJournalController<vAnswer2>
+    public class DkJournalController : GenericJournalController<$entity$>
     {
         public DkJournalController(IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor) { }
 

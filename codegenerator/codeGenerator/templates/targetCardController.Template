@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace tmp {
 
     [Area("")]
-    public class DkCardController : GenericCardController<vAnswer2>
+    public class DkCardController : GenericCardController<$entity$>
     {
         public DkCardController(IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor) { }
 

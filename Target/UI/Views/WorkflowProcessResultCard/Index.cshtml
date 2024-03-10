@@ -6,38 +6,38 @@
 <div style="display:flex;flex-direction:column;align-items:flex-start;align-content:flex-start;align-self:stretch">
 	<h1></h1>
 
-	<div id="app" style="display: flex;flex-direction: column;width: 450px;">
+	<div id="app" style="display: flex;flex-direction: column;width: 850px;">
 		<div id="items"  class="grid-container">
-		    <kf-number text = 'Id' v-model = 'Item.Id'  ></kf-number>
-<kf-input text = 'Result' v-model = 'Item.Result'  ></kf-input>
-<kf-input text = 'Run' v-model = 'Item.Run'  ></kf-input>
-<kf-input text = 'Run Created User' v-model = 'Item.RunCreatedUserName'  ></kf-input>
-<kf-input text = 'Run Completed User' v-model = 'Item.RunCompletedUserName'  ></kf-input>
-<kf-input text = 'Process' v-model = 'Item.Process'  ></kf-input>
-<kf-input text = 'Process Created User' v-model = 'Item.ProcessCreatedUserName'  ></kf-input>
-<kf-input text = 'Process Completed User' v-model = 'Item.ProcessCompletedUserName'  ></kf-input>
-<kf-number text = 'SampleId' v-model = 'Item.SampleId'  ></kf-number>
-<kf-input text = 'Barcode' v-model = 'Item.Barcode'  ></kf-input>
-<kf-input text = 'Name' v-model = 'Item.Name'  ></kf-input>
-<kf-input text = 'Location' v-model = 'Item.Location'  ></kf-input>
-<kf-input text = 'Well' v-model = 'Item.Well'  ></kf-input>
-<kf-input text = 'Doctor' v-model = 'Item.Doctor'  ></kf-input>
-<kf-input text = 'Patient' v-model = 'Item.Patient'  ></kf-input>
-<kf-input text = 'UserName' v-model = 'Item.UserName'  ></kf-input>
-<kf-input text = 'Model' v-model = 'Item.Model'  ></kf-input>
-<kf-input text = 'Hospital Name' v-model = 'Item.HospitalName'  ></kf-input>
-<kf-input text = 'Parent Name' v-model = 'Item.ParentName'  ></kf-input>
-<kf-input text = 'Current/last Process Name' v-model = 'Item.SampleCurrentProcessName'  ></kf-input>
-<kf-input text = 'BatchName' v-model = 'Item.BatchName'  ></kf-input>
-<kf-input text = 'Workflow' v-model = 'Item.Workflow'  ></kf-input>
-<kf-input text = 'Process Code' v-model = 'Item.ProcessTypeCode'  ></kf-input>
-<kf-input text = 'ProcessStatus' v-model = 'Item.ProcessStatus'  ></kf-input>
+		    <kf-number text = 'Id' v-model = 'Item.Id' scale="0"   ></kf-number>
+<kf-input text = 'Result' v-model = 'Item.Result'    ></kf-input>
+<kf-input text = 'Run' v-model = 'Item.Run'    ></kf-input>
+<kf-input text = 'Run Created User' v-model = 'Item.RunCreatedUserName'    ></kf-input>
+<kf-input text = 'Run Completed User' v-model = 'Item.RunCompletedUserName'    ></kf-input>
+<kf-input text = 'Process' v-model = 'Item.Process'    ></kf-input>
+<kf-input text = 'Process Created User' v-model = 'Item.ProcessCreatedUserName'    ></kf-input>
+<kf-input text = 'Process Completed User' v-model = 'Item.ProcessCompletedUserName'    ></kf-input>
+<kf-number text = 'SampleId' v-model = 'Item.SampleId' scale="0"   ></kf-number>
+<kf-input text = 'Barcode' v-model = 'Item.Barcode'    ></kf-input>
+<kf-input text = 'Name' v-model = 'Item.Name'    ></kf-input>
+<kf-input text = 'Location' v-model = 'Item.Location'    ></kf-input>
+<kf-input text = 'Well' v-model = 'Item.Well'    ></kf-input>
+<kf-input text = 'Doctor' v-model = 'Item.Doctor'    ></kf-input>
+<kf-input text = 'Patient' v-model = 'Item.Patient'    ></kf-input>
+<kf-input text = 'UserName' v-model = 'Item.UserName'    ></kf-input>
+<kf-input text = 'Model' v-model = 'Item.Model'    ></kf-input>
+<kf-input text = 'Hospital Name' v-model = 'Item.HospitalName'    ></kf-input>
+<kf-input text = 'Parent Name' v-model = 'Item.ParentName'    ></kf-input>
+<kf-input text = 'Current/last Process Name' v-model = 'Item.SampleCurrentProcessName'    ></kf-input>
+<kf-input text = 'BatchName' v-model = 'Item.BatchName'    ></kf-input>
+<kf-input text = 'Workflow' v-model = 'Item.Workflow'    ></kf-input>
+<kf-input text = 'Process Code' v-model = 'Item.ProcessTypeCode'    ></kf-input>
+<kf-input text = 'ProcessStatus' v-model = 'Item.ProcessStatus'    ></kf-input>
 
 		</div>
 
 		<div style="display:flex;flex-direction:row;">
 
-			<kf-button id="saveButton" v-if="mode!='view'"		 v-on:click.native="SaveClick"	text="Coхранить"		image="copy"  ></kf-button>
+			<kf-button id="saveButton" v-if="mode!='view'"		 v-on:click.native="SaveClick"	text="Coхранить"		image="save"  ></kf-button>
 			<kf-button id="closeButton" v-if="mode!='view'"	     v-on:click.native="CloseClick"	text="Закрыть"			image="delete" style="margin-left:auto"  ></kf-button>
 		</div>
 	</div>
@@ -65,7 +65,7 @@
 		 ,
 		 methods: {
 			 Get() {
-				 const pathEnd = "/Contract/DkCard/Get?id="+Id;
+				 const pathEnd = "WorkflowProcessResultCard/Get?id="+Id;
 				 this.FetchJson( pathEnd,this.Ok)
 			 },
 			 Ok(data) {
@@ -96,7 +96,7 @@
 	  app.component('kf-check', KfCheck);
 	  app.component('kf-textarea', KfTextarea);
 	  app.component('kf-text', KfText);
-	 app.component('kf-lookup', KfGridLookUp);
+	  app.component('kf-lookup', KfGridLookUp);
 	// Mounting Vue app
 	const vue_ = app.mount('#app');
 </script>

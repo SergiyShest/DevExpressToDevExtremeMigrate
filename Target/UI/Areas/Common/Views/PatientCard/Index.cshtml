@@ -6,26 +6,26 @@
 <div style="display:flex;flex-direction:column;align-items:flex-start;align-content:flex-start;align-self:stretch">
 	<h1></h1>
 
-	<div id="app" style="display: flex;flex-direction: column;width: 450px;">
+	<div id="app" style="display: flex;flex-direction: column;width: 850px;">
 		<div id="items"  class="grid-container">
-		    <kf-number text = 'Id' v-model = 'Item.id'  ></kf-number>
-<kf-input text = 'No' v-model = 'Item.no'  ></kf-input>
-<kf-input text = 'firstName' v-model = 'Item.firstName'  ></kf-input>
-<kf-input text = 'lastName' v-model = 'Item.lastName'  ></kf-input>
-<kf-input text = 'Email' v-model = 'Item.email'  ></kf-input>
-<kf-input text = 'hospital' v-model = 'Item.hospital'  ></kf-input>
-<kf-input text = 'doctor' v-model = 'Item.doctor'  ></kf-input>
-<kf-input text = 'PropS1' v-model = 'Item.PropS1'  ></kf-input>
-<kf-input text = 'PropS2' v-model = 'Item.PropS2'  ></kf-input>
-<kf-input text = 'PropS3' v-model = 'Item.PropS3'  ></kf-input>
-<kf-input text = 'PropS4' v-model = 'Item.PropS4'  ></kf-input>
-<kf-input text = 'PropS5' v-model = 'Item.PropS5'  ></kf-input>
+		    <kf-number text = 'Id' v-model = 'Item.id' scale="0"   ></kf-number>
+<kf-input text = 'No' v-model = 'Item.no'    ></kf-input>
+<kf-input text = 'firstName' v-model = 'Item.firstName'    ></kf-input>
+<kf-input text = 'lastName' v-model = 'Item.lastName'    ></kf-input>
+<kf-input text = 'Email' v-model = 'Item.email'    ></kf-input>
+<kf-input text = 'hospital' v-model = 'Item.hospital'    ></kf-input>
+<kf-input text = 'doctor' v-model = 'Item.doctor'    ></kf-input>
+<kf-input text = 'PropS1' v-model = 'Item.PropS1'    ></kf-input>
+<kf-input text = 'PropS2' v-model = 'Item.PropS2'    ></kf-input>
+<kf-input text = 'PropS3' v-model = 'Item.PropS3'    ></kf-input>
+<kf-input text = 'PropS4' v-model = 'Item.PropS4'    ></kf-input>
+<kf-input text = 'PropS5' v-model = 'Item.PropS5'    ></kf-input>
 
 		</div>
 
 		<div style="display:flex;flex-direction:row;">
 
-			<kf-button id="saveButton" v-if="mode!='view'"		 v-on:click.native="SaveClick"	text="Coхранить"		image="copy"  ></kf-button>
+			<kf-button id="saveButton" v-if="mode!='view'"		 v-on:click.native="SaveClick"	text="Coхранить"		image="save"  ></kf-button>
 			<kf-button id="closeButton" v-if="mode!='view'"	     v-on:click.native="CloseClick"	text="Закрыть"			image="delete" style="margin-left:auto"  ></kf-button>
 		</div>
 	</div>
@@ -53,7 +53,7 @@
 		 ,
 		 methods: {
 			 Get() {
-				 const pathEnd = "/Contract/DkCard/Get?id="+Id;
+				 const pathEnd = "Common/PatientCard/Get?id="+Id;
 				 this.FetchJson( pathEnd,this.Ok)
 			 },
 			 Ok(data) {
@@ -84,7 +84,7 @@
 	  app.component('kf-check', KfCheck);
 	  app.component('kf-textarea', KfTextarea);
 	  app.component('kf-text', KfText);
-	 app.component('kf-lookup', KfGridLookUp);
+	  app.component('kf-lookup', KfGridLookUp);
 	// Mounting Vue app
 	const vue_ = app.mount('#app');
 </script>

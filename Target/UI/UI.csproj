@@ -20,6 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Workflow\Views\" />
+    <Folder Include="Areas\" />
   </ItemGroup>
 </Project>

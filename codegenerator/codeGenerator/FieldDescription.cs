@@ -153,26 +153,31 @@ namespace CodeGenerator
 		public virtual void AppendTemplate(StringBuilder stringBuilder)
 		{
 
-            stringBuilder.AppendLine($"<kf-{ControlType} text = '{Caption}' v-model = 'Item.{FieldName}' {ItemsSource} ></kf-{ControlType}>");
-			//switch (name)
-			//{
-			//	case "String":
-			//		stringBuilder.AppendLine($"<kf-input text = '{Caption}' v-model = 'Item.{FieldName}' ></kf-input>");
-			//		break;
-			//	case "Int32":
-			//		stringBuilder.AppendLine($"<kf-number text = '{Caption}' v-model = 'Item.{FieldName}' ></kf-number>");
-			//		break;
-			//	case "Decimal":
-			//		stringBuilder.AppendLine($"<kf-number text = '{Caption}' v-model = 'Item.{FieldName}' ></kf-number>");
-			//		break;
-			//	case "DateTime":
-			//		stringBuilder.AppendLine($"<kf-date text = '{Caption}' v-model = 'Item.{FieldName}' ></kf-date>");
-			//		break;
-			//	case "Boolean":
-			//		stringBuilder.AppendLine($"<kf-check text = '{Caption}' v-model = 'Item.{FieldName}' ></kf-check>");
-			//		break;
-			//	default: throw new NotImplementedException($"type {name} not implemented");
-			//}
+			var dopAttr= string.Empty;
+
+
+			var name = FieldType.Name;
+			switch (name)
+			{
+				case "String":
+					
+					break;
+				case "Int32":
+					dopAttr = "scale=\"0\"";
+                    break;
+				case "Decimal":
+					dopAttr = "scale=\"2\"";					
+					break;
+				case "DateTime":
+					
+					break;
+				case "Boolean":
+					
+					break;
+				default: break;
+			}
+
+            stringBuilder.AppendLine($"<kf-{ControlType} text = '{Caption}' v-model = 'Item.{FieldName}' {dopAttr}  {ItemsSource} ></kf-{ControlType}>");
 		}
 	}
 

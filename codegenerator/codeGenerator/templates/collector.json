@@ -1,21 +1,21 @@
 [
  
-    {
-        "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\Resources",
-        "EntityFullName": "Sasha.Lims.WebUI.Models.ResourceViewModel",
-        "MainHeader": null,
-        "CardHeader": null,
-        "CardEntityName": "ResourceViewModel",
-        "AlwaysSkip": false
-    },
-    {
-        "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\Samples",
-        "EntityFullName": "Sasha.Lims.WebUI.Models.SampleViewModel",
-        "MainHeader": null,
-        "CardHeader": null,
-        "CardEntityName": "SampleViewModel",
-        "AlwaysSkip": false
-    },
+    //{
+    //    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\Resources",
+    //    "EntityFullName": "Sasha.Lims.WebUI.Models.ResourceViewModel",
+    //    "MainHeader": null,
+    //    "CardHeader": null,
+    //    "CardEntityName": "ResourceViewModel",
+    //    "AlwaysSkip": false
+    //},
+    //{
+    //    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\Samples",
+    //    "EntityFullName": "Sasha.Lims.WebUI.Models.SampleViewModel",
+    //    "MainHeader": null,
+    //    "CardHeader": null,
+    //    "CardEntityName": "SampleViewModel",
+    //    "AlwaysSkip": false
+    //},
     {
         "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\SamplesBook",
         "EntityFullName": "Sasha.Lims.DataAccess.Entities.Entity.vSamplesBook",
@@ -24,54 +24,54 @@
         "CardEntityName": "vSamplesBook",
         "AlwaysSkip": false
     },
-    {
-        "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\SamplesBox",
-        "EntityFullName": null,
-        "MainHeader": null,
-        "CardHeader": null,
-        "CardEntityName": null,
-        "AlwaysSkip": false
-    },
-    {
-        "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\SamplesFileAttach",
-        "EntityFullName": "Sasha.Lims.WebUI.Models.SampleViewModel",
-        "MainHeader": null,
-        "CardHeader": null,
-        "CardEntityName": "SampleViewModel",
-        "AlwaysSkip": false
-    },
-    {
-        "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\SamplesJournal",
-        "EntityFullName": "Sasha.Lims.WebUI.Models.SampleViewModel",
-        "MainHeader": null,
-        "CardHeader": null,
-        "CardEntityName": "SampleViewModel",
-        "AlwaysSkip": false
-    },
-    {
-        "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\SamplesPlate",
-        "EntityFullName": null,
-        "MainHeader": null,
-        "CardHeader": null,
-        "CardEntityName": null,
-        "AlwaysSkip": false
-    },
-    {
-        "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\UserFields",
-        "EntityFullName": null,
-        "MainHeader": null,
-        "CardHeader": null,
-        "CardEntityName": null,
-        "AlwaysSkip": false
-    },
-    {
-        "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\UserFieldTypes",
-        "EntityFullName": null,
-        "MainHeader": null,
-        "CardHeader": null,
-        "CardEntityName": null,
-        "AlwaysSkip": false
-    },
+    //{
+    //    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\SamplesBox",
+    //    "EntityFullName": null,
+    //    "MainHeader": null,
+    //    "CardHeader": null,
+    //    "CardEntityName": null,
+    //    "AlwaysSkip": false
+    //},
+    //{
+    //    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\SamplesFileAttach",
+    //    "EntityFullName": "Sasha.Lims.WebUI.Models.SampleViewModel",
+    //    "MainHeader": null,
+    //    "CardHeader": null,
+    //    "CardEntityName": "SampleViewModel",
+    //    "AlwaysSkip": false
+    //},
+    //{
+    //    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\SamplesJournal",
+    //    "EntityFullName": "Sasha.Lims.WebUI.Models.SampleViewModel",
+    //    "MainHeader": null,
+    //    "CardHeader": null,
+    //    "CardEntityName": "SampleViewModel",
+    //    "AlwaysSkip": false
+    //},
+    //{
+    //    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\SamplesPlate",
+    //    "EntityFullName": null,
+    //    "MainHeader": null,
+    //    "CardHeader": null,
+    //    "CardEntityName": null,
+    //    "AlwaysSkip": false
+    //},
+    //{
+    //    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\UserFields",
+    //    "EntityFullName": null,
+    //    "MainHeader": null,
+    //    "CardHeader": null,
+    //    "CardEntityName": null,
+    //    "AlwaysSkip": false
+    //},
+    //{
+    //    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\UserFieldTypes",
+    //    "EntityFullName": null,
+    //    "MainHeader": null,
+    //    "CardHeader": null,
+    //    "CardEntityName": null,
+    //    "AlwaysSkip": false
+    //},
     {
         "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\WorkflowProcessResult",
         "EntityFullName": "Sasha.Lims.DataAccess.Entities.Entity.vProcessResult",
@@ -80,22 +80,22 @@
         "CardEntityName": "vProcessResult",
         "AlwaysSkip": false
     },
-    {
-        "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\WorkflowRunList",
-        "EntityFullName": "Sasha.Lims.DataAccess.Entities.Entity.vWorkflowRunList",
-        "MainHeader": null,
-        "CardHeader": null,
-        "CardEntityName": "vWorkflowRunList",
-        "AlwaysSkip": false
-    },
-    {
-        "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\WorkfowRunList",
-        "EntityFullName": null,
-        "MainHeader": null,
-        "CardHeader": null,
-        "CardEntityName": null,
-        "AlwaysSkip": false
-    },
+  {
+    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\WorkflowRunList",
+    "EntityFullName": "Sasha.Lims.DataAccess.Entities.Entity.vWorkflowRunList",
+    "MainHeader": "Workflow Run List",
+    "CardHeader": null,
+    "CardEntityName": "vWorkflowRunList",
+    "AlwaysSkip": false
+  },
+    //{
+    //    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\WorkfowRunList",
+    //    "EntityFullName": null,
+    //    "MainHeader": null,
+    //    "CardHeader": null,
+    //    "CardEntityName": null,
+    //    "AlwaysSkip": false
+    //},
     {
         "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Areas\\Common\\Views\\CustodyLogJournal",
         "EntityFullName": "Sasha.Lims.DataAccess.Entities.Entity.vCustodyLog",
@@ -144,18 +144,18 @@
         "CardEntityName": "vReagent",
         "AlwaysSkip": false
     },
-    {
-        "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Areas\\Reagents\\Views\\ReagentLogJournal",
-        "EntityFullName": "Sasha.Lims.DataAccess.Entities.Entity.vReagentLog",
-        "MainHeader": null,
-        "CardHeader": null,
-        "CardEntityName": "vReagentLog",
-        "AlwaysSkip": false
-    },
+  {
+    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Areas\\Reagents\\Views\\ReagentLogJournal",
+    "EntityFullName": "Sasha.Lims.DataAccess.Entities.Entity.vReagentLog",
+    "MainHeader": "Reagent Log",
+    "CardHeader": null,
+    "CardEntityName": "vReagentLog",
+    "AlwaysSkip": false
+  },
     {
         "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Areas\\Reagents\\Views\\ReagentTypeJournal",
         "EntityFullName": "Sasha.Lims.DataAccess.Entities.Entity.vReagentType",
-        "MainHeader": null,
+        "MainHeader": "Reagent Type",
         "CardHeader": null,
         "CardEntityName": "vReagentType",
         "AlwaysSkip": false
@@ -163,25 +163,25 @@
     {
         "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Areas\\SamplesEdit\\Views\\ContainerJournal",
         "EntityFullName": "Sasha.Lims.DataAccess.Entities.Entity.vContaiter",
-        "MainHeader": null,
+        "MainHeader": " Contaiter" ,
         "CardHeader": null,
         "CardEntityName": "vContaiter",
         "AlwaysSkip": false
     },
-    {
-        "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Areas\\SamplesEdit\\Views\\SamplesJournal",
-        "EntityFullName": "Sasha.Lims.DataAccess.Entities.Entity.vJourLine",
-        "MainHeader": null,
-        "CardHeader": null,
-        "CardEntityName": "vJourLine",
-        "AlwaysSkip": false
-    },
-    {
-        "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Areas\\Workflow\\Views\\SelectSamples",
-        "EntityFullName": "Sasha.Lims.DataAccess.Entities.Entity.vSamplesBook",
-        "MainHeader": null,
-        "CardHeader": null,
-        "CardEntityName": "vSamplesBook",
-        "AlwaysSkip": false
-    }
+  {
+    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Areas\\SamplesEdit\\Views\\SamplesJournal",
+    "EntityFullName": "Sasha.Lims.DataAccess.Entities.Entity.vJourLine",
+    "MainHeader": "Jour Line",
+    "CardHeader": null,
+    "CardEntityName": "vJourLine",
+    "AlwaysSkip": false
+  },
+  {
+    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Areas\\Workflow\\Views\\SelectSamples",
+    "EntityFullName": "Sasha.Lims.DataAccess.Entities.Entity.vSamplesBook",
+    "MainHeader": "Samples Book",
+    "CardHeader": null,
+    "CardEntityName": "vSamplesBook",
+    "AlwaysSkip": false
+  }
 ]

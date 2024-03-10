@@ -38,7 +38,7 @@
 	 function setDataSource() {
 		 const dataSource = DevExpress.data.AspNet.createStore({
 			 key: "Id",
-			 loadUrl: document.location.origin + "/Contract/DkJournal/Get",
+			 loadUrl: document.location.origin + "$journalControllerPath$/Get",
 		 });
 		 var grid = $("#grid").dxDataGrid("instance");
 		 grid.option("dataSource", dataSource);
@@ -60,7 +60,7 @@
 			 FindDate() {
 				 localStorage.setItem('dateFrom', this.from);
 				 localStorage.setItem('dateTo', this.to);
-				 const pathEnd = "/Contract/DkJournal/SetFilter";
+				 const pathEnd = "$journalControllerPath$/SetFilter";
 				 const data = { from: this.from, to: this.to };
 				 this.FetchJson( pathEnd,this.Ok, data)
 			 },
@@ -68,24 +68,24 @@
 			    setDataSource();
 			 },
 			AddClick() {
-				xPopup ('Карточка $Header$', '/Contract/DkCard/Index' + '?page_mode=modal', 1024, 916);
+				xPopup ('Карточка $Header$', '$cardControllerPath$/Index' + '?page_mode=modal', 1024, 916);
 			}
 			,
 			 EditClick() {
 				if (checkItem(focusedRowKey)) {
-					xPopup('Карточка $Header$', '/Contract/DkCard/Index?id=' + focusedRowKey  , 1024, 916);
+					xPopup('Карточка $Header$', '$cardControllerPath$/Index?id=' + focusedRowKey  , 1024, 916);
 				}
 
 			},
 			 CopyClick() {
 				if (checkItem(focusedRowKey)) {
-					   xPopup('Карточка $Header$', '/Contract/DkCard/Index?id=' + focusedRowKey + '&mode=copy', 1024, 916);
+					   xPopup('Карточка $Header$', '$cardControllerPath$/Index?id=' + focusedRowKey + '&mode=copy', 1024, 916);
 				}
 			},
 
 			 DeleteClick() {
 			  if (checkItem(focusedRowKey)) {
-				  path = '/Contract/DkCard/Delete?id='+ focusedRowKey
+				  path = '$cardControllerPath$/Delete?id='+ focusedRowKey
 				   this.FetchJson(path,this.Ok)
 			  }
 		  }
@@ -129,7 +129,7 @@
   $("#grid").dxDataGrid({
 	    onRowClick: onRowClick,
         stateStoring: {
-            storageKey: 'dkJournal_Grid',
+            storageKey: '$storageKey$',
         },
         "export": {//выгрузка в excel
             enabled: true,

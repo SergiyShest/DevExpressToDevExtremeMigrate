@@ -6,7 +6,7 @@
 <div style="display:flex;flex-direction:column;align-items:flex-start;align-content:flex-start;align-self:stretch">
 	<h1></h1>
 
-	<div id="app" style="display: flex;flex-direction: column;width: 550px;">
+	<div id="app" style="display: flex;flex-direction: column;width: 850px;">
 		<div id="items"  class="grid-container">
 		    $items$
 		</div>

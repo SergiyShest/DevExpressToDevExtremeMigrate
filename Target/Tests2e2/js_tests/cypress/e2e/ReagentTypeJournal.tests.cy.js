@@ -2,7 +2,7 @@
 
  it('Проверка наличия заголовка', () => {
      cy.visit('https://localhost:7210/Reagents/ReagentTypeJournal')
-    cy.contains('H1', '')
+    cy.contains('H1', 'Reagent Type')
     
   })  
   

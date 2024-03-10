@@ -161,7 +161,7 @@ namespace CodeGenerator
         /// <summary>
         /// часть ссылки указывающей из формы журнала на форму карточки
         /// </summary>
-        public string DataPath { get; set; }
+        public string JournalControllerPath { get; set; }
 
         public string HtmlRequestPath { get { return string.IsNullOrEmpty(this.Area) ? Name : this.Area + "/" + Name; } }
 

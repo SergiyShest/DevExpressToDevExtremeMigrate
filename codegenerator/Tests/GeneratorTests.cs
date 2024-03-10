@@ -32,7 +32,13 @@ namespace Tests
 
         }
 
-        [TestCase("Id", "<kf-number text = 'Код договора'    v-model = 'Item.Id' >    </kf-number>")]
+
+        /// <summary>
+        /// проверка генерации контролов для форм
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="expected"></param>
+        [TestCase("Id", "<kf-number text = 'Код договора' v-model = 'Item.Id' scale='0' ></kf-number>")]
         [TestCase("Name", "<kf-input  text = 'Name'    v-model = 'Item.Name' >    </kf-input>")]
         [TestCase("DocNum", "<kf-input  text =  'Номер документа'    v-model = 'Item.DocNum' >    </kf-input>")]
         [TestCase("DocDate", "<kf-date   text = 'DocDate' v-model = 'Item.DocDate' > </kf-date>")]
@@ -195,7 +201,7 @@ namespace Tests
             var info = CollectDataFromDir(dir);
             //			generator.GeneratePathsForInfo(info);
 
-            generator.GenerateJournalTests(new[] { info });
+            generator.GenerateJournalTests(info );
 
         }
 
