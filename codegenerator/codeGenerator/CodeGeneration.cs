@@ -70,12 +70,13 @@ namespace CodeGenerator
         {
             if (File.Exists(fileName))
             {
+                var infoCollector= new InfoCollector(SourcePath);
                 var fileContent = File.ReadAllText(fileName);
                 InfoList = JsonConvert.DeserializeObject<List<Info>>(fileContent);
                 foreach (var info in InfoList)
                 {
                     if (entityName == null || info.EntityName == entityName)
-                        InfoCollector.Collect(info, SourcePath);
+                        infoCollector.CollectInfo(info);
                 }
             }
         }
@@ -84,7 +85,7 @@ namespace CodeGenerator
         {
             if (InfoList == null)
             {
-                throw new Exception("Нужно собрать иформaцию. Выполните сначала функцию LoadInfo");
+                throw new Exception("Нужно собрать информацию. Выполните сначала функцию LoadInfo");
             }
 
             foreach (var info in InfoList)
@@ -112,7 +113,14 @@ namespace CodeGenerator
 
         public void GenerateJournalController(Info info)
         {
-            var controllerContent = File.ReadAllText("templates/targetJournalController.Template", Encoding.GetEncoding(1251));
+            string controllerContent;
+            if(info.EntityDateField==null)
+               controllerContent = File.ReadAllText("templates/targetJournalControllerWitoutFliter.Template", Encoding.GetEncoding(1251));
+            else
+            {
+               controllerContent = File.ReadAllText("templates/targetJournalController.Template", Encoding.GetEncoding(1251));
+            }
+
             if (info.EntityFullName != null)
             {
                 controllerContent = controllerContent.Replace("using Entity;", "using Entity;\r\nusing " + info.EntityPath + ";");
@@ -157,7 +165,7 @@ namespace CodeGenerator
         {
             var viewContent = File.ReadAllText("templates/targetCard.Template", Encoding.GetEncoding(1251));
             var dataPath = info.DataPath.Replace(info.JournalControllerName.Replace("Controller", ""), info.CardControllerName.Replace("Controller", ""));
-            viewContent = viewContent.Replace("$dataPath$", dataPath);
+            viewContent = viewContent.Replace("$cardControllerPath$", dataPath);
             viewContent = viewContent.Replace("$items$", info.FieldsStr);
 
             var viewFullName = Path.Combine(info.CardViewPath, "Index.cshtml");

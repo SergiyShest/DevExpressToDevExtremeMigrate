@@ -222,7 +222,8 @@ namespace Tests
             var assertCollector = new AssertCollector();
             var infoCollector = new InfoCollector(Path.GetFullPath("..\\..\\..\\..\\..\\Source\\UI"));
 
-            var info = infoCollector.CollectInfo(dir);
+            var info = new Info() { Path = dir }; ;
+           infoCollector.CollectInfo(info);
             assertCollector.Assert(!string.IsNullOrEmpty(info.Path), "Path should not be empty or null.");
             //            assertCollector.Assert(!string.IsNullOrEmpty(info.MainHeader), "MainHeader should not be empty or null.");
             assertCollector.Assert(!string.IsNullOrEmpty(info.EntityFullName), "EntityName should not be empty or null.");

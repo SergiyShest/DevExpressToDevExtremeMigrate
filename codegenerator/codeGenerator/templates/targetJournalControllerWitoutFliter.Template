@@ -1,0 +1,11 @@
+using Entity;
+using Entity.Controllers;
+using Microsoft.AspNetCore.Mvc;
+namespace tmp{
+    [Area("")]
+    public class DkJournalController : GenericJournalController<vAnswer2>
+    {
+        public DkJournalController(IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor) { }
+
+    }
+}

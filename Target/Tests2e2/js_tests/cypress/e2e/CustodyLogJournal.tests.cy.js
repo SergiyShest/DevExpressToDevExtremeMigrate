@@ -1,13 +1,13 @@
 ﻿describe('Тест журнала DoctorJournal', () => {
 
  it('Проверка наличия заголовка', () => {
-     cy.visit('https://localhost:7210/Common/CustodyLogJournal')
-    cy.contains('H1', 'Custody Log')
+     cy.visit('https://localhost:7210/Resources')
+    cy.contains('H1', '')
     
   })  
   
   it('проверка фильра на наличие записей', () => {
-      cy.visit('https://localhost:7210/Common/CustodyLogJournal')
+      cy.visit('https://localhost:7210/Resources')
 
     cy.get('#d1From').type('1023-12-20').blur();
     cy.get('#d1To').type('2024-12-31').blur();
@@ -26,7 +26,7 @@
   })
 
   it('Проверка фильтра на отсутствие записей', () => {
-      cy.visit('https://localhost:7210/Common/CustodyLogJournal')
+      cy.visit('https://localhost:7210/Resources')
     cy.get('#d1From').type('2000-12-31').blur();//unreal date tnere no records
     cy.get('#d1To').type('2000-12-31').blur();
     cy.get('#findButton').click();

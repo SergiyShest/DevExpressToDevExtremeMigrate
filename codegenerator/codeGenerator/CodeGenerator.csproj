@@ -25,6 +25,9 @@
     <None Update="templates\targetCardController.Template">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="templates\targetJournalControllerWitoutFliter.Template">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="templates\targetJournalController.Template">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

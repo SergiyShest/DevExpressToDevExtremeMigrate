@@ -60,20 +60,6 @@ namespace CodeGenerator
             }
         }
 
-
-        static Dictionary<string,string> specialСases = new Dictionary<string,string>();
-
-        internal static string GetEntity(string dir)
-        {
-            var name = new DirectoryInfo(dir).Name;
-            var key = specialСases.Keys.FirstOrDefault(x => x == name);
-            if (key != null)
-            {
-                return specialСases[key];
-            }
-            return null;
-        }
-
         public static string ExtractFirstTextFromHtml(string content,string tag="h1")
         {
 

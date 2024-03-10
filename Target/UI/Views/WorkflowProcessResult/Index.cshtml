@@ -5,7 +5,7 @@
 
 
 <div style="display:flex;flex-direction:column;align-items:flex-start;align-content:flex-start;align-self:stretch">
-	<h1></h1>
+	<h1>vProcessResult</h1>
 
 	<div id="app" style="display: flex;flex-direction: column;width: 450px;">
 		<div style="display: flex;align-items:center">
@@ -38,7 +38,7 @@
 	 function setDataSource() {
 		 const dataSource = DevExpress.data.AspNet.createStore({
 			 key: "Id",
-			 loadUrl: document.location.origin + "/Workflow/Run/Get",
+			 loadUrl: document.location.origin + "/WorkflowProcessResult/Get",
 		 });
 		 var grid = $("#grid").dxDataGrid("instance");
 		 grid.option("dataSource", dataSource);
@@ -60,7 +60,7 @@
 			 FindDate() {
 				 localStorage.setItem('dateFrom', this.from);
 				 localStorage.setItem('dateTo', this.to);
-				 const pathEnd = "/Workflow/Run/SetFilter";
+				 const pathEnd = "/WorkflowProcessResult/SetFilter";
 				 const data = { from: this.from, to: this.to };
 				 this.FetchJson( pathEnd,this.Ok, data)
 			 },
@@ -68,24 +68,24 @@
 			    setDataSource();
 			 },
 			AddClick() {
-				xPopup ('Карточка ', '/Workflow/RunCard/Index' + '?page_mode=modal', 1024, 916);
+				xPopup ('Карточка vProcessResult', '/WorkflowProcessResultCard/Index' + '?page_mode=modal', 1024, 916);
 			}
 			,
 			 EditClick() {
 				if (checkItem(focusedRowKey)) {
-					xPopup('Карточка ', '/Workflow/RunCard/Index?id=' + focusedRowKey  , 1024, 916);
+					xPopup('Карточка vProcessResult', '/WorkflowProcessResultCard/Index?id=' + focusedRowKey  , 1024, 916);
 				}
 
 			},
 			 CopyClick() {
 				if (checkItem(focusedRowKey)) {
-					   xPopup('Карточка ', '/Workflow/RunCard/Index?id=' + focusedRowKey + '&mode=copy', 1024, 916);
+					   xPopup('Карточка vProcessResult', '/WorkflowProcessResultCard/Index?id=' + focusedRowKey + '&mode=copy', 1024, 916);
 				}
 			},
 
 			 DeleteClick() {
 			  if (checkItem(focusedRowKey)) {
-				  path = '/Workflow/RunCard/Delete?id='+ focusedRowKey
+				  path = '/WorkflowProcessResultCard/Delete?id='+ focusedRowKey
 				   this.FetchJson(path,this.Ok)
 			  }
 		  }
@@ -146,47 +146,137 @@ dataType:'text',
 visible:false,
 }
 ,
-{caption:'Order',
-dataField:'Order',
+{caption:'Workflow',
+dataField:'Workflow',
 dataType:'text',
- width:'20px',
+ width:'100px',
 }
 ,
-{caption:'Process Name',
+{caption:'Run',
+dataField:'Run',
+dataType:'text',
+ width:'100px',
+}
+,
+{caption:'Run Date Started',
+dataField:'RunDateStarted',
+dataType:'text',
+ width:'60px',
+}
+,
+{caption:'Run Date Completed',
+dataField:'RunDateCompleted',
+dataType:'text',
+ width:'60px',
+}
+,
+{caption:'Run Created User',
+dataField:'RunCreatedUserName',
+dataType:'text',
+ width:'60px',
+}
+,
+{caption:'Run Completed User',
+dataField:'RunCompletedUserName',
+dataType:'text',
+ width:'100px',
+}
+,
+{caption:'Process',
+dataField:'Process',
+dataType:'text',
+ width:'100px',
+}
+,
+{caption:'Process Code',
+dataField:'ProcessTypeCode',
+dataType:'text',
+ width:'100px',
+visible:false,
+}
+,
+{caption:'Process Date Started',
+dataField:'ProcessDateStarted',
+dataType:'text',
+ width:'60px',
+}
+,
+{caption:'Process Date Completed',
+dataField:'ProcessDateCompleted',
+dataType:'text',
+ width:'60px',
+}
+,
+{caption:'Process Created User',
+dataField:'ProcessCreatedUserName',
+dataType:'text',
+ width:'60px',
+}
+,
+{caption:'Process Completed User',
+dataField:'ProcessCompletedUserName',
+dataType:'text',
+ width:'100px',
+}
+,
+{caption:'Barcode',
+dataField:'Barcode',
+dataType:'text',
+ width:'100px',
+}
+,
+{caption:'Name',
 dataField:'Name',
 dataType:'text',
  width:'100px',
 }
 ,
-{caption:'Samples',
-dataField:'SamplesCount',
+{caption:'Location',
+dataField:'Location',
+dataType:'text',
+ width:'100px',
+}
+,
+{caption:'Well',
+dataField:'Well',
 dataType:'text',
  width:'50px',
 }
 ,
-{caption:'Date Created',
-dataField:'DateCreated',
+{caption:'Doctor',
+dataField:'Doctor',
 dataType:'text',
+ width:'50px',
 }
 ,
-{caption:'Date Started',
-dataField:'DateStarted',
+{caption:'Patient',
+dataField:'Patient',
 dataType:'text',
+ width:'50px',
 }
 ,
-{caption:'Started User',
-dataField:'StartedUser',
+{caption:'Aliquot',
+dataField:'IsChild',
 dataType:'text',
+ width:'50px',
 }
 ,
-{caption:'Completed User',
-dataField:'CompletedUser',
+{caption:'Hospital Name',
+dataField:'HospitalName',
 dataType:'text',
+ width:'50px',
 }
 ,
-{caption:'Date Completed',
-dataField:'DateCompleted',
+{caption:'Parent Name',
+dataField:'ParentName',
 dataType:'text',
+ width:'50px',
+}
+,
+{caption:'Current/last Process Name',
+dataField:'SampleCurrentProcessName',
+dataType:'text',
+ width:'50px',
 }
 ]
 

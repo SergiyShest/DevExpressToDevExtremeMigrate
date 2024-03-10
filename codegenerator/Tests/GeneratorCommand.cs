@@ -23,8 +23,8 @@ namespace Tests
         {
 
             var infoCollector = new InfoCollector(dir);
-
-            var data = infoCollector.InfoList.Select(info => new { info.Path, info.EntityName, info.MainHeader, info.CardHeader, info.CardEntityName, info.AlwaysSkip });
+            infoCollector.CollectInfoFromSourcePath();
+            var data = infoCollector.InfoList.Select(info => new { info.Path, info.EntityFullName, info.MainHeader, info.CardHeader, info.CardEntityName, info.AlwaysSkip });
             String json = JsonConvert.SerializeObject(data);
             File.WriteAllText("C:\\tmp\\collector.json", json);
 
@@ -43,13 +43,13 @@ namespace Tests
             generator.CreateTests  = true;
             generator.SaveMode  = FileSaveMode.Replace;
 
-
-        generator.Generate();
+            generator.Generate();
+        
 		}
 
-
-        [TestCase("..\\..\\..\\..\\..\\Source\\UI\\Areas\\Common\\Views\\DoctorJournal")]
-        [TestCase("..\\..\\..\\..\\..\\Source\\UI\\Areas\\Common\\Views\\HospitalJournal")]
+        [TestCase("..\\..\\..\\..\\..\\Source\\UI\\Areas\\Reagents\\Views\\ReagentTypeJournal")]
+     // [TestCase("..\\..\\..\\..\\..\\Source\\UI\\Areas\\Common\\Views\\DoctorJournal")]
+     // [TestCase("..\\..\\..\\..\\..\\Source\\UI\\Areas\\Common\\Views\\HospitalJournal")]
 		public void GeneratePart(string dir)
 		{
             dir = Path.GetFullPath( dir);

@@ -3,20 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\ui\\areas\\reagents\\controllers\\reagenttypejournalcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|solutionrelative:ui\\areas\\reagents\\controllers\\reagenttypejournalcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\ui\\areas\\reagents\\views\\reagenttypecard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|solutionrelative:ui\\areas\\reagents\\views\\reagenttypecard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\tests2e2\\cypresstests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|solutionrelative:tests2e2\\cypresstests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\ui\\wwwroot\\js\\vue3components.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|solutionrelative:ui\\wwwroot\\js\\vue3components.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\tests2e2\\testsutils.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|solutionrelative:tests2e2\\testsutils.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\tests2e2\\globalusings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8FAE85D1-87E9-4016-833E-1DE60E42D63F}|Tests2e2\\Tests2e2.csproj|solutionrelative:tests2e2\\globalusings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|c:\\users\\saergey\\source\\repos\\devexpresstodevextrememigration\\target\\ui\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{3F3CC4CF-B1AE-4C92-996C-6F64D672A76A}|UI\\UI.csproj|solutionrelative:ui\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 9,
+          "SelectedChildIndex": 11,
           "Children": [
             {
               "$type": "Bookmark",
@@ -66,54 +62,41 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "ReagentTypeJournalController.cs",
-              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\Areas\\Reagents\\Controllers\\ReagentTypeJournalController.cs",
-              "RelativeDocumentMoniker": "UI\\Areas\\Reagents\\Controllers\\ReagentTypeJournalController.cs",
-              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\Areas\\Reagents\\Controllers\\ReagentTypeJournalController.cs",
-              "RelativeToolTip": "UI\\Areas\\Reagents\\Controllers\\ReagentTypeJournalController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAARAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-04T02:55:54.321Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "GlobalUsings.cs",
-              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\GlobalUsings.cs",
-              "RelativeDocumentMoniker": "Tests2e2\\GlobalUsings.cs",
-              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\GlobalUsings.cs",
-              "RelativeToolTip": "Tests2e2\\GlobalUsings.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-04T02:02:30.987Z",
+              "DocumentIndex": 2,
+              "Title": "site.js",
+              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\wwwroot\\js\\site.js",
+              "RelativeDocumentMoniker": "UI\\wwwroot\\js\\site.js",
+              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\wwwroot\\js\\site.js",
+              "RelativeToolTip": "UI\\wwwroot\\js\\site.js",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABkAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-03-10T04:07:11.066Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "CypressTests.cs",
-              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\CypressTests.cs",
-              "RelativeDocumentMoniker": "Tests2e2\\CypressTests.cs",
-              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\CypressTests.cs",
-              "RelativeToolTip": "Tests2e2\\CypressTests.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAaAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-03T05:58:37.723Z",
+              "Title": "vue3Components.js",
+              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\wwwroot\\js\\vue3Components.js",
+              "RelativeDocumentMoniker": "UI\\wwwroot\\js\\vue3Components.js",
+              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\wwwroot\\js\\vue3Components.js",
+              "RelativeToolTip": "UI\\wwwroot\\js\\vue3Components.js",
+              "ViewState": "AQIAAIkAAAAAAAAAAAAAAMgAAAAGAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-03-10T03:08:57.487Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "TestsUtils.cs",
-              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\TestsUtils.cs",
-              "RelativeDocumentMoniker": "Tests2e2\\TestsUtils.cs",
-              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\Tests2e2\\TestsUtils.cs",
-              "RelativeToolTip": "Tests2e2\\TestsUtils.cs",
-              "ViewState": "AQIAAAQAAAAAAAAAAAAuwBwAAAAEAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-03T05:58:37.736Z",
+              "DocumentIndex": 0,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\Areas\\Reagents\\Views\\ReagentTypeCard\\Index.cshtml",
+              "RelativeDocumentMoniker": "UI\\Areas\\Reagents\\Views\\ReagentTypeCard\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Target\\UI\\Areas\\Reagents\\Views\\ReagentTypeCard\\Index.cshtml",
+              "RelativeToolTip": "UI\\Areas\\Reagents\\Views\\ReagentTypeCard\\Index.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAqAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-03-10T02:46:21.947Z",
               "EditorCaption": ""
             }
           ]

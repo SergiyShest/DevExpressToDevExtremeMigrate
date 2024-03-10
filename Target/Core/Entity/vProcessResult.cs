@@ -9,12 +9,13 @@
 
 namespace Sasha.Lims.DataAccess.Entities.Entity
 {
+    using Core;
     using System;
     using System.Collections.Generic;
     
-    public partial class vProcessResult
+    public partial class vProcessResult :IEntity
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string Result { get; set; }
         public string Run { get; set; }
         public Nullable<System.DateTime> RunDateStarted { get; set; }
@@ -72,5 +73,6 @@ namespace Sasha.Lims.DataAccess.Entities.Entity
         public Nullable<int> ProcessStatusId { get; set; }
         public Nullable<int> ModelId { get; set; }
         public Nullable<int> FilesCount { get; set; }
+
     }
 }

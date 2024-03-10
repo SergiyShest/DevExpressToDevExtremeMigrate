@@ -9,12 +9,13 @@
 
 namespace Sasha.Lims.DataAccess.Entities.Entity
 {
+    using Core;
     using System;
     using System.Collections.Generic;
     
-    public partial class vWorkflowRunList
+    public partial class vWorkflowRunList:IEntity
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public Nullable<int> TypeZId { get; set; }
         public string WfType { get; set; }
         public string Code { get; set; }

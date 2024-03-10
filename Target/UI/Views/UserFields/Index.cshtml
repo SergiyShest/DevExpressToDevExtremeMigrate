@@ -38,7 +38,7 @@
 	 function setDataSource() {
 		 const dataSource = DevExpress.data.AspNet.createStore({
 			 key: "Id",
-			 loadUrl: document.location.origin + "/Workflow/Process/Get",
+			 loadUrl: document.location.origin + "/UserFields/Get",
 		 });
 		 var grid = $("#grid").dxDataGrid("instance");
 		 grid.option("dataSource", dataSource);
@@ -60,7 +60,7 @@
 			 FindDate() {
 				 localStorage.setItem('dateFrom', this.from);
 				 localStorage.setItem('dateTo', this.to);
-				 const pathEnd = "/Workflow/Process/SetFilter";
+				 const pathEnd = "/UserFields/SetFilter";
 				 const data = { from: this.from, to: this.to };
 				 this.FetchJson( pathEnd,this.Ok, data)
 			 },
@@ -68,24 +68,24 @@
 			    setDataSource();
 			 },
 			AddClick() {
-				xPopup ('Карточка ', '/Workflow/ProcessCard/Index' + '?page_mode=modal', 1024, 916);
+				xPopup ('Карточка ', '/UserFieldsCard/Index' + '?page_mode=modal', 1024, 916);
 			}
 			,
 			 EditClick() {
 				if (checkItem(focusedRowKey)) {
-					xPopup('Карточка ', '/Workflow/ProcessCard/Index?id=' + focusedRowKey  , 1024, 916);
+					xPopup('Карточка ', '/UserFieldsCard/Index?id=' + focusedRowKey  , 1024, 916);
 				}
 
 			},
 			 CopyClick() {
 				if (checkItem(focusedRowKey)) {
-					   xPopup('Карточка ', '/Workflow/ProcessCard/Index?id=' + focusedRowKey + '&mode=copy', 1024, 916);
+					   xPopup('Карточка ', '/UserFieldsCard/Index?id=' + focusedRowKey + '&mode=copy', 1024, 916);
 				}
 			},
 
 			 DeleteClick() {
 			  if (checkItem(focusedRowKey)) {
-				  path = '/Workflow/ProcessCard/Delete?id='+ focusedRowKey
+				  path = '/UserFieldsCard/Delete?id='+ focusedRowKey
 				   this.FetchJson(path,this.Ok)
 			  }
 		  }
@@ -139,74 +139,7 @@
         focusedRowEnabled: true,
         onFocusedRowChanged: OnFocusedRowChanged,
 
-        columns:[{caption:'caption',
-dataField:'fieldName',
-dataType:'text',
- width:'16px',
-}
-,
-{caption:'Id',
-dataField:'Id',
-dataType:'text',
- width:'20px',
-visible:false,
-}
-,
-{caption:'Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Barcode))',
-dataField:'SampleBookRecord.Barcode',
-dataType:'text',
- width:'50px',
-}
-,
-{caption:'Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Name))',
-dataField:'SampleBookRecord.Name',
-dataType:'text',
- width:'50px',
-}
-,
-{caption:'Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Location))',
-dataField:'SampleBookRecord.Location',
-dataType:'text',
- width:'100px',
-}
-,
-{caption:'Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Box))',
-dataField:'SampleBookRecord.BatchName',
-dataType:'text',
- width:'100px',
-}
-,
-{caption:'Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Well))',
-dataField:'Sample.Record.Well',
-dataType:'text',
-}
-,
-{caption:'Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Process))',
-dataField:'SampleBookRecord.ProcessName',
-dataType:'text',
-}
-,
-{caption:'Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_User))',
-dataField:'SampleBookRecord.UserName',
-dataType:'text',
-}
-,
-{caption:'Sample Id',
-dataField:'SampleId',
-dataType:'text',
-visible:false,
-}
-,
-{caption:'SampleBookRecord.Patient',
-dataField:'SampleBookRecord.Patient',
-dataType:'text',
-}
-,
-{caption:'SampleBookRecord.Doctor',
-dataField:'SampleBookRecord.Doctor',
-dataType:'text',
-}
-]
+        columns:[]
 
     });
 

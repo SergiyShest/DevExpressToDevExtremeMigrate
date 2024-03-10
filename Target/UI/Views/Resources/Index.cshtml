@@ -1,0 +1,176 @@
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+	Layout = "_Layout";
+}
+
+
+<div style="display:flex;flex-direction:column;align-items:flex-start;align-content:flex-start;align-self:stretch">
+	<h1>ResourceViewModel</h1>
+
+	<div id="app" style="display: flex;flex-direction: column;width: 450px;">
+		<div style="display: flex;align-items:center">
+			<div style="width: 100px;margin-left:15px">Дата:</div>
+			oт<input id="d1From" type="date" v-model="from" style="margin:3px">
+			до<input id="d1To" type="date" v-model="to" style="margin:3px">
+			<kf-button id="findButton"  v-if="mode!='view'" v-on:click.native="FindDate" text="Найти" image="find"></kf-button>
+		</div>
+
+		<div style="display:flex;flex-direction:row;">
+			<kf-button id="addButton" v-if="mode!='view'"		v-on:click.native="AddClick"	text="Добавить"			image="add"></kf-button>
+			<kf-button id="editButton" v-if="mode!='view'"		v-on:click.native="EditClick"	text="Редактировать"	image="edit"></kf-button>
+			<kf-button id="copyButton" v-if="mode!='view'"		v-on:click.native="CopyClick"	text="Копировать"		image="copy"></kf-button>
+			<kf-button id="deleteButton" v-if="mode!='view'"	v-on:click.native="DeleteClick"	text="Удалить"			image="delete"></kf-button>
+		</div>
+	</div>
+	<div id="grid" />
+</div>
+
+    <script type="module">
+
+    $(window).on("load",function () {
+	@Html.Raw(TempData["StartupScript"])
+		});
+	 let Mode = '@ViewBag.Mode'
+	 let focusedRowKey = null;
+         import { KfField, KfInput, KfDate, KfSelect, KfNumber, KfCheck, KfTextarea, KfText, KfButton } from '/js/vue3Components.js';
+         import { baseMixin } from '/js/BaseMixin.js';
+         const { ref } = Vue;
+	 function setDataSource() {
+		 const dataSource = DevExpress.data.AspNet.createStore({
+			 key: "Id",
+			 loadUrl: document.location.origin + "/Resources/Get",
+		 });
+		 var grid = $("#grid").dxDataGrid("instance");
+		 grid.option("dataSource", dataSource);
+	 }
+		function OnFocusedRowChanged(e) {
+			focusedRowKey = e.component.option('focusedRowKey');
+		}
+
+	  const app = Vue.createApp({
+		 mixins: [baseMixin],
+		 data() {
+			 return {
+				 from: null,
+				 to: null
+			 }
+		 }
+		 ,
+		 methods: {
+			 FindDate() {
+				 localStorage.setItem('dateFrom', this.from);
+				 localStorage.setItem('dateTo', this.to);
+				 const pathEnd = "/Resources/SetFilter";
+				 const data = { from: this.from, to: this.to };
+				 this.FetchJson( pathEnd,this.Ok, data)
+			 },
+			 Ok() {
+			    setDataSource();
+			 },
+			AddClick() {
+				xPopup ('Карточка ResourceViewModel', '/ResourcesCard/Index' + '?page_mode=modal', 1024, 916);
+			}
+			,
+			 EditClick() {
+				if (checkItem(focusedRowKey)) {
+					xPopup('Карточка ResourceViewModel', '/ResourcesCard/Index?id=' + focusedRowKey  , 1024, 916);
+				}
+
+			},
+			 CopyClick() {
+				if (checkItem(focusedRowKey)) {
+					   xPopup('Карточка ResourceViewModel', '/ResourcesCard/Index?id=' + focusedRowKey + '&mode=copy', 1024, 916);
+				}
+			},
+
+			 DeleteClick() {
+			  if (checkItem(focusedRowKey)) {
+				  path = '/ResourcesCard/Delete?id='+ focusedRowKey
+				   this.FetchJson(path,this.Ok)
+			  }
+		  }
+		 },
+		 mounted: function () {
+
+			let fr = localStorage.getItem('dateFrom');
+			if (fr != 'null') this.from = fr;
+
+			let to = localStorage.getItem('dateTo');
+			if (to != 'null') this.to = to;
+			
+			this.FindDate()
+
+		 }
+	 });
+	  // Registering components
+       //  app.component('kf-field', KfField);
+       app.component('kf-button', KfButton);
+      //  app.component('kf-input', KfInput);
+      //  app.component('kf-date', KfDate);
+      //  app.component('kf-select', KfSelect);
+      //  app.component('kf-number', KfNumber);
+      //  app.component('kf-check', KfCheck);
+      //  app.component('kf-textarea', KfTextarea);
+      //  app.component('kf-text', KfText);
+
+        // Mounting Vue app
+		const vue_ = app.mount('#app');
+
+
+	 function onRowClick(e) {
+        var component = e.component,
+            prevClickTime = component.lastClickTime;
+        component.lastClickTime = new Date();
+        if (prevClickTime && (component.lastClickTime - prevClickTime < 300)) {
+            vue_.EditClick()
+        }
+    }
+
+  $("#grid").dxDataGrid({
+	    onRowClick: onRowClick,
+        stateStoring: {
+            storageKey: 'dkJournal_Grid',
+        },
+        "export": {//выгрузка в excel
+            enabled: true,
+            fileName: "Отчет ",
+            allowExportSelectedData: true
+        },
+        focusedRowEnabled: true,
+        onFocusedRowChanged: OnFocusedRowChanged,
+
+        columns:[{caption:'Id',
+dataField:'ResourceId',
+dataType:'text',
+ width:'120px',
+visible:false,
+}
+,
+{caption:'Name',
+dataField:'Name',
+dataType:'text',
+ width:'150px',
+}
+,
+{caption:'Culture',
+dataField:'Culture',
+dataType:'text',
+ width:'150px',
+}
+,
+{caption:'Value',
+dataField:'Value',
+dataType:'text',
+ width:'150px',
+}
+,
+{caption:'NameSpace',
+dataField:'NameSpace',
+dataType:'text',
+ width:'150px',
+}
+]
+
+    });
+
+</script>

@@ -12,7 +12,7 @@ namespace CodeGenerator
         public string SourcePath { get; set; } = $"..\\..\\..\\..\\..\\Source\\UI";
         public string TargetPath { get; set; } = $"..\\..\\..\\..\\..\\Target\\UI";
 
-        //Path to catalog where entity placed
+        //Path to catalog where entity placed (можно оставить пустым, но с ним поиск нужного файла происходит много быстрее)
         public static string EntityPath { get; set; } = "\\DataAccessLayer\\Sasha.Lims.DataAccess.Entities";
 
         ILogger log = LogManager.GetCurrentClassLogger();
@@ -34,7 +34,9 @@ namespace CodeGenerator
             {
                 try
                 {
-                    InfoList.Add(CollectInfo(dir));
+                    var info = new Info() { Path = dir };
+                    CollectInfo(info);
+                    InfoList.Add(info);
                 }
                 catch (Exception ex)
                 {
@@ -43,23 +45,19 @@ namespace CodeGenerator
             }
         }
 
-
-        public Info CollectInfo(string dir)
+        public void CollectInfo(Info info)
         {
+            var dir = info.Path;
             var files = Directory.GetFiles(dir, "*cshtml").ToList();
             var indexFileName = FindIndex(files);
 
             string indexFileContent = File.ReadAllText(indexFileName, Encoding.GetEncoding(1251));
             var gridFileName = FindGrid(indexFileContent, files);
             string contentGrid = File.ReadAllText(gridFileName, Encoding.GetEncoding(1251));
-            var info = new Info()
-            {
-                Path = dir
-            };
 
-            info.MainHeader = Utils.ExtractFirstTextFromHtml(indexFileContent);
+            if (string.IsNullOrEmpty(info.MainHeader)) info.MainHeader = Utils.ExtractFirstTextFromHtml(indexFileContent);
 
-            info.EntityFullName = Utils.GetEntity(dir);
+
             if (string.IsNullOrEmpty(info.EntityFullName)) //try find entity in context
             {
                 info.EntityFullName = Utils.ExtractEntity(indexFileContent);
@@ -68,6 +66,7 @@ namespace CodeGenerator
             {
                 info.EntityFullName = Utils.ExtractEntity(contentGrid);
             }
+
             GeneratePathsForInfo(info, TargetPath);
             if (string.IsNullOrEmpty(info.EntityFullName)) //try find entity in current Controller
             {
@@ -90,25 +89,7 @@ namespace CodeGenerator
                 log.Info(info.Path + " not found EntityName");
             }
 
-            return info;
-        }
 
-        public static void Collect(Info info, string sourcePath)
-        {
-            var files = Directory.GetFiles(info.Path, "*cshtml").ToList();
-            var indexFileName = FindIndex(files);
-
-            string currentView = File.ReadAllText(indexFileName, Encoding.GetEncoding(1251));
-            var gridFileName = FindGrid(currentView, files);
-            string contentGrid = File.ReadAllText(gridFileName, Encoding.GetEncoding(1251));
-
-            info.Columns = Utils.ExtractColumns(contentGrid);
-            if (!string.IsNullOrEmpty(info.EntityName))
-            {
-                info.EntityDateField = Utils.ExtractEntityDate(sourcePath, info.EntityName);
-                var entName = info.CardEntityName ?? info.EntityName;
-                info.Fields = Utils.ExtractFields(sourcePath, entName, info.Columns, EntityPath);
-            }
         }
 
         public static void GeneratePathsForInfo(Info info, string targetPath)

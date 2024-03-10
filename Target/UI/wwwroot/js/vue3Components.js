@@ -1,25 +1,3 @@
-function ConvertDate(value) {
-    return value
-}
-function numOnBlur(control) {
-    control.type = "text";
-    control.value = formatNum(control.value)
-
-}
-
-function numOnFocus(control) {
-    control.value = reFormatNum(control.value)
-    control.type = "number";
-
-}
-
-function formatNum(val) {
-    return numeral(val).format('0,0.00').replaceAll(',', ' ');
-}
-
-function reFormatNum(val) {
-    return val.replaceAll(' ', '');
-}
 
 // Свойства (Props)
 // text - тип String, текст для отображения.
@@ -51,9 +29,10 @@ export const componentBase = {
     },
     methods: {
         valChanged(event) {
-            this.virtChange(event.target.value);
+            this.virtChange(event.target.modelValue);
         },
         virtChange(val) {
+            console.log(this.text +'   '+val)
             this.valueInt = val;
             this.$emit('input', val);
         },
@@ -61,8 +40,8 @@ export const componentBase = {
             this.externalReadonly = val;
         },
         Validate(val) {
-            if (typeof val !== "undefined") {
-                val = this.value.value;
+            if (typeof val === "undefined") {
+                val = null;
             }
             this.valid = true;
             const errList = [];
@@ -89,18 +68,17 @@ export const componentBase = {
                     console.error("Error while validation rules executing: " + error);
                 }
             }
-
             console.log(this.text + ' valid = ' + this.valid);
         },
         mounted() {
-            this.valueInt = this.value;
+            this.valueInt = this.molelValue;
             if (this.valudateonload == true) {
-                this.Validate(this.value);
+                this.Validate(this.molelValue);
             }
         }
     },
     watch: {
-        value(newValue) {
+        modelValue(newValue) {
             this.valueInt = newValue;
             this.Validate(newValue);
         }
@@ -112,12 +90,12 @@ export const componentBase = {
 export const KfField = {
     mixins: [componentBase],
     props: {
-        'value': { type: String },
+        'modelValue': { type: String },
 
     },
     methods: {
         valChanged(event) {
-            this.$emit('input', event.target.value);
+            this.$emit('input', event.target.molelValue);
         }
     },
 
@@ -126,7 +104,7 @@ export const KfField = {
           :class="inputClasses" 
           :style="inputStyle"
           :title="notValidText" 
-          v-bind:value="value"
+          v-bind:value="modelValue"
           v-on:input="valChanged($event)"
       />
   `
@@ -135,7 +113,7 @@ export const KfField = {
 export const KfInput = {
     mixins: [componentBase],
     props: {
-        'value': { type: [String, Number] },
+        'modelValue': { type: [String, Number],default:'' },
     },
 
     methods: {
@@ -143,12 +121,11 @@ export const KfInput = {
     template: `
  <div class="flex-row" >
  <div class="title-col" >{{ text }}<span v-if="requre" style="color:red">*</span>:</div>
- 
  <input
   :class="inputClasses" 
   :style="inputStyle"
   :title="notValidText" 
-   v-bind:value="value"
+   v-bind:value="modelValue"
    v-on:input="valChanged($event)"
    v-bind:readonly="readonly || externalReadonly"
  />
@@ -161,7 +138,7 @@ export const KfInput = {
 export const KfDate = {
     mixins: [componentBase],
     props: {
-        'value': { type: [String, Date] },
+        'modelValue': { type: [String, Date] },
     },
     methods: {},
     template: `
@@ -186,7 +163,7 @@ export const KfDate = {
 export const KfSelect = {
     mixins: [componentBase],
     props: {
-        'value': { type: [String, Number] },
+        'modelValue': { type: [String, Number] },
         'items': Array
     },
     methods: {},
@@ -213,11 +190,12 @@ export const KfSelect = {
 export const KfNumber = {
     mixins: [componentBase],
     props: {
-        'value': { type: [Number, String] },
+        'modelValue': { type: [Number, String] },
+        'scale': { type: [Number, String] ,default : 2},
     },
     watch: {
-        value(val) {
-            this.valueInt = formatNum(val)
+        modelValue(val) {
+            this.valueInt = formatNum(val, this.scale)
             this.Validate(val)
         }
     },
@@ -228,8 +206,9 @@ export const KfNumber = {
         }
     },
     mounted: function () {
-        this.valueInt = formatNum(this.value)
-        this.Validate(this.value)
+//        this.valueInt = formatNum(this.modelValue, this.scale)
+//        console.log(this.valueInt)
+//        this.Validate(this.modelValue)
     },
     template: `
  <div class="flex-row" >
@@ -240,7 +219,7 @@ export const KfNumber = {
   :title="notValidText" 
    v-bind:value="valueInt"
    v-on:input="valChanged($event)"
-   onblur="numOnBlur(this)"
+   onblur="numOnBlur(this,this.scale)"
    onfocus="numOnFocus(this)"
    v-bind:readonly="readonly || externalReadonly"
  />
@@ -253,7 +232,7 @@ export const KfNumber = {
 export const KfCheck = {
     mixins: [componentBase],
     props: {
-        'value': { type: [Boolean, String] },
+        'modelValue': { type: [Boolean, String] },
     },
     watch: {
         immediate: true,
@@ -286,7 +265,7 @@ export const KfCheck = {
 export const KfTextarea = {
     mixins: [componentBase],
     props: {
-        'value': { type: String },
+        'modelValue': { type: String },
     },
 
     methods: {
@@ -302,7 +281,7 @@ export const KfTextarea = {
   :class="{ invalid: !valid}"
    class="kf-inp"
   :title="notValidText" 
-   v-bind:value="value"
+   v-bind:value="modelValue"
    v-on:input="valChanged($event)"
    v-bind:readonly="readonly || externalReadonly"
   rows="5"
@@ -317,7 +296,7 @@ export const KfTextarea = {
 export const KfText = {
     mixins: [componentBase],
     props: {
-        'value': { type: String },
+        'modelValue': { type: String },
     },
     template: `
  <div class="flex-row" >
@@ -348,49 +327,8 @@ class="kf-button"
 //============================================================================================================================
 // Компонент kf-lookup
 
-var products = [{
-    "Id": 1,
-    "Name": "SSSSSSSSS",
-    "SampleCount": 173849318,
-
-},
-    {
-        "Id": 2,
-        "Name": "AAAAAAAAAAAAAAAAAAAAAA",
-        "SampleCount": 1816514654,
- 
-    },
-    {
-        "Id": 3,
-        "Name": "d9de71b7-",
-        "SampleCount": 1141119574,
-
-    },
-    {
-        "Id": 4,
-        "Name": "30766077",
-        "SampleCount": 1440962658,
-
-
-    },
-    {
-        "Id": 5,
-        "Name": "d6da401f",
-        "SampleCount": 1683189633,
-
-    }
-]
-
 let dataGrid;
-const makeAsyncDataSource = function (jsonFile) {
-    return new DevExpress.data.CustomStore({
-        loadMode: 'raw',
-        key: 'Id',
-        load() {
-            return products;
-        },
-    });
-};
+
 function setDataSource(el, path) {
     const dataSource = DevExpress.data.AspNet.createStore({
         key: "Id",
@@ -412,7 +350,7 @@ function createLookUp(el, columns, val, dropDownWidth, pageSize, displayExpr, va
             width: dropDownWidth
         },
         contentTemplate(e) {
-            const v = e.component.option('value');
+            const v = e.component.option('modelValue');
             let firstShow = true
             const $dataGrid = $('<div>').dxDataGrid({
                 dataSource: e.component.getDataSource(),
@@ -435,7 +373,7 @@ function createLookUp(el, columns, val, dropDownWidth, pageSize, displayExpr, va
                     }
                     else {
                         const keys = selectedItems.selectedRowKeys;
-                        e.component.option('value', keys);
+                        e.component.option('modelValue', keys);
                     }
                 },
                });
@@ -466,7 +404,7 @@ function CreateGuid() {
 export const KfGridLookUp = {
     mixins: [componentBase],
     props: {
-        'value': { type: [String, Number] },
+        'modelValue': { type: [String, Number] },
         "items": { type: Array, default: null },
         "loadUrl": String,
         "pageSize": { type: Number, default: 10 },
@@ -493,7 +431,7 @@ export const KfGridLookUp = {
           <div 
           v-bind:id="lookUpId"
           :title="notValidText" 
-          v-bind:value="value"
+          v-bind:value="modelValue"
           v-bind:readonly="readonly"
           v-on:input="valChanged($event)"
           />
@@ -501,7 +439,7 @@ export const KfGridLookUp = {
       </div>
   `,
     mounted: function () {
-        console.log(this.value + '   ' + this.displayExpr)
+        console.log(this.modelValue + '   ' + this.displayExpr)
         const el = $('#' + this.lookUpId)
         const vch = this.vChange
         const vChanged = function (x) {
