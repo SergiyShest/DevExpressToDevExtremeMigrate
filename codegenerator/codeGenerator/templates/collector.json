@@ -19,7 +19,7 @@
     {
         "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\SamplesBook",
         "EntityFullName": "Sasha.Lims.DataAccess.Entities.Entity.vSamplesBook",
-        "MainHeader": null,
+        "MainHeader": "Samples Book",
         "CardHeader": null,
         "CardEntityName": "vSamplesBook",
         "AlwaysSkip": false
@@ -75,7 +75,7 @@
     {
         "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\WorkflowProcessResult",
         "EntityFullName": "Sasha.Lims.DataAccess.Entities.Entity.vProcessResult",
-        "MainHeader": null,
+        "MainHeader": "Process Result",
         "CardHeader": null,
         "CardEntityName": "vProcessResult",
         "AlwaysSkip": false
@@ -136,14 +136,14 @@
         "CardEntityName": "vPatient",
         "AlwaysSkip": false
     },
-    {
-        "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Areas\\Reagents\\Views\\ReagentJournal",
-        "EntityFullName": "Sasha.Lims.DataAccess.Entities.Entity.vReagent",
-        "MainHeader": null,
-        "CardHeader": null,
-        "CardEntityName": "vReagent",
-        "AlwaysSkip": false
-    },
+  {
+    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Areas\\Reagents\\Views\\ReagentJournal",
+    "EntityFullName": "Sasha.Lims.DataAccess.Entities.Entity.vReagent",
+    "MainHeader": "Reagent",
+    "CardHeader": null,
+    "CardEntityName": "vReagent",
+    "AlwaysSkip": false
+  },
   {
     "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Areas\\Reagents\\Views\\ReagentLogJournal",
     "EntityFullName": "Sasha.Lims.DataAccess.Entities.Entity.vReagentLog",

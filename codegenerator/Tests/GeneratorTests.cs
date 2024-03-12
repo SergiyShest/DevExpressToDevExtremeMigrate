@@ -199,8 +199,7 @@ namespace Tests
 
             var generator = new Generator();
             var info = CollectDataFromDir(dir);
-            //			generator.GeneratePathsForInfo(info);
-
+          //generator.GeneratePathsForInfo(info);
             generator.GenerateJournalTests(info );
 
         }

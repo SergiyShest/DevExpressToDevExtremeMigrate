@@ -35,11 +35,11 @@ namespace Tests
 		{
 			var generator = new Generator();
 			generator.LoadInfo();
-            generator.CreateJournalControllers = false;
-            generator.CreateCrdControllers  = false;
-            generator.CreateJournalViews  = false;
-            generator.CreateMenu  = false;
-            generator.CreateCard  = false;
+            generator.CreateJournalControllers = true;
+            generator.CreateCrdControllers  = true;
+            generator.CreateJournalViews  = true;
+            generator.CreateMenu  = true;
+            generator.CreateCard  = true;
             generator.CreateTests  = true;
             generator.SaveMode  = FileSaveMode.Replace;
             generator.Generate();
