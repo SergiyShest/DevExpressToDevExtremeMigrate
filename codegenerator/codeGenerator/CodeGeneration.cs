@@ -4,19 +4,6 @@ using NLog;
 using System.Diagnostics;
 using System.Text;
 
-using System.IO;
-using System.Net;
-using System.Data.SqlClient;
-using System.Text.RegularExpressions;
-using System.Xml.Linq;
-using System.Text;
-using System.Diagnostics.Contracts;
-using System.Reflection.Emit;
-using NLog;
-using System.Diagnostics;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-
 namespace CodeGenerator
 {
     public class Generator
@@ -310,4 +297,7 @@ namespace CodeGenerator
 
 
     }
+
+
+
 }

@@ -15,9 +15,9 @@ namespace Tests
 	{
 
         /// <summary>
-        /// сбор 
+        /// сбор информации
         /// </summary>
-        /// <param name="dir"></param>
+        /// <param name="dir">Путь к источнику</param>
         [TestCase("..\\..\\..\\..\\..\\Source\\UI")]
         public void CollectInfo(string dir)
         {
@@ -27,7 +27,6 @@ namespace Tests
             var data = infoCollector.InfoList.Select(info => new { info.Path, info.EntityFullName, info.MainHeader, info.CardHeader, info.CardEntityName, info.AlwaysSkip });
             String json = JsonConvert.SerializeObject(data);
             File.WriteAllText("C:\\tmp\\collector.json", json);
-
         }
 
         [Test]

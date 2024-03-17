@@ -58,7 +58,6 @@ namespace Entity.Controllers
             answers = FilterAction(answers);
 			loadOptions.PrimaryKey = new[] { "Id" };
 			loadOptions.PaginateViaPrimaryKey = true;
-			//var result = await DataSourceLoader.LoadAsync(answers, loadOptions, cancellationToken: HttpContext.RequestAborted);
 			return Content(JsonConvert.SerializeObject(answers), "application/json");
 		}
 

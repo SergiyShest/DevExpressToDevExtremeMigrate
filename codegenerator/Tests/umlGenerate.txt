@@ -1,0 +1,22 @@
+﻿
+
+@startuml
+start
+  :Загрузка описания из файла json;
+while (Проход по всем описаниям) is (yes)
+    if (Skip ?) then (yes)
+      :Skip;
+    else (no)
+        :GeneratePathsForInfo(info, TargetPath)//Сбор информации которой нет в файле(колонки таблицы и поля формы);
+        :GenerateJournalController(info)//Создание контроллера журнала;
+        :GenerateJournalView(info)//Создание представления журнала;
+        :GenerateCardController(info)//Создание контроллера формы;
+        :GenerateCardView(info)//Создание представления формы;
+        :GenerateMenu(info)//Создание меню;
+        :GenerateJournalTests(info)//Создание тестов;
+    endif
+  endwhile
+
+
+:Finish;
+@enduml

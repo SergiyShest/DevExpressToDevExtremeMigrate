@@ -28,7 +28,7 @@ namespace CodeGenerator
 
         public void CollectInfoFromSourcePath()
         {
-            var dirs = Utils.FindDirectoriesByTemplate(SourcePath, "*grid*.cshtml").ToList();//.Where(x => x.ToLower().Contains("journal")
+            var dirs = Utils.FindDirectoriesByTemplate(SourcePath, "*grid*.cshtml").ToList();//поиск всех директорий в которых есть файлы по шаблону "*grid*.cshtml"
 
             foreach (var dir in dirs)
             {
