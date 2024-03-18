@@ -13,8 +13,8 @@
 
 		<div style="display:flex;flex-direction:row;">
 
-			<kf-button id="saveButton" v-if="mode!='view'"		 v-on:click.native="SaveClick"	text="Coхранить"		image="save"  ></kf-button>
-			<kf-button id="closeButton" v-if="mode!='view'"	     v-on:click.native="CloseClick"	text="Закрыть"			image="delete" style="margin-left:auto"  ></kf-button>
+			<kf-button id="saveButton" v-if="mode!='view'"		 v-on:click.native="saveClick"	text="Coхранить"		image="save"  ></kf-button>
+			<kf-button id="closeButton" v-if="mode!='view'"	     v-on:click.native="closeClick"	text="Закрыть"			image="delete" style="margin-left:auto"  ></kf-button>
 		</div>
 	</div>
 </div>
@@ -40,24 +40,23 @@
 		 }
 		 ,
 		 methods: {
-			 Get() {
+			 get() {
 				 const pathEnd = "$cardControllerPath$/Get?id="+Id;
-				 this.FetchJson( pathEnd,this.Ok)
+				 this.FetchJson( pathEnd,this.ok)
 			 },
-			 Ok(data) {
-				 console.log(data)
-				 this.Item = data;
+			 ok(data) {
+				this.Item = data;
 			 },
-			 SaveClick() {
-                          alert('SaveClick')
+			 saveClick() {
+                alert('SaveClick')
 			 },
 
-			CloseClick() {
-			 
+			closeClick() {
+			   closePopup()
 		  }
 		 },
 		 mounted: function () {
-          this.Get()
+          this.get()
 
 
 		 }

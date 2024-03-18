@@ -1,4 +1,4 @@
-﻿describe('Тест журнала DoctorJournal', () => {
+﻿describe('Тест журнала Reagent Log', () => {
 
  it('Проверка наличия заголовка', () => {
      cy.visit('https://localhost:7210/Reagents/ReagentLogJournal')
@@ -12,7 +12,7 @@
     cy.get('#d1From').type('1023-12-20').blur();
     cy.get('#d1To').type('2024-12-31').blur();
     cy.get('#findButton').click();
-    cy.wait(2000);
+    cy.wait(1000);
 
     cy.get('.dx-info').invoke('text').then((text) => {
       // регулярное выражение для извлечения числа из текста Page 1 of 1 (0 items)
@@ -30,7 +30,7 @@
     cy.get('#d1From').type('2000-12-31').blur();//unreal date tnere no records
     cy.get('#d1To').type('2000-12-31').blur();
     cy.get('#findButton').click();
-    cy.wait(2000);
+    cy.wait(1000);
     cy.get('.dx-info').invoke('text').then((text) => {
       //регулярное выражение для извлечения числа из текста Page 1 of 1 (0 items)
       const matches = text.match(/\((\d+)/);
@@ -40,7 +40,4 @@
      cy.wrap(extractedNumber).should('eq', 0);
     })
   })
-
- 
-
 })

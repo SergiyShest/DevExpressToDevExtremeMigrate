@@ -8,11 +8,11 @@ export const baseMixin = {
      })
 ,
 	methods: {
-		GenerateGuid() { // Public Domain/MIT
-			var d = new Date().getTime();//Timestamp
-			var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now() * 1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
+		GenerateGuid() { 
+			let d = new Date().getTime();//Timestamp
+			let d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now() * 1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
 			return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-				var r = Math.random() * 16;//random number between 0 and 16
+				let r = Math.random() * 16;//random number between 0 and 16
 				if (d > 0) {//Use timestamp until depleted
 					r = (d + r) % 16 | 0;
 					d = Math.floor(d / 16);
@@ -36,7 +36,7 @@ export const baseMixin = {
 
 		ShowErrors(item) {
 			this.PlayError()
-			var stringError;
+			let stringError;
 			console.log(item.Errors);
 			if(Array.isArray(item.Errors)){
 			item.Errors.forEach(x => {
@@ -60,8 +60,8 @@ export const baseMixin = {
 		}
 		,
 		PlaySound(sound) {
-			var path = document.location.origin + sound;//;
-			var audio = new Audio(path);
+			let path = document.location.origin + sound;//;
+			let audio = new Audio(path);
 			audio.autoplay = true;
 		}
 		,
@@ -127,15 +127,15 @@ export const baseMixin = {
 		   return dateStr;
 		},
         GetAge(dateStr){
-			var dob = new Date(dateStr);
+			let dob = new Date(dateStr);
 			if(dateStr==null || dateStr=='') {
 			  
 			  return null; 
 			} else {
-			var month_diff = Date.now() - dob.getTime();
-			var age_dt = new Date(month_diff); 
-			var year = age_dt.getUTCFullYear();
-			var age = Math.abs(year - 1970);
+			let month_diff = Date.now() - dob.getTime();
+			let age_dt = new Date(month_diff); 
+			let year = age_dt.getUTCFullYear();
+			let age = Math.abs(year - 1970);
 			return age;
 		}
 

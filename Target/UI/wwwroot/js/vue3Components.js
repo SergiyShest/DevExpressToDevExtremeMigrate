@@ -32,7 +32,6 @@ export const componentBase = {
             this.virtChange(event.target.modelValue);
         },
         virtChange(val) {
-            console.log(this.text +'   '+val)
             this.valueInt = val;
             this.$emit('input', val);
         },
@@ -68,7 +67,7 @@ export const componentBase = {
                     console.error("Error while validation rules executing: " + error);
                 }
             }
-            console.log(this.text + ' valid = ' + this.valid);
+
         },
         mounted() {
             this.valueInt = this.molelValue;
@@ -329,7 +328,7 @@ function setDataSource(el, path) {
         key: "Id",
         loadUrl: document.location.origin + path,
     });
-    var grid = $(el).dxDropDownBox("instance");
+    let grid = $(el).dxDropDownBox("instance");
     grid.option("dataSource", dataSource);
 }
 
@@ -340,7 +339,6 @@ function createLookUp(el, columns, val, dropDownWidth, pageSize, displayExpr, va
         placeholder: 'Select a value...',
         displayExpr: displayExpr,
         showClearButton: true,
- //       dataSource: makeAsyncDataSource('customers.json'),
         onValueChanded: valChanged,
         dropDownOptions: {
             width: dropDownWidth
@@ -359,11 +357,9 @@ function createLookUp(el, columns, val, dropDownWidth, pageSize, displayExpr, va
                 paging: { enabled: true, pageSize: pageSize },
                 filterRow: { visible: true },
                 height: 500,
-               selection: { mode: 'multiple', },
-              //  selection: { mode: 'single', },
+                selection: { mode: 'single', },
                 selectedRowKeys: v,
                 onSelectionChanged: function (selectedItems) {
-                    console.log(selectedItems)
                     if (false) {
                         firstShow = false;
                     }
@@ -375,12 +371,10 @@ function createLookUp(el, columns, val, dropDownWidth, pageSize, displayExpr, va
                });
 
             dataGrid = $dataGrid.dxDataGrid('instance');
-
             e.component.on('valueChanged', (args) => {
                 const { value } = args;
                 dataGrid.selectRows(value, false);
             });
-
             return $dataGrid;
         },
     });
@@ -388,7 +382,7 @@ function createLookUp(el, columns, val, dropDownWidth, pageSize, displayExpr, va
 
 function CreateGuid() {
     function _p8(s) {
-        var p = (Math.random().toString(16) + "000000000").substr(2, 8);
+        let p = (Math.random().toString(16) + "000000000").substr(2, 8);
         return s ? "-" + p.substr(0, 4) + "-" + p.substr(4, 4) : p;
     }
     return _p8() + _p8(true) + _p8(true) + _p8();
@@ -433,17 +427,16 @@ export const KfGridLookUp = {
       </div>
   `,
     mounted: function () {
-        console.log(this.modelValue + '   ' + this.displayExpr)
         const el = $('#' + this.lookUpId)
         const vch = this.vChange
         const vChanged = function (x) {
-            console.log(x);
             if (x.value && x.value.length > 0) {
                 vch(x.value[0])
             } else {
                 vch(null)
             }
         }
+
         createLookUp(el, this.columns, this.value, this.dropDownWidth, this.pageSize, this.displayExpr, vChanged)
 
         setDataSource(el, this.loadUrl)

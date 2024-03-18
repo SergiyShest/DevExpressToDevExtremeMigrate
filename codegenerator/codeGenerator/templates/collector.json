@@ -72,22 +72,22 @@
     //    "CardEntityName": null,
     //    "AlwaysSkip": false
     //},
-    {
-        "Path": "C:\\Users\\Sergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\WorkflowProcessResult",
-        "EntityFullName": "Sasha.Lims.DataAccess.Entities.Entity.vProcessResult",
-        "MainHeader": "Process Result",
-        "CardHeader": null,
-        "CardEntityName": "vProcessResult",
-        "AlwaysSkip": false
-    },
-    {
-      "Path": "C:\\Users\\Sergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\WorkflowRunList",
-      "EntityFullName": "Sasha.Lims.DataAccess.Entities.Entity.vWorkflowRunList",
-      "MainHeader": "Workflow Run List",
-      "CardHeader": null,
-      "CardEntityName": "vWorkflowRunList",
-      "AlwaysSkip": false
-    },
+    //{
+    //    "Path": "C:\\Users\\Sergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\WorkflowProcessResult",
+    //    "EntityFullName": "Sasha.Lims.DataAccess.Entities.Entity.vProcessResult",
+    //    "MainHeader": "Process Result",
+    //    "CardHeader": null,
+    //    "CardEntityName": "vProcessResult",
+    //    "AlwaysSkip": false
+    //},
+    //{
+    //  "Path": "C:\\Users\\Sergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\WorkflowRunList",
+    //  "EntityFullName": "Sasha.Lims.DataAccess.Entities.Entity.vWorkflowRunList",
+    //  "MainHeader": "Workflow Run List",
+    //  "CardHeader": null,
+    //  "CardEntityName": "vWorkflowRunList",
+    //  "AlwaysSkip": false
+    //},
     //{
     //    "Path": "C:\\Users\\Saergey\\source\\repos\\DevExpressToDevExtremeMigration\\Source\\UI\\Views\\WorkfowRunList",
     //    "EntityFullName": null,

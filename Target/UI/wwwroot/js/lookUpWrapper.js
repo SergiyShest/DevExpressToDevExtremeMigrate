@@ -1,5 +1,5 @@
 
- var products = [{
+ let products = [{
     "Id": 1,
     "CompanyName": "Premier Buy",
     "Address": "7601 Penn Avenue South",
@@ -82,13 +82,13 @@ function setDataSource() {
         key: "Id",
         loadUrl: "https://localhost:7225/Api/GetOsts",
     });
-    var grid = $("#gridBox").dxDropDownBox("instance");
+    let grid = $("#gridBox").dxDropDownBox("instance");
     grid.option("dataSource", dataSource);
 }
 
 function CreateGuid() {
     function _p8(s) {
-        var p = (Math.random().toString(16) + "000000000").substr(2, 8);
+        let p = (Math.random().toString(16) + "000000000").substr(2, 8);
         return s ? "-" + p.substr(0, 4) + "-" + p.substr(4, 4) : p;
     }
     return _p8() + _p8(true) + _p8(true) + _p8();
@@ -131,7 +131,7 @@ export const KfGridLookUp =  {
     mounted: function () {
         console.log(this.value + '   ' + this.displayExpr)
         const el = $('#' + this.lookUpId)
-        var vChanged = alert
+        let vChanged = alert
         createLookUp(el, this.columns, this.value, this.dropDownWidth, this.pageSize, this.displayExpr, vChanged)
     }
 }
