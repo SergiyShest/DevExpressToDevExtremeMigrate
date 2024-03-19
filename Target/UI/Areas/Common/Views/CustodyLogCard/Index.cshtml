@@ -8,16 +8,16 @@
 
 	<div id="app" style="display: flex;flex-direction: column;width: 850px;">
 		<div id="items"  class="grid-container">
-		    <kf-number text = 'Id' v-model = 'Item.Id' scale="0"   ></kf-number>
-<kf-input text = 'Barcode' v-model = 'Item.Barcode'    ></kf-input>
-<kf-input text = 'Name' v-model = 'Item.SampleName'    ></kf-input>
-<kf-input text = 'Status' v-model = 'Item.Status'    ></kf-input>
-<kf-input text = 'Location' v-model = 'Item.Location'    ></kf-input>
-<kf-input text = 'Amount' v-model = 'Item.AmountInOut'    ></kf-input>
-<kf-input text = 'Signature' v-model = 'Item.Signature'    ></kf-input>
-<kf-input text = 'UserName' v-model = 'Item.UserName'    ></kf-input>
-<kf-input text = 'batch Barcode' v-model = 'Item.batchBarcode'    ></kf-input>
-<kf-input text = 'Operation' v-model = 'Item.Operation'    ></kf-input>
+				<kf-number text = 'Id' v-model = 'Item.Id' scale="0"   ></kf-number>
+				<kf-input text = 'Barcode' v-model = 'Item.Barcode'    ></kf-input>
+				<kf-input text = 'Name' v-model = 'Item.SampleName'    ></kf-input>
+				<kf-input text = 'Status' v-model = 'Item.Status'    ></kf-input>
+				<kf-input text = 'Location' v-model = 'Item.Location'    ></kf-input>
+				<kf-input text = 'Amount' v-model = 'Item.AmountInOut'    ></kf-input>
+				<kf-input text = 'Signature' v-model = 'Item.Signature'    ></kf-input>
+				<kf-input text = 'UserName' v-model = 'Item.UserName'    ></kf-input>
+				<kf-input text = 'batch Barcode' v-model = 'Item.batchBarcode'    ></kf-input>
+				<kf-input text = 'Operation' v-model = 'Item.Operation'    ></kf-input>
 
 		</div>
 
@@ -52,13 +52,15 @@
 		 methods: {
 			 get() {
 				 const pathEnd = "Common/CustodyLogCard/Get?id="+Id;
-				 this.FetchJson( pathEnd,this.ok)
+				 this.fetch(this.ok,pathEnd)
 			 },
 			 ok(data) {
 				this.Item = data;
 			 },
 			 saveClick() {
-                alert('SaveClick')
+			    const pathEnd = "Common/CustodyLogCard/Save?id="+Id;
+//                this.fetch(this.ok,pathEnd)
+                alert('Need implement a handler SaveClick')
 			 },
 
 			closeClick() {

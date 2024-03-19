@@ -8,17 +8,17 @@
 
 	<div id="app" style="display: flex;flex-direction: column;width: 850px;">
 		<div id="items"  class="grid-container">
-		    <kf-number text = 'Id' v-model = 'Item.Id' scale="0"   ></kf-number>
-<kf-input text = 'Name' v-model = 'Item.Name'    ></kf-input>
-<kf-input text = 'Barcode' v-model = 'Item.Barcode'    ></kf-input>
-<kf-number text = 'Quantity' v-model = 'Item.Quantity' scale="2"   ></kf-number>
-<kf-number text = 'Unit_id' v-model = 'Item.Unit_id' scale="0"   ></kf-number>
-<kf-input text = 'UnitName' v-model = 'Item.UnitName'    ></kf-input>
-<kf-input text = 'CatalogNumber' v-model = 'Item.CatalogNumber'    ></kf-input>
-<kf-input text = 'Storage Temperature' v-model = 'Item.StorageTemp'    ></kf-input>
-<kf-input text = 'Vendor Name' v-model = 'Item.VendorName'    ></kf-input>
-<kf-input text = 'Size' v-model = 'Item.Size'    ></kf-input>
-<kf-input text = 'TypeName' v-model = 'Item.TypeName'    ></kf-input>
+				<kf-number text = 'Id' v-model = 'Item.Id' scale="0"   ></kf-number>
+				<kf-input text = 'Name' v-model = 'Item.Name'    ></kf-input>
+				<kf-input text = 'Barcode' v-model = 'Item.Barcode'    ></kf-input>
+				<kf-number text = 'Quantity' v-model = 'Item.Quantity' scale="2"   ></kf-number>
+				<kf-number text = 'Unit_id' v-model = 'Item.Unit_id' scale="0"   ></kf-number>
+				<kf-input text = 'UnitName' v-model = 'Item.UnitName'    ></kf-input>
+				<kf-input text = 'CatalogNumber' v-model = 'Item.CatalogNumber'    ></kf-input>
+				<kf-input text = 'Storage Temperature' v-model = 'Item.StorageTemp'    ></kf-input>
+				<kf-input text = 'Vendor Name' v-model = 'Item.VendorName'    ></kf-input>
+				<kf-input text = 'Size' v-model = 'Item.Size'    ></kf-input>
+				<kf-input text = 'TypeName' v-model = 'Item.TypeName'    ></kf-input>
 
 		</div>
 
@@ -53,13 +53,15 @@
 		 methods: {
 			 get() {
 				 const pathEnd = "Reagents/ReagentTypeCard/Get?id="+Id;
-				 this.FetchJson( pathEnd,this.ok)
+				 this.fetch(this.ok,pathEnd)
 			 },
 			 ok(data) {
 				this.Item = data;
 			 },
 			 saveClick() {
-                alert('SaveClick')
+			    const pathEnd = "Reagents/ReagentTypeCard/Save?id="+Id;
+//                this.fetch(this.ok,pathEnd)
+                alert('Need implement a handler SaveClick')
 			 },
 
 			closeClick() {

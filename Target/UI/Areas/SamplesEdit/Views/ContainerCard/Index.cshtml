@@ -8,17 +8,17 @@
 
 	<div id="app" style="display: flex;flex-direction: column;width: 850px;">
 		<div id="items"  class="grid-container">
-		    <kf-number text = 'Id' v-model = 'Item.Id' scale="0"   ></kf-number>
-<kf-input text = 'Barcode' v-model = 'Item.Barcode'    ></kf-input>
-<kf-input text = 'Name' v-model = 'Item.Name'    ></kf-input>
-<kf-input text = 'Status' v-model = 'Item.Status'    ></kf-input>
-<kf-input text = 'Location' v-model = 'Item.Location'    ></kf-input>
-<kf-input text = 'BatchName' v-model = 'Item.BatchName'    ></kf-input>
-<kf-input text = 'BatchBarcode' v-model = 'Item.BatchBarcode'    ></kf-input>
-<kf-input text = 'Model' v-model = 'Item.Model'    ></kf-input>
-<kf-number text = 'Such a barcode already exists in the system' v-model = 'Item.DoubleBarcodeValidation' scale="0"   ></kf-number>
-<kf-input text = 'ContainerType' v-model = 'Item.ContainerType'    ></kf-input>
-<kf-input text = 'ContainerTypeDescription' v-model = 'Item.ContainerTypeDescription'    ></kf-input>
+				<kf-number text = 'Id' v-model = 'Item.Id' scale="0"   ></kf-number>
+				<kf-input text = 'Barcode' v-model = 'Item.Barcode'    ></kf-input>
+				<kf-input text = 'Name' v-model = 'Item.Name'    ></kf-input>
+				<kf-input text = 'Status' v-model = 'Item.Status'    ></kf-input>
+				<kf-input text = 'Location' v-model = 'Item.Location'    ></kf-input>
+				<kf-input text = 'BatchName' v-model = 'Item.BatchName'    ></kf-input>
+				<kf-input text = 'BatchBarcode' v-model = 'Item.BatchBarcode'    ></kf-input>
+				<kf-input text = 'Model' v-model = 'Item.Model'    ></kf-input>
+				<kf-number text = 'Such a barcode already exists in the system' v-model = 'Item.DoubleBarcodeValidation' scale="0"   ></kf-number>
+				<kf-input text = 'ContainerType' v-model = 'Item.ContainerType'    ></kf-input>
+				<kf-input text = 'ContainerTypeDescription' v-model = 'Item.ContainerTypeDescription'    ></kf-input>
 
 		</div>
 
@@ -53,13 +53,15 @@
 		 methods: {
 			 get() {
 				 const pathEnd = "SamplesEdit/ContainerCard/Get?id="+Id;
-				 this.FetchJson( pathEnd,this.ok)
+				 this.fetch(this.ok,pathEnd)
 			 },
 			 ok(data) {
 				this.Item = data;
 			 },
 			 saveClick() {
-                alert('SaveClick')
+			    const pathEnd = "SamplesEdit/ContainerCard/Save?id="+Id;
+//                this.fetch(this.ok,pathEnd)
+                alert('Need implement a handler SaveClick')
 			 },
 
 			closeClick() {

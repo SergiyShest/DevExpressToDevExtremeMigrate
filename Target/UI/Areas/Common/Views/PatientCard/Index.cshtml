@@ -8,18 +8,18 @@
 
 	<div id="app" style="display: flex;flex-direction: column;width: 850px;">
 		<div id="items"  class="grid-container">
-		    <kf-number text = 'Id' v-model = 'Item.id' scale="0"   ></kf-number>
-<kf-input text = 'No' v-model = 'Item.no'    ></kf-input>
-<kf-input text = 'firstName' v-model = 'Item.firstName'    ></kf-input>
-<kf-input text = 'lastName' v-model = 'Item.lastName'    ></kf-input>
-<kf-input text = 'Email' v-model = 'Item.email'    ></kf-input>
-<kf-input text = 'hospital' v-model = 'Item.hospital'    ></kf-input>
-<kf-input text = 'doctor' v-model = 'Item.doctor'    ></kf-input>
-<kf-input text = 'PropS1' v-model = 'Item.PropS1'    ></kf-input>
-<kf-input text = 'PropS2' v-model = 'Item.PropS2'    ></kf-input>
-<kf-input text = 'PropS3' v-model = 'Item.PropS3'    ></kf-input>
-<kf-input text = 'PropS4' v-model = 'Item.PropS4'    ></kf-input>
-<kf-input text = 'PropS5' v-model = 'Item.PropS5'    ></kf-input>
+				<kf-number text = 'Id' v-model = 'Item.id' scale="0"   ></kf-number>
+				<kf-input text = 'No' v-model = 'Item.no'    ></kf-input>
+				<kf-input text = 'firstName' v-model = 'Item.firstName'    ></kf-input>
+				<kf-input text = 'lastName' v-model = 'Item.lastName'    ></kf-input>
+				<kf-input text = 'Email' v-model = 'Item.email'    ></kf-input>
+				<kf-input text = 'hospital' v-model = 'Item.hospital'    ></kf-input>
+				<kf-input text = 'doctor' v-model = 'Item.doctor'    ></kf-input>
+				<kf-input text = 'PropS1' v-model = 'Item.PropS1'    ></kf-input>
+				<kf-input text = 'PropS2' v-model = 'Item.PropS2'    ></kf-input>
+				<kf-input text = 'PropS3' v-model = 'Item.PropS3'    ></kf-input>
+				<kf-input text = 'PropS4' v-model = 'Item.PropS4'    ></kf-input>
+				<kf-input text = 'PropS5' v-model = 'Item.PropS5'    ></kf-input>
 
 		</div>
 
@@ -54,13 +54,15 @@
 		 methods: {
 			 get() {
 				 const pathEnd = "Common/PatientCard/Get?id="+Id;
-				 this.FetchJson( pathEnd,this.ok)
+				 this.fetch(this.ok,pathEnd)
 			 },
 			 ok(data) {
 				this.Item = data;
 			 },
 			 saveClick() {
-                alert('SaveClick')
+			    const pathEnd = "Common/PatientCard/Save?id="+Id;
+//                this.fetch(this.ok,pathEnd)
+                alert('Need implement a handler SaveClick')
 			 },
 
 			closeClick() {

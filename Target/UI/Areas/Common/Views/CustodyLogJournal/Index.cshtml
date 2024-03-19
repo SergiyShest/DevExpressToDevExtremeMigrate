@@ -12,29 +12,30 @@
 			<div style="width: 100px;margin-left:15px">Дата:</div>
 			oт<input id="d1From" type="date" v-model="from" style="margin:3px">
 			до<input id="d1To" type="date" v-model="to" style="margin:3px">
-			<kf-button id="findButton"  v-if="mode!='view'" v-on:click.native="FindDate" text="Найти" image="find"></kf-button>
+			<kf-button id="findButton"  v-if="mode!='view'" v-on:click.native="findDate" text="Найти" image="find"></kf-button>
 		</div>
 
 		<div style="display:flex;flex-direction:row;">
-			<kf-button id="addButton" v-if="mode!='view'"		v-on:click.native="AddClick"	text="Добавить"			image="add"></kf-button>
-			<kf-button id="editButton" v-if="mode!='view'"		v-on:click.native="EditClick"	text="Редактировать"	image="edit"></kf-button>
-			<kf-button id="copyButton" v-if="mode!='view'"		v-on:click.native="CopyClick"	text="Копировать"		image="copy"></kf-button>
-			<kf-button id="deleteButton" v-if="mode!='view'"	v-on:click.native="DeleteClick"	text="Удалить"			image="delete"></kf-button>
+			<kf-button id="addButton" v-if="mode!='view'"		v-on:click.native="addClick"	text="Добавить"			image="add"></kf-button>
+			<kf-button id="editButton" v-if="mode!='view'"		v-on:click.native="editClick"	text="Редактировать"	image="edit"></kf-button>
+			<kf-button id="copyButton" v-if="mode!='view'"		v-on:click.native="copyClick"	text="Копировать"		image="copy"></kf-button>
+			<kf-button id="deleteButton" v-if="mode!='view'"	v-on:click.native="deleteClick"	text="Удалить"			image="delete"></kf-button>
 		</div>
 	</div>
 	<div id="grid" />
 </div>
 
-    <script type="module">
+<script type="module">
 
     $(window).on("load",function () {
 	@Html.Raw(TempData["StartupScript"])
 		});
 	 let Mode = '@ViewBag.Mode'
 	 let focusedRowKey = null;
-         import { KfField, KfInput, KfDate, KfSelect, KfNumber, KfCheck, KfTextarea, KfText, KfButton } from '/js/vue3Components.js';
-         import { baseMixin } from '/js/BaseMixin.js';
-         const { ref } = Vue;
+     import { KfButton } from '/js/vue3Components.js';
+     import { baseMixin } from '/js/BaseMixin.js';
+     const { ref } = Vue;
+
 	 function setDataSource() {
 		 const dataSource = DevExpress.data.AspNet.createStore({
 			 key: "Id",
@@ -43,11 +44,12 @@
 		 var grid = $("#grid").dxDataGrid("instance");
 		 grid.option("dataSource", dataSource);
 	 }
-		function OnFocusedRowChanged(e) {
-			focusedRowKey = e.component.option('focusedRowKey');
-		}
 
-	  const app = Vue.createApp({
+	function OnFocusedRowChanged(e) {
+		focusedRowKey = e.component.option('focusedRowKey');
+	}
+
+	const app = Vue.createApp({
 		 mixins: [baseMixin],
 		 data() {
 			 return {
@@ -57,36 +59,36 @@
 		 }
 		 ,
 		 methods: {
-			 FindDate() {
+			 findDate() {
 				 localStorage.setItem('dateFrom', this.from);
 				 localStorage.setItem('dateTo', this.to);
 				 const pathEnd = "/Common/CustodyLogJournal/SetFilter";
 				 const data = { from: this.from, to: this.to };
-				 this.FetchJson( pathEnd,this.Ok, data)
+				 this.fetch(this.ok, pathEnd, data)
 			 },
-			 Ok() {
+			 ok() {
 			    setDataSource();
 			 },
-			AddClick() {
+			addClick() {
 				xPopup ('Карточка vCustodyLog', '/Common/CustodyLogCard/Index' + '?page_mode=modal', 1024, 916);
 			}
 			,
-			 EditClick() {
+			 editClick() {
 				if (checkItem(focusedRowKey)) {
 					xPopup('Карточка vCustodyLog', '/Common/CustodyLogCard/Index?id=' + focusedRowKey  , 1024, 916);
 				}
 
 			},
-			 CopyClick() {
+			 copyClick() {
 				if (checkItem(focusedRowKey)) {
 					   xPopup('Карточка vCustodyLog', '/Common/CustodyLogCard/Index?id=' + focusedRowKey + '&mode=copy', 1024, 916);
 				}
 			},
 
-			 DeleteClick() {
+			 deleteClick() {
 			  if (checkItem(focusedRowKey)) {
 				  path = '/Common/CustodyLogCard/Delete?id='+ focusedRowKey
-				   this.FetchJson(path,this.Ok)
+				   this.fetch(this.Ok, path)
 			  }
 		  }
 		 },
@@ -98,31 +100,21 @@
 			let to = localStorage.getItem('dateTo');
 			if (to != 'null') this.to = to;
 			
-			this.FindDate()
+			this.findDate()
 
 		 }
 	 });
-	  // Registering components
-       //  app.component('kf-field', KfField);
-       app.component('kf-button', KfButton);
-      //  app.component('kf-input', KfInput);
-      //  app.component('kf-date', KfDate);
-      //  app.component('kf-select', KfSelect);
-      //  app.component('kf-number', KfNumber);
-      //  app.component('kf-check', KfCheck);
-      //  app.component('kf-textarea', KfTextarea);
-      //  app.component('kf-text', KfText);
 
-        // Mounting Vue app
-		const vue_ = app.mount('#app');
-
+	 // Registering components
+     app.component('kf-button', KfButton);
+	 const vue_ = app.mount('#app');
 
 	 function onRowClick(e) {
         var component = e.component,
             prevClickTime = component.lastClickTime;
         component.lastClickTime = new Date();
         if (prevClickTime && (component.lastClickTime - prevClickTime < 300)) {
-            vue_.EditClick()
+            vue_.editClick()
         }
     }
 
@@ -138,88 +130,102 @@
         },
         focusedRowEnabled: true,
         onFocusedRowChanged: OnFocusedRowChanged,
+        columns:[
+			{
+				caption:'Id',
+				dataField:'Id',
+				dataType:'text',
+				width:'50px',
+				visible:false,
+			}
+			,
+			{
+				caption:'Sample Id',
+				dataField:'SampleId',
+				dataType:'text',
+				width:'50px',
+				visible:true,
+			}
+			,
+			{
+				caption:'Barcode',
+				dataField:'Barcode',
+				dataType:'text',
+				width:'50px',
+			}
+			,
+			{
+				caption:'Name',
+				dataField:'SampleName',
+				dataType:'text',
+				width:'50px',
+			}
+			,
+			{
+				caption:'Status',
+				dataField:'Status',
+				dataType:'text',
+				width:'50px',
+			}
+			,
+			{
+				caption:'Action Date Time',
+				dataField:'DateTime',
+				dataType:'text',
+				width:'50px',
+			}
+			,
+			{
+				caption:'Operation',
+				dataField:'Operation',
+				dataType:'text',
+				width:'50px',
+			}
+			,
+			{
+				caption:'Amount',
+				dataField:'AmountInOut',
+				dataType:'text',
+				width:'50px',
+			}
+			,
+			{
+				caption:'Signature',
+				dataField:'Signature',
+				dataType:'text',
+				width:'50px',
+			}
+			,
+			{
+				caption:'Location',
+				dataField:'Location',
+				dataType:'text',
+				width:'50px',
+			}
+			,
+			{
+				caption:'batch Barcode',
+				dataField:'batchBarcode',
+				dataType:'text',
+				width:'50px',
+			}
+			,
+			{
+				caption:'batch Id',
+				dataField:'batchId',
+				dataType:'text',
+				width:'50px',
+				visible:false,
+			}
+			,
+			{
+				caption:'UserName',
+				dataField:'UserName',
+				dataType:'text',
+				width:'50px',
+			}
 
-        columns:[{caption:'Id',
-dataField:'Id',
-dataType:'text',
- width:'50px',
-visible:false,
-}
-,
-{caption:'Sample Id',
-dataField:'SampleId',
-dataType:'text',
- width:'50px',
-visible:true,
-}
-,
-{caption:'Barcode',
-dataField:'Barcode',
-dataType:'text',
- width:'50px',
-}
-,
-{caption:'Name',
-dataField:'SampleName',
-dataType:'text',
- width:'50px',
-}
-,
-{caption:'Status',
-dataField:'Status',
-dataType:'text',
- width:'50px',
-}
-,
-{caption:'Action Date Time',
-dataField:'DateTime',
-dataType:'text',
- width:'50px',
-}
-,
-{caption:'Operation',
-dataField:'Operation',
-dataType:'text',
- width:'50px',
-}
-,
-{caption:'Amount',
-dataField:'AmountInOut',
-dataType:'text',
- width:'50px',
-}
-,
-{caption:'Signature',
-dataField:'Signature',
-dataType:'text',
- width:'50px',
-}
-,
-{caption:'Location',
-dataField:'Location',
-dataType:'text',
- width:'50px',
-}
-,
-{caption:'batch Barcode',
-dataField:'batchBarcode',
-dataType:'text',
- width:'50px',
-}
-,
-{caption:'batch Id',
-dataField:'batchId',
-dataType:'text',
- width:'50px',
-visible:false,
-}
-,
-{caption:'UserName',
-dataField:'UserName',
-dataType:'text',
- width:'50px',
-}
-]
+		]
 
     });
 

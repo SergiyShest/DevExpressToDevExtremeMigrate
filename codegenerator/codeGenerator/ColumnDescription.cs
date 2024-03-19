@@ -249,21 +249,22 @@ namespace CodeGenerator
 
         public void AppendTemplate(StringBuilder stringBuilder)
         {
-
-            if (stringBuilder.Length > 0) { stringBuilder.AppendLine(","); }
-            stringBuilder.AppendLine($"{{caption:'{Caption}',");
-            stringBuilder.AppendLine($"dataField:'{FieldName}',");
-            stringBuilder.AppendLine($"dataType:'{ColumnType}',");
+            var indent = "\t\t\t";
+            var indent2 = "\t\t\t\t";
+			if (stringBuilder.Length > 0) { stringBuilder.AppendLine($"{indent},"); }
+            stringBuilder.AppendLine($"{indent}{{");
+            stringBuilder.AppendLine($"{indent2}caption:'{Caption}',");
+            stringBuilder.AppendLine($"{indent2}dataField:'{FieldName}',");
+            stringBuilder.AppendLine($"{indent2}dataType:'{ColumnType}',");
             if (!string.IsNullOrWhiteSpace(Width))
             {
-                stringBuilder.AppendLine($" width:'{Width}',");
+                stringBuilder.AppendLine($"{indent2}width:'{Width}',");
             }
             if (!string.IsNullOrWhiteSpace(Visible))
             {
-                stringBuilder.AppendLine($"visible:{Visible},");
+                stringBuilder.AppendLine($"{indent2}visible:{Visible},");
             }
-
-            stringBuilder.AppendLine($"}}");
+            stringBuilder.AppendLine($"{indent}}}");
         }
 
     }

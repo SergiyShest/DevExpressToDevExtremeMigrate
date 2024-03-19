@@ -176,8 +176,8 @@ namespace CodeGenerator
 					break;
 				default: break;
 			}
-
-            stringBuilder.AppendLine($"<kf-{ControlType} text = '{Caption}' v-model = 'Item.{FieldName}' {dopAttr}  {ItemsSource} ></kf-{ControlType}>");
+			var indent = "\t\t\t\t";
+			stringBuilder.AppendLine($"{indent}<kf-{ControlType} text = '{Caption}' v-model = 'Item.{FieldName}' {dopAttr}  {ItemsSource} ></kf-{ControlType}>");
 		}
 	}
 

@@ -8,28 +8,28 @@
 
 	<div id="app" style="display: flex;flex-direction: column;width: 850px;">
 		<div id="items"  class="grid-container">
-		    <kf-number text = 'Id' v-model = 'Item.Id' scale="0"   ></kf-number>
-<kf-input text = 'Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Barcode))' v-model = 'Item.Barcode'    ></kf-input>
-<kf-input text = 'Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Name))' v-model = 'Item.Name'    ></kf-input>
-<kf-input text = 'Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Location))' v-model = 'Item.Location'    ></kf-input>
-<kf-input text = 'Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Well))' v-model = 'Item.Well'    ></kf-input>
-<kf-input text = 'Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Doctor))' v-model = 'Item.Doctor'    ></kf-input>
-<kf-input text = 'Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Patient))' v-model = 'Item.Patient'    ></kf-input>
-<kf-input text = 'Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Parent))' v-model = 'Item.ParentName'    ></kf-input>
-<kf-input text = 'Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Process))' v-model = 'Item.ProcessName'    ></kf-input>
-<kf-input text = 'Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_User))' v-model = 'Item.UserName'    ></kf-input>
-<kf-input text = 'HospitalName' v-model = 'Item.HospitalName'    ></kf-input>
-<kf-input text = 'Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Box))' v-model = 'Item.BatchName'    ></kf-input>
-<kf-input text = 'Model' v-model = 'Item.Model'    ></kf-input>
-<kf-input text = 'Result' v-model = 'Item.Result'    ></kf-input>
-<kf-input text = 'Files' v-model = 'Item.Files'    ></kf-input>
-<kf-input text = 'Sended' v-model = 'Item.Sended'    ></kf-input>
-<kf-input text = 'PropS1' v-model = 'Item.PropS1'    ></kf-input>
-<kf-input text = 'PropS2' v-model = 'Item.PropS2'    ></kf-input>
-<kf-input text = 'PropS3' v-model = 'Item.PropS3'    ></kf-input>
-<kf-input text = 'PropS4' v-model = 'Item.PropS4'    ></kf-input>
-<kf-input text = 'PropS5' v-model = 'Item.PropS5'    ></kf-input>
-<kf-input text = 'Sample Type ' v-model = 'Item.SampleType'    ></kf-input>
+				<kf-number text = 'Id' v-model = 'Item.Id' scale="0"   ></kf-number>
+				<kf-input text = 'Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Barcode))' v-model = 'Item.Barcode'    ></kf-input>
+				<kf-input text = 'Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Name))' v-model = 'Item.Name'    ></kf-input>
+				<kf-input text = 'Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Location))' v-model = 'Item.Location'    ></kf-input>
+				<kf-input text = 'Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Well))' v-model = 'Item.Well'    ></kf-input>
+				<kf-input text = 'Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Doctor))' v-model = 'Item.Doctor'    ></kf-input>
+				<kf-input text = 'Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Patient))' v-model = 'Item.Patient'    ></kf-input>
+				<kf-input text = 'Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Parent))' v-model = 'Item.ParentName'    ></kf-input>
+				<kf-input text = 'Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Process))' v-model = 'Item.ProcessName'    ></kf-input>
+				<kf-input text = 'Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_User))' v-model = 'Item.UserName'    ></kf-input>
+				<kf-input text = 'HospitalName' v-model = 'Item.HospitalName'    ></kf-input>
+				<kf-input text = 'Html.GetLocalizedText<ViewModelFields>(nameof(ViewModelFields.Sample_Box))' v-model = 'Item.BatchName'    ></kf-input>
+				<kf-input text = 'Model' v-model = 'Item.Model'    ></kf-input>
+				<kf-input text = 'Result' v-model = 'Item.Result'    ></kf-input>
+				<kf-input text = 'Files' v-model = 'Item.Files'    ></kf-input>
+				<kf-input text = 'Sended' v-model = 'Item.Sended'    ></kf-input>
+				<kf-input text = 'PropS1' v-model = 'Item.PropS1'    ></kf-input>
+				<kf-input text = 'PropS2' v-model = 'Item.PropS2'    ></kf-input>
+				<kf-input text = 'PropS3' v-model = 'Item.PropS3'    ></kf-input>
+				<kf-input text = 'PropS4' v-model = 'Item.PropS4'    ></kf-input>
+				<kf-input text = 'PropS5' v-model = 'Item.PropS5'    ></kf-input>
+				<kf-input text = 'Sample Type ' v-model = 'Item.SampleType'    ></kf-input>
 
 		</div>
 
@@ -64,13 +64,15 @@
 		 methods: {
 			 get() {
 				 const pathEnd = "Workflow/SelectSamplesCard/Get?id="+Id;
-				 this.FetchJson( pathEnd,this.ok)
+				 this.fetch(this.ok,pathEnd)
 			 },
 			 ok(data) {
 				this.Item = data;
 			 },
 			 saveClick() {
-                alert('SaveClick')
+			    const pathEnd = "Workflow/SelectSamplesCard/Save?id="+Id;
+//                this.fetch(this.ok,pathEnd)
+                alert('Need implement a handler SaveClick')
 			 },
 
 			closeClick() {

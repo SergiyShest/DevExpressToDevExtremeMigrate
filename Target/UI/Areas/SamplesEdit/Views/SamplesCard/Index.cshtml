@@ -8,22 +8,22 @@
 
 	<div id="app" style="display: flex;flex-direction: column;width: 850px;">
 		<div id="items"  class="grid-container">
-		    <kf-number text = 'Id' v-model = 'Item.Id' scale="0"   ></kf-number>
-<kf-input text = 'Type' v-model = 'Item.Type'    ></kf-input>
-<kf-input text = 'Barcode' v-model = 'Item.Barcode'    ></kf-input>
-<kf-input text = 'Well' v-model = 'Item.Well'    ></kf-input>
-<kf-input text = 'Name' v-model = 'Item.Name'    ></kf-input>
-<kf-input text = 'Status' v-model = 'Item.Status'    ></kf-input>
-<kf-input text = 'Doctor' v-model = 'Item.Doctor'    ></kf-input>
-<kf-input text = 'Patient' v-model = 'Item.Patient'    ></kf-input>
-<kf-input text = 'Location' v-model = 'Item.Location'    ></kf-input>
-<kf-input text = 'BatchName' v-model = 'Item.BatchName'    ></kf-input>
-<kf-input text = 'Model' v-model = 'Item.Model'    ></kf-input>
-<kf-input text = 'HospitalName' v-model = 'Item.HospitalName'    ></kf-input>
-<kf-input text = 'BatchBarcode' v-model = 'Item.BatchBarcode'    ></kf-input>
-<kf-number text = 'Such a barcode already exists in the system' v-model = 'Item.DoubleBarcodeValidation' scale="0"   ></kf-number>
-<kf-number text = 'Double Barcode in drafts' v-model = 'Item.DoubleBarcodeJourLineValidation' scale="0"   ></kf-number>
-<kf-input text = 'SampleType' v-model = 'Item.SampleType'    ></kf-input>
+				<kf-number text = 'Id' v-model = 'Item.Id' scale="0"   ></kf-number>
+				<kf-input text = 'Type' v-model = 'Item.Type'    ></kf-input>
+				<kf-input text = 'Barcode' v-model = 'Item.Barcode'    ></kf-input>
+				<kf-input text = 'Well' v-model = 'Item.Well'    ></kf-input>
+				<kf-input text = 'Name' v-model = 'Item.Name'    ></kf-input>
+				<kf-input text = 'Status' v-model = 'Item.Status'    ></kf-input>
+				<kf-input text = 'Doctor' v-model = 'Item.Doctor'    ></kf-input>
+				<kf-input text = 'Patient' v-model = 'Item.Patient'    ></kf-input>
+				<kf-input text = 'Location' v-model = 'Item.Location'    ></kf-input>
+				<kf-input text = 'BatchName' v-model = 'Item.BatchName'    ></kf-input>
+				<kf-input text = 'Model' v-model = 'Item.Model'    ></kf-input>
+				<kf-input text = 'HospitalName' v-model = 'Item.HospitalName'    ></kf-input>
+				<kf-input text = 'BatchBarcode' v-model = 'Item.BatchBarcode'    ></kf-input>
+				<kf-number text = 'Such a barcode already exists in the system' v-model = 'Item.DoubleBarcodeValidation' scale="0"   ></kf-number>
+				<kf-number text = 'Double Barcode in drafts' v-model = 'Item.DoubleBarcodeJourLineValidation' scale="0"   ></kf-number>
+				<kf-input text = 'SampleType' v-model = 'Item.SampleType'    ></kf-input>
 
 		</div>
 
@@ -58,13 +58,15 @@
 		 methods: {
 			 get() {
 				 const pathEnd = "SamplesEdit/SamplesCard/Get?id="+Id;
-				 this.FetchJson( pathEnd,this.ok)
+				 this.fetch(this.ok,pathEnd)
 			 },
 			 ok(data) {
 				this.Item = data;
 			 },
 			 saveClick() {
-                alert('SaveClick')
+			    const pathEnd = "SamplesEdit/SamplesCard/Save?id="+Id;
+//                this.fetch(this.ok,pathEnd)
+                alert('Need implement a handler SaveClick')
 			 },
 
 			closeClick() {

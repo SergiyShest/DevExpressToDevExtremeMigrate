@@ -29,9 +29,10 @@
 		});
 	 let Mode = '@ViewBag.Mode'
 	 let focusedRowKey = null;
-         import { KfField, KfInput, KfDate, KfSelect, KfNumber, KfCheck, KfTextarea, KfText, KfButton } from '/js/vue3Components.js';
-         import { baseMixin } from '/js/BaseMixin.js';
-         const { ref } = Vue;
+     import { KfButton } from '/js/vue3Components.js';
+     import { baseMixin } from '/js/BaseMixin.js';
+     const { ref } = Vue;
+
 	 function setDataSource() {
 		 const dataSource = DevExpress.data.AspNet.createStore({
 			 key: "Id",
@@ -40,9 +41,10 @@
 		 var grid = $("#grid").dxDataGrid("instance");
 		 grid.option("dataSource", dataSource);
 	 }
-		function OnFocusedRowChanged(e) {
-			focusedRowKey = e.component.option('focusedRowKey');
-		}
+
+	function OnFocusedRowChanged(e) {
+		focusedRowKey = e.component.option('focusedRowKey');
+	}
 
 	  const app = Vue.createApp({
 		 mixins: [baseMixin],
@@ -59,7 +61,7 @@
 				 localStorage.setItem('dateTo', this.to);
 				 const pathEnd = "$journalControllerPath$/SetFilter";
 				 const data = { from: this.from, to: this.to };
-				 this.FetchJson( pathEnd,this.Ok, data)
+				 this.fetch(this.Ok, pathEnd, data)
 			 },
 			 Ok() {
 			    setDataSource();
@@ -87,19 +89,8 @@
 		 }
 	 });
 	  // Registering components
-       //  app.component('kf-field', KfField);
-       app.component('kf-button', KfButton);
-      //  app.component('kf-input', KfInput);
-      //  app.component('kf-date', KfDate);
-      //  app.component('kf-select', KfSelect);
-      //  app.component('kf-number', KfNumber);
-      //  app.component('kf-check', KfCheck);
-      //  app.component('kf-textarea', KfTextarea);
-      //  app.component('kf-text', KfText);
-
-        // Mounting Vue app
-		const vue_ = app.mount('#app');
-
+      app.component('kf-button', KfButton);
+	  const vue_ = app.mount('#app');
 
 	 function onRowClick(e) {
         var component = e.component,
@@ -122,8 +113,9 @@
         },
         focusedRowEnabled: true,
         onFocusedRowChanged: OnFocusedRowChanged,
-
-        columns:[$columns$]
+        columns:[
+$columns$
+		]
 
     });
 

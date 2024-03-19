@@ -6,7 +6,7 @@ export const baseMixin = {
      })
 ,
 	methods: {
-		GenerateGuid() { // Public Domain/MIT
+		generateGuid() { // Public Domain/MIT
 			var d = new Date().getTime();//Timestamp
 			var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now() * 1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
 			return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -22,7 +22,7 @@ export const baseMixin = {
 			});
 		},
 
-		ExtractItem(val)
+		extractItem(val)
 		{
 			if (val.Errors && val.Errors.length > 0) {
 				this.ShowErrors(val);
@@ -33,7 +33,7 @@ export const baseMixin = {
 		},
 
 		ShowErrors(item) {
-			this.PlayError()
+			this.playError()
 			var stringError;
 			console.log(item.Errors);
 			if(Array.isArray(item.Errors)){
@@ -53,7 +53,7 @@ export const baseMixin = {
 			this.PlaySound("/Content/Sounds/code-found.mp3")
 		}
 		,
-		PlayError() {
+		playError() {
 			this.PlaySound("/Content/Sounds/bad-beep.mp3")
 		}
 		,

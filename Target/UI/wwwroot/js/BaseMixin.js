@@ -8,7 +8,7 @@ export const baseMixin = {
      })
 ,
 	methods: {
-		GenerateGuid() { 
+		generateGuid() { 
 			let d = new Date().getTime();//Timestamp
 			let d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now() * 1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
 			return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -24,18 +24,18 @@ export const baseMixin = {
 			});
 		},
 
-		ExtractItem(val)
+		extractItem(val)
 		{
 			if (val.Errors && val.Errors.length > 0) {
-				this.ShowErrors(val);
+				this.showErrors(val);
 			  } else {
 				if(val.Item)
 				return val.Item;
 			  }
 		},
 
-		ShowErrors(item) {
-			this.PlayError()
+		showErrors(item) {
+			this.playError()
 			let stringError;
 			console.log(item.Errors);
 			if(Array.isArray(item.Errors)){
@@ -51,32 +51,27 @@ export const baseMixin = {
 				this.ShowAlert(stringError);
 		}
 		,
-		PlayOk() {
-			this.PlaySound("/Content/Sounds/code-found.mp3")
+		playOk() {
+			this.playSound("/Content/Sounds/code-found.mp3")
 		}
 		,
-		PlayError() {
-			this.PlaySound("/Content/Sounds/bad-beep.mp3")
+		playError() {
+			this.playSound("/Content/Sounds/bad-beep.mp3")
 		}
 		,
-		PlaySound(sound) {
+		playSound(sound) {
 			let path = document.location.origin + sound;//;
 			let audio = new Audio(path);
 			audio.autoplay = true;
 		}
 		,
-		CloseThis: function () {
+		closeThis: function () {
 			window.parent.postMessage("CloseUrlForm", '*'); //send message parent window for  close this form
 
 		}
 		,
-		ShowAlert(message) {
-			console.log(message);
+		showAlert(message) {
 			alert(message)
-		}
-		,
-		FetchJson(pathEnd, execFunction, data) {
-			this.fetch(execFunction, pathEnd, data)
 		}
 		,
 		//универсальная функция получения/отправки данных
@@ -120,25 +115,7 @@ export const baseMixin = {
 
 		}
         ,
-        GetDate(dateStr){
-           if(dateStr&&dateStr.length>10){
-			return dateStr.substring(0,10)
-		   }
-		   return dateStr;
-		},
-        GetAge(dateStr){
-			let dob = new Date(dateStr);
-			if(dateStr==null || dateStr=='') {
-			  
-			  return null; 
-			} else {
-			let month_diff = Date.now() - dob.getTime();
-			let age_dt = new Date(month_diff); 
-			let year = age_dt.getUTCFullYear();
-			let age = Math.abs(year - 1970);
-			return age;
-		}
 
-		}
+
 	}
 }
