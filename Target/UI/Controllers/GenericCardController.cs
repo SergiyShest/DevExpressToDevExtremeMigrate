@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Core;
 using DAL.Core;
+using System.Dynamic;
 
 namespace Entity.Controllers
 {
@@ -26,7 +27,16 @@ namespace Entity.Controllers
 			return Content(JsonConvert.SerializeObject(answer ), "application/json");
 		}
 
-
+        public virtual async Task<IActionResult> Delete(int? id)
+		{
+			var answer = new { message = "Необходимо реализовать метод Delete!" };
+			return Content(JsonConvert.SerializeObject(answer ), "application/json");
+		}
+        public virtual async Task<IActionResult> Save(int? id)
+		{
+			var answer = new { message = "Необходимо реализовать метод Save!" };
+			return Content(JsonConvert.SerializeObject(answer ), "application/json");
+		}
     }
 
 }

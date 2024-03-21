@@ -68,7 +68,8 @@
 			 },
 			 ok() {
 			    setDataSource();
-			 },
+			 }
+			 ,
 			addClick() {
 				xPopup ('Карточка vDoctor', '/Common/DoctorCard/Index' + '?page_mode=modal', 1024, 916);
 			}
@@ -84,13 +85,18 @@
 					   xPopup('Карточка vDoctor', '/Common/DoctorCard/Index?id=' + focusedRowKey + '&mode=copy', 1024, 916);
 				}
 			},
-
 			 deleteClick() {
 			  if (checkItem(focusedRowKey)) {
-				  path = '/Common/DoctorCard/Delete?id='+ focusedRowKey
-				   this.fetch(this.Ok, path)
+				   const path = '/Common/DoctorCard/Delete?id='+ focusedRowKey
+				   this.fetch(this.onDelete, path)
 			  }
-		  }
+		   },
+		   onDelete(answer) {
+				 if (answer && answer.message) {
+					 alert(answer.message);
+				 }
+				 this.ok()
+			 }
 		 },
 		 mounted: function () {
 
@@ -101,7 +107,6 @@
 			if (to != 'null') this.to = to;
 			
 			this.findDate()
-
 		 }
 	 });
 

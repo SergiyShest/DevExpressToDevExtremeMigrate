@@ -61,7 +61,7 @@
 				 localStorage.setItem('dateTo', this.to);
 				 const pathEnd = "$journalControllerPath$/SetFilter";
 				 const data = { from: this.from, to: this.to };
-				 this.fetch(this.Ok, pathEnd, data)
+				 this.fetch(this.ok, pathEnd, data)
 			 },
 			 Ok() {
 			    setDataSource();

@@ -38,8 +38,7 @@
 		 let Mode = '@ViewBag.Mode'
 	     let Id = '@ViewBag.Id';
 	   // load components ( remove unused please)
-	import { KfField, KfInput, KfDate, KfSelect, KfNumber, KfCheck, KfTextarea, KfText, KfButton, KfGridLookUp } from '/js/vue3Components.js';
-
+	    import { KfField, KfInput, KfDate, KfSelect, KfNumber, KfCheck, KfTextarea, KfText, KfButton, KfGridLookUp } from '/js/vue3Components.js';
 		import { baseMixin } from '/js/BaseMixin.js';
 		const { ref } = Vue;
 	        const app = Vue.createApp({
@@ -60,18 +59,17 @@
 			 },
 			 saveClick() {
 			    const pathEnd = "SamplesEdit/ContainerCard/Save?id="+Id;
-//                this.fetch(this.ok,pathEnd)
-                alert('Need implement a handler SaveClick')
+                this.fetch(this.onSave, pathEnd)
 			 },
-
-			closeClick() {
-			   closePopup()
-		  }
+			 onSave(answer) {
+				 if (answer && answer.message) {
+					 alert(answer.message);
+				 }
+				 this.get()
+			 }
 		 },
 		 mounted: function () {
           this.get()
-
-
 		 }
 	 });
 	// Registering components ( remove unused please)

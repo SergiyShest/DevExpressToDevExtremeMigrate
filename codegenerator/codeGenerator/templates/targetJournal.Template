@@ -68,7 +68,8 @@
 			 },
 			 ok() {
 			    setDataSource();
-			 },
+			 }
+			 ,
 			addClick() {
 				xPopup ('Карточка $Header$', '$cardControllerPath$/Index' + '?page_mode=modal', 1024, 916);
 			}
@@ -84,13 +85,18 @@
 					   xPopup('Карточка $Header$', '$cardControllerPath$/Index?id=' + focusedRowKey + '&mode=copy', 1024, 916);
 				}
 			},
-
 			 deleteClick() {
 			  if (checkItem(focusedRowKey)) {
-				  path = '$cardControllerPath$/Delete?id='+ focusedRowKey
-				   this.fetch(this.Ok, path)
+				   const path = '$cardControllerPath$/Delete?id='+ focusedRowKey
+				   this.fetch(this.onDelete, path)
 			  }
-		  }
+		   },
+		   onDelete(answer) {
+				 if (answer && answer.message) {
+					 alert(answer.message);
+				 }
+				 this.ok()
+			 }
 		 },
 		 mounted: function () {
 
@@ -101,7 +107,6 @@
 			if (to != 'null') this.to = to;
 			
 			this.findDate()
-
 		 }
 	 });
 

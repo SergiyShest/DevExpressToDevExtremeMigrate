@@ -65,9 +65,8 @@ export const baseMixin = {
 			audio.autoplay = true;
 		}
 		,
-		closeThis: function () {
-			window.parent.postMessage("CloseUrlForm", '*'); //send message parent window for  close this form
-
+		closeClick() {
+			closePopup()
 		}
 		,
 		showAlert(message) {
