@@ -7,21 +7,25 @@ function checkItem(id) {
 	return false;
 }
 
-function numOnBlur(control,scale=2) {
-    control.type = "text";
-    control.value = formatNum(control.value,scale)
-
+function numOnBlur(control, scale = 2) {
+  //  control.type = "text";
+    control.value = formatNum(control.value, scale)
+    console.log("numOnBlur " + control.value)
 }
 
 function numOnFocus(control) {
-    control.value = reFormatNum(control.value)
-    control.type = "number";
 
+  //  control.value = reFormatNum(control.value)
+
+  //  control.type = "number";
+  //  console.log("numOnFocus " + control.value)
 }
 
 function formatNum(val, scale) {
+    if (!val) return null;
     const sc = '0'.repeat(scale)
-    return numeral(val).format('0,0.'+sc).replaceAll(',', ' ');
+    console.log(sc+" formatNum " + val)
+    return numeral(val).format('0,0.' + sc).replaceAll(',', ' ');
 }
 
 function reFormatNum(val) {
