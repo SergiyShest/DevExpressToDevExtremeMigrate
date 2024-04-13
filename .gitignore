@@ -1,9 +1,7 @@
 bin
 obj
-.dll
-.pdb
 .vs
 node_modules
 
 .dll
-/Target/Core/bin/Release/net6.0/Core.pdb
+.pdb

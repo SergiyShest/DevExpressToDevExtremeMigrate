@@ -1,6 +1,4 @@
-﻿//using DevExtreme.AspNet.Data.Helpers;
-//using System.Web.Mvc;
-using System;
+﻿using BLL;
 using DevExtreme.AspNet.Data.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -8,11 +6,10 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 namespace DevExtreme.AspNet.Data {
 
 	[ModelBinder(BinderType = typeof(DataSourceLoadOptionsBinder))]
-	public class DataSourceLoadOptions : DataSourceLoadOptionsBase { }
+	public class DataSourceLoadOptions :  DataSourceLoadOptionsBase , IDataSourceLoadOptions { }
 
-	public class DataSourceLoadOptionsBinder : IModelBinder
+    public class DataSourceLoadOptionsBinder : IModelBinder
 	{
-
 		public Task BindModelAsync(ModelBindingContext bindingContext)
 		{
 			var loadOptions = new DataSourceLoadOptions();
@@ -22,7 +19,5 @@ namespace DevExtreme.AspNet.Data {
 		}
 
 	}
-
-
 }
 

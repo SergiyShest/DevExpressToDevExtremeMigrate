@@ -9,8 +9,8 @@ namespace UI.Areas.Workflow.Controllers{
         public SelectSamplesController(IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor) { }
 
         protected override IQueryable<vSamplesBook> FilterAction(IQueryable<vSamplesBook> answers) {
-            var dateFrom = base.HttpContext.Session.GetString("dateFrom");
-            var dateTo = base.HttpContext.Session.GetString("dateTo");
+            var dateFrom = base.HttpContext.Session.GetString(ClassName + "from");
+            var dateTo = base.HttpContext.Session.GetString(ClassName + "to");
             if (!string.IsNullOrEmpty(dateFrom) && DateTime.TryParse(dateFrom, out DateTime dateFr))
             {   
                 answers = answers.Where(x => x.DateCreate > dateFr);

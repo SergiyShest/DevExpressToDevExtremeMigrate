@@ -32,6 +32,7 @@
 		});
 	 let Mode = '@ViewBag.Mode'
 	 let focusedRowKey = null;
+     let storageKey = '$storageKey$';
      import { KfButton } from '/js/vue3Components.js';
      import { baseMixin } from '/js/BaseMixin.js';
      const { ref } = Vue;
@@ -60,8 +61,8 @@
 		 ,
 		 methods: {
 			 findDate() {
-				 localStorage.setItem('dateFrom', this.from);
-				 localStorage.setItem('dateTo', this.to);
+				 localStorage.setItem(storageKey + 'dateFrom', this.from);
+				 localStorage.setItem(storageKey + 'dateTo', this.to);
 				 const pathEnd = "$journalControllerPath$/SetFilter";
 				 const data = { from: this.from, to: this.to };
 				 this.fetch(this.ok, pathEnd, data)
@@ -100,10 +101,10 @@
 		 },
 		 mounted: function () {
 
-			let fr = localStorage.getItem('dateFrom');
+			let fr = localStorage.getItem(storageKey + 'dateFrom');
 			if (fr != 'null') this.from = fr;
 
-			let to = localStorage.getItem('dateTo');
+			let to = localStorage.getItem(storageKey + 'dateTo');
 			if (to != 'null') this.to = to;
 			
 			this.findDate()
@@ -126,7 +127,7 @@
   $("#grid").dxDataGrid({
 	    onRowClick: onRowClick,
         stateStoring: {
-            storageKey: '$storageKey$',
+            storageKey: storageKey,
         },
         "export": {//выгрузка в excel
             enabled: true,

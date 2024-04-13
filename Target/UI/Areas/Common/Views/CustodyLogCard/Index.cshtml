@@ -9,11 +9,13 @@
     <div id="app" style="display: flex;flex-direction: column;width: 850px;">
        
 		<div id="items"  class="grid-container">
-            <div>{{Item.Barcode}}---{{Item.Id}}</div>
+            <div>{{Id}}</div>
 			    <kf-input text = 'Barcode'		v-model='Item.Barcode' id="mBarcode" require>  </kf-input>
 
 
-               <kf-number text='Id' v-model='Item.Id' id="mId" scale="3" require></kf-number>
+                <kf-num text='Id' v-model='Id' id="mId" scale="3" ></kf-num>
+         
+
 				<kf-input text = 'Name'			v-model='Item.SampleName' require></kf-input>
 				<kf-input text = 'Status'		v-model = 'Item.Status'             ></kf-input>
 				<kf-input text = 'Location'		v-model = 'Item.Location'       ></kf-input>
@@ -42,12 +44,14 @@
 	     let Id = '@ViewBag.Id';
 	   // load components ( remove unused please)
 	    import { KfField, KfInput, KfDate, KfSelect, KfNumber, KfCheck, KfTextarea, KfText, KfButton } from '/js/vue3Components.js';
+	    import { KfNum} from '/js/vue3number.js';
 		import { baseMixin } from '/js/BaseMixin.js';
 		const { ref } = Vue;
 	        const app = Vue.createApp({
 		 mixins: [baseMixin],
 		 data() {
 			 return {
+				 Id:-34343443.444,
 				 Item: {  }
 			 }
 		 }
@@ -76,6 +80,7 @@
 		 }
 	 });
 	// Registering components ( remove unused please)
+	  app.component('kf-num', KfNum);
 	  app.component('kf-field', KfField);
 	  app.component('kf-button', KfButton);
 	  app.component('kf-input', KfInput);

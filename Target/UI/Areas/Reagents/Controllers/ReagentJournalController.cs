@@ -9,8 +9,8 @@ namespace UI.Areas.Reagents.Controllers{
         public ReagentJournalController(IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor) { }
 
         protected override IQueryable<vReagent> FilterAction(IQueryable<vReagent> answers) {
-            var dateFrom = base.HttpContext.Session.GetString("dateFrom");
-            var dateTo = base.HttpContext.Session.GetString("dateTo");
+            var dateFrom = base.HttpContext.Session.GetString(ClassName + "from");
+            var dateTo = base.HttpContext.Session.GetString(ClassName + "to");
             if (!string.IsNullOrEmpty(dateFrom) && DateTime.TryParse(dateFrom, out DateTime dateFr))
             {   
                 answers = answers.Where(x => x.ExpirationDate > dateFr);

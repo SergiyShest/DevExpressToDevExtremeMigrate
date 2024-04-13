@@ -10,6 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="js_tests\node_modules\**" />
+    <EmbeddedResource Remove="js_tests\node_modules\**" />
+    <None Remove="js_tests\node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
     <PackageReference Include="NLog" Version="5.2.4" />
     <PackageReference Include="NUnit" Version="3.13.3" />
