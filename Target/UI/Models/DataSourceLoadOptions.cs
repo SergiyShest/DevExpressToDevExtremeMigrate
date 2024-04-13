@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 namespace DevExtreme.AspNet.Data {
 
 	[ModelBinder(BinderType = typeof(DataSourceLoadOptionsBinder))]
-	public class DataSourceLoadOptions :  DataSourceLoadOptionsBase , IDataSourceLoadOptions { }
+	public class DataSourceLoadOptions :  DataSourceLoadOptionsBase  { }
 
     public class DataSourceLoadOptionsBinder : IModelBinder
 	{
