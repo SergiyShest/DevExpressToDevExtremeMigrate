@@ -5,10 +5,12 @@ using DevExtreme.AspNet.Data;
 using System.Reflection;
 using DAL.Core;
 using BLL;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace Entity.Controllers
 {
+    [Authorize]
     public class GenericJournalController<T> : BaseController where T : class, IEntity
     {
         string? _name;

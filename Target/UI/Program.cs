@@ -1,5 +1,6 @@
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddAuthentication(Microsoft.AspNetCore.Authentication.Negotiate.NegotiateDefaults.AuthenticationScheme)
+		.AddNegotiate();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -42,7 +43,9 @@ app.UseStaticFiles();
 app.UseCookiePolicy();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
 app.UseSession();
 app.UseEndpoints(endpoints =>
 {
