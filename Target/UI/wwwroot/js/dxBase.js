@@ -77,6 +77,7 @@ function getColumnFieldName(dataGridInstance, getter) {
 }
 
 const defaultDxOptions = {
+    remoteOperations: true,
     scrolling: {
         rowRenderingMode: 'virtual',
     },

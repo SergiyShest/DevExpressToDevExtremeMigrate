@@ -18,3 +18,23 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+beforeEach(() => {
+    cy.visit('Account/Login/Index')
+    cy.get('#username').type("Shest_akow@rambler.ru").blur();
+    cy.get('#password').type("Adm").blur();
+    cy.get('#logonBtn').click();
+
+    //cy.request({
+    //    method: 'POST',
+    //    url: 'Account/Login/Login', // baseUrl will be prepended to this url
+    //    form: true, // indicates the body should be form urlencoded and sets Content-Type: application/x-www-form-urlencoded headers
+    //    body: {
+    //        username:"test",
+    //        password:"test",
+    //    },
+    //})
+
+    cy.wait(1000);
+
+});

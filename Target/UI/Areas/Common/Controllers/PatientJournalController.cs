@@ -9,8 +9,8 @@ namespace UI.Areas.Common.Controllers{
         public PatientJournalController(IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor) { }
 
         protected override IQueryable<vPatient> FilterAction(IQueryable<vPatient> answers) {
-            var dateFrom = base.HttpContext.Session.GetString(ClassName + "from");
-            var dateTo = base.HttpContext.Session.GetString(ClassName + "to");
+            var dateFrom = HttpContext.Request.Query["from"];
+            var dateTo = HttpContext.Request.Query["to"];           
             if (!string.IsNullOrEmpty(dateFrom) && DateTime.TryParse(dateFrom, out DateTime dateFr))
             {   
                 answers = answers.Where(x => x.dob > dateFr);

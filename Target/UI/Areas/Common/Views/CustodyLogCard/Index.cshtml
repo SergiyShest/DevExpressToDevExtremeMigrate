@@ -1,95 +1,169 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-	Layout = "_LayoutEmpty";
+    Layout = "_LayoutEmpty";
 }
+<style>
+    /* Стилизация треугольной кнопки */
+    .triangle-button {
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 5px solid #111;
+        cursor: pointer;
+    }
 
+    /* Контейнер для выпадающего списка */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    /* Выпадающий контент (скрыт по умолчанию) */
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.2);
+        text-align: left; /* Добавлено для выравнивания текста влево */
+        z-index: 1;
+    }
+
+
+        /* Ссылки внутри выпадающего меню */
+        .dropdown-content a {
+            color: black;
+            padding: 3px;
+            align-items:start;
+            text-decoration: none;
+            display: block;
+        }
+
+            /* Изменение цвета ссылок при наведении */
+            .dropdown-content a:hover {
+                background-color: #f1f1f1
+            }
+
+    /* Показывать выпадающий список при наведении */
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+</style>
 <div style="display:flex;flex-direction:column;align-items:flex-start;align-content:flex-start;align-self:stretch">
     <h1></h1>
 
     <div id="app" style="display: flex;flex-direction: column;width: 850px;">
-       
-		<div id="items"  class="grid-container">
+
+        <div id="items" class="grid-container">
             <div>{{Id}}</div>
-			    <kf-input text = 'Barcode'		v-model='Item.Barcode' id="mBarcode" require>  </kf-input>
+            <kf-input text='Barcode' v-model='Item.Barcode' id="mBarcode" require>  </kf-input>
 
 
-                <kf-num text='Id' v-model='Id' id="mId" scale="3" ></kf-num>
-         
+            <kf-num text='Id' v-model='Id' id="mId" scale="3"></kf-num>
 
-				<kf-input text = 'Name'			v-model='Item.SampleName' require></kf-input>
-				<kf-input text = 'Status'		v-model = 'Item.Status'             ></kf-input>
-				<kf-input text = 'Location'		v-model = 'Item.Location'       ></kf-input>
-				<kf-input text = 'Amount'		v-model = 'Item.AmountInOut'    ></kf-input>
-				<kf-input text = 'Signature'    v-model = 'Item.Signature'   ></kf-input>
-				<kf-input text = 'UserName'     v-model = 'Item.UserName'    ></kf-input>
-				<kf-input text = 'batch Barcode'v-model = 'Item.batchBarcode'></kf-input>
-				<kf-input text = 'Operation'    v-model = 'Item.Operation'   ></kf-input>
 
-		</div>
+            <kf-input text='Name' v-model='Item.SampleName' require></kf-input>
+            <kf-input text='Status' v-model='Item.Status'></kf-input>
+            <kf-input text='Location' v-model='Item.Location'></kf-input>
+            <kf-input text='Amount' v-model='Item.AmountInOut'></kf-input>
+            <kf-input text='Signature' v-model='Item.Signature'></kf-input>
+            <kf-input text='UserName' v-model='Item.UserName'></kf-input>
+            <kf-input text='batch Barcode' v-model='Item.batchBarcode'></kf-input>
+            <kf-input text='Operation' v-model='Item.Operation'></kf-input>
 
-		<div style="display:flex;flex-direction:row;">
+        </div>
 
-			<kf-button id="saveButton" v-if="mode!='view'"		 v-on:click.native="saveClick"	text="Coхранить"		image="save"  ></kf-button>
-			<kf-button id="closeButton" v-if="mode!='view'"	     v-on:click.native="closeClick"	text="Закрыть"			image="delete" style="margin-left:auto"  ></kf-button>
-		</div>
-	</div>
+        <div style="display:flex;flex-direction:row;">
+
+            <kf-button id="saveButton" v-if="mode!='view'" v-on:click.native="saveClick" text="Coхранить" image="save"></kf-button>
+            <kf-button id="closeButton" v-if="mode!='view'" v-on:click.native="closeClick" text="Закрыть" image="delete" style="margin-left:auto"></kf-button>
+            <kf-dropdown-button text="Закрыть" image="delete" :items="dropdownItems" @@action="performAction">
+            </kf-dropdown-button>
+
+
+        </div>
+    </div>
 </div>
 
-<script type="module" >
+<script type="module">
 
-    $(window).on("load",function () {
-	@Html.Raw(TempData["StartupScript"])
-		});
-		 let Mode = '@ViewBag.Mode'
-	     let Id = '@ViewBag.Id';
-	   // load components ( remove unused please)
-	    import { KfField, KfInput, KfDate, KfSelect, KfNumber, KfCheck, KfTextarea, KfText, KfButton } from '/js/vue3Components.js';
-	    import { KfNum} from '/js/vue3number.js';
-		import { baseMixin } from '/js/BaseMixin.js';
-		const { ref } = Vue;
-	        const app = Vue.createApp({
-		 mixins: [baseMixin],
-		 data() {
-			 return {
-				 Id:-34343443.444,
-				 Item: {  }
-			 }
-		 }
-		 ,
-		 methods: {
-			 get() {
-				 const pathEnd = "Common/CustodyLogCard/Get?id="+Id;
-				 this.fetch(this.ok,pathEnd)
-			 },
-			 ok(data) {
-				this.Item = data;
-			 },
-			 saveClick() {
-			    const pathEnd = "Common/CustodyLogCard/Save?id="+Id;
+    $(window).on("load", function () {
+    @Html.Raw(TempData["StartupScript"])
+            });
+    let Mode = '@ViewBag.Mode'
+    let Id = '@ViewBag.Id';
+    // load components ( remove unused please)
+    import { KfField, KfInput, KfDate, KfSelect, KfNumber, KfCheck, KfTextarea, KfText, KfButton, KfDropdownButton } from '/js/vue3Components.js';
+    import { KfNum } from '/js/vue3number.js';
+    import { baseMixin } from '/js/BaseMixin.js';
+    const { ref } = Vue;
+    const app = Vue.createApp({
+        mixins: [baseMixin],
+        data() {
+            return {
+                Id: -34343443.444,
+                Item: {},
+                dropdownItems:[
+                    { Id: 1, Text: "edit", Image: "checked", Action: this.edit },
+                    { Id: 2, Text: "Удаление", Image: "save", Action: this.delete },
+                    { Id: 3, Text: "Просмотр", Image: "add", Action: this.view }
+                ]
+            }
+        }
+        ,
+        methods: {
+            get() {
+                const pathEnd = "Common/CustodyLogCard/Get?id=" + Id;
+                this.fetch(this.ok, pathEnd)
+            },
+            ok(data) {
+                this.Item = data;
+            },
+
+            performAction(item) {
+                if (item && item.Action) {
+                    item.Action();
+                }
+            },
+            edit() {
+                alert('Редактирование');
+            },
+            delete() {
+                alert('Удаление');
+            },
+            view() {
+                alert('Просмотр');
+            },
+
+            saveClick() {
+                const pathEnd = "Common/CustodyLogCard/Save?id=" + Id;
                 this.fetch(this.onSave, pathEnd)
-			 },
-			 onSave(answer) {
-				 if (answer && answer.message) {
-					 alert(answer.message);
-				 }
-				 this.get()
-			 }
-		 },
-		 mounted: function () {
-          this.get()
-		 }
-	 });
-	// Registering components ( remove unused please)
-	  app.component('kf-num', KfNum);
-	  app.component('kf-field', KfField);
-	  app.component('kf-button', KfButton);
-	  app.component('kf-input', KfInput);
-	  app.component('kf-date', KfDate);
-	  app.component('kf-select', KfSelect);
-	  app.component('kf-number', KfNumber);
-	  app.component('kf-check', KfCheck);
-	  app.component('kf-textarea', KfTextarea);
-	  app.component('kf-text', KfText);
-	// Mounting Vue app
-	const vue_ = app.mount('#app');
+            },
+            onSave(answer) {
+                if (answer && answer.message) {
+                    alert(answer.message);
+                }
+                this.get()
+            }
+        },
+        mounted: function () {
+            this.get()
+        }
+    });
+    // Registering components ( remove unused please)
+    app.component('kf-num', KfNum);
+    app.component('kf-field', KfField);
+    app.component('kf-button', KfButton);
+    app.component('kf-input', KfInput);
+    app.component('kf-date', KfDate);
+    app.component('kf-select', KfSelect);
+    app.component('kf-number', KfNumber);
+    app.component('kf-check', KfCheck);
+    app.component('kf-textarea', KfTextarea);
+    app.component('kf-text', KfText);
+    app.component('kf-dropdown-button', KfDropdownButton);
+    // Mounting Vue app
+    const vue_ = app.mount('#app');
 </script>

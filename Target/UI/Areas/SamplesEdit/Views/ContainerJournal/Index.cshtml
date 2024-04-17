@@ -12,14 +12,14 @@
 			<div style="width: 100px;margin-left:15px">Дата:</div>
 			oт<input id="d1From" type="date" v-model="from" style="margin:3px">
 			до<input id="d1To" type="date" v-model="to" style="margin:3px">
-			<kf-button id="findButton"  v-if="mode!='view'" v-on:click.native="findDate" text="Найти" image="find"></kf-button>
+			<kf-button id="findButton"  v-if="mode!='view'" v-on:click.native="find" text="Найти" image="find"></kf-button>
 		</div>
 
 		<div style="display:flex;flex-direction:row;">
-			<kf-button id="addButton" v-if="mode!='view'"		v-on:click.native="addClick"	text="Добавить"			image="add"></kf-button>
-			<kf-button id="editButton" v-if="mode!='view'"		v-on:click.native="editClick"	text="Редактировать"	image="edit"></kf-button>
-			<kf-button id="copyButton" v-if="mode!='view'"		v-on:click.native="copyClick"	text="Копировать"		image="copy"></kf-button>
-			<kf-button id="deleteButton" v-if="mode!='view'"	v-on:click.native="deleteClick"	text="Удалить"			image="delete"></kf-button>
+			<kf-button id="addButton"    v-if="mode!='view'" v-on:click.native="addClick"	text="Добавить"		 image="add"	></kf-button>
+			<kf-button id="editButton"   v-if="mode!='view'" v-on:click.native="editClick"	text="Редактировать" image="edit"	></kf-button>
+			<kf-button id="copyButton"   v-if="mode!='view'" v-on:click.native="copyClick"	text="Копировать"	 image="copy"	></kf-button>
+			<kf-button id="deleteButton" v-if="mode!='view'" v-on:click.native="deleteClick"	text="Удалить"	 image="delete"	></kf-button>
 		</div>
 	</div>
 	<div id="grid" />
@@ -27,9 +27,6 @@
 
 <script type="module">
 
-    $(window).on("load",function () {
-	@Html.Raw(TempData["StartupScript"])
-		});
 	 let Mode = '@ViewBag.Mode'
 	 let focusedRowKey = null;
      let storageKey = 'C:UsersSaergeysourcereposDevExpressToDevExtremeMigrationSourceUIAreasSamplesEditViewsContainerJournal';
@@ -37,10 +34,11 @@
      import { baseMixin } from '/js/BaseMixin.js';
      const { ref } = Vue;
 
-	 function setDataSource() {
+	 function setDataSource(from,to) {
 		 const dataSource = DevExpress.data.AspNet.createStore({
 			 key: "Id",
 			 loadUrl: document.location.origin + "/SamplesEdit/ContainerJournal/Get",
+			 loadParams: { from: from, to: to }
 		 });
 		 var grid = $("#grid").dxDataGrid("instance");
 		 grid.option("dataSource", dataSource);
@@ -49,81 +47,6 @@
 	function OnFocusedRowChanged(e) {
 		focusedRowKey = e.component.option('focusedRowKey');
 	}
-
-	const app = Vue.createApp({
-		 mixins: [baseMixin],
-		 data() {
-			 return {
-				 from: null,
-				 to: null
-			 }
-		 }
-		 ,
-		 methods: {
-			 findDate() {
-				 localStorage.setItem(storageKey + 'dateFrom', this.from);
-				 localStorage.setItem(storageKey + 'dateTo', this.to);
-				 const pathEnd = "/SamplesEdit/ContainerJournal/SetFilter";
-				 const data = { from: this.from, to: this.to };
-				 this.fetch(this.ok, pathEnd, data)
-			 },
-			 ok() {
-			    setDataSource();
-			 }
-			 ,
-			addClick() {
-				xPopup ('Карточка vContaiter', '/SamplesEdit/ContainerCard/Index' + '?page_mode=modal', 1024, 916);
-			}
-			,
-			 editClick() {
-				if (checkItem(focusedRowKey)) {
-					xPopup('Карточка vContaiter', '/SamplesEdit/ContainerCard/Index?id=' + focusedRowKey  , 1024, 916);
-				}
-
-			},
-			 copyClick() {
-				if (checkItem(focusedRowKey)) {
-					   xPopup('Карточка vContaiter', '/SamplesEdit/ContainerCard/Index?id=' + focusedRowKey + '&mode=copy', 1024, 916);
-				}
-			},
-			 deleteClick() {
-			  if (checkItem(focusedRowKey)) {
-				   const path = '/SamplesEdit/ContainerCard/Delete?id='+ focusedRowKey
-				   this.fetch(this.onDelete, path)
-			  }
-		   },
-		   onDelete(answer) {
-				 if (answer && answer.message) {
-					 alert(answer.message);
-				 }
-				 this.ok()
-			 }
-		 },
-		 mounted: function () {
-
-			let fr = localStorage.getItem(storageKey + 'dateFrom');
-			if (fr != 'null') this.from = fr;
-
-			let to = localStorage.getItem(storageKey + 'dateTo');
-			if (to != 'null') this.to = to;
-			
-			this.findDate()
-		 }
-	 });
-
-	 // Registering components
-     app.component('kf-button', KfButton);
-	 const vue_ = app.mount('#app');
-
-	 function onRowClick(e) {
-        var component = e.component,
-            prevClickTime = component.lastClickTime;
-        component.lastClickTime = new Date();
-        if (prevClickTime && (component.lastClickTime - prevClickTime < 300)) {
-            vue_.editClick()
-        }
-    }
-
   $("#grid").dxDataGrid({
 	    onRowClick: onRowClick,
         stateStoring: {
@@ -164,5 +87,74 @@
 		]
 
     });
+	const app = Vue.createApp({
+		 mixins: [baseMixin],
+		 data() {
+			 return {
+				 from: null,
+				 to: null
+			 }
+		 }
+		 ,
+		 methods: {
+			 find() {
+				 localStorage.setItem(storageKey + 'dateFrom', this.from);
+				 localStorage.setItem(storageKey + 'dateTo', this.to);
+                 setDataSource(this.from,this.to);
+			 }
+			 ,
+			addClick() {
+				xPopup ('Карточка vContaiter', '/SamplesEdit/ContainerCard/Index' + '?page_mode=modal', 1024, 916);
+			}
+			,
+			 editClick() {
+				if (checkItem(focusedRowKey)) {
+					xPopup('Карточка vContaiter', '/SamplesEdit/ContainerCard/Index?id=' + focusedRowKey  , 1024, 916);
+				}
+
+			},
+			 copyClick() {
+				if (checkItem(focusedRowKey)) {
+					   xPopup('Карточка vContaiter', '/SamplesEdit/ContainerCard/Index?id=' + focusedRowKey + '&mode=copy', 1024, 916);
+				}
+			},
+			 deleteClick() {
+			  if (checkItem(focusedRowKey)) {
+				   const path = '/SamplesEdit/ContainerCard/Delete?id='+ focusedRowKey
+				   this.fetch(this.onDelete, path)
+			  }
+		   },
+		   onDelete(answer) {
+				 if (answer && answer.message) {
+					 alert(answer.message);
+				 }
+				 this.find()
+			 }
+		 },
+		 mounted: function () {
+
+			let fr = localStorage.getItem(storageKey + 'dateFrom');
+			if (fr != 'null') this.from = fr;
+
+			let to = localStorage.getItem(storageKey + 'dateTo');
+			if (to != 'null') this.to = to;
+			
+			this.find()
+		 }
+	 });
+
+	 // Registering components
+     app.component('kf-button', KfButton);
+	 const vue_ = app.mount('#app');
+
+	 function onRowClick(e) {
+        var component = e.component,
+            prevClickTime = component.lastClickTime;
+        component.lastClickTime = new Date();
+        if (prevClickTime && (component.lastClickTime - prevClickTime < 300)) {
+            vue_.editClick()
+        }
+    }
+
 
 </script>

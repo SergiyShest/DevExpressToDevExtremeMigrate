@@ -1,6 +1,25 @@
+using Autofac;
+using Autofac.Configuration;
+using Autofac.Extensions.DependencyInjection;
+using Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddAuthentication(Microsoft.AspNetCore.Authentication.Negotiate.NegotiateDefaults.AuthenticationScheme)
-		.AddNegotiate();
+var config = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("autofac.json")
+    .Build();
+
+// Настройка Autofac
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()) // Использование Autofac в качестве DI контейнера
+    .ConfigureContainer<ContainerBuilder>(containerBuilder =>
+    {
+        // Загрузка модуля конфигурации Autofac
+        var module = new ConfigurationModule(config);
+        containerBuilder.RegisterModule(module);
+    });
+AuthenticationConfigurer.ConfigureAuthentication(builder);//Выбор типа авторизации в зависимости от настроек
+
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -28,6 +47,7 @@ builder.WebHost.UseKestrel(options =>
  });
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

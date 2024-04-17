@@ -12,14 +12,14 @@
 			<div style="width: 100px;margin-left:15px">$DateHeader$:</div>
 			oт<input id="d1From" type="date" v-model="from" style="margin:3px">
 			до<input id="d1To" type="date" v-model="to" style="margin:3px">
-			<kf-button id="findButton"  v-if="mode!='view'" v-on:click.native="findDate" text="Найти" image="find"></kf-button>
+			<kf-button id="findButton"  v-if="mode!='view'" v-on:click.native="find" text="Найти" image="find"></kf-button>
 		</div>
 
 		<div style="display:flex;flex-direction:row;">
-			<kf-button id="addButton" v-if="mode!='view'"		v-on:click.native="addClick"	text="Добавить"			image="add"></kf-button>
-			<kf-button id="editButton" v-if="mode!='view'"		v-on:click.native="editClick"	text="Редактировать"	image="edit"></kf-button>
-			<kf-button id="copyButton" v-if="mode!='view'"		v-on:click.native="copyClick"	text="Копировать"		image="copy"></kf-button>
-			<kf-button id="deleteButton" v-if="mode!='view'"	v-on:click.native="deleteClick"	text="Удалить"			image="delete"></kf-button>
+			<kf-button id="addButton"    v-if="mode!='view'" v-on:click.native="addClick"	text="Добавить"		 image="add"	></kf-button>
+			<kf-button id="editButton"   v-if="mode!='view'" v-on:click.native="editClick"	text="Редактировать" image="edit"	></kf-button>
+			<kf-button id="copyButton"   v-if="mode!='view'" v-on:click.native="copyClick"	text="Копировать"	 image="copy"	></kf-button>
+			<kf-button id="deleteButton" v-if="mode!='view'" v-on:click.native="deleteClick"	text="Удалить"	 image="delete"	></kf-button>
 		</div>
 	</div>
 	<div id="grid" />
@@ -27,9 +27,6 @@
 
 <script type="module">
 
-    $(window).on("load",function () {
-	@Html.Raw(TempData["StartupScript"])
-		});
 	 let Mode = '@ViewBag.Mode'
 	 let focusedRowKey = null;
      let storageKey = '$storageKey$';
@@ -37,10 +34,11 @@
      import { baseMixin } from '/js/BaseMixin.js';
      const { ref } = Vue;
 
-	 function setDataSource() {
+	 function setDataSource(from,to) {
 		 const dataSource = DevExpress.data.AspNet.createStore({
 			 key: "Id",
 			 loadUrl: document.location.origin + "$journalControllerPath$/Get",
+			 loadParams: { from: from, to: to }
 		 });
 		 var grid = $("#grid").dxDataGrid("instance");
 		 grid.option("dataSource", dataSource);
@@ -49,7 +47,23 @@
 	function OnFocusedRowChanged(e) {
 		focusedRowKey = e.component.option('focusedRowKey');
 	}
+  $("#grid").dxDataGrid({
+	    onRowClick: onRowClick,
+        stateStoring: {
+            storageKey: storageKey,
+        },
+        "export": {//выгрузка в excel
+            enabled: true,
+            fileName: "$HeaderReport$",
+            allowExportSelectedData: true
+        },
+        focusedRowEnabled: true,
+        onFocusedRowChanged: OnFocusedRowChanged,
+        columns:[
+$columns$
+		]
 
+    });
 	const app = Vue.createApp({
 		 mixins: [baseMixin],
 		 data() {
@@ -60,15 +74,10 @@
 		 }
 		 ,
 		 methods: {
-			 findDate() {
+			 find() {
 				 localStorage.setItem(storageKey + 'dateFrom', this.from);
 				 localStorage.setItem(storageKey + 'dateTo', this.to);
-				 const pathEnd = "$journalControllerPath$/SetFilter";
-				 const data = { from: this.from, to: this.to };
-				 this.fetch(this.ok, pathEnd, data)
-			 },
-			 ok() {
-			    setDataSource();
+                 setDataSource(this.from,this.to);
 			 }
 			 ,
 			addClick() {
@@ -96,7 +105,7 @@
 				 if (answer && answer.message) {
 					 alert(answer.message);
 				 }
-				 this.ok()
+				 this.find()
 			 }
 		 },
 		 mounted: function () {
@@ -107,7 +116,7 @@
 			let to = localStorage.getItem(storageKey + 'dateTo');
 			if (to != 'null') this.to = to;
 			
-			this.findDate()
+			this.find()
 		 }
 	 });
 
@@ -124,22 +133,5 @@
         }
     }
 
-  $("#grid").dxDataGrid({
-	    onRowClick: onRowClick,
-        stateStoring: {
-            storageKey: storageKey,
-        },
-        "export": {//выгрузка в excel
-            enabled: true,
-            fileName: "$HeaderReport$",
-            allowExportSelectedData: true
-        },
-        focusedRowEnabled: true,
-        onFocusedRowChanged: OnFocusedRowChanged,
-        columns:[
-$columns$
-		]
-
-    });
 
 </script>

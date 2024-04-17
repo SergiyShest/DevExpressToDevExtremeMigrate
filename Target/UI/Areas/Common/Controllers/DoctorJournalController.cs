@@ -9,12 +9,14 @@ namespace UI.Areas.Common.Controllers{
         public DoctorJournalController(IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor) { }
 
         protected override IQueryable<vDoctor> FilterAction(IQueryable<vDoctor> answers) {
-            var dateFrom = base.HttpContext.Session.GetString(ClassName + "from");
-            var dateTo = base.HttpContext.Session.GetString(ClassName + "to");
-            if (!string.IsNullOrEmpty(dateFrom) && DateTime.TryParse(dateFrom, out DateTime dateFr)){   
+            var dateFrom = HttpContext.Request.Query["from"];
+            var dateTo = HttpContext.Request.Query["to"];           
+            if (!string.IsNullOrEmpty(dateFrom) && DateTime.TryParse(dateFrom, out DateTime dateFr))
+            {   
                 answers = answers.Where(x => x.PropD1 > dateFr);
             }
-            if (!string.IsNullOrEmpty(dateTo) && DateTime.TryParse(dateTo, out DateTime dateT)){
+            if (!string.IsNullOrEmpty(dateTo) && DateTime.TryParse(dateTo, out DateTime dateT))
+            {
                 answers = answers.Where(x => x.PropD1 < dateT);
             }
             return answers;

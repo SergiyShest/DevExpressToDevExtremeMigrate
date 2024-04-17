@@ -1,0 +1,14 @@
+{
+  "defaultAssembly": "UI",
+  "components": [
+    //{
+    //  "type": "Configuration.CookieAuthenticationConfigurer, UI",
+    //  "services": [
+    //    {
+    //      "type": "Configuration.IAuthenticationConfigurer, UI"
+    //    }
+    //  ],
+    //  "singleInstance": true
+    //}
+  ]
+}

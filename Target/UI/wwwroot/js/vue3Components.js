@@ -317,3 +317,44 @@ class="kf-button"
 </button>`
 }//kf-button
 //============================================================================================================================
+// Компонент kf-dropdown-button
+export const KfDropdownButton = {
+    props: {
+        'text': { type: String },
+        'image': { type: String },
+        'items':{ type: Array }
+    },
+    computed: {
+        imgSrc() {
+            if (this.image) return /images/ + this.image + ".png";
+        }
+    },
+    methods: {
+        handleClick(item) {
+            this.$emit('action', item);
+        },
+        getImg(image) {
+            console.log(image)
+            if (image) return /images/ + image + ".png";
+        }
+    },
+    template: `<button
+class="kf-button"
+>
+<img v-if="image" :src="imgSrc" class="kf-button-image" />{{text}}
+            <div class="dropdown">
+                <div class="triangle-button"></div>
+                    <div class="dropdown-content">
+                        <a v-for="item in items"
+                        :key="item.Id"
+                        v-bind:value="item.Id"
+                        href="#"
+                        @click="handleClick(item)">
+                        <img :src="getImg(item.Image)" class="kf-button-image" />
+                        {{item.Text}}
+                        </a>
+                    </div>
+             </div>
+</button>`
+}//kf-button 
+//============================================================================================================================
