@@ -30,4 +30,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="js_tests\cypress\screenshots\" />
+  </ItemGroup>
+
 </Project>
