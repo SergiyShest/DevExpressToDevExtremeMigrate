@@ -39,7 +39,7 @@
 		 let Mode = '@ViewBag.Mode'
 	     let Id = '@ViewBag.Id';
 	   // load components ( remove unused please)
-	    import { KfField, KfInput, KfDate, KfSelect, KfNumber, KfCheck, KfTextarea, KfText, KfButton, KfGridLookUp } from '/js/vue3Components.js';
+	    import { KfField, KfInput, KfDate, KfSelect, KfNumber, KfCheck, KfTextarea, KfText, KfButton } from '/js/vue3Components.js';
 		import { baseMixin } from '/js/BaseMixin.js';
 		const { ref } = Vue;
 	        const app = Vue.createApp({
@@ -83,7 +83,6 @@
 	  app.component('kf-check', KfCheck);
 	  app.component('kf-textarea', KfTextarea);
 	  app.component('kf-text', KfText);
-	  app.component('kf-lookup', KfGridLookUp);
 	// Mounting Vue app
 	const vue_ = app.mount('#app');
 </script>

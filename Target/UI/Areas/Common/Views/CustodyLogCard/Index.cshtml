@@ -58,6 +58,7 @@
 
         <div id="items" class="grid-container">
             <div>{{Id}}</div>
+            <kf-look-up text ='Barcode'></kf-look-up>
             <kf-input text='Barcode' v-model='Item.Barcode' id="mBarcode" require>  </kf-input>
 
 
@@ -97,6 +98,7 @@
     // load components ( remove unused please)
     import { KfField, KfInput, KfDate, KfSelect, KfNumber, KfCheck, KfTextarea, KfText, KfButton, KfDropdownButton } from '/js/vue3Components.js';
     import { KfNum } from '/js/vue3number.js';
+    import { KfGridLookUp } from '/js/lookUpWrapper.js';
     import { baseMixin } from '/js/BaseMixin.js';
     const { ref } = Vue;
     const app = Vue.createApp({
@@ -164,6 +166,7 @@
     app.component('kf-textarea', KfTextarea);
     app.component('kf-text', KfText);
     app.component('kf-dropdown-button', KfDropdownButton);
+    app.component('kf-look-up', KfGridLookUp);
     // Mounting Vue app
     const vue_ = app.mount('#app');
 </script>
