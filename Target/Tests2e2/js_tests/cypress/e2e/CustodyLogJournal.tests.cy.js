@@ -35,8 +35,8 @@ describe('Тест журнала Custody Log', () => {
     cy.wait(1000);
     cy.get('.dx-info').invoke('text').then((text) => {
       //регулярное выражение для извлечения числа из текста Page 1 of 1 (0 items)
-      const matches = text.match(/\((\d+)/);
-     // Проверяем, что удалось извлечь число и оно 0
+      const matches = text.match(/\((-?\d+)/);
+     // Проверяем, что удалось извлечь число и оно меньше равно 0
      const extractedNumber = matches && parseInt(matches[1], 10);
         cy.wrap(extractedNumber).should('be.lte', 0);
     })

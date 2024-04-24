@@ -15,5 +15,8 @@
   },
   "dependencies": {
     "cypress": "^13.6.6"
+  },
+  "devDependencies": {
+    "cypress-ntlm-auth": "^4.1.7"
   }
 }

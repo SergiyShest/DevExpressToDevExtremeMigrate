@@ -16,7 +16,7 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands'
-
+//import "cypress-ntlm-auth/dist/commands";
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
@@ -28,12 +28,11 @@ beforeEach(() => {
     cy.log('I run before every test in every spec file!!!!!!')
     cy.request({
         method: 'POST',
-        url: 'Account/Login/Login', // baseUrl will be prepended to this url
+        url: 'https://localhost:7210/Account/Login/Login', // baseUrl will be prepended to this url
         form: true, // indicates the body should be form urlencoded and sets Content-Type: application/x-www-form-urlencoded headers
         body: {
             username:"test",
             password:"test",
         },
     })
-
 });

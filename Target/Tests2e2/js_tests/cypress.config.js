@@ -3,8 +3,9 @@ const { defineConfig } = require('cypress')
 
 module.exports = defineConfig({
     fixturesFolder: false,
-    viewportHeight: 200,
-    viewportWidth: 200,
+    viewportHeight: 1000,
+    viewportWidth: 1000,
+    "types": ["cypress", "node", "cypress-ntlm-auth"],
     e2e: {
         baseUrl: 'https://localhost:7210',
         supportFile: false,
@@ -14,9 +15,9 @@ module.exports = defineConfig({
         supportFolder: 'cypress/support',
         videoUploadOnPasses: true,
     },
-            setupNodeEvents(on, config) {
+    setupNodeEvents(on, config) {
               // implement node event listeners here
-            },
+  },
 
 
 
