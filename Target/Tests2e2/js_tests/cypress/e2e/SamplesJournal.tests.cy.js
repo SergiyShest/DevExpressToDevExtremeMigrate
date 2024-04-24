@@ -1,13 +1,13 @@
-﻿describe('Тест журнала Patient journal', () => {
+﻿describe('Тест журнала Jour Line', () => {
 
  it('Проверка наличия заголовка', () => {
-     cy.visit('/Common/PatientJournal')
-    cy.contains('H1', 'Patient journal')
+     cy.visit('/SamplesEdit/SamplesJournal')
+    cy.contains('H1', 'Jour Line')
     
   })  
   
   it('проверка фильра на наличие записей', () => {
-      cy.visit('/Common/PatientJournal')
+      cy.visit('/SamplesEdit/SamplesJournal')
 
     cy.get('#d1From').type('1023-12-20').blur();
     cy.get('#d1To').type('2024-12-31').blur();
@@ -26,7 +26,7 @@
   })
 
   it('Проверка фильтра на отсутствие записей', () => {
-    cy.visit('/Common/PatientJournal')
+    cy.visit('/SamplesEdit/SamplesJournal')
     cy.get('#d1From').type('2000-12-31').blur();//unreal date tnere no records
     cy.get('#d1To').type('2000-12-31').blur();
     cy.get('#findButton').click();
