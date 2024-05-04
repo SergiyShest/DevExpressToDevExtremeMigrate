@@ -1,45 +1,13 @@
 
- let products = [{
-    "Id": 1,
-    "CompanyName": "Premier Buy",
-    "Address": "7601 Penn Avenue South",
-    "City": "Richfield",
-    "State": "Minnesota",
-     "Name":        "Vasiliy",
-    "Phone": "(612) 291-1000",
-    "Fax": "(612) 291-2001",
-    "Website": "http://www.nowebsitepremierbuy.dx"
- },
-     {
-         "Id": 2,
-         "CompanyName": "Premier Buy",
-         "Address": "7601 Penn Avenue South",
-         "City": "Richfield",
-         "State": "Minnesota",
-         "Name": "Petrillo",
-         "Phone": "(612) 291-1044",
-         "Fax": "(612) 291-2004",
-         "Website": "http://www.nowebsitepremierbuy.dx"
-     },
- ]
 
-let dataGrid;
-const makeAsyncDataSource = function (jsonFile) {
-    return new DevExpress.data.CustomStore({
-        loadMode: 'raw',
-        key: 'Id',
-        load() {
-            return products;
-        },
-    });
-};
-
-function createGridLookup(el,dataSource, columns, val, pageSize, height, valChanged) {
+function createGridLookup(el, dataSource, columns, val, pageSize, height, valChanged) {
     const $dataGrid = $('<div>').dxDataGrid({
+
         dataSource: dataSource,
+        keyExpr:"id",
         export: false,
         stateStoring: false,
-        columnChooser: { enabled: true},
+        columnChooser: { enabled: true },
         toolbar: { items: [] },
         columns: columns,
         hoverStateEnabled: true,
@@ -54,14 +22,14 @@ function createGridLookup(el,dataSource, columns, val, pageSize, height, valChan
         onRowDblClick: valChanged
     });
 
-    const dataGrid = $dataGrid.dxDataGrid('instance');
+//    const dataGrid = $dataGrid.dxDataGrid('instance');
 
-    dataGrid.selectRows(val, false);
+    //dataGrid.selectRows(val, false);
 
-    dataGrid.on('selectionChanged', (e) => {
-        const { selectedRowKeys } = e;
-        valChanged(selectedRowKeys);
-    });
+    //dataGrid.on('selectionChanged', (e) => {
+    //    const { selectedRowKeys } = e;
+    //    valChanged(selectedRowKeys);
+    //});
 
     $(el).append($dataGrid);
 }
@@ -84,15 +52,16 @@ function CreateGuid() {
     }
     return _p8() + _p8(true) + _p8(true) + _p8();
 }
-import {  componentBase } from '/js/vue3Components.js'
-export const KfGridLookUp =  {
+
+import { componentBase } from '/js/vue3Components.js';
+
+export const KfGridLookUp = {
     mixins: [componentBase],
     props: {
         'value': { type: [String, Number] },
-        "items": { type: Array, default: null },
-        "loadUrl": { type: [String, Object], default: "zzz" },
+        "items": { type: Array, default: () => [] },
+        "loadUrl": { type: [String, Object], default: null },
         "pageSize": { type: Number, default: 10 },
-
         "dropDownWidth": { type: Number, default: 700 },
         "dropDownHeight": { type: Number, default: 500 },
         "displayExpr": { type: [String, Object], default: "name" },
@@ -102,14 +71,23 @@ export const KfGridLookUp =  {
         return {
             lookUpId: CreateGuid(),
             tableVisible: false,
-            displValue:'null'
+            displValue: null,
+            tableInit: false
         }
     },
-
+    watch: {
+        'value': function (newVal) {
+            this.updateDisplayValue(newVal);
+        },
+        'loadUrl': function (newUrl) {
+            this.refreshGrid();
+        }
+    },
     methods: {
         toggleTableVisibility() {
             this.tableVisible = !this.tableVisible;
             if (this.tableVisible) {
+                if (!this.tableInit) this.refreshGrid()
                 // При открытии таблицы добавляем обработчик кликов на уровне документа
                 document.addEventListener('click', this.hideTable);
             } else {
@@ -118,7 +96,7 @@ export const KfGridLookUp =  {
             }
         },
         hideTable(event) {
-  
+
             const isOutsideClick = !this.$el.contains(event.target);
             if (isOutsideClick) {
                 this.tableVisible = false;
@@ -126,52 +104,81 @@ export const KfGridLookUp =  {
             }
         },
         valueChanged(row) {
-            console.log(row)
-            if (this.tableVisible) this.toggleTableVisibility()
-            const displayValue = typeof this.displayExpr === 'function' ? this.displayExpr(row.data) : this.parseDisplayExpr(this.displayExpr, row.data, row.key);
-            this.displValue = displayValue;
+            this.$emit('input', row.key); // Эмитим обновленное значение в компоненте-родителе
+            this.displValue = this.parseDisplayExpr(this.displayExpr, row.data, row.key);
+            if (this.tableVisible) this.toggleTableVisibility();
+        },
+        refreshGrid() {
+            this.tableInit = true;
+            const el = $('#' + this.lookUpId);
+            el.empty(); // Clear previous grid before creating new one
 
-        }
-        , parseDisplayExpr(expr, data, fallbackKey) {
+            const ds = this.loadUrl ? getDataSource(this.loadUrl) : this.items;
+            createGridLookup(el, ds, this.columns, this.value, this.pageSize, this.dropDownHeight, this.valueChanged);
+        },
+        parseDisplayExpr(expr, data, fallbackKey) {
             try {
                 if (/\$\{[^}]+\}/.test(expr)) {
-                    // It's a template string
                     return expr.replace(/\$\{([^}]+)\}/g, (match, key) => data[key.trim()] || '');
                 } else {
-                    // It's likely a column name
                     return data[expr] || data[fallbackKey];
                 }
             } catch (error) {
                 console.error("Error processing display expression:", error);
-                return data[fallbackKey]; // Fallback to key value on error
+                return data[fallbackKey];
+            }
+        },
+        updateDisplayValue(value) {
+            const localRow = this.items.find(item => item.id === value);
+            if (localRow) {
+                this.displValue = this.parseDisplayExpr(this.displayExpr, localRow, value);
+            } else if (this.loadUrl && value) {
+                this.fetchData(value);
+            }
+        },
+        async fetchData(value) {
+            try {
+                const response = await fetch(`${this.loadUrl}?id=${value}`);
+                let data = await response.json();
+                if (data) {
+                    if (Array.isArray(data)) { data = data[value] }
+                    this.displValue = this.parseDisplayExpr(this.displayExpr, data, value);
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                this.displValue = value; // Fallback to the key value on error
             }
         }
     },
+    mounted() {
+        this.updateDisplayValue(this.value);
+    },
     template: `
-  <div class="cf-dropdown-container" >
-     <div class="coll" style="width:100px;display:inline-block"  >{{ text }}:</div>
+<div class="cf-dropdown-container">
+    <div class="coll"
+         style="width:100px; display:inline-block">
+        {{ text }}:
+    </div>
 
-      <div style="width:150px;height:30px;border: solid 1px;display:inline-block;owerflow:hidden"
-      :title="notValidText" 
-      >{{displValue}}</div>
- 
-        <button style="display:inline-block" @click="toggleTableVisibility"  >Find</button>
+    <div style="width:150px; height:30px; overflow:hidden; border: solid 1px; display:inline-block"
+         :title="notValidText">
+        {{ displValue }}
+    </div>
 
-        <img v-if="!valid"  style="display:inline-block"  src="invalid.png"/>
-         <div
-         class="cf-dropdown"
-         v-bind:id="lookUpId"
+    <button style="display:inline-block"
+            @click="toggleTableVisibility">
+        Find
+    </button>
+
+    <img v-if="!valid"
+         style="display:inline-block"
+         src="invalid.png"/>
+
+    <div class="cf-dropdown"
+         :id="lookUpId"
          :style="{ display: tableVisible ? 'block' : 'none' }"
-         @click.outside="hideTable"
-         >
-         </div>
-  
-  </div>
-  `,
-    mounted: function () {
-        console.log(this.value + '   ' + this.displayExpr)
-        const el = $('#' + this.lookUpId)
-
-        createGridLookup(el, getDataSource(this.loadUrl), this.columns, this.value, this.pageSize, this.dropDownHeight, this.valueChanged)
-    }
-}
+         @click.outside="hideTable">
+    </div>
+</div>
+    `,
+};

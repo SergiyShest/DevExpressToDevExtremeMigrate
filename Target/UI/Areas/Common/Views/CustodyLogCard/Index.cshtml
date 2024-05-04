@@ -163,8 +163,9 @@
         <div id="items" class="grid-container">
             <div>{{Id}}</div>
             <kf-look-up text='Bar-code' 
-            load-url="/Api/GetOsts" 
-            display-expr="${name} loc=${locateeion}"
+           @*  load-url="/Api/GetOsts"  *@
+             :items="osts"
+            display-expr="${name} loc=${location}"
             :value='ostId'></kf-look-up>
             <kf-input text='Barcode' v-model='Item.Barcode' id="mBarcode" require>  </kf-input>
 
@@ -193,7 +194,195 @@
     </div>
 </div>
 
+
+
+
 <script type="module">
+
+    const osts = [
+        {
+            "id": 1,
+            "name": "Name 1",
+            "location": "Location 1",
+            "state": "Inactive"
+        },
+        {
+            "id": 2,
+            "name": "Name 2",
+            "location": "Location 2",
+            "state": "Active"
+        },
+        {
+            "id": 3,
+            "name": "Name 3",
+            "location": "Location 3",
+            "state": "Inactive"
+        },
+        {
+            "id": 4,
+            "name": "Name 4",
+            "location": "Location 4",
+            "state": "Active"
+        },
+        {
+            "id": 5,
+            "name": "Name 5",
+            "location": "Location 5",
+            "state": "Inactive"
+        },
+        {
+            "id": 6,
+            "name": "Name 6",
+            "location": "Location 6",
+            "state": "Active"
+        },
+        {
+            "id": 7,
+            "name": "Name 7",
+            "location": "Location 7",
+            "state": "Inactive"
+        },
+        {
+            "id": 8,
+            "name": "Name 8",
+            "location": "Location 8",
+            "state": "Active"
+        },
+        {
+            "id": 9,
+            "name": "Name 9",
+            "location": "Location 9",
+            "state": "Inactive"
+        },
+        {
+            "id": 10,
+            "name": "Name 10",
+            "location": "Location 10",
+            "state": "Active"
+        },
+        {
+            "id": 11,
+            "name": "Name 11",
+            "location": "Location 11",
+            "state": "Inactive"
+        },
+        {
+            "id": 12,
+            "name": "Name 12",
+            "location": "Location 12",
+            "state": "Active"
+        },
+        {
+            "id": 13,
+            "name": "Name 13",
+            "location": "Location 13",
+            "state": "Inactive"
+        },
+        {
+            "id": 14,
+            "name": "Name 14",
+            "location": "Location 14",
+            "state": "Active"
+        },
+        {
+            "id": 15,
+            "name": "Name 15",
+            "location": "Location 15",
+            "state": "Inactive"
+        },
+        {
+            "id": 16,
+            "name": "Name 16",
+            "location": "Location 16",
+            "state": "Active"
+        },
+        {
+            "id": 17,
+            "name": "Name 17",
+            "location": "Location 17",
+            "state": "Inactive"
+        },
+        {
+            "id": 18,
+            "name": "Name 18",
+            "location": "Location 18",
+            "state": "Active"
+        },
+        {
+            "id": 19,
+            "name": "Name 19",
+            "location": "Location 19",
+            "state": "Inactive"
+        },
+        {
+            "id": 20,
+            "name": "Name 20",
+            "location": "Location 20",
+            "state": "Active"
+        },
+        {
+            "id": 21,
+            "name": "Name 21",
+            "location": "Location 21",
+            "state": "Inactive"
+        },
+        {
+            "id": 22,
+            "name": "Name 22",
+            "location": "Location 22",
+            "state": "Active"
+        },
+        {
+            "id": 23,
+            "name": "Name 23",
+            "location": "Location 23",
+            "state": "Inactive"
+        },
+        {
+            "id": 24,
+            "name": "Name 24",
+            "location": "Location 24",
+            "state": "Active"
+        },
+        {
+            "id": 25,
+            "name": "Name 25",
+            "location": "Location 25",
+            "state": "Inactive"
+        },
+        {
+            "id": 26,
+            "name": "Name 26",
+            "location": "Location 26",
+            "state": "Active"
+        },
+        {
+            "id": 27,
+            "name": "Name 27",
+            "location": "Location 27",
+            "state": "Inactive"
+        },
+        {
+            "id": 28,
+            "name": "Name 28",
+            "location": "Location 28",
+            "state": "Active"
+        },
+        {
+            "id": 29,
+            "name": "Name 29",
+            "location": "Location 29",
+            "state": "Inactive"
+        },
+        {
+            "id": 30,
+            "name": "Name 30",
+            "location": "Location 30",
+            "state": "Active"
+        }
+    ]
+
+
 
     $(window).on("load", function () {
     @Html.Raw(TempData["StartupScript"])
@@ -203,7 +392,7 @@
     // load components ( remove unused please)
     import { KfField, KfInput, KfDate, KfSelect, KfNumber, KfCheck, KfTextarea, KfText, KfButton, KfDropdownButton } from '/js/vue3Components.js';
     import { KfNum } from '/js/vue3number.js';
-    import { KfGridLookUp } from '/js/lookUpWrapper.js';
+    import { KfGridLookUp } from '/js/lookUp.js';
     import { baseMixin } from '/js/BaseMixin.js';
     const { ref } = Vue;
     const app = Vue.createApp({
@@ -211,6 +400,7 @@
         data() {
             return {
                 ostId:6,
+                osts:osts,
                 Id: -34343443.444,
                 Item: {},
                 dropdownItems: [
