@@ -35,7 +35,7 @@
         .dropdown-content a {
             color: black;
             padding: 3px;
-            align-items:start;
+            align-items: start;
             text-decoration: none;
             display: block;
         }
@@ -51,19 +51,124 @@
     }
 
 </style>
+
+<style>
+    .cf-dropdown-container {
+        position: relative;
+        display: inline-block;
+        background-color: aqua
+    }
+
+    .cf-dropdown {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        width: 500px;
+        height: 200px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+</style>
+@*
+<h1>sssssssssssss</h1> *@
 <div style="display:flex;flex-direction:column;align-items:flex-start;align-content:flex-start;align-self:stretch">
-    <h1></h1>
+    @*     <div class="cf-dropdown-container" style="width:500px">
+    <div> text:</div>
+    <input style="width:100px;display:inline-block"></input>
+    <div style="width:100px;display:inline-block"> text:</div>
+    <input style="width:100px;display:inline-block"></input>
+    <button onclick="toggleDropdown()">Show Table</button>
+    <div class="cf-dropdown" id="myDropdown">
+    <table>
+    <thead>
+    <tr>
+    <th>Header 1</th>
+    <th>Header 2</th>
+    <th>Header 3</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <td>Data 1</td>
+    <td>Data 2</td>
+    <td>Data 3</td>
+    </tr>
+    <tr>
+    <td>Data 4</td>
+    <td>Data 5</td>
+    <td>Data 6</td>
+    </tr>
+    <!-- Add more rows as needed -->
+    </tbody>
+    </table>
+    </div>
+    </div>
+
+    <div class="cf-dropdown-container">
+    <div class="coll">{{ text }}:</div>
+
+    <div style="width:150px;height:30px;background:green;border: solid 1px"
+    :title="notValidText"
+    v-bind:value="value"
+    v-on:input="valChanged($event)"></div>
+
+    <button onclick="toggleDropdown()>Find</button>
+
+    <img v-if="!valid" src="invalid.png" />
+    <div class="cf-dropdown"
+    id="lookUpId"
+    :style="{ display: tableVisible ? 'block' : 'none' }"
+    >
+    <h1>sssssssssssss</h1>
+    </div>
+
+    </div> *@
+
+    <script>
+        function toggleDropdown() {
+            console.log('-------')
+            var dropdown = document.getElementById("lookUpId");
+            if (dropdown.style.display === "block") {
+                dropdown.style.display = "none";
+            } else {
+                dropdown.style.display = "block";
+            }
+            var dropdown = document.getElementById("myDropdown");
+            if (dropdown.style.display === "block") {
+                dropdown.style.display = "none";
+            } else {
+                dropdown.style.display = "block";
+            }
+
+        }
+
+        // // Close the dropdown if the user clicks outside of it
+        // window.onclick = function (event) {
+        //     if (!event.target.matches('.container')) {
+        //         var dropdowns = document.getElementsByClassName("dropdown");
+        //         for (var i = 0; i < dropdowns.length; i++) {
+        //             var openDropdown = dropdowns[i];
+        //             if (openDropdown.style.display === "block") {
+        //                 openDropdown.style.display = "none";
+        //             }
+        //         }
+        //     }
+        // }
+    </script>
+
 
     <div id="app" style="display: flex;flex-direction: column;width: 850px;">
 
         <div id="items" class="grid-container">
             <div>{{Id}}</div>
-            <kf-look-up text ='Barcode'></kf-look-up>
+            <kf-look-up text='Bar-code' 
+            load-url="/Api/GetOsts" 
+            display-expr="${name} loc=${locateeion}"
+            :value='ostId'></kf-look-up>
             <kf-input text='Barcode' v-model='Item.Barcode' id="mBarcode" require>  </kf-input>
 
-
             <kf-num text='Id' v-model='Id' id="mId" scale="3"></kf-num>
-
 
             <kf-input text='Name' v-model='Item.SampleName' require></kf-input>
             <kf-input text='Status' v-model='Item.Status'></kf-input>
@@ -92,7 +197,7 @@
 
     $(window).on("load", function () {
     @Html.Raw(TempData["StartupScript"])
-            });
+                });
     let Mode = '@ViewBag.Mode'
     let Id = '@ViewBag.Id';
     // load components ( remove unused please)
@@ -105,9 +210,10 @@
         mixins: [baseMixin],
         data() {
             return {
+                ostId:6,
                 Id: -34343443.444,
                 Item: {},
-                dropdownItems:[
+                dropdownItems: [
                     { Id: 1, Text: "edit", Image: "checked", Action: this.edit },
                     { Id: 2, Text: "Удаление", Image: "save", Action: this.delete },
                     { Id: 3, Text: "Просмотр", Image: "add", Action: this.view }

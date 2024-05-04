@@ -22,7 +22,6 @@ describe('Тест журнала $MainHeader$', () => {
      const extractedNumber = matches && parseInt(matches[1], 10);
      cy.wrap(extractedNumber).should('be.gt', 0);
     })
-   
   })
 
   it('Проверка фильтра на отсутствие записей', () => {

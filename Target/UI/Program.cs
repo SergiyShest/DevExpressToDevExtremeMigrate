@@ -2,6 +2,7 @@ using Autofac;
 using Autofac.Configuration;
 using Autofac.Extensions.DependencyInjection;
 using Configuration;
+using Core.Entity;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = new ConfigurationBuilder()
@@ -48,6 +49,13 @@ builder.WebHost.UseKestrel(options =>
 
 var app = builder.Build();
 
+#region Можно и так оказывается
+
+app.MapGet("/Api/GetOsts", GetOsts);
+
+
+#endregion
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -79,3 +87,21 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+
+
+List<Ost> GetOsts()
+{
+    var osts = new List<Ost>();
+    for (int i = 1; i <= 30; i++)
+    {
+        osts.Add(new Ost
+        {
+            Id = i,
+            Name = $"Name {i}",
+            Location = $"Location {i}",
+            State = i % 2 == 0 ? "Active" : "Inactive"
+        });
+    }
+    return osts;
+}
